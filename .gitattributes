@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.png binary
+*.min.js -diff linguist-vendored
+crystalab/web/static/vendor/** linguist-vendored
