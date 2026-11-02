@@ -62,7 +62,7 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
-| RQ-ARQ-01 | Monorepo `frontend/` + `backend/` + `database/` + `infrastructure/` + `docs/` + `scripts/` | Estrutura criada; cada pasta com README; build de cada parte executável isoladamente | 06 | 2 | ✘ (bases separadas) |
+| RQ-ARQ-01 | Monorepo `frontend/` + `backend/` + `database/` + `infrastructure/` + `docs/` + `scripts/` | Estrutura criada; cada pasta com README; build de cada parte executável isoladamente | 06 | 2 | ◐ esqueleto e READMEs criados na Fase 2; builds a partir da Fase 3 |
 | RQ-ARQ-02 | Camadas do backend: api, schemas, services, engines, repositories, models, security, educational, integrations | Imports respeitam a direção das camadas (teste de arquitetura) | 01 | 2–3 | ◐ B (api/core/repositório) |
 | RQ-ARQ-03 | Motor científico independente de API e UI | `engines/` importável e testável sem FastAPI | 01 | 3 | ✔ B (`core/`), ✘ A/D (monolito) |
 | RQ-ARQ-04 | Frontend em módulos com fronteiras: app, hea, crystalab, didactics, instructor, notebook, assessments, administration, compartilhados | Lint de fronteiras sem violação | 03/06 | 5 | ◐ C (sem assessments/administration) |

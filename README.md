@@ -2,7 +2,7 @@
 
 Workspace da versão unificada do Alloy Virtual Lab (CrystaLab + HEA + módulos educacionais).
 
-**Estado atual: Fase 1 (auditoria) concluída; aguardando o Gate 0.** Ainda não há código consolidado.
+**Estado atual: Fase 2 (arquitetura) concluída; aguardando o Gate 1.** Ainda não há código consolidado. Veja `docs/ARQUITETURA_FINAL.md` e `docs/REGISTRO_DE_GATES.md`.
 
 ## Estrutura
 
