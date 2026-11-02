@@ -1,0 +1,2 @@
+{ "name": "zustand", "version": "5.0.1", "license": "MIT", "type": "module", "main": "index.ts", "types": "index.ts",
+  "x-origin": "git https://github.com/pmndrs/zustand tag v5.0.1 (src/)" }

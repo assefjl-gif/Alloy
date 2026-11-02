@@ -1,0 +1,8 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+reports/e2e-artifacts/
+*.log
+__pycache__/
+scripts/.*.tmp.mjs

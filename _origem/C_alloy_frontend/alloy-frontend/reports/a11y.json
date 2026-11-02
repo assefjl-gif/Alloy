@@ -1,0 +1,638 @@
+{
+ "tool": "auditoria própria (tests/helpers/a11yAudit.ts) — não é axe-core nem Lighthouse (D-19)",
+ "generatedAt": "2026-10-24T01:12:44.213Z",
+ "reports": [
+  {
+   "url": "http://127.0.0.1:5173/#/crystalab",
+   "checkedAt": "2026-10-24T01:12:22.444Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "p.brand-row__title",
+     "detail": "contraste 1.86:1 < 3:1 (\"CrystaLab\", rgb(68, 197, 242) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "p.brand-row__sub",
+     "detail": "contraste 1.92:1 < 4.5:1 (\"Estrutura dos sólidos cristalinos\", rgb(169, 182, 198) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span.lab-badge",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"M1 · v2.0\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"Banco de blocos\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"Terminal\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    }
+   ],
+   "counts": {},
+   "stats": {
+    "interactive": 112,
+    "textNodesChecked": 289,
+    "focusChecked": 25
+   },
+   "theme": "light",
+   "route": "crystalab"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/hea",
+   "checkedAt": "2026-10-24T01:12:23.800Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "p.brand-row__title",
+     "detail": "contraste 1.86:1 < 3:1 (\"HEA Virtual Lab\", rgb(68, 197, 242) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "p.brand-row__sub",
+     "detail": "contraste 1.92:1 < 4.5:1 (\"Ligas de alta entropia\", rgb(169, 182, 198) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span.lab-badge",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"v1.17 · v2.0\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"Banco de ligas\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    },
+    {
+     "rule": "contrast",
+     "wcag": "1.4.3",
+     "impact": "serious",
+     "target": "span",
+     "detail": "contraste 1.03:1 < 4.5:1 (\"Terminal\", rgb(238, 245, 248) sobre rgb(245,247,251))"
+    }
+   ],
+   "counts": {},
+   "stats": {
+    "interactive": 27,
+    "textNodesChecked": 247,
+    "focusChecked": 3
+   },
+   "theme": "light",
+   "route": "hea"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender",
+   "checkedAt": "2026-10-24T01:12:24.974Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 42,
+    "textNodesChecked": 70,
+    "focusChecked": 24
+   },
+   "theme": "light",
+   "route": "aprender"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/densidade-cobre",
+   "checkedAt": "2026-10-24T01:12:25.996Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 16,
+    "textNodesChecked": 50,
+    "focusChecked": 15
+   },
+   "theme": "light",
+   "route": "aprender/densidade-cobre"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/abp-al-cu",
+   "checkedAt": "2026-10-24T01:12:27.229Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 33,
+    "textNodesChecked": 79,
+    "focusChecked": 25
+   },
+   "theme": "light",
+   "route": "aprender/abp-al-cu"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/quiz-estruturas",
+   "checkedAt": "2026-10-24T01:12:27.989Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 20,
+    "textNodesChecked": 36,
+    "focusChecked": 4
+   },
+   "theme": "light",
+   "route": "aprender/quiz-estruturas"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/diario",
+   "checkedAt": "2026-10-24T01:12:29.030Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 32,
+    "textNodesChecked": 24,
+    "focusChecked": 18
+   },
+   "theme": "light",
+   "route": "diario"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/professor",
+   "checkedAt": "2026-10-24T01:12:30.228Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 36,
+    "textNodesChecked": 77,
+    "focusChecked": 25
+   },
+   "theme": "light",
+   "route": "professor"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/sobre",
+   "checkedAt": "2026-10-24T01:12:30.927Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 13,
+    "textNodesChecked": 129,
+    "focusChecked": 1
+   },
+   "theme": "light",
+   "route": "sobre"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/catalogo",
+   "checkedAt": "2026-10-24T01:12:32.230Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 38,
+    "textNodesChecked": 96,
+    "focusChecked": 25
+   },
+   "theme": "light",
+   "route": "catalogo"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/crystalab",
+   "checkedAt": "2026-10-24T01:12:34.741Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 112,
+    "textNodesChecked": 289,
+    "focusChecked": 25
+   },
+   "theme": "dark",
+   "route": "crystalab"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/hea",
+   "checkedAt": "2026-10-24T01:12:36.110Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 27,
+    "textNodesChecked": 247,
+    "focusChecked": 3
+   },
+   "theme": "dark",
+   "route": "hea"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender",
+   "checkedAt": "2026-10-24T01:12:37.316Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 42,
+    "textNodesChecked": 70,
+    "focusChecked": 24
+   },
+   "theme": "dark",
+   "route": "aprender"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/densidade-cobre",
+   "checkedAt": "2026-10-24T01:12:38.247Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 16,
+    "textNodesChecked": 50,
+    "focusChecked": 15
+   },
+   "theme": "dark",
+   "route": "aprender/densidade-cobre"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/abp-al-cu",
+   "checkedAt": "2026-10-24T01:12:39.376Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 33,
+    "textNodesChecked": 79,
+    "focusChecked": 25
+   },
+   "theme": "dark",
+   "route": "aprender/abp-al-cu"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/aprender/quiz-estruturas",
+   "checkedAt": "2026-10-24T01:12:40.128Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 20,
+    "textNodesChecked": 36,
+    "focusChecked": 4
+   },
+   "theme": "dark",
+   "route": "aprender/quiz-estruturas"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/diario",
+   "checkedAt": "2026-10-24T01:12:41.142Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 32,
+    "textNodesChecked": 24,
+    "focusChecked": 18
+   },
+   "theme": "dark",
+   "route": "diario"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/professor",
+   "checkedAt": "2026-10-24T01:12:42.293Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 36,
+    "textNodesChecked": 77,
+    "focusChecked": 25
+   },
+   "theme": "dark",
+   "route": "professor"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/sobre",
+   "checkedAt": "2026-10-24T01:12:42.990Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 13,
+    "textNodesChecked": 129,
+    "focusChecked": 1
+   },
+   "theme": "dark",
+   "route": "sobre"
+  },
+  {
+   "url": "http://127.0.0.1:5173/#/catalogo",
+   "checkedAt": "2026-10-24T01:12:44.213Z",
+   "rules": [
+    "name-required",
+    "image-alt",
+    "contrast",
+    "doc-lang",
+    "doc-title",
+    "landmark-main",
+    "heading-order",
+    "duplicate-id",
+    "tabindex-positive",
+    "target-size",
+    "focus-visible",
+    "aria-pressed-role"
+   ],
+   "violations": [],
+   "needsReview": [],
+   "counts": {},
+   "stats": {
+    "interactive": 38,
+    "textNodesChecked": 96,
+    "focusChecked": 25
+   },
+   "theme": "dark",
+   "route": "catalogo"
+  }
+ ]
+}

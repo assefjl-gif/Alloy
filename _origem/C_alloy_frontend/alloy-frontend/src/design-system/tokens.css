@@ -1,0 +1,267 @@
+/*
+ * alloy-ui — tokens centralizados (tarefa 2.9).
+ * Todos os componentes usam apenas estas variáveis. Nenhuma cor literal fora deste arquivo
+ * (exceto dentro do viewer, que lê estes tokens via getComputedStyle).
+ * Contraste conferido em tests/unit/tokens.test.ts (texto ≥ 4,5:1 nos fundos de uso).
+ */
+:root {
+  --font-sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: Consolas, "Cascadia Mono", "SFMono-Regular", Menlo, "Courier New", monospace;
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --fs-2xl: 23px;
+  --fs-metric: 22px;
+  --fw-regular: 400;
+  --fw-semibold: 650;
+  --fw-bold: 800;
+  --lh-tight: 1.15;
+  --lh-normal: 1.45;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --border-w: 1px;
+
+  /* Breakpoints de referência — as media queries usam exatamente estes valores. */
+  --bp-sm: 560px;
+  --bp-md: 860px;
+  --bp-lg: 1180px;
+  --bp-xl: 1440px;
+
+  --motion-fast: 120ms;
+  --motion: 180ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --z-header: 20;
+  --z-drawer: 40;
+  --z-popover: 50;
+  --z-dialog: 60;
+  --z-toast: 80;
+
+  /* WCAG 2.2 AA exige ≥ 24 px; o projeto usa 32 px para alvos primários. */
+  --target-min: 32px;
+  --target-touch: 44px;
+
+  --header-h: 56px;
+  --lab-w: 340px;
+  --side-w: 330px;
+}
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef2f7;
+  --color-surface-sunken: #e6ebf2;
+  --color-ink: #10131a;
+  --color-ink-soft: #29313f;
+  --color-muted: #5c6676;
+  --color-line: #dbe2eb;
+  --color-line-strong: #7f8a9b; /* ≥ 3:1 sobre as superfícies (bordas de controles, WCAG 1.4.11) */
+  --color-accent: #087099;
+  --color-accent-fill: #1aa7d9;
+  --color-on-accent: #071017;
+  --color-primary: #11151c;
+  --color-on-primary: #ffffff;
+  --color-success: #0f7a55;
+  --color-success-bg: #e3f5ec;
+  --color-warning: #8a5a00;
+  --color-warning-bg: #fdf3dc;
+  --color-danger: #b42c3c;
+  --color-danger-bg: #fbe7e9;
+  --color-info: #5b42c4;
+  --color-info-bg: #ece8fb;
+  --color-overlay: rgba(10, 14, 20, 0.45);
+
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px #087099;
+  --state-hover-bg: rgba(16, 19, 26, 0.05);
+  --state-selected-bg: rgba(8, 112, 153, 0.1);
+  --state-selected-line: #087099;
+  --state-loading: #087099;
+  --state-error-line: #b42c3c;
+  --state-success-line: #0f7a55;
+
+  --shadow-1: 0 1px 2px rgba(10, 14, 20, 0.08);
+  --shadow-2: 0 18px 44px rgba(10, 14, 20, 0.18);
+  --topbar-bg: rgba(255, 255, 255, 0.92);
+
+  /* Painel do laboratório: escuro nos dois temas, como na matriz (consistência visual). */
+  --lab-bg: #11151c;
+  --lab-bg-2: #161c24;
+  --lab-surface: #202833;
+  --lab-surface-2: #263140;
+  --lab-line: rgba(255, 255, 255, 0.12);
+  --lab-ink: #eef5f8;
+  --lab-muted: #a9b6c6;
+  --lab-accent: #44c5f2;
+  --lab-code-bg: #131922;
+  --lab-tint: rgba(255, 255, 255, 0.035);
+  --lab-shade: rgba(0, 0, 0, 0.1);
+  --lab-hover: rgba(255, 255, 255, 0.06);
+  --term-entry: #9de4ff;
+  --term-ok: #91f2c3;
+  --term-error: #ff9cab;
+  --term-step: #f2d68a;
+  --term-warn: #f2c85b;
+  --term-info: #dce6ef;
+
+  --tag-ccc: #f2c85b;
+  --tag-cfc: #39c38d;
+  --tag-hc: #b9a6ff;
+  --tag-cs: #c9d4e2;
+  --tag-gen: #44c5f2;
+  --tag-ink: #11151c;
+
+  --viewer-bg: #eef2f7;
+  --viewer-glow: #ffffff;
+  --viewer-edge: #29313f;
+  --viewer-label-stroke: rgba(255, 255, 255, 0.92);
+  --viewer-selection: #10131a;
+  --viewer-replica-opacity: 0.55;
+  --site-vertice: #1aa7d9;
+  --site-centro: #d79319;
+  --site-face: #19a56b;
+  --site-basal: #19a56b;
+  --site-interior: #7256d9;
+  --axis-x: #ce3f4f;
+  --axis-y: #19a56b;
+  --axis-z: #1aa7d9;
+  --axis-a3: #d79319;
+
+  --chart-bg: #ffffff;
+  --chart-grid: #edf1f6;
+  --chart-axis: #526070;
+  --chart-text: #29313f;
+  --chart-zone: rgba(25, 165, 107, 0.12);
+  --chart-limit: #b42c3c;
+  --chart-series-1: #0072B2;
+  --chart-series-2: #009E73;
+  --chart-series-3: #E69F00;
+  --chart-series-4: #CC79A7;
+  --chart-highlight: #D55E00;
+
+  /* Seis categorias de informação (2.11). Cor + ícone + rótulo textual + padrão de borda. */
+  --cat-result-accent: #087099;
+  --cat-result-bg: #ffffff;
+  --cat-param-accent: #5b42c4;
+  --cat-param-bg: #f7f5ff;
+  --cat-reference-accent: #5c6676;
+  --cat-reference-bg: #f3f5f8;
+  --cat-control-accent: #29313f;
+  --cat-control-bg: #ffffff;
+  --cat-feedback-accent: #0f7a55;
+  --cat-feedback-bg: #eaf7f1;
+  --cat-demo-accent: #8a5a00;
+  --cat-demo-bg: #fff8e6;
+  --cat-demo-stripe: rgba(138, 90, 0, 0.1);
+  --cat-note-accent: #7a3e9d;
+  --cat-note-bg: #fbf4ff;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0f141b;
+  --color-surface: #161d27;
+  --color-surface-2: #1b2430;
+  --color-surface-sunken: #0b1016;
+  --color-ink: #eef3f8;
+  --color-ink-soft: #c6d0dc;
+  --color-muted: #a3afbf;
+  --color-line: #263241;
+  --color-line-strong: #677890;
+  --color-accent: #44c5f2;
+  --color-accent-fill: #44c5f2;
+  --color-on-accent: #071017;
+  --color-primary: #44c5f2;
+  --color-on-primary: #071017;
+  --color-success: #39c38d;
+  --color-success-bg: #10291f;
+  --color-warning: #f2c85b;
+  --color-warning-bg: #2c2410;
+  --color-danger: #ff9cab;
+  --color-danger-bg: #331820;
+  --color-info: #b9a6ff;
+  --color-info-bg: #231d3d;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  --focus-ring: 0 0 0 2px #0f141b, 0 0 0 4px #44c5f2;
+  --state-hover-bg: rgba(255, 255, 255, 0.06);
+  --state-selected-bg: rgba(68, 197, 242, 0.14);
+  --state-selected-line: #44c5f2;
+  --state-loading: #44c5f2;
+  --state-error-line: #ff9cab;
+  --state-success-line: #39c38d;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 18px 44px rgba(0, 0, 0, 0.45);
+  --topbar-bg: rgba(17, 21, 28, 0.92);
+
+  --viewer-bg: #0a0e13;
+  --viewer-glow: #1a2533;
+  --viewer-edge: #a9b6c6;
+  --viewer-label-stroke: rgba(10, 14, 19, 0.9);
+  --viewer-selection: #ffffff;
+  --site-vertice: #44c5f2;
+  --site-centro: #f2b544;
+  --site-face: #39c38d;
+  --site-basal: #39c38d;
+  --site-interior: #a08cff;
+  --axis-x: #ff7d8e;
+  --axis-y: #39c38d;
+  --axis-z: #44c5f2;
+  --axis-a3: #f2b544;
+
+  --chart-bg: #161d27;
+  --chart-grid: #233040;
+  --chart-axis: #a3afbf;
+  --chart-text: #dce6ef;
+  --chart-zone: rgba(57, 195, 141, 0.16);
+  --chart-limit: #ff9cab;
+  --chart-series-1: #56B4E9;
+  --chart-series-2: #39c38d;
+  --chart-series-3: #F0B23E;
+  --chart-series-4: #E39AC6;
+  --chart-highlight: #FF8A3D;
+
+  --cat-result-accent: #44c5f2;
+  --cat-result-bg: #161d27;
+  --cat-param-accent: #b9a6ff;
+  --cat-param-bg: #1d1a2e;
+  --cat-reference-accent: #a3afbf;
+  --cat-reference-bg: #182029;
+  --cat-control-accent: #c6d0dc;
+  --cat-control-bg: #161d27;
+  --cat-feedback-accent: #39c38d;
+  --cat-feedback-bg: #10261d;
+  --cat-demo-accent: #f2c85b;
+  --cat-demo-bg: #2a2310;
+  --cat-demo-stripe: rgba(242, 200, 91, 0.1);
+  --cat-note-accent: #e3a6ff;
+  --cat-note-bg: #241a2c;
+}
+
+:root[data-motion="reduce"] {
+  --motion-fast: 0ms;
+  --motion: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) {
+    --motion-fast: 0ms;
+    --motion: 0ms;
+  }
+}

@@ -1,0 +1,224 @@
+# chave	pt-BR	en	es
+common.cancel	Cancelar	Cancel	Cancelar
+common.close	Fechar	Close	Cerrar
+common.dataTable	Ver dados em tabela	View data as a table	Ver datos en tabla
+common.demo	Demonstrativo	Demo	Demostrativo
+common.done	Concluir	Done	Listo
+common.hidden	oculto	hidden	oculto
+common.hide	Ocultar	Hide	Ocultar
+common.illustrative	Ilustrativo	Illustrative	Ilustrativo
+common.loading	Carregando…	Loading…	Cargando…
+common.na	n/d	n/a	n/d
+common.visible	visível	visible	visible
+nav.modules	Módulos	Modules	Módulos
+nav.crystalab	CrystaLab	CrystaLab	CrystaLab
+nav.hea	HEA Virtual Lab	HEA Virtual Lab	HEA Virtual Lab
+nav.learn	Aprender	Learn	Aprender
+nav.notebook	Caderno	Notebook	Cuaderno
+nav.instructor	Professor	Instructor	Docente
+nav.catalog	Design system	Design system	Sistema de diseño
+nav.about	Sobre	About	Acerca de
+mode.live	conectado	connected	conectado
+mode.demo	demonstrativo	demo	demostrativo
+mode.disabled	indisponível	unavailable	no disponible
+conn.online	Conectado ao motor CrystaLab	Connected to the CrystaLab engine	Conectado al motor CrystaLab
+conn.offline	Sem conexão: recursos locais continuam funcionando	Offline: local features keep working	Sin conexión: los recursos locales siguen funcionando
+conn.checking	Verificando os motores…	Checking the engines…	Verificando los motores…
+conn.engineOff	Motor CrystaLab indisponível	CrystaLab engine unavailable	Motor CrystaLab no disponible
+conn.short.online	Motor	Engine	Motor
+conn.short.offline	Offline	Offline	Sin conexión
+conn.short.checking	…	…	…
+conn.short.engineOff	Sem motor	No engine	Sin motor
+demo.indicatorTitle	O módulo HEA está em modo demonstrativo: valores fictícios com semente fixa (D-01).	The HEA module is in demo mode: fictitious fixed-seed values (D-01).	El módulo HEA está en modo demostrativo: valores ficticios con semilla fija (D-01).
+crystalab.brand	CrystaLab	CrystaLab	CrystaLab
+crystalab.brandSub	Estrutura dos sólidos cristalinos	Structure of crystalline solids	Estructura de los sólidos cristalinos
+crystalab.unitCell	Célula unitária	Unit cell	Celda unitaria
+crystalab.subtitle	Célula unitária calculada pelo motor CrystaLab	Unit cell computed by the CrystaLab engine	Celda unitaria calculada por el motor CrystaLab
+crystalab.subtitleGeneric	Célula genérica em unidades do raio R	Generic cell in units of the radius R	Celda genérica en unidades del radio R
+crystalab.panel	Painel	Panel	Panel
+crystalab.render	Renderizar	Render	Renderizar
+editor.title	Editor de parâmetros	Parameter editor	Editor de parámetros
+editor.label	Parâmetros da célula (formato do CrystaLab v1.0)	Cell parameters (CrystaLab v1.0 format)	Parámetros de la celda (formato de CrystaLab v1.0)
+editor.hint	Edite e pressione Renderizar (ou Ctrl+Enter). Linhas com # são comentários.	Edit and press Render (or Ctrl+Enter). Lines starting with # are comments.	Edite y pulse Renderizar (o Ctrl+Enter). Las líneas con # son comentarios.
+editor.apply	Aplicar	Apply	Aplicar
+shortcuts.density	Densidade	Density	Densidad
+shortcuts.plane111	Plano (111)	Plane (111)	Plano (111)
+shortcuts.direction110	Direção [110]	Direction [110]	Dirección [110]
+shortcuts.clear	Limpar	Clear	Limpiar
+engine.checking	Verificando o motor…	Checking the engine…	Verificando el motor…
+engine.offTitle	Motor CrystaLab indisponível	CrystaLab engine unavailable	Motor CrystaLab no disponible
+engine.offBody	Os cálculos (estrutura, densidade, Miller) são feitos só pelo motor. Sem ele, nenhum valor é mostrado ou simulado.	Calculations (structure, density, Miller) are done only by the engine. Without it, no value is shown or simulated.	Los cálculos (estructura, densidad, Miller) los hace solo el motor. Sin él, no se muestra ni se simula ningún valor.
+engine.offHow	Inicie o motor com “python3 crystalab_modulo1.py” e use “Verificar novamente” na página Sobre.	Start the engine with “python3 crystalab_modulo1.py” and use “Check again” on the About page.	Inicie el motor con «python3 crystalab_modulo1.py» y use «Verificar de nuevo» en la página Acerca de.
+results.statusLabel	Resumo da estrutura	Structure summary	Resumen de la estructura
+results.crystalStructure	Estrutura cristalina	Crystal structure	Estructura cristalina
+results.touchAlong	Átomos se tocam ao longo da	Atoms touch along the	Los átomos se tocan a lo largo de la
+results.geometry	Geometria	Geometry	Geometría
+results.atomsPerCell	átomos/célula	atoms/cell	átomos/celda
+results.caIdeal	c/a = {ca} (ideal ≈ 1,633)	c/a = {ca} (ideal ≈ 1.633)	c/a = {ca} (ideal ≈ 1,633)
+results.voids	{pct} % de vazios	{pct} % voids	{pct} % de vacíos
+results.engineLanguage	Os textos vindos do motor estão em português (idioma do motor).	Texts coming from the engine are in Portuguese (the engine's language).	Los textos que vienen del motor están en portugués (idioma del motor).
+metrics.label	Métricas da célula	Cell metrics	Métricas de la celda
+metrics.structure	Estrutura	Structure	Estructura
+metrics.latticeA	Parâmetro de rede a	Lattice parameter a	Parámetro de red a
+metrics.apf	FEA	APF	FEA
+metrics.voidsUnit	{pct} % vazios	{pct} % voids	{pct} % vacíos
+metrics.density	Densidade teórica	Theoretical density	Densidad teórica
+metrics.exp	exp. {value}	exp. {value}	exp. {value}
+metrics.coordination	Coordenação	Coordination	Coordinación
+metrics.neighbors	vizinhos	neighbours	vecinos
+metrics.atomsPerCell	Átomos por célula	Atoms per cell	Átomos por celda
+metrics.effective	efetivos	effective	efectivos
+comparison.title	Comparação entre estruturas	Structure comparison	Comparación entre estructuras
+comparison.aside	tabela do motor	engine table	tabla del motor
+comparison.caption	Estruturas do catálogo do motor com n, NC, relação a–R e FEA	Engine catalogue structures with n, CN, a–R relation and APF	Estructuras del catálogo del motor con n, NC, relación a–R y FEA
+comparison.structure	Estrutura	Structure	Estructura
+comparison.relation	Relação a–R	a–R relation	Relación a–R
+comparison.current	estrutura atual	current structure	estructura actual
+comparison.hcNote	Com c/a = {ca}, o FEA desta célula HC é {fea} (o valor da tabela supõe c/a ideal).	With c/a = {ca}, the APF of this HCP cell is {fea} (the table value assumes ideal c/a).	Con c/a = {ca}, el FEA de esta celda HC es {fea} (el valor de la tabla supone c/a ideal).
+count.title	Contagem de átomos	Atom count	Conteo de átomos
+count.aside	contribuição por posição	contribution by position	contribución por posición
+count.total	Total	Total	Total
+count.atoms	{n} átomos	{n} atoms	{n} átomos
+interpretation.title	Interpretação didática	Teaching interpretation	Interpretación didáctica
+density.title	Densidade teórica — passo a passo	Theoretical density — step by step	Densidad teórica — paso a paso
+density.variables	Variáveis	Variables	Variables
+density.var.n	átomos por célula unitária	atoms per unit cell	átomos por celda unitaria
+density.var.A	massa atômica	atomic mass	masa atómica
+density.var.Vc	volume da célula unitária	unit cell volume	volumen de la celda unitaria
+density.var.NA	número de Avogadro	Avogadro's number	número de Avogadro
+density.var.Ra	raio atômico e parâmetro de rede	atomic radius and lattice parameter	radio atómico y parámetro de red
+density.atomsPerMol	átomos/mol	atoms/mol	átomos/mol
+density.stepsLabel	Passos do cálculo de densidade enviados pelo motor	Density calculation steps sent by the engine	Pasos del cálculo de densidad enviados por el motor
+density.formula	Fórmula	Formula	Fórmula
+density.data	Dados	Data	Datos
+density.substitution	Substituição	Substitution	Sustitución
+density.result	Resultado do motor	Engine result	Resultado del motor
+density.vsExp	Experimental: {exp} g/cm³ · desvio {err}	Experimental: {exp} g/cm³ · deviation {err}	Experimental: {exp} g/cm³ · desviación {err}
+density.noInvention	As fórmulas são exibidas simbolicamente; todos os números vêm do motor.	Formulas are shown symbolically; every number comes from the engine.	Las fórmulas se muestran simbólicamente; todos los números vienen del motor.
+density.insufficient	Dados insuficientes para a densidade (informe raio e massa atômica).	Not enough data for density (enter radius and atomic mass).	Datos insuficientes para la densidad (indique radio y masa atómica).
+density.show	Calcular densidade	Compute density	Calcular densidad
+density.formulaLabel	Densidade teórica: rô igual a n vezes A sobre V c vezes N A	Theoretical density: rho equals n times A over V c times N A	Densidad teórica: rho igual a n por A sobre V c por N A
+viewer.title	Célula 3D	3D cell	Celda 3D
+viewer.hint	arraste para girar · role para aproximar	drag to rotate · scroll to zoom	arrastre para girar · desplace para acercar
+viewer.loading	Carregando o visualizador 3D…	Loading the 3D viewer…	Cargando el visor 3D…
+viewer.unsupported	Este navegador não oferece WebGL. Os resultados numéricos e a descrição textual da cena continuam disponíveis.	This browser does not support WebGL. Numeric results and the text description of the scene remain available.	Este navegador no ofrece WebGL. Los resultados numéricos y la descripción textual de la escena siguen disponibles.
+viewer.roleDescription	visualizador 3D interativo	interactive 3D viewer	visor 3D interactivo
+viewer.stageLabel	Cena 3D da célula unitária	3D scene of the unit cell	Escena 3D de la celda unitaria
+viewer.keys	Setas giram a câmera, + e − aproximam, Tab percorre os átomos, Enter seleciona, Esc limpa a seleção, R volta à vista inicial.	Arrow keys rotate the camera, + and − zoom, Tab moves through atoms, Enter selects, Esc clears the selection, R resets the view.	Las flechas giran la cámara, + y − acercan, Tab recorre los átomos, Enter selecciona, Esc limpia la selección, R vuelve a la vista inicial.
+viewer.lockScene	Travar a cena (um dedo rola a página)	Lock the scene (one finger scrolls the page)	Bloquear la escena (un dedo desplaza la página)
+viewer.unlockScene	Destravar a cena para girar com um dedo	Unlock the scene to rotate with one finger	Desbloquear la escena para girar con un dedo
+viewer.description	{label}, estrutura {structure}: {atoms} átomos desenhados, supercélula {supercell}, {planes} plano(s), {dirs} direção(ões) e {meas} medição(ões) na cena.	{label}, {structure} structure: {atoms} atoms drawn, {supercell} supercell, {planes} plane(s), {dirs} direction(s) and {meas} measurement(s) in the scene.	{label}, estructura {structure}: {atoms} átomos dibujados, supercelda {supercell}, {planes} plano(s), {dirs} dirección(es) y {meas} medición(es) en la escena.
+viewer.descSelection	Selecionado: átomo {n} ({site}).	Selected: atom {n} ({site}).	Seleccionado: átomo {n} ({site}).
+viewer.selected	Átomo {n} selecionado ({key}).	Atom {n} selected ({key}).	Átomo {n} seleccionado ({key}).
+viewer.empty	Nenhuma estrutura carregada.	No structure loaded.	Ninguna estructura cargada.
+view.controls	Controles de visualização	View controls	Controles de visualización
+view.rigid	Esferas rígidas	Hard spheres	Esferas rígidas
+view.autoRotate	Girar	Rotate	Girar
+view.axes	Eixos	Axes	Ejes
+view.reset	Vista inicial	Reset view	Vista inicial
+view.supercell	Supercélula	Supercell	Supercelda
+view.more	Mais opções de vista	More view options	Más opciones de vista
+view.atoms	Átomos	Atoms	Átomos
+view.polyhedra	Poliedros de coordenação	Coordination polyhedra	Poliedros de coordinación
+view.polyhedraReason	O motor ainda não envia os poliedros (D-11).	The engine does not send polyhedra yet (D-11).	El motor aún no envía los poliedros (D-11).
+view.atomMode.reduced	Esferas reduzidas	Reduced spheres	Esferas reducidas
+view.atomMode.rigid	Esferas rígidas	Hard spheres	Esferas rígidas
+view.atomMode.ballstick	Bola e bastão	Ball and stick	Bola y varilla
+view.atomMode.points	Pontos	Points	Puntos
+view.toggle.edges	Arestas da célula	Cell edges	Aristas de la celda
+view.toggle.axes	Eixos	Axes	Ejes
+view.toggle.latticePoints	Pontos de rede	Lattice points	Puntos de red
+view.toggle.labels	Rótulos	Labels	Etiquetas
+view.toggle.autoRotate	Rotação automática	Automatic rotation	Rotación automática
+view.toggle.rigid	Esferas rígidas	Hard spheres	Esferas rígidas
+miller.formLabel	Desenhar plano ou direção de Miller	Draw a Miller plane or direction	Dibujar plano o dirección de Miller
+miller.kind	Tipo	Type	Tipo
+miller.planeHkl	Plano (hkl)	Plane (hkl)	Plano (hkl)
+miller.directionUvw	Direção [uvw]	Direction [uvw]	Dirección [uvw]
+miller.plane	Plano	Plane	Plano
+miller.direction	Direção	Direction	Dirección
+miller.indices	Índices	Indices	Índices
+miller.hint	Inteiros; use − para índices negativos. Na HC, 4 índices (o terceiro é −(h+k)).	Integers; use − for negative indices. For HCP, 4 indices (the third is −(h+k)).	Enteros; use − para índices negativos. En la HC, 4 índices (el tercero es −(h+k)).
+miller.draw	Desenhar	Draw	Dibujar
+miller.clear	Limpar	Clear	Limpiar
+overlays.chipsLabel	Elementos na cena	Items in the scene	Elementos en la escena
+overlays.empty	Nada desenhado. Experimente	Nothing drawn. Try	Nada dibujado. Pruebe
+overlays.inHc	na HC:	for HCP:	en la HC:
+overlays.managerLabel	Camadas da cena	Scene layers	Capas de la escena
+overlays.visibility	Visibilidade de {name}	Visibility of {name}	Visibilidad de {name}
+overlays.select	Selecionar {name}	Select {name}	Seleccionar {name}
+overlays.show	Mostrar {name}	Show {name}	Mostrar {name}
+overlays.hide	Ocultar {name}	Hide {name}	Ocultar {name}
+overlays.clip	Cortar a célula por {name}	Clip the cell with {name}	Recortar la celda con {name}
+overlays.unclip	Remover o corte de {name}	Remove the clipping by {name}	Quitar el recorte de {name}
+overlays.remove	Remover {name}	Remove {name}	Quitar {name}
+overlays.color	Cor de {name}	Colour of {name}	Color de {name}
+overlays.colorN	Cor {n}	Colour {n}	Color {n}
+overlays.emptyManager	Nenhum plano, direção ou medição.	No planes, directions or measurements.	Ningún plano, dirección ni medición.
+overlays.familiesDisabled	Famílias de planos {hkl} e de direções ⟨uvw⟩ dependem do motor (D-11).	Plane families {hkl} and direction families ⟨uvw⟩ depend on the engine (D-11).	Las familias de planos {hkl} y de direcciones ⟨uvw⟩ dependen del motor (D-11).
+measure.start	Medir	Measure	Medir
+measure.distance	Distância	Distance	Distancia
+measure.angle	Ângulo	Angle	Ángulo
+measure.kind	Tipo de medição	Measurement type	Tipo de medición
+measure.atomsField	Números dos átomos (ex.: 1 5 ou 1 5@100)	Atom numbers (e.g. 1 5 or 1 5@100)	Números de los átomos (ej.: 1 5 o 1 5@100)
+measure.byNumber	Medir	Measure	Medir
+measure.howTo	Clique nos átomos da cena ou informe os números. As distâncias usam as posições do motor e o parâmetro a.	Click atoms in the scene or enter their numbers. Distances use the engine positions and the parameter a.	Haga clic en los átomos de la escena o indique sus números. Las distancias usan las posiciones del motor y el parámetro a.
+measure.finish	Encerrar medição	Finish measuring	Terminar medición
+measure.stop	Encerrar	Stop	Terminar
+measure.stopped	Modo de medição encerrado.	Measuring mode ended.	Modo de medición terminado.
+measure.bannerDistance	Medindo distância: {picked}/2 átomos escolhidos.	Measuring distance: {picked}/2 atoms chosen.	Midiendo distancia: {picked}/2 átomos elegidos.
+measure.bannerAngle	Medindo ângulo: {picked}/3 átomos escolhidos (o 2.º é o vértice).	Measuring angle: {picked}/3 atoms chosen (the 2nd is the vertex).	Midiendo ángulo: {picked}/3 átomos elegidos (el 2.º es el vértice).
+measure.startDistance	Modo distância ativo.	Distance mode on.	Modo distancia activo.
+measure.startAngle	Modo ângulo ativo.	Angle mode on.	Modo ángulo activo.
+measure.picked	Átomo {atom} escolhido ({n} de {total}).	Atom {atom} chosen ({n} of {total}).	Átomo {atom} elegido ({n} de {total}).
+measure.add	Adicionar medição	Add measurement	Añadir medición
+measure.doneDistance	Distância {value} entre os átomos {atoms}.	Distance {value} between atoms {atoms}.	Distancia {value} entre los átomos {atoms}.
+measure.doneAngle	Ângulo {value} entre os átomos {atoms}.	Angle {value} between atoms {atoms}.	Ángulo {value} entre los átomos {atoms}.
+measure.invalidAtom	Átomo {n} não existe nesta célula.	Atom {n} does not exist in this cell.	El átomo {n} no existe en esta celda.
+measure.invalidDuplicate	Escolha átomos diferentes.	Choose different atoms.	Elija átomos distintos.
+measure.invalidVertex	O vértice do ângulo coincide com outro átomo.	The angle vertex coincides with another atom.	El vértice del ángulo coincide con otro átomo.
+measure.geometryNote	Geometria do visualizador sobre posições do motor: não é um cálculo do motor.	Viewer geometry on engine positions: not an engine calculation.	Geometría del visor sobre posiciones del motor: no es un cálculo del motor.
+history.undo	Desfazer (Ctrl+Z)	Undo (Ctrl+Z)	Deshacer (Ctrl+Z)
+history.redo	Refazer (Ctrl+Shift+Z)	Redo (Ctrl+Shift+Z)	Rehacer (Ctrl+Shift+Z)
+share.button	Compartilhar cena	Share scene	Compartir escena
+share.copied	Link da cena copiado ({length} caracteres).	Scene link copied ({length} characters).	Enlace de la escena copiado ({length} caracteres).
+share.ready	Link da cena gerado ({length} caracteres).	Scene link created ({length} characters).	Enlace de la escena generado ({length} caracteres).
+share.truncated	Cena grande: a câmera e algumas camadas ficaram fora do link.	Large scene: the camera and some layers were left out of the link.	Escena grande: la cámara y algunas capas quedaron fuera del enlace.
+share.restored	Cena restaurada do link: {label}	Scene restored from link: {label}	Escena restaurada desde el enlace: {label}
+share.invalidTitle	Link de cena inválido	Invalid scene link	Enlace de escena no válido
+share.invalid.version	Versão de cena não suportada.	Unsupported scene version.	Versión de escena no compatible.
+share.invalid.format	O link está corrompido.	The link is corrupted.	El enlace está dañado.
+share.invalid.schema	O conteúdo do link não passou na validação.	The link content failed validation.	El contenido del enlace no superó la validación.
+share.invalid.size	O link é longo demais.	The link is too long.	El enlace es demasiado largo.
+export.menu	Exportar	Export	Exportar
+export.format.cif	CIF (motor)	CIF (engine)	CIF (motor)
+export.format.xyz	XYZ (motor)	XYZ (engine)	XYZ (motor)
+export.format.png	Imagem PNG	PNG image	Imagen PNG
+export.format.pdf	Relatório PDF	PDF report	Informe PDF
+export.format.json	Cena (JSON)	Scene (JSON)	Escena (JSON)
+export.disabled	{format} indisponível.	{format} unavailable.	{format} no disponible.
+export.done	Arquivo gerado: {file}	File created: {file}	Archivo generado: {file}
+export.pdfPrint	Diálogo de impressão aberto: escolha “Salvar como PDF”.	Print dialog opened: choose “Save as PDF”.	Diálogo de impresión abierto: elija «Guardar como PDF».
+export.reason.noStructure	Carregue uma estrutura primeiro.	Load a structure first.	Cargue una estructura primero.
+export.reason.engineV1	Exige a API /v1 do motor (D-05).	Requires the engine /v1 API (D-05).	Requiere la API /v1 del motor (D-05).
+export.reason.noViewer	O visualizador 3D não está ativo.	The 3D viewer is not active.	El visor 3D no está activo.
+export.reason.noRadius	Exige raio atômico (célula genérica não tem escala).	Requires an atomic radius (a generic cell has no scale).	Requiere radio atómico (la celda genérica no tiene escala).
+workspace.localOnly	Workspaces ficam só neste navegador (D-04). Exporte em JSON para levar a outro computador.	Workspaces stay in this browser only (D-04). Export as JSON to take them to another computer.	Los espacios de trabajo quedan solo en este navegador (D-04). Expórtelos en JSON para llevarlos a otro equipo.
+workspace.save	Salvar cena	Save scene	Guardar escena
+workspace.import	Importar	Import	Importar
+workspace.export	Exportar todos	Export all	Exportar todos
+workspace.imported	{n} workspace(s) importado(s).	{n} workspace(s) imported.	{n} espacio(s) de trabajo importado(s).
+workspace.importFailed	Não foi possível importar	Could not import	No se pudo importar
+workspace.local	neste navegador	in this browser	en este navegador
+workspace.open	Abrir	Open	Abrir
+workspace.delete	Excluir {name}	Delete {name}	Eliminar {name}
+workspace.none	Nenhum workspace salvo.	No saved workspaces.	Ningún espacio de trabajo guardado.
+workspace.saved	Workspace “{name}” salvo neste navegador.	Workspace “{name}” saved in this browser.	Espacio de trabajo «{name}» guardado en este navegador.
+side.label	Painéis do laboratório	Lab panels	Paneles del laboratorio
+side.guided	Guiado	Guided	Guiado
+side.overlays	Camadas	Layers	Capas
+side.atom	Átomo	Atom	Átomo
+side.measure	Medir	Measure	Medir
+side.anim	Animações	Animations	Animaciones
+side.prov	Procedência	Provenance	Procedencia
+side.ws	Workspaces	Workspaces	Espacios

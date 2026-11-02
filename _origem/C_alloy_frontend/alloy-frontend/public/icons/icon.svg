@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Alloy Virtual Lab">
+  <rect width="512" height="512" rx="112" fill="#11151c"/>
+  <g fill="none" stroke="#44c5f2" stroke-width="18" stroke-linejoin="round">
+    <path d="M256 92 398 174v164L256 420 114 338V174z"/>
+    <path d="M114 174 256 256l142-82M256 256v164" opacity=".7"/>
+  </g>
+  <g fill="#44c5f2">
+    <circle cx="256" cy="92" r="30"/><circle cx="398" cy="174" r="30"/><circle cx="398" cy="338" r="30"/>
+    <circle cx="256" cy="420" r="30"/><circle cx="114" cy="338" r="30"/><circle cx="114" cy="174" r="30"/>
+  </g>
+  <circle cx="256" cy="256" r="40" fill="#39c38d"/>
+</svg>

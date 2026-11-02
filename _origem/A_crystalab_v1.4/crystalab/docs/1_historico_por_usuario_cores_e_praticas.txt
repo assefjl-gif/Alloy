@@ -1,0 +1,516 @@
+================================================================================
+CRYSTALAB - ESPECIFICAÇÃO TÉCNICA 1 DE 3
+HISTÓRICO POR USUÁRIO: CORES E PRÁTICAS
+================================================================================
+Origem ......: Sugestão nº 5 do relatório da v1.4
+               ("Guardar o histórico de cores e de práticas por usuário")
+Base ........: crystalab_modulo1_v1.4.py (arquivo único, Python 3 stdlib + HTML/JS embutido)
+Público .....: equipe de desenvolvimento
+Status ......: proposta para implementação (nada deste documento está no código ainda)
+Documentos relacionados:
+  - 2_diagrama_de_fases_ligas.txt
+  - 3_exercicios_com_gabarito_tutoriais.txt (consome o perfil descrito aqui)
+
+
+--------------------------------------------------------------------------------
+1. OBJETIVO
+--------------------------------------------------------------------------------
+Hoje as preferências de cor e o desempenho no exercício "Praticar: qual é o plano?"
+não pertencem a ninguém: as cores ficam no navegador e a prática só existe na memória
+da aba. Queremos que, ao entrar com o e-mail da UFC, o usuário reencontre:
+
+  a) as cores que escolheu para cada elemento, em qualquer navegador/computador que
+     use o mesmo servidor;
+  b) o histórico das tentativas de prática (acertos, erros, tempo, dicas), com
+     estatísticas por estrutura e por família de planos;
+  c) uma seleção de desafios que priorize o que o usuário erra mais (repetição
+     espaçada), em vez de sorteio uniforme.
+
+Fora de escopo deste documento: painel de professor (ver doc 3), autenticação forte
+(ver seção 4), sincronização entre servidores.
+
+
+--------------------------------------------------------------------------------
+2. ESTADO ATUAL (AS-IS)
+--------------------------------------------------------------------------------
+2.1 Onde cada dado vive hoje
+
+  Dado                    Onde                           Chave / função
+  ----------------------  -----------------------------  ---------------------------
+  E-mail logado           localStorage ou sessionStorage "crystalab-usuario"
+                          (conforme "Lembrar meu e-mail") completeLogin(email, remember)
+  Último e-mail digitado  localStorage                   "crystalab-ultimo-email"
+  Cores por elemento      localStorage (JSON)            "crystalab-cores"
+                                                         state.elementColors{símbolo:hex}
+                                                         setElementColor(symbol, color)
+  Tema, lateral aberta    localStorage                   "crystalab-theme",
+                                                         "crystalab-lateral"
+  Estado da prática       memória (state.practice)       {target, tries, solved, feedback}
+  Registro de acessos     servidor, crystalab_usuarios   registrar_login(): chave = e-mail
+                          .json (ao lado do script)      em minúsculas; campos
+                                                         primeiro_acesso, ultimo_acesso,
+                                                         acessos
+
+2.2 Pontos do código que a mudança toca
+
+  Front-end (HTML_TEMPLATE, bloco <script>):
+    - const store {get,set,remove}        : wrapper tolerante a falhas do Web Storage
+    - setElementColor / reset de cores    : gravam "crystalab-cores"
+    - newPractice / checkPractice /
+      revealPractice / renderPractice     : ciclo do exercício
+    - const PRACTICE {cubic, HC}          : bancos de planos sorteados
+    - completeLogin / logout / showLogin  : ciclo de identificação
+    - postJson(url, payload, {quiet})     : já envia o cabeçalho X-CrystaLab: 1
+
+  Back-end:
+    - registrar_login, email_valido, EMAIL_UFC (regex ^...@(sub.)*ufc.br$)
+    - _ler_json / _gravar_json            : escrita atômica (arquivo .tmp + os.replace)
+    - _TRAVA (threading.Lock)             : exclusão mútua das gravações
+    - CrystaLabRequestHandler:
+        _host_permitido()   aceita só Host 127.0.0.1 / localhost / ::1 (anti DNS rebinding)
+        _escrita_permitida() exige Host válido + cabeçalho X-CrystaLab: 1
+        do_POST: corpo JSON limitado a 1 MiB; rotas em um dicionário "rotas"
+
+2.3 Regras da prática hoje (devem ser preservadas)
+  - O alvo é sorteado de PRACTICE.cubic (12 planos) ou PRACTICE.HC (7 planos).
+  - O plano é desenhado sem rótulo (overlay.hideLabel = true) e o aluno digita índices.
+  - Em HC, resposta de 3 índices (h k l) é convertida para 4 (h k i l) com i = -(h+k).
+  - O plano oposto (todos os índices com sinal trocado) é aceito como correto.
+  - Após 3 erros aparece "Mostrar resposta".
+  - O alvo anterior não se repete em sequência.
+
+
+--------------------------------------------------------------------------------
+3. REQUISITOS
+--------------------------------------------------------------------------------
+3.1 Funcionais
+  RF1  Ao entrar, o cliente obtém o perfil do usuário (cores, tema, lateral, resumo
+       da prática) e o aplica antes de renderizar a cena.
+  RF2  Alterar ou restaurar uma cor grava no perfil (debounce de 400 ms; ver 8.2).
+  RF3  Cada tentativa de prática gera um registro persistente (esquema na seção 5.3).
+  RF4  O sistema calcula e exibe: taxa de acerto geral, por estrutura (CS/CCC/CFC/HC),
+       por família de planos {hkl}, tentativas médias até o acerto, sequência atual.
+  RF5  O sorteio do próximo desafio usa pesos adaptativos (seção 9).
+  RF6  O usuário pode exportar seus dados (JSON) e apagar seu perfil.
+  RF7  Funciona offline-degradado: sem servidor/perfil, o app continua usando
+       localStorage como hoje (sem perda de funcionalidade).
+  RF8  Migração: na primeira sincronização, as cores que já existem em
+       "crystalab-cores" sobem para o perfil sem sobrescrever o que o servidor já tem.
+
+3.2 Não funcionais
+  RNF1 Sem dependências novas: Python stdlib (json, sqlite3 opcional, hmac, secrets,
+       hashlib) e JS puro. O projeto é um arquivo único; manter assim.
+  RNF2 Gravações atômicas e seguras para ThreadingHTTPServer (várias threads).
+  RNF3 Latência: GET /api/perfil < 50 ms para perfis com até 5 000 tentativas.
+  RNF4 Tamanho: perfil com 5 000 tentativas < 1 MiB. Acima disso, compactar o
+       histórico antigo (seção 6.4).
+  RNF5 Acessibilidade e idioma: mensagens em pt-BR; nenhum estado transmitido só por cor.
+  RNF6 Conformidade com a LGPD (seção 10).
+
+
+--------------------------------------------------------------------------------
+4. IDENTIDADE E MODELO DE AMEAÇA  (decisão que condiciona o resto)
+--------------------------------------------------------------------------------
+4.1 Fato: o login atual NÃO autentica. Qualquer pessoa digita qualquer e-mail
+    terminado em ufc.br. O servidor só grava que "aquele e-mail entrou".
+    Se o histórico passar a ser "do usuário", é preciso decidir o que se quer
+    proteger.
+
+4.2 Cenários
+  A) Uso pessoal / laboratório com máquinas distintas por aluno:
+     o risco é pequeno; basta um token de sessão para amarrar requisições a um e-mail.
+  B) Computador compartilhado numa aula: um aluno pode abrir o perfil de outro
+     digitando o e-mail dele. Para dados de aprendizado (cores, prática) o dano é
+     baixo, mas para NOTAS ou avaliação o dano é alto.
+  C) Servidor acessível pela rede do departamento: o bind atual é 127.0.0.1 e
+     _host_permitido() rejeita outros hosts. Publicar na rede exige reescrever
+     ambos E adotar autenticação real.
+
+4.3 Recomendação por fase
+  Fase 1 (esta especificação): token de sessão assinado (HMAC), sem senha.
+     - POST /api/login passa a devolver {token, expira_em}.
+     - Token = base64url(JSON{email, exp}) + "." + base64url(HMAC-SHA256(segredo, parte1)).
+     - Segredo: 32 bytes de os.urandom, gravados em crystalab_segredo.key na primeira
+       execução (permissões restritas; no Windows, apenas ACL do usuário).
+     - Cliente guarda o token junto com o e-mail (mesma regra de "lembrar") e o envia
+       no cabeçalho X-Sessao em todas as chamadas de perfil/prática.
+     - Comparação com hmac.compare_digest. Validade padrão 30 dias, renovável.
+     Isso impede forjar requisições para o perfil de outro e-mail SEM passar pelo
+     login, mas NÃO impede se passar por outro e-mail NO login. Documentar isso na UI
+     ("identificação, não autenticação").
+  Fase 2 (se houver nota/avaliação): autenticação institucional (SSO/OIDC/CAS, se a
+     UFC disponibilizar) ou código de uso único enviado ao e-mail. Só então o
+     histórico pode ser tratado como evidência.
+
+4.4 Controles que permanecem
+  - X-CrystaLab: 1 em toda escrita (força preflight CORS, que o servidor não responde).
+  - Verificação de Host. Limite de corpo (manter 1 MiB; pedir mais só onde necessário).
+  - Todo texto vindo do usuário é escapado ao renderizar (escapeHtml) ou inserido
+    com textContent.
+  - Limitar taxa: máx. 60 requisições de escrita por minuto por token (contador em
+    memória; 429 com Retry-After).
+
+
+--------------------------------------------------------------------------------
+5. MODELO DE DADOS
+--------------------------------------------------------------------------------
+5.1 Identificador do usuário
+  uid = sha256(email_normalizado)[:32] em hexadecimal. O e-mail em claro só aparece
+  dentro do arquivo do perfil (necessário para exportação e para o painel futuro).
+  email_normalizado = email.strip().lower() (mesma normalização de email_valido()).
+
+5.2 Perfil (um documento por usuário)
+
+  {
+    "versao_esquema": 1,
+    "email": "nome@alu.ufc.br",
+    "criado_em":     "2026-11-02T12:32:34",
+    "atualizado_em": "2026-11-02T12:40:10",
+    "revisao": 17,                      // inteiro monotônico; base do controle de conflito
+    "preferencias": {
+      "tema": "dark",                   // "light" | "dark"
+      "lateral": "open",                // "open" | "collapsed"
+      "cores": {
+        "Fe": { "valor": "#e06633", "em": "2026-11-02T12:35:00" },
+        "C":  { "valor": "#303030", "em": "2026-11-02T12:36:12" }
+      }
+    },
+    "pratica": {
+      "resumo": {                       // derivado; recalculável a partir de "tentativas"
+        "total": 148, "acertos": 121,
+        "por_estrutura": { "CFC": {"total": 40, "acertos": 36}, "HC": {"total": 22, "acertos": 11} },
+        "por_familia":   { "{111}": {"total": 18, "acertos": 17}, "{1010}": {"total": 6, "acertos": 2} },
+        "sequencia_atual": 4, "melhor_sequencia": 11,
+        "media_tentativas_ate_acertar": 1.38
+      },
+      "caixas": {                       // repetição espaçada (seção 9)
+        "CFC|1 1 1": { "caixa": 3, "proxima_revisao": "2026-11-09" }
+      },
+      "tentativas": [ ...registros da seção 5.3... ]   // mais recentes no fim
+    }
+  }
+
+  Regras de validação (servidor, no PUT/POST; qualquer violação -> 422):
+    - cor: ^#[0-9a-fA-F]{6}$ ; símbolo: deve existir em METAIS ou INTERSTICIAIS.
+    - tema ∈ {light, dark}; lateral ∈ {open, collapsed}.
+    - No máximo 40 chaves em "cores".
+
+5.3 Registro de tentativa
+
+  {
+    "id": "t_7f3a9c...",               // uuid4 gerado no servidor
+    "em": "2026-11-02T12:41:55",       // relógio do servidor
+    "estrutura": "CFC",
+    "indices": [1, 1, 1],              // alvo, na forma de PRACTICE (HC: 4 índices)
+    "resposta_texto": "1 1 1",         // exatamente o que foi digitado (<= 40 chars, texto puro)
+    "resposta_indices": [1, 1, 1],     // interpretado; null se inválido
+    "correta": true,
+    "n_tentativa": 1,                  // dentro do desafio (1, 2, 3...)
+    "desafio_id": "d_91b2...",         // agrupa tentativas do mesmo desafio
+    "tempo_ms": 8420,                  // do desenho do plano até o envio; limitado a 600 000
+    "usou_dica": false,                // dica exibida após 3 erros
+    "revelou": false,                  // clicou "Mostrar resposta"
+    "origem": "pratica"                // reservado: "pratica" | "exercicio" (doc 3)
+  }
+
+  Quem decide "correta": o SERVIDOR, usando o alvo guardado em memória/estado do
+  desafio (seção 7.3). O cliente não envia "correta" (evita pontuação forjada).
+
+
+--------------------------------------------------------------------------------
+6. ARMAZENAMENTO NO SERVIDOR
+--------------------------------------------------------------------------------
+6.1 Opções avaliadas
+
+  Opção            Prós                                  Contras
+  ---------------  ------------------------------------  -----------------------------
+  A) JSON por      Simples, legível, versionável,        Reescrita do arquivo inteiro a
+     usuário       consistente com o resto do projeto    cada tentativa; cresce linear
+  B) JSON Lines    Append barato para "tentativas"       Duas fontes de verdade
+     + perfil JSON
+  C) SQLite        Transações, índices, consultas e      Dependência de esquema/
+     (módulo       agregações; seguro com threads        migração; arquivo binário
+     sqlite3 da    (conexão por thread, WAL)
+     stdlib)
+
+6.2 Recomendação
+  Começar com (A) na Fase 1 por coerência e simplicidade, ISOLANDO o acesso atrás de
+  uma interface única (classe ArmazemPerfis com métodos carregar(uid), salvar(uid, perfil,
+  revisao_esperada), anexar_tentativa(uid, registro)). Se o volume passar de ~500
+  usuários ativos ou ~5 000 tentativas por usuário, trocar a implementação por (C)
+  sem mexer nos endpoints.
+
+6.3 Layout em disco (ao lado do script, como tutoriais\ e crystalab_usuarios.json)
+
+  dados_usuarios\
+      <uid>.json              perfil
+      <uid>.json.bak          última versão válida (rotação a cada gravação)
+  crystalab_usuarios.json     mantido (registro de acessos; compatibilidade)
+  crystalab_segredo.key       segredo HMAC (nunca versionar; adicionar ao .gitignore)
+
+  Gravação: escrever <uid>.json.tmp, fsync, os.replace -> <uid>.json (já é o padrão de
+  _gravar_json; acrescentar fsync e a cópia .bak).
+  Concorrência: um Lock por uid (dicionário de locks protegido por um lock global),
+  em vez do _TRAVA global, para não serializar usuários diferentes.
+
+6.4 Crescimento
+  Manter as últimas 1 000 tentativas em detalhe. Ao exceder, agregar as mais antigas em
+  "resumo" (já contém os totais) e descartá-las. Registrar "compactado_ate" no perfil.
+
+6.5 Corrupção
+  Se o JSON falhar ao carregar: tentar .bak; se também falhar, mover o arquivo para
+  <uid>.json.corrompido-<timestamp>, criar perfil vazio e registrar o fato em log.
+  Nunca devolver 500 sem corpo; responder {"ok": false, "error": "..."} como o resto da API.
+
+6.6 Migração de dados existentes
+  crystalab_usuarios.json não é migrado para dentro do perfil; continua como registro
+  de acessos. O perfil é criado no primeiro GET /api/perfil de cada e-mail.
+
+
+--------------------------------------------------------------------------------
+7. API
+--------------------------------------------------------------------------------
+Convenções (iguais às atuais): resposta {"ok": true, "result": ...} ou
+{"ok": false, "error": "mensagem pt-BR"}. Todas as rotas abaixo exigem
+X-Sessao válido, exceto /api/login. Escritas exigem X-CrystaLab: 1.
+
+7.1 POST /api/login  (alterado)
+    Corpo ........: {"email": "..."}
+    Resposta .....: {"email", "primeiro_acesso", "ultimo_acesso", "acessos",
+                     "token", "expira_em"}                      [campos novos: token, expira_em]
+    Erros ........: 400 e-mail inválido (mensagem atual)
+
+7.2 GET /api/perfil
+    Resposta .....: perfil sem o array "tentativas" (apenas "resumo" e "caixas")
+    Cabeçalhos ...: ETag: "<revisao>"
+    Erros ........: 401 token ausente/ inválido/ expirado
+
+7.3 PUT /api/perfil/preferencias
+    Corpo ........: {"base_revisao": 17,
+                     "tema": "dark", "lateral": "open",
+                     "cores": {"Fe": "#e06633", "C": null}}      // null remove a cor
+    Efeito .......: mescla por chave; cada cor recebe "em" = agora.
+    Resposta .....: {"revisao": 18, "preferencias": {...}}
+    Erros ........: 409 se base_revisao < revisao atual E houver conflito de chave
+                       (resposta inclui o estado do servidor; cliente reaplica, ver 8.3)
+                    422 validação (seção 5.2)
+
+7.4 POST /api/pratica/desafio
+    Corpo ........: {"estrutura": "CFC"}
+    Efeito .......: o servidor escolhe o alvo (seção 9), guarda {desafio_id, alvo,
+                    inicio, tentativas=0} em memória (TTL 2 h) e devolve APENAS o que o
+                    cliente precisa para desenhar:
+    Resposta .....: {"desafio_id": "d_...", "estrutura": "CFC", "indices": [1,1,0]}
+                    (o cliente desenha via /api/miller como hoje; o alvo vai ao cliente
+                     porque o desenho depende dele. A autoridade da correção continua
+                     no servidor: ver 7.5.)
+
+7.5 POST /api/pratica/resposta
+    Corpo ........: {"desafio_id": "d_...", "texto": "1 1 0", "tempo_ms": 8420,
+                     "usou_dica": false, "revelou": false}
+    Efeito .......: interpreta o texto com as MESMAS regras do cliente atual
+                    (portar checkPractice para Python: parseIndices, conversão 3->4
+                    índices em HC, aceitação do plano oposto), registra a tentativa,
+                    atualiza resumo e caixas.
+    Resposta .....: {"correta": true, "n_tentativa": 2, "dica": null | "texto",
+                     "gabarito": null | [1,1,0],          // só após acerto ou "revelou"
+                     "resumo": {...}}
+    Erros ........: 404 desafio expirado/inexistente; 422 texto inválido
+
+7.6 GET /api/pratica/resumo      -> {"resumo": {...}, "fracos": [{"estrutura","indices","taxa"}...]}
+7.7 GET /api/perfil/exportar     -> arquivo JSON completo (Content-Disposition: attachment)
+7.8 DELETE /api/perfil           -> corpo {"confirmar": "<email>"}; apaga <uid>.json e .bak
+                                    e invalida o token (lista de revogação em memória
+                                    até expirar). Mantém a linha em crystalab_usuarios.json
+                                    apenas se o usuário não pedir remoção total
+                                    (flag "remover_registro_acessos": true).
+
+7.9 Limites
+    - Corpo máx. 1 MiB (já existente). "texto" <= 40 caracteres.
+    - 60 escritas/min por token; 429 acima disso.
+
+
+--------------------------------------------------------------------------------
+8. MUDANÇAS NO FRONT-END
+--------------------------------------------------------------------------------
+8.1 Camada de perfil (novo módulo dentro do <script>, registrado como os demais via
+    CrystaLab.assinar/publicar):
+      perfil = { carregar(), aplicar(p), salvarPreferencias(parcial), estado }
+    Eventos publicados: "perfil:carregado", "perfil:erro", "perfil:conflito".
+
+8.2 Cores
+  - setElementColor(symbol, color): continua gravando em localStorage (cache local
+    imediato) E chama perfil.salvarPreferencias({cores:{[symbol]: color}}) com debounce
+    de 400 ms, agrupando várias trocas numa única requisição (o <input type=color>
+    dispara "input" continuamente durante o arrasto).
+  - "Restaurar cores": envia {cores:{...todas: null}}.
+  - Mostrar na legenda um indicador discreto "salvo"/"offline" (texto, não só cor).
+
+8.3 Resolução de conflitos
+  Estratégia: por chave, "último que escreveu vence", decidido por "em" (carimbo do
+  servidor). No 409 o cliente recebe o estado do servidor, reaplica suas mudanças
+  pendentes por cima e tenta de novo (no máximo 3 vezes). Duas abas do mesmo usuário
+  são o caso de uso real; basta convergir, não há necessidade de CRDT.
+
+8.4 Fallback offline (RF7)
+  Se /api/perfil falhar (rede, 401, 5xx): usar localStorage como hoje, marcar
+  state.perfilOffline = true, tentar sincronizar no próximo evento (troca de cor,
+  foco da janela, a cada 60 s). Se o token expirou (401): reexibir a tela de entrada
+  mantendo o e-mail preenchido.
+
+8.5 Prática
+  - newPractice() passa a chamar POST /api/pratica/desafio (se online) e usar o
+    alvo devolvido; offline, mantém o sorteio local atual.
+  - checkPractice(text) passa a chamar POST /api/pratica/resposta (se online); o
+    texto de feedback vem do servidor para que cliente e servidor nunca discordem.
+    Offline: lógica atual, sem gravar histórico (mostrar aviso uma vez).
+  - Cronometrar tempo_ms com performance.now() entre o fim do desenho do plano e o envio.
+  - Novo bloco "Seu desempenho" no painel de prática: total, taxa de acerto, sequência,
+    e até 3 "pontos fracos" com atalho "Treinar este plano".
+  - Gráfico de evolução (SVG no mesmo padrão de thermalChart): taxa de acerto móvel
+    das últimas 20 tentativas. Fornecer tabela equivalente oculta para leitores de tela.
+
+8.5.1 Migração das cores locais (RF8)
+  Na primeira carga com perfil online: se perfil.preferencias.cores estiver vazio e
+  localStorage tiver cores, enviá-las; senão, o servidor prevalece (e sobrescreve o
+  cache local).
+
+8.6 Ordem de inicialização (hoje: initTheme -> viewer.init -> applyResult -> login)
+  Nova: login -> perfil.carregar() -> aplicar cores/tema/lateral -> renderBlocks ->
+  applyResult. Para evitar "piscar" de cores padrão, o cache local aplica-se primeiro e o
+  perfil só corrige diferenças.
+
+
+--------------------------------------------------------------------------------
+9. SELEÇÃO ADAPTATIVA DE DESAFIOS (REPETIÇÃO ESPAÇADA)
+--------------------------------------------------------------------------------
+9.1 Unidade de memória: o par (estrutura, indices). Banco: PRACTICE.cubic para
+    CS/CCC/CFC e PRACTICE.HC. (O banco hoje não separa cubos por estrutura;
+    decisão: usar o mesmo banco cúbico para as três.)
+
+9.2 Caixas de Leitner (5 caixas):
+      intervalo(caixa) = [0, 1, 3, 7, 14] dias para caixas 1..5.
+    Acerto na 1ª tentativa  -> caixa = min(5, caixa+1)
+    Acerto após erro(s)     -> caixa permanece
+    Erro final / "revelou"  -> caixa = 1
+    proxima_revisao = hoje + intervalo(caixa)
+
+9.3 Pesos de sorteio por candidato c:
+      peso(c) = 3.0  se vencido (proxima_revisao <= hoje)
+              = 2.0  se nunca visto
+              = 0.5  caso contrário
+      peso(c) *= 1 + (1 - taxa_acerto(c))        // enfatiza o que o usuário erra
+      peso(c) = 0 para o último alvo apresentado (preserva a regra atual)
+    Sorteio ponderado com random.Random(semente) onde semente = hash(uid, data, n_desafios)
+    -> reproduzível em testes. Sem dados -> uniforme (comportamento atual).
+
+9.4 Garantias: sempre existir ao menos um candidato com peso > 0 (banco tem >= 7 itens);
+    "Trocar plano" conta como pulo (não pune a caixa).
+
+
+--------------------------------------------------------------------------------
+10. PRIVACIDADE E LGPD
+--------------------------------------------------------------------------------
+  - Dado pessoal tratado: e-mail institucional e histórico de desempenho. Finalidade:
+    apoio ao aprendizado. Base legal a validar com o encarregado/DPO da UFC
+    (provavelmente execução de política pública/ensino; não assumir sem confirmação).
+  - Transparência: texto na tela de entrada informando o que é gravado, onde (no
+    computador/servidor do laboratório) e por quanto tempo.
+  - Direitos do titular: exportar (7.7) e apagar (7.8) disponíveis na UI (menu do chip
+    de usuário: "Meus dados").
+  - Minimização: não gravar IP, user-agent nem texto livre além de resposta_texto.
+  - Retenção: perfil inativo por 2 anos é elegível à remoção (tarefa manual ou comando
+    --limpar-inativos N no script).
+  - Segurança: arquivos de dados e o segredo ficam fora de pastas servidas por HTTP.
+    NUNCA mover dados_usuarios\ para dentro de tutoriais\ (essa pasta é servida em
+    /tutoriais/*).
+
+
+--------------------------------------------------------------------------------
+11. TESTES E CRITÉRIOS DE ACEITAÇÃO
+--------------------------------------------------------------------------------
+11.1 Unitários (Python, sem navegador)
+  - Token: assinatura válida/ inválida, expirado, e-mail alterado no payload.
+  - Armazém: gravação atômica (simular falha entre .tmp e replace), recuperação do .bak,
+    rotação, locks por uid com 20 threads gravando.
+  - Validação de cores/tema/lateral (casos limites: "#GGG", 41 chaves, símbolo inexistente).
+  - Interpretação de respostas: portar casos do checkPractice (oposto aceito,
+    HC 3->4 índices, texto "1,1,1", "(111)", "1 1", vazio, > 40 chars).
+  - Leitner: sequências de acertos/erros -> caixa/proxima_revisao esperadas.
+  - Seleção: com semente fixa o sorteio é determinístico; peso 0 para o último alvo.
+  - Compactação além de 1 000 tentativas preserva totais.
+
+11.2 Integração (servidor real com urllib/curl, como já feito para tutoriais)
+  - Fluxo: login -> perfil -> PUT cores -> reiniciar servidor -> GET devolve as cores.
+  - 401 sem token, 403 sem X-CrystaLab, 403 Host falso, 409 conflito, 429 limite.
+  - Dois tokens (dois e-mails) não enxergam dados um do outro.
+
+11.3 Manuais/navegador
+  - Duas abas do mesmo usuário alteram cores diferentes -> convergem.
+  - Desligar o servidor com o app aberto: troca de cor continua funcionando; ao religar,
+    sincroniza.
+  - Prática: erro, erro, erro -> dica; "Mostrar resposta" -> caixa volta a 1.
+  - Leitor de tela anuncia o resumo de desempenho.
+
+11.4 Aceitação (checklist)
+  [ ] Cores persistem entre navegadores/máquinas que usam o mesmo servidor.
+  [ ] Nenhuma tentativa é gravada com "correta" vinda do cliente.
+  [ ] Taxa de acerto por estrutura confere com contagem manual em 20 tentativas.
+  [ ] Perfil corrompido não derruba o servidor nem apaga dados sem .bak.
+  [ ] Exportação contém todos os campos; exclusão remove arquivos e invalida o token.
+  [ ] Sem servidor/perfil, o app funciona como a v1.4.
+
+
+--------------------------------------------------------------------------------
+12. CASOS DE BORDA
+--------------------------------------------------------------------------------
+  - E-mail com maiúsculas/espaços: normalizar antes de gerar o uid.
+  - Dois e-mails que diferem só por alias (+tag) são usuários distintos (não tentar
+    unificar).
+  - Relógio do servidor muda (fuso/horário de verão): usar UTC internamente
+    (datetime.now(timezone.utc)) e converter só na exibição. ATENÇÃO: o código atual
+    usa datetime.now() local; padronizar ao implementar.
+  - Cor com letras maiúsculas/minúsculas: normalizar para minúsculas.
+  - Desafio expirado (aba aberta por horas): responder 404 e o cliente inicia novo desafio
+    sem perder o texto digitado.
+  - Mesmo desafio respondido duas vezes (duplo clique): idempotência por
+    (desafio_id, n_tentativa) -> a segunda chamada devolve o resultado anterior.
+  - Disco cheio / permissão negada: responder 507/500 com mensagem clara, manter
+    o perfil anterior intacto (graças ao .tmp + replace).
+  - Perfis grandes por bug do cliente: rejeitar "tentativas" enviadas pelo cliente
+    (o servidor ignora qualquer campo fora do contrato).
+
+
+--------------------------------------------------------------------------------
+13. PLANO DE ENTREGA
+--------------------------------------------------------------------------------
+  Fase 1.0  Token de sessão + ArmazemPerfis + GET/PUT preferências (cores, tema, lateral)
+            + migração do localStorage ........................................ ~2 dias
+  Fase 1.1  Prática no servidor: desafio/resposta, registro de tentativas, resumo,
+            UI "Seu desempenho" ............................................... ~3 dias
+  Fase 1.2  Leitner + pontos fracos + gráfico de evolução ..................... ~2 dias
+  Fase 1.3  Exportar/apagar, LGPD (textos e UI "Meus dados"), limite de taxa, testes
+            de integração completos ........................................... ~2 dias
+  Fase 2    Autenticação institucional e painel do professor (depende de decisão
+            institucional e do doc 3) ......................................... a estimar
+  (Estimativas para 1 desenvolvedor familiarizado com o arquivo; excluem revisão.)
+
+
+--------------------------------------------------------------------------------
+14. RISCOS E QUESTÕES EM ABERTO
+--------------------------------------------------------------------------------
+  R1  Usuários acharem que o histórico é "oficial". Mitigação: rótulo na UI e
+      decisão sobre Fase 2 antes de qualquer uso avaliativo.
+  R2  Arquivo único cresce demais. Mitigação: manter ArmazemPerfis isolado; considerar
+      dividir em módulos quando passar de ~8 000 linhas (hoje ~5 900).
+  R3  Divergência cliente/servidor na interpretação de índices. Mitigação: servidor é a
+      única autoridade online; testes cobrindo os mesmos casos nas duas pontas.
+  R4  Implantação em rede (bind 0.0.0.0) sem autenticação real expõe todos os perfis.
+      Questão aberta: o laboratório pretende hospedar um servidor central? Se sim,
+      a Fase 2 deixa de ser opcional.
+  Q1  Onde o laboratório guardará backups de dados_usuarios\ e por quem?
+  Q2  A UFC fornece SSO que possamos usar (qual protocolo)?
+  Q3  Há política institucional de retenção de dados de alunos a respeitar?
+================================================================================
+FIM DO DOCUMENTO 1
+================================================================================

@@ -1,0 +1,682 @@
+{
+  "builtAt": "2026-10-24T01:12:17.534Z",
+  "buildId": "20261024011217",
+  "mode": "production",
+  "budget": {
+    "initialGzipWithoutThreeMaxBytes": 307200
+  },
+  "initial": {
+    "files": [
+      "assets/main-TYMIIQ76.js",
+      "assets/chunks/chunk-PQXQM7VO.js",
+      "assets/chunks/chunk-TXWA66AQ.js",
+      "assets/main-CTWSKIRP.css",
+      "assets/chunks/chunk-OG6XCVVD.js",
+      "assets/chunks/chunk-HUTVUTCP.js",
+      "assets/chunks/chunk-LJX6XS6T.js",
+      "assets/chunks/chunk-6CTDNY72.js",
+      "assets/chunks/chunk-E5JCKENN.js",
+      "assets/chunks/chunk-MWCUQD4P.js",
+      "assets/chunks/chunk-UC2A2KOF.js",
+      "assets/chunks/chunk-2RD7HPW6.js",
+      "assets/chunks/chunk-SWNPHGO7.js",
+      "assets/chunks/chunk-PNHKD2LN.js",
+      "assets/chunks/chunk-NICZZ2AC.js",
+      "assets/chunks/chunk-4SY3G45L.js",
+      "assets/chunks/chunk-EXENFR6W.js",
+      "assets/chunks/chunk-CCOU5MAJ.js",
+      "assets/chunks/chunk-XHC2RQDA.js",
+      "assets/chunks/chunk-3WGL7WEN.js",
+      "assets/chunks/chunk-HCH4WFCJ.js",
+      "assets/chunks/chunk-UWO445V3.js",
+      "assets/chunks/chunk-BUPUI47Y.js",
+      "assets/chunks/chunk-MQO6Z3OJ.js",
+      "assets/chunks/chunk-FB5IOQ5D.js",
+      "assets/chunks/chunk-BVCXQM3B.js",
+      "assets/chunks/chunk-YJ3TTMUR.js",
+      "assets/chunks/chunk-GQSAAFIG.js",
+      "assets/chunks/chunk-JY25L5Q4.js",
+      "assets/chunks/chunk-5TE7GZWN.js",
+      "assets/chunks/chunk-VE7VEGUE.js",
+      "assets/chunks/chunk-4LSR4F66.js",
+      "assets/chunks/chunk-G3HFX5F2.js",
+      "assets/chunks/chunk-IAY3SORN.js",
+      "assets/chunks/chunk-DGHZE26B.js",
+      "assets/chunks/chunk-VMK5HKRX.js",
+      "assets/chunks/chunk-A442CSMC.js",
+      "assets/chunks/chunk-3IOAF3DB.js",
+      "assets/chunks/chunk-LAZRVB72.js"
+    ],
+    "bytes": 650519,
+    "gzip": 205877,
+    "containsThree": false
+  },
+  "lazy": [
+    {
+      "file": "assets/chunks/Viewer3D-U26ZYY5W.js",
+      "bytes": 528976,
+      "gzip": 136574,
+      "initial": false,
+      "containsThree": true,
+      "containsKatex": false,
+      "entryPoint": "src/features/viewer3d/Viewer3D.tsx"
+    },
+    {
+      "file": "assets/chunks/dist-PICPNBLA.js",
+      "bytes": 448034,
+      "gzip": 130952,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "../../../opt/npm-tools/node_modules/docx/dist/index.mjs"
+    },
+    {
+      "file": "assets/chunks/katex-GEJB2IOB.js",
+      "bytes": 267753,
+      "gzip": 76942,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": true,
+      "entryPoint": "../../../opt/npm-tools/node_modules/katex/dist/katex.mjs"
+    },
+    {
+      "file": "assets/chunks/LearnModule-CIUCACIH.js",
+      "bytes": 55181,
+      "gzip": 15502,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/didactics/LearnModule.tsx"
+    },
+    {
+      "file": "assets/chunks/InstructorModule-NE7J44UK.js",
+      "bytes": 11315,
+      "gzip": 3899,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/instructor/InstructorModule.tsx"
+    },
+    {
+      "file": "assets/chunks/HeaModule-QNYZ4RIQ.js",
+      "bytes": 9781,
+      "gzip": 3221,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/hea/HeaModule.tsx"
+    },
+    {
+      "file": "assets/chunks/NotebookModule-EJUGO6G3.js",
+      "bytes": 7398,
+      "gzip": 2671,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/notebook/NotebookModule.tsx"
+    },
+    {
+      "file": "assets/chunks/HeaCharts-KHK6QH5G.js",
+      "bytes": 6656,
+      "gzip": 2092,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/hea/HeaCharts.tsx"
+    },
+    {
+      "file": "assets/chunks/CatalogModule-IPS4P4G2.js",
+      "bytes": 6154,
+      "gzip": 1958,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/catalog/CatalogModule.tsx"
+    },
+    {
+      "file": "assets/chunks/AboutModule-SY4EBD5S.js",
+      "bytes": 5465,
+      "gzip": 1622,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/about/AboutModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-UK5VR563.js",
+      "bytes": 1149,
+      "gzip": 594,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-MECTMBZU.js",
+      "bytes": 718,
+      "gzip": 401,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/exporters-AN3E7M2O.js",
+      "bytes": 496,
+      "gzip": 254,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/export/exporters.ts"
+    },
+    {
+      "file": "assets/chunks/sceneUrl-IQX5X3KY.js",
+      "bytes": 337,
+      "gzip": 242,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/url/sceneUrl.ts"
+    },
+    {
+      "file": "assets/chunks/workspaces-TMXHTSO2.js",
+      "bytes": 425,
+      "gzip": 240,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/workspace/workspaces.ts"
+    }
+  ],
+  "all": [
+    {
+      "file": "assets/chunks/Viewer3D-U26ZYY5W.js",
+      "bytes": 528976,
+      "gzip": 136574,
+      "initial": false,
+      "containsThree": true,
+      "containsKatex": false,
+      "entryPoint": "src/features/viewer3d/Viewer3D.tsx"
+    },
+    {
+      "file": "assets/chunks/dist-PICPNBLA.js",
+      "bytes": 448034,
+      "gzip": 130952,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "../../../opt/npm-tools/node_modules/docx/dist/index.mjs"
+    },
+    {
+      "file": "assets/chunks/katex-GEJB2IOB.js",
+      "bytes": 267753,
+      "gzip": 76942,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": true,
+      "entryPoint": "../../../opt/npm-tools/node_modules/katex/dist/katex.mjs"
+    },
+    {
+      "file": "assets/main-TYMIIQ76.js",
+      "bytes": 254765,
+      "gzip": 76908,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/main.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-PQXQM7VO.js",
+      "bytes": 127120,
+      "gzip": 46160,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/LearnModule-CIUCACIH.js",
+      "bytes": 55181,
+      "gzip": 15502,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/didactics/LearnModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-TXWA66AQ.js",
+      "bytes": 60165,
+      "gzip": 14534,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/main-CTWSKIRP.css",
+      "bytes": 66085,
+      "gzip": 12810,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-OG6XCVVD.js",
+      "bytes": 29804,
+      "gzip": 10649,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-HUTVUTCP.js",
+      "bytes": 27573,
+      "gzip": 8903,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-LJX6XS6T.js",
+      "bytes": 14201,
+      "gzip": 4809,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/InstructorModule-NE7J44UK.js",
+      "bytes": 11315,
+      "gzip": 3899,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/instructor/InstructorModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-6CTDNY72.js",
+      "bytes": 9115,
+      "gzip": 3874,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-E5JCKENN.js",
+      "bytes": 8299,
+      "gzip": 3265,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/HeaModule-QNYZ4RIQ.js",
+      "bytes": 9781,
+      "gzip": 3221,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/hea/HeaModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-MWCUQD4P.js",
+      "bytes": 9632,
+      "gzip": 2915,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/NotebookModule-EJUGO6G3.js",
+      "bytes": 7398,
+      "gzip": 2671,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/notebook/NotebookModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-UC2A2KOF.js",
+      "bytes": 5619,
+      "gzip": 2236,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/HeaCharts-KHK6QH5G.js",
+      "bytes": 6656,
+      "gzip": 2092,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/hea/HeaCharts.tsx"
+    },
+    {
+      "file": "assets/chunks/CatalogModule-IPS4P4G2.js",
+      "bytes": 6154,
+      "gzip": 1958,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/catalog/CatalogModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-2RD7HPW6.js",
+      "bytes": 5842,
+      "gzip": 1880,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/AboutModule-SY4EBD5S.js",
+      "bytes": 5465,
+      "gzip": 1622,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/modules/about/AboutModule.tsx"
+    },
+    {
+      "file": "assets/chunks/chunk-SWNPHGO7.js",
+      "bytes": 3128,
+      "gzip": 1484,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-PNHKD2LN.js",
+      "bytes": 2527,
+      "gzip": 1252,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-NICZZ2AC.js",
+      "bytes": 2184,
+      "gzip": 1142,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-4SY3G45L.js",
+      "bytes": 3276,
+      "gzip": 1104,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-EXENFR6W.js",
+      "bytes": 2058,
+      "gzip": 976,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-CCOU5MAJ.js",
+      "bytes": 1910,
+      "gzip": 886,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-XHC2RQDA.js",
+      "bytes": 1559,
+      "gzip": 840,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-3WGL7WEN.js",
+      "bytes": 1461,
+      "gzip": 838,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-HCH4WFCJ.js",
+      "bytes": 1560,
+      "gzip": 831,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-UWO445V3.js",
+      "bytes": 1358,
+      "gzip": 703,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-BUPUI47Y.js",
+      "bytes": 1216,
+      "gzip": 679,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-UK5VR563.js",
+      "bytes": 1149,
+      "gzip": 594,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-MQO6Z3OJ.js",
+      "bytes": 995,
+      "gzip": 561,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-FB5IOQ5D.js",
+      "bytes": 937,
+      "gzip": 550,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-BVCXQM3B.js",
+      "bytes": 934,
+      "gzip": 522,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-YJ3TTMUR.js",
+      "bytes": 974,
+      "gzip": 521,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-GQSAAFIG.js",
+      "bytes": 813,
+      "gzip": 516,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-JY25L5Q4.js",
+      "bytes": 707,
+      "gzip": 464,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-5TE7GZWN.js",
+      "bytes": 617,
+      "gzip": 407,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-MECTMBZU.js",
+      "bytes": 718,
+      "gzip": 401,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-VE7VEGUE.js",
+      "bytes": 565,
+      "gzip": 396,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-4LSR4F66.js",
+      "bytes": 705,
+      "gzip": 395,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-G3HFX5F2.js",
+      "bytes": 565,
+      "gzip": 393,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-IAY3SORN.js",
+      "bytes": 750,
+      "gzip": 387,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-DGHZE26B.js",
+      "bytes": 425,
+      "gzip": 317,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-VMK5HKRX.js",
+      "bytes": 556,
+      "gzip": 261,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/exporters-AN3E7M2O.js",
+      "bytes": 496,
+      "gzip": 254,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/export/exporters.ts"
+    },
+    {
+      "file": "assets/chunks/sceneUrl-IQX5X3KY.js",
+      "bytes": 337,
+      "gzip": 242,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/url/sceneUrl.ts"
+    },
+    {
+      "file": "assets/chunks/workspaces-TMXHTSO2.js",
+      "bytes": 425,
+      "gzip": 240,
+      "initial": false,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": "src/features/workspace/workspaces.ts"
+    },
+    {
+      "file": "assets/chunks/chunk-A442CSMC.js",
+      "bytes": 224,
+      "gzip": 205,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-3IOAF3DB.js",
+      "bytes": 150,
+      "gzip": 153,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    },
+    {
+      "file": "assets/chunks/chunk-LAZRVB72.js",
+      "bytes": 145,
+      "gzip": 151,
+      "initial": true,
+      "containsThree": false,
+      "containsKatex": false,
+      "entryPoint": null
+    }
+  ],
+  "serviceWorker": {
+    "precachedFiles": 84
+  }
+}

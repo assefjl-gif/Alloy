@@ -1,0 +1,369 @@
+{
+ "_fonte": "Resposta real do motor CrystaLab v1.0 (legacy/crystalab_modulo1.py, POST /api/estrutura {\"nome\":\"Cu\"}), capturada em 2026-10-21.",
+ "result": {
+  "rotulo": "Cu — Cobre",
+  "simbolo": "Cu",
+  "nome_metal": "Cobre",
+  "editado": false,
+  "generica": false,
+  "estrutura": "CFC",
+  "estrutura_nome": "Cúbica de Face Centrada",
+  "relacao_a": "a = 2R√2",
+  "contato": "diagonal da face",
+  "n": 4,
+  "nc": 12,
+  "fea": 0.7404804896930608,
+  "vazios": 0.2595195103069392,
+  "a_em_R": 2.8284271247461903,
+  "c_a": null,
+  "raio_nm": 0.1278,
+  "peso": 63.55,
+  "a_nm": 0.3614729865425631,
+  "c_nm": null,
+  "volume_nm3": 0.0472310436281747,
+  "volume_cm3": 4.7231043628174694e-23,
+  "densidade": 8.937318868060766,
+  "densidade_exp": 8.94,
+  "erro_percent": -0.029990290148029786,
+  "raio_relativo": 0.35355339059327373,
+  "atomos": [
+   {
+    "pos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     1.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     1.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     0.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     1.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.5,
+     0.5,
+     0.0
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.5,
+     0.5,
+     1.0
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.5,
+     0.0,
+     0.5
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.5,
+     1.0,
+     0.5
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.0,
+     0.5,
+     0.5
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     1.0,
+     0.5,
+     0.5
+    ],
+    "tipo": "face",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   }
+  ],
+  "arestas": [
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ]
+  ],
+  "contagem": [
+   {
+    "tipo": "vertice",
+    "rotulo": "Vértices",
+    "quantidade": 8,
+    "fracao": 0.125,
+    "fracao_txt": "1/8",
+    "contribuicao": 1.0
+   },
+   {
+    "tipo": "face",
+    "rotulo": "Centros de face",
+    "quantidade": 6,
+    "fracao": 0.5,
+    "fracao_txt": "1/2",
+    "contribuicao": 3.0
+   }
+  ],
+  "passos_densidade": [
+   {
+    "titulo": "Dados de entrada",
+    "formula": "R = 0,1278 nm   A = 63,55 g/mol   n = 4 átomos/célula   N_A = 6,022 × 10²³ átomos/mol",
+    "detalhe": "Na estrutura CFC cada célula unitária contém 4 átomo(s) equivalente(s)."
+   },
+   {
+    "titulo": "Parâmetro de rede",
+    "formula": "a = 2R√2 = 2 × 0,1278 × √2 = 0,3615 nm = 3,615 × 10⁻⁸ cm",
+    "detalhe": "Os átomos se tocam ao longo da diagonal da face."
+   },
+   {
+    "titulo": "Volume da célula unitária",
+    "formula": "Vc = a³ = (3,615 × 10⁻⁸ cm)³ = 4,723 × 10⁻²³ cm³",
+    "detalhe": "1 nm = 10⁻⁷ cm, logo 1 nm³ = 10⁻²¹ cm³."
+   },
+   {
+    "titulo": "Densidade teórica",
+    "formula": "ρ = n·A / (Vc·N_A) = (4 × 63,55) / (4,723 × 10⁻²³ × 6,022 × 10²³) = 8,937 g/cm³",
+    "detalhe": "Massa dos átomos contidos na célula dividida pelo volume da célula."
+   },
+   {
+    "titulo": "Comparação experimental",
+    "formula": "ρ exp = 8,94 g/cm³ → desvio = -0,03 %",
+    "detalhe": "Diferenças vêm de raios tabelados arredondados, lacunas e expansão térmica."
+   }
+  ],
+  "interpretacao": [
+   "Na CFC os átomos se tocam ao longo da diagonal da face: 4R = a√2.",
+   "FEA = 0,74, o máximo para esferas iguais. Os planos {111} são compactos e se empilham na sequência ABCABC.",
+   "Exemplos: Cu, Al, Ni, Ag, Au. A direção compacta é a família ⟨110⟩.",
+   "Densidade teórica calculada: 8,937 g/cm³ (experimental 8,94 g/cm³, desvio -0,03%)."
+  ]
+ }
+}

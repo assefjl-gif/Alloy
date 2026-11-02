@@ -1,0 +1,117 @@
+{
+  "measuredAt": "2026-10-21T20:36:32.238Z",
+  "target": "http://127.0.0.1:8010/",
+  "equipment": {
+    "note": "Contêiner de nuvem, Chromium headless (Playwright) — NÃO é o \"notebook intermediário\" do plano. Valores de FPS não são comparáveis às metas.",
+    "os": "linux 6.18.44-fc-v139",
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.80GHz × 2",
+    "ramGB": 8,
+    "browser": "Chromium 141.0.7390.37 (headless)",
+    "gpu": {
+      "webgl": true,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)"
+    }
+  },
+  "load": {
+    "wallClockMs": 366,
+    "domContentLoaded": 361,
+    "load": 362,
+    "transfer": 70372,
+    "decoded": 70072,
+    "htmlBytes": 70072,
+    "htmlGzipBytes": 17386
+  },
+  "externalDependencies": [],
+  "failedRequests": [
+    {
+      "url": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js",
+      "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+    },
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+      "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+    }
+  ],
+  "pageErrors": [],
+  "viewer": {
+    "threeLoaded": false,
+    "fallbackShown": true,
+    "rafFps5s": 60.2,
+    "fpsMeaningful": false
+  },
+  "narrow360": {
+    "viewport": 360,
+    "scrollWidth": 360,
+    "horizontalOverflow": false,
+    "offenders": [],
+    "pageHeight": 3339,
+    "viewerTouchAction": "none",
+    "viewerTop": 2007
+  },
+  "dataTestIds": [
+    "block-list",
+    "parameter-editor",
+    "terminal-log",
+    "render-button",
+    "result-root",
+    "viewer-stage"
+  ],
+  "a11y": {
+    "counts": {
+      "name-required": 1,
+      "contrast": 2,
+      "focus-visible": 2
+    },
+    "total": 5,
+    "needsReview": 6,
+    "stats": {
+      "interactive": 18,
+      "textNodesChecked": 213,
+      "focusChecked": 30
+    },
+    "violations": [
+      {
+        "rule": "name-required",
+        "wcag": "4.1.2",
+        "impact": "serious",
+        "target": "textarea#parameterEditor[data-testid=parameter-editor].composition-editor",
+        "detail": "papel \"textbox\" sem nome acessível"
+      },
+      {
+        "rule": "contrast",
+        "wcag": "1.4.3",
+        "impact": "serious",
+        "target": "p#structureVerdict.verdict-text",
+        "detail": "contraste 2.77:1 < 3:1 (\"Cúbica de Corpo Centrado (CCC)\", rgb(26, 167, 217) sobre rgb(255,255,255))"
+      },
+      {
+        "rule": "contrast",
+        "wcag": "1.4.3",
+        "impact": "serious",
+        "target": "button.tool-btn.is-on",
+        "detail": "contraste 2.51:1 < 4.5:1 (\"eixos\", rgb(26, 167, 217) sobre rgb(232,246,251))"
+      },
+      {
+        "rule": "focus-visible",
+        "wcag": "2.4.7",
+        "impact": "serious",
+        "target": "textarea#parameterEditor[data-testid=parameter-editor]",
+        "detail": "sem indicador de foco (outline/box-shadow) ao receber foco por teclado"
+      },
+      {
+        "rule": "focus-visible",
+        "wcag": "2.4.7",
+        "impact": "serious",
+        "target": "input#terminalInput",
+        "detail": "sem indicador de foco (outline/box-shadow) ao receber foco por teclado"
+      }
+    ]
+  },
+  "notMeasured": {
+    "lighthouse": "Lighthouse indisponível (registro npm bloqueado). Substituído pela auditoria própria tests/helpers/a11yAudit.ts.",
+    "axeCore": "axe-core indisponível (repositório git não contém build; build exige npm). Mesma substituição.",
+    "bundle": "Legado não tem bundle: HTML/CSS/JS inline numa string Python (htmlBytes acima) + Three.js r128 via CDN.",
+    "heaLegacy": "pesquisa_front1.17.py importa hea_engine, que não está no projeto — o front HEA legado não pôde ser executado."
+  }
+}

@@ -1,0 +1,26 @@
+# CI do Alloy Virtual Lab — gate da Etapa 2: typecheck, lint, testes, build e orçamento do bundle,
+# mais o primeiro teste Playwright (troca de módulo sem recarga, tema, idioma, data-testid).
+name: ci
+on: [push, pull_request]
+jobs:
+  front:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      # Em CI com registro npm liberado: npm ci. Neste repositório as dependências são vinculadas
+      # por scripts/link-deps.mjs (ambiente sem registro — D-19).
+      - run: npm ci || node scripts/link-deps.mjs
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run measure
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: reports, path: reports/ }

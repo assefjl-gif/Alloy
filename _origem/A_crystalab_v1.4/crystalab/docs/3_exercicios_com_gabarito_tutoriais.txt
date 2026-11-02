@@ -1,0 +1,543 @@
+================================================================================
+CRYSTALAB - ESPECIFICAÇÃO TÉCNICA 3 DE 3
+EXERCÍCIOS COM GABARITO CADASTRADOS PELO PROFESSOR (ABA TUTORIAIS)
+================================================================================
+Origem ......: Sugestão nº 7 do relatório da v1.4
+               ("Permitir que o professor cadastre exercícios na aba Tutoriais com gabarito")
+Base ........: crystalab_modulo1_v1.4.py (arquivo único, Python 3 stdlib + HTML/JS embutido)
+Público .....: equipe de desenvolvimento
+Status ......: proposta para implementação (nada deste documento está no código ainda)
+Documentos relacionados:
+  - 1_historico_por_usuario_cores_e_praticas.txt (perfil, token de sessão, estatísticas)
+  - 2_diagrama_de_fases_ligas.txt (exercícios de regra da alavanca)
+
+
+--------------------------------------------------------------------------------
+1. OBJETIVO
+--------------------------------------------------------------------------------
+A aba Tutoriais hoje é uma biblioteca de arquivos (txt, md, mp4, webm, pdf, csv, xlsx,
+xls, ods, docx, doc, odt). Falta o passo seguinte do ensino: o aluno resolver
+exercícios e receber correção. Queremos que professores:
+
+  1. cadastrem exercícios (enunciado, tipo de resposta, gabarito, resolução comentada)
+     por um formulário na própria aba, sem editar arquivos à mão;
+  2. publiquem e despublicem exercícios;
+  3. criem exercícios PARAMÉTRICOS (valores sorteados por aluno) cujo gabarito é
+     calculado pelas próprias funções do CrystaLab, de modo que gabarito e app nunca
+     divirjam;
+  4. vinculem materiais existentes da biblioteca (um vídeo, um PDF) ao exercício;
+  5. acompanhem acertos, tentativas e erros comuns por exercício.
+
+Alunos resolvem, recebem correção imediata e só veem o gabarito conforme a política
+definida pelo professor.
+
+Fora de escopo: provas cronometradas com nota oficial (exigem autenticação real, ver
+doc 1 seção 4), correção de respostas dissertativas longas por IA, integração com Moodle/SIGAA.
+
+
+--------------------------------------------------------------------------------
+2. ESTADO ATUAL (AS-IS) E O QUE SE REAPROVEITA
+--------------------------------------------------------------------------------
+2.1 Tutoriais (back-end)
+    PASTA_TUTORIAIS (padrão: tutoriais\ ao lado do script; opção --tutoriais)
+    TIPOS_TUTORIAL: lista branca extensão -> (categoria, MIME). Nada executável pelo
+        navegador (sem .html/.svg/.js).
+    nome_seguro(nome) e caminho_tutorial(nome): sanitizam o nome e garantem que o
+        arquivo resolvido fica DENTRO da pasta (anti path traversal).
+    .crystalab_indice.json: autor (e-mail) e data de envio por arquivo.
+    Rotas: GET /api/tutoriais, POST /api/tutoriais?nome= (corpo binário, até 2 GiB, com
+        X-Usuario opcional), DELETE /api/tutoriais/<nome>, GET /tutoriais/<nome>
+        (Range, Content-Disposition inline).
+2.2 Segurança herdada
+    _host_permitido(): só 127.0.0.1/localhost. _escrita_permitida(): exige
+    X-CrystaLab: 1. Corpo JSON <= 1 MiB.
+2.3 Front-end
+    CrystaLab.registrarModo({id: "tutoriais", painel: "tutorialsView", entrar: ...})
+    renderTutorials / openTutorial / uploadFiles / deleteTutorial; escapeHtml para
+    todo texto dinâmico; stepsHtml(steps) para passo a passo.
+2.4 Funções de cálculo que alimentam gabaritos paramétricos
+    calcular_estrutura (a, FEA, densidade, passos), calcular_miller (d, DP, FP, DL),
+    calcular_liga (Vegard, Hume-Rothery, % peso), calcular_termico (a(T), ρ(T)),
+    e, a partir do doc 2, /api/fases/ponto (regra da alavanca).
+2.5 Exercício existente
+    "Praticar: qual é o plano?" (banco PRACTICE, newPractice/checkPractice). Será
+    reimplementado como um tipo de exercício embutido ("miller") reutilizando a
+    interpretação de índices (parseIndices; conversão 3->4 índices em HC; aceitação
+    do plano oposto).
+
+2.6 ARMADILHA CRÍTICA DE SEGURANÇA
+    A pasta tutoriais\ é SERVIDA por HTTP em /tutoriais/<nome>. Exercícios contêm o
+    GABARITO. Logo: NUNCA armazenar exercícios, respostas ou gabaritos dentro de
+    tutoriais\ nem permitir a extensão .json em TIPOS_TUTORIAL. Usar diretórios
+    próprios fora da pasta servida (seção 5).
+
+
+--------------------------------------------------------------------------------
+3. PAPÉIS E PERMISSÕES
+--------------------------------------------------------------------------------
+3.1 Papéis
+    aluno      : lista, resolve, vê o próprio histórico.
+    professor  : tudo do aluno + criar, editar, publicar, excluir exercícios, ver
+                 estatísticas agregadas, importar/exportar bancos.
+3.2 Como se define o papel (decisão que depende do doc 1, seção 4)
+    Hoje não há autenticação: qualquer um digita qualquer e-mail @ufc.br. Portanto
+    NÃO se pode decidir "professor" só pelo e-mail digitado.
+    Recomendação em duas camadas:
+      Camada 1 - Lista de permissão: arquivo crystalab_professores.json com e-mails
+                 autorizados (editado por quem administra o servidor, nunca pela UI).
+      Camada 2 - PIN de professor: ao abrir o modo professor, o usuário informa um PIN
+                 definido no servidor (hash scrypt via hashlib.scrypt, sal por instalação,
+                 comparação com hmac.compare_digest). O servidor emite um token elevado
+                 de curta duração (30 min) assinado como o token de sessão do doc 1, com
+                 claim "papel": "professor".
+    Sem os dois, a UI de autoria fica oculta E o servidor recusa (403) - a ocultação
+    na UI nunca é a única barreira.
+3.3 Limite assumido: sem SSO institucional, um aluno determinado pode tentar descobrir o
+    PIN. Mitigação: limite de tentativas (5 por 15 min por e-mail/IP local), atraso
+    crescente, log. Para avaliação com nota, exigir a Fase 2 de autenticação.
+
+
+--------------------------------------------------------------------------------
+4. MODELO DE DADOS
+--------------------------------------------------------------------------------
+4.1 Exercício (um arquivo JSON por exercício)
+
+  {
+    "versao_esquema": 1,
+    "id": "ex_cfc_densidade_01",            // [a-z0-9_]{3,64}, único, imutável
+    "revisao": 4,                           // incrementa a cada edição
+    "titulo": "Densidade do cobre (CFC)",
+    "autor": "prof@ufc.br",
+    "criado_em": "...", "atualizado_em": "...",
+    "publicado": true,
+    "dificuldade": 2,                       // 1..5
+    "topicos": ["densidade", "CFC"],        // etiquetas livres + lista sugerida
+    "enunciado": "Texto com marcação mínima (seção 8.2). Use {{raio}} para valores sorteados.",
+    "parametros": { ... },                  // seção 4.3 (opcional)
+    "pergunta": { ...tipo e gabarito... },  // seção 4.2
+    "politica": {
+      "max_tentativas": 5,                  // 0 = ilimitado
+      "mostrar_gabarito": "apos_acerto",    // "nunca" | "apos_acerto" | "apos_n" | "sempre"
+      "n_para_mostrar": 3,                  // usado em "apos_n"
+      "mostrar_resolucao": "apos_acerto"
+    },
+    "resolucao": [                          // passo a passo (mesmo formato de passos_*)
+      {"titulo": "Parâmetro de rede", "formula": "a = 2R√2 = ...", "detalhe": "..."}
+    ],
+    "dicas": ["Lembre que o contato é na diagonal da face.", "..."],   // reveladas em ordem
+    "materiais": [ {"tipo": "tutorial", "nome": "Aula 1.mp4"} ]       // referência à biblioteca
+  }
+
+4.2 Tipos de pergunta (campo "pergunta.tipo")
+
+  numerico
+    { "tipo": "numerico", "unidade": "g/cm³",
+      "gabarito": 8.94 | {"fonte": "calculo", "funcao": "estrutura.densidade", ...},
+      "tolerancia": {"relativa": 0.01, "absoluta": 0.0},
+      "unidades_aceitas": {"g/cm³": 1, "kg/m³": 0.001},        // fator para a unidade base
+      "algarismos_min": null }
+    Correto se |resp - gab| <= max(absoluta, relativa·|gab|) após converter a unidade.
+    Aceitar vírgula ou ponto decimal ("0,2866" e "0.2866"), notação científica
+    ("1.2e-8" e "1,2 x 10^-8"; parser próprio, SEM eval).
+
+  multipla_escolha
+    { "tipo": "multipla_escolha", "multipla": false,
+      "alternativas": [ {"id": "a", "texto": "CCC"}, {"id": "b", "texto": "CFC"} ],
+      "gabarito": ["b"], "embaralhar": true }
+    Embaralhar no servidor (semente por aluno+exercício) e devolver o mapeamento
+    apenas como ids; nunca enviar quais são corretas.
+
+  verdadeiro_falso
+    { "tipo": "verdadeiro_falso", "gabarito": true }
+
+  miller
+    { "tipo": "miller", "objeto": "plano" | "direcao",
+      "estrutura": "CFC" | "auto", "gabarito": [1,1,1],
+      "aceitar_oposto": true, "aceitar_familia": false }
+    Reutiliza a interpretação de índices do app (3 índices ou 4 em HC; "(111)", "1,1,1").
+    O exercício pode pedir o desenho: o cliente chama /api/miller como a prática atual.
+
+  texto_curto
+    { "tipo": "texto_curto", "gabarito": ["cúbica de face centrada", "cfc", "fcc"],
+      "normalizar": ["minusculas", "sem_acentos", "espacos"] }
+    Compara após normalização (mesma função plainText/_sem_acentos usadas hoje).
+    Não usar para respostas abertas longas.
+
+  tabela_numerica (fase posterior)
+    Vários campos numéricos (ex.: a, FEA, ρ) com tolerância individual e nota parcial.
+
+4.3 Exercícios paramétricos
+    Permitem N variações do mesmo enunciado. Exemplo:
+
+      "parametros": {
+        "metal": {"tipo": "escolha", "valores": ["Cu", "Al", "Ni", "Ag", "Au"]},
+        "T":     {"tipo": "faixa", "min": 300, "max": 900, "passo": 50}
+      },
+      "enunciado": "Calcule a densidade do {{metal.nome}} a {{T}} °C.",
+      "pergunta": {"tipo": "numerico", "unidade": "g/cm³",
+                   "gabarito": {"fonte": "calculo",
+                                "funcao": "termico.densidade",
+                                "argumentos": {"nome": "{{metal}}", "temperatura": "{{T}}"}},
+                   "tolerancia": {"relativa": 0.005}}
+
+    Funcionamento:
+      - Ao iniciar uma tentativa, o servidor cria uma INSTÂNCIA: sorteia os parâmetros com
+        random.Random(semente) (semente = hash(uid, exercicio_id, n_instancia)), substitui
+        {{...}} no enunciado e calcula o gabarito.
+      - O cálculo do gabarito só pode chamar funções de uma LISTA BRANCA de "funcao"
+        (seção 6); nada de código arbitrário, eval ou importação dinâmica.
+      - A instância (parâmetros, enunciado resolvido, gabarito) fica guardada no servidor
+        associada ao aluno; o cliente recebe apenas o enunciado resolvido.
+      - Reproduzível: a mesma semente gera a mesma instância (suporte e auditoria).
+
+4.4 Resposta do aluno (registro de tentativa, anexado em arquivo por exercício)
+
+  {
+    "id": "r_...", "em": "...", "exercicio_id": "ex_cfc_densidade_01",
+    "revisao_exercicio": 4, "instancia": "i_...", "n_tentativa": 2,
+    "uid": "...", "resposta": "8,9", "resposta_normalizada": 8.9, "unidade": "g/cm³",
+    "correta": true, "tempo_ms": 61234, "dicas_usadas": 1, "gabarito_visto": false
+  }
+
+4.5 Limites de tamanho (validação no servidor; excesso -> 422)
+      titulo <= 120 ; enunciado <= 10 000 ; dica <= 500 (máx. 5) ; alternativas <= 8,
+      cada <= 300 ; resolucao <= 15 passos, formula <= 1 000 ; resposta do aluno <= 200.
+
+
+--------------------------------------------------------------------------------
+5. ARMAZENAMENTO
+--------------------------------------------------------------------------------
+5.1 Layout (fora de tutoriais\, nunca servido por HTTP)
+
+  exercicios\
+      <id>.json                     exercício (fonte da verdade; versionável em git)
+      <id>.json.bak                 versão anterior
+      _lixeira\<id>-<timestamp>.json  exclusão lógica
+  respostas\
+      <id>.jsonl                    uma linha por tentativa (append-only)
+  crystalab_professores.json        e-mails autorizados (editado fora do app)
+  crystalab_segredo.key             segredo HMAC (compartilhado com o doc 1)
+
+5.2 Leitura/escrita
+    Reaproveitar _ler_json/_gravar_json (escrita atômica .tmp + os.replace). Respostas
+    em JSONL: abrir em modo append, uma escrita por linha, com Lock por exercício;
+    cada linha termina com "\n" e é um JSON completo (tolerar última linha truncada
+    ao ler: ignorar). Índice em memória (id -> metadados) reconstruído no início e
+    invalidado por mtime.
+5.3 Integridade: nome de arquivo = id validado por regex ^[a-z0-9_]{3,64}$; o caminho
+    resolvido deve ficar dentro de exercicios\ (mesmo padrão de caminho_tutorial).
+5.4 Edição com publicação: editar um exercício publicado cria revisao+1 e preserva
+    respostas antigas (registro guarda revisao_exercicio); alterar o gabarito marca
+    "reavaliar": true para o professor decidir se recalcula acertos antigos.
+5.5 Exclusão: lógica (move para _lixeira). Respostas permanecem para estatística.
+5.6 Backup/export: GET /api/exercicios/exportar gera um .json com todos os exercícios;
+    importar valida o esquema inteiro antes de gravar qualquer arquivo (tudo ou nada).
+
+
+--------------------------------------------------------------------------------
+6. CÁLCULO DE GABARITO "VIVO" (LISTA BRANCA)
+--------------------------------------------------------------------------------
+Cada função devolve um número com a unidade base indicada; assinatura única
+f(argumentos) -> {"valor": float, "unidade": str, "passos": [...]}.
+
+  estrutura.a_nm            calcular_estrutura(...)["a_nm"]            nm
+  estrutura.fea             calcular_estrutura(...)["fea"]             -
+  estrutura.densidade       calcular_estrutura(...)["densidade"]       g/cm³
+  estrutura.volume_cm3      calcular_estrutura(...)["volume_cm3"]      cm³
+  miller.espacamento_nm     calcular_miller(plano)["d_nm"]             nm
+  miller.dens_planar_nm2    calcular_miller(plano)["dp_nm"]            átomos/nm²
+  miller.fracao_planar      calcular_miller(plano)["fracao_planar"]    -
+  miller.dens_linear_nm     calcular_miller(direcao)["densidade_linear_nm"]   átomos/nm
+  liga.a_nm / liga.densidade / liga.pct_peso      calcular_liga(...)
+  termico.a_nm / termico.densidade / termico.vibracao_pm   calcular_termico(...)
+  fases.fracao_massa        /api/fases/ponto (doc 2)                    -
+  fases.composicao          /api/fases/ponto (doc 2)                    % peso
+
+Regras:
+  - Se a função levantar ValueError (ex.: parâmetros fora de faixa), a instância é
+    descartada e sorteada novamente (até 20 vezes; depois, erro 500 com mensagem e log).
+  - Valores esperados dos testes (seção 12) usam as próprias funções; mudanças no motor de
+    cálculo alteram gabaritos paramétricos AUTOMATICAMENTE (comportamento desejado, mas
+    exige teste de regressão que congele resultados de referência).
+  - Exercícios com gabarito FIXO (valor digitado) continuam existindo para itens que
+    não dependem do motor.
+
+
+--------------------------------------------------------------------------------
+7. API
+--------------------------------------------------------------------------------
+Convenções: {"ok": true, "result": ...} | {"ok": false, "error": "pt-BR"}.
+Escritas exigem X-CrystaLab: 1. Todas exigem X-Sessao (doc 1). "(prof)" = papel
+professor, caso contrário 403.
+
+7.1 Alunos
+    GET  /api/exercicios?topico=&dificuldade=&busca=&pagina=
+         -> lista de metadados dos PUBLICADOS: id, titulo, topicos, dificuldade,
+            tipo, parametrico (bool), e o resumo pessoal (tentativas, resolvido).
+         NUNCA devolve gabarito, resolução, alternativas corretas nem dicas.
+    POST /api/exercicios/<id>/iniciar
+         -> cria/retoma instância. Resposta: {instancia, enunciado_renderizado,
+            pergunta_publica (tipo, unidade, alternativas embaralhadas sem marca de
+            correta), politica (max_tentativas...), tentativas_restantes, dicas_disponiveis}
+    POST /api/exercicios/<id>/responder
+         corpo {"instancia": "...", "resposta": ..., "unidade": "..."}
+         -> {"correta": bool, "feedback": "texto", "tentativas_restantes": n,
+             "gabarito": null | valor, "resolucao": null | [...] }
+            gabarito/resolução só conforme "politica".
+    POST /api/exercicios/<id>/dica
+         -> próxima dica; incrementa dicas_usadas.
+    GET  /api/exercicios/meu-progresso  -> resumo por tópico (alimenta o perfil do doc 1).
+
+7.2 Professores
+    GET    /api/exercicios/admin                       (prof) lista TODOS (inclui rascunhos)
+    GET    /api/exercicios/admin/<id>                  (prof) exercício completo
+    POST   /api/exercicios/admin                       (prof) cria (corpo = exercício)
+    PUT    /api/exercicios/admin/<id>                  (prof) edita; exige "revisao" atual
+                                                       (409 se desatualizada)
+    DELETE /api/exercicios/admin/<id>                  (prof) exclusão lógica
+    POST   /api/exercicios/admin/<id>/publicar         (prof) {"publicado": true|false}
+    POST   /api/exercicios/admin/<id>/testar           (prof) simula como aluno SEM gravar
+                                                       resposta; devolve instância +
+                                                       gabarito calculado para conferência
+    GET    /api/exercicios/admin/<id>/estatisticas     (prof) seção 9
+    GET    /api/exercicios/exportar | POST /api/exercicios/importar        (prof)
+    POST   /api/professor/entrar                       {"pin": "..."} -> token elevado
+
+7.3 Erros
+    400 JSON inválido | 401 sem sessão | 403 papel insuficiente / tentativas esgotadas |
+    404 inexistente/ não publicado | 409 revisão desatualizada | 413 corpo grande |
+    422 validação (campo + motivo) | 429 limite de taxa
+
+7.4 Anti-abuso e consistência
+    - Limite de tentativas por exercício e por instância (política) aplicado no servidor.
+    - Respostas idênticas repetidas na mesma instância não consomem tentativa.
+    - Idempotência por (instancia, n_tentativa).
+    - 30 respostas/min por token; 429 acima.
+    - Tempo mínimo plausível (ex.: < 300 ms entre iniciar e responder) apenas marcado
+      como "suspeito" nas estatísticas; não bloqueia.
+
+
+--------------------------------------------------------------------------------
+8. INTERFACE
+--------------------------------------------------------------------------------
+8.1 Estrutura na aba Tutoriais
+    Sub-abas: [ Materiais ]  [ Exercícios ]  [ Gerenciar ] (esta só para professores).
+    "Materiais" = comportamento atual, sem alteração.
+    Em "Exercícios": lista com filtros (tópico, dificuldade, resolvidos/pendentes) e
+    área de resolução. Em "Gerenciar": tabela de exercícios + editor.
+
+8.2 Marcação do enunciado (segurança primeiro)
+    NÃO aceitar HTML. Suportar um subconjunto mínimo, convertido no cliente por um
+    renderizador próprio que primeiro faz escapeHtml e depois aplica regras:
+      **negrito**, *itálico*, `código`, listas com "- ", parágrafos por linha em branco,
+      sobrescrito/subscrito por ^{...} e _{...} (como em 10^{-8} e a_{0}),
+      quebra de linha. Links: apenas http(s) com rel="noopener noreferrer", e pedir
+      confirmação ao sair (ou omitir links na Fase 1).
+    Fórmulas: Fase 1 usa texto com Unicode (√, ², π, ρ) como o app já faz; se houver
+    necessidade de LaTeX, carregar KaTeX de CDN com versão exata e fallback textual.
+    Imagens no enunciado: Fase 2, apenas por referência a arquivos da biblioteca.
+
+8.3 Tela do aluno
+    Cabeçalho (título, tópicos, dificuldade, tentativas restantes), enunciado,
+    campo de resposta adequado ao tipo (número + seletor de unidade; radio/checkbox;
+    verdadeiro/falso; índices de Miller com o desenho da cena quando solicitado),
+    botão "Responder", botão "Dica (n)", feedback textual (não só cor), e após a
+    liberação: gabarito e resolução passo a passo (stepsHtml). Materiais vinculados
+    aparecem como links que abrem o visualizador da própria biblioteca.
+    Resposta numérica: dizer ao aluno a unidade esperada e aceitar vírgula; se o
+    aluno errar por fator típico (10^3, 10^7, ou unidade), dar feedback específico
+    ("parece estar em kg/m³") em vez de apenas "errado".
+
+8.4 Editor do professor
+    Formulário em seções: Dados gerais -> Enunciado (com pré-visualização ao vivo) ->
+    Tipo de pergunta e gabarito -> Parâmetros (opcional) -> Dicas -> Resolução ->
+    Política -> Materiais.
+    Botão "Testar como aluno" (chama /testar) mostra instância, resposta esperada,
+    passos calculados e quais respostas seriam aceitas (tolerância visualizada).
+    Validação em tempo real com os mesmos limites do servidor; o servidor revalida tudo.
+    Botões: salvar rascunho, publicar, duplicar, excluir (com confirmação), exportar.
+    Importação: arquivo .json (exportado do próprio app) e, na Fase 2, CSV de banco de
+    questões (colunas padronizadas) com relatório de erros por linha.
+
+8.5 Acessibilidade e responsividade
+    Todos os campos com <label>; foco gerenciado ao trocar de sub-aba/exercício;
+    mensagens de resultado em região role="status"; layout em uma coluna em telas
+    < 1024 px (padrões já usados no CSS: .library, .library-side).
+
+
+--------------------------------------------------------------------------------
+9. ESTATÍSTICAS PARA O PROFESSOR
+--------------------------------------------------------------------------------
+Por exercício (agregando respostas\<id>.jsonl, sem expor e-mails por padrão):
+  - nº de alunos que tentaram / resolveram; % de acerto na 1ª tentativa; média de
+    tentativas até acertar; tempo mediano; uso de dicas (%).
+  - Distratores: para múltipla escolha, % por alternativa.
+  - Erros comuns: para numéricos, histograma do erro relativo (|log10(resp/gab)|
+    agrupado) para detectar erros de unidade ou de fórmula; os 5 valores errados mais
+    frequentes (arredondados) com contagem.
+  - Itens possivelmente ruins: % de acerto < 10 % ou > 95 %; tempo mediano muito alto.
+Tabela por aluno (e-mail visível só se o professor marcar "identificar alunos", e isso
+deve ser registrado em log; ver LGPD, seção 10).
+Exportar CSV (UTF-8 com BOM para abrir bem no Excel) com colunas: exercicio, aluno,
+n_tentativas, correta, tempo_total_s, dicas, primeira_tentativa_em, resolvida_em.
+
+
+--------------------------------------------------------------------------------
+10. SEGURANÇA, PRIVACIDADE E LGPD
+--------------------------------------------------------------------------------
+10.1 Ameaças e controles
+
+  Ameaça                                   Controle
+  ---------------------------------------  ----------------------------------------
+  Aluno lê gabarito pela rede              Servidor nunca envia gabarito/resolução/
+                                           dicas/alternativas corretas antes da política
+  Aluno lê gabarito por arquivo estático   Dados fora de tutoriais\; .json fora da lista
+                                           branca; teste de regressão (seção 12)
+  Aluno vira professor                     lista de permissão + PIN + token elevado
+                                           curto; 403 no servidor
+  XSS armazenado (enunciado malicioso)     render com escapeHtml antes da marcação;
+                                           sem HTML; links http(s) apenas
+  Path traversal em id/arquivo             regex do id + verificação de caminho resolvido
+  Injeção em gabarito paramétrico          lista branca de funções; sem eval/exec/import;
+                                           argumentos validados por tipo e faixa
+  DoS por exercícios enormes/instâncias    limites de tamanho (4.5), limite de taxa,
+                                           instâncias com TTL e teto por aluno
+  CSRF de outro site                       X-CrystaLab + Host check (já existentes)
+  Força bruta de PIN                       limite e atraso; log
+
+10.2 Dados pessoais
+    Respostas ligam o aluno (uid, e-mail no perfil) ao desempenho. Valem as regras do
+    doc 1, seção 10: finalidade, transparência, exportar/apagar, retenção.
+    Estatísticas agregadas por padrão; identificação nominal só sob ação explícita do
+    professor e com registro.
+
+10.3 Integridade acadêmica (honestidade sobre limites)
+    Sem autenticação real, o app serve para PRÁTICA, não para avaliação. Mostrar essa
+    informação ao professor ao publicar ("Modo prática: sem nota oficial"). Medidas
+    leves (instâncias por aluno, limite de tentativas, marcação de tempo suspeito)
+    reduzem cópia entre colegas, mas não a impedem.
+
+
+--------------------------------------------------------------------------------
+11. INTEGRAÇÃO COM O PERFIL DO ALUNO (DOC 1)
+--------------------------------------------------------------------------------
+  - Cada resposta gera um evento com origem "exercicio" no histórico (campo "origem"
+    reservado no doc 1, seção 5.3).
+  - "Seu desempenho" passa a ter abas "Prática de planos" e "Exercícios" com o resumo por
+    tópico; pontos fracos podem sugerir exercícios do mesmo tópico.
+  - Repetição espaçada (Leitner, doc 1 seção 9) estende-se a exercícios parametrizados:
+    nova instância do mesmo exercício = nova revisão do mesmo "cartão".
+
+
+--------------------------------------------------------------------------------
+12. TESTES E CRITÉRIOS DE ACEITAÇÃO
+--------------------------------------------------------------------------------
+12.1 Unitários (Python)
+  - Parser numérico: "0,2866", "0.2866", " 8.9 ", "1,2e-8", "1.2 x 10^-8", "1.2*10^-8",
+    "abc", "", "1e400", "nan", "inf" (rejeitar os três últimos), "--1".
+  - Tolerância: relativa vs absoluta, unidade convertida (kg/m³ x g/cm³), valor exatamente
+    na borda, gabarito zero (usar absoluta).
+  - Múltipla escolha: embaralhamento determinístico por semente; várias corretas.
+  - Miller: "(111)", "1 1 1", "1,1,1", "-1 -1 -1" (oposto), HC com 3 e 4 índices, índices
+    inconsistentes em HC (i != -(h+k)) -> mensagem clara.
+  - Paramétricos: mesma semente -> mesma instância; funções da lista branca;
+    função fora da lista -> 422 no cadastro; ValueError do cálculo -> reamostra.
+  - Armazenamento: id inválido, traversal ("../x"), concorrência de 20 threads
+    anexando respostas (nenhuma linha corrompida), última linha truncada ignorada.
+  - Regressão de gabaritos "vivos": congelar valores de referência (ex.: Cu densidade
+    8,937 g/cm³; Fe a = 0,2866 nm; CFC(111): 2 átomos em área √3/2·a², logo dp_rel =
+    4/√3 = 2,309 átomos/a², valores que o motor atual já produz)
+    e falhar se o motor mudar sem atualização consciente.
+
+12.2 Segurança (integração com o servidor real)
+  - GET /tutoriais/<id>.json e /exercicios/... -> 404 (o diretório não é servido).
+  - Aluno em /api/exercicios/admin* -> 403; sem X-CrystaLab -> 403; Host falso -> 403.
+  - Resposta de /api/exercicios (lista) e /iniciar não contém gabarito, resolução, dicas
+    nem alternativas corretas (verificação automática por busca de campos proibidos).
+  - Enunciado com <script>, <img onerror>, "javascript:" renderiza como texto, sem
+    execução (teste no navegador embutido).
+  - PIN errado 6 vezes -> 429.
+
+12.3 Manuais
+  - Professor cria exercício paramétrico, testa como aluno, publica; dois alunos veem
+    números diferentes e ambos conseguem acertar com o próprio gabarito.
+  - Política "apos_n": gabarito só aparece após n erros.
+  - Excluir exercício com respostas: some da lista dos alunos, estatísticas continuam.
+  - Importar JSON com um exercício inválido: nenhuma gravação ocorre e o relatório lista o erro.
+
+12.4 Aceitação (checklist)
+  [ ] Nenhum campo de gabarito sai do servidor antes da política permitir.
+  [ ] Gabaritos paramétricos batem com o resultado exibido pelo próprio app para os
+      mesmos parâmetros (teste cruzado automatizado em 50 instâncias).
+  [ ] Dados de exercícios/respostas não são acessíveis por URL estática.
+  [ ] Um aluno não consegue criar/editar/excluir exercícios por nenhum caminho.
+  [ ] O professor consegue criar, testar, publicar, editar e despublicar sem tocar em arquivos.
+  [ ] Estatísticas conferem com contagem manual em 10 respostas.
+  [ ] Sem JavaScript de terceiros executando a partir de conteúdo do professor.
+
+
+--------------------------------------------------------------------------------
+13. CASOS DE BORDA
+--------------------------------------------------------------------------------
+  - Professor edita o gabarito enquanto alunos respondem: o aluno continua com a
+    revisão da instância que iniciou; novas instâncias usam a nova revisão.
+  - Dois professores editam o mesmo exercício: o segundo recebe 409 e vê a versão
+    atual para mesclar.
+  - Exercício paramétrico cujo cálculo falha para certas combinações: reamostrar;
+    se o professor definiu faixas que quase sempre falham, alertar no "Testar".
+  - Resposta numérica com unidade diferente da esperada e sem unidade: aceitar
+    sem unidade como a unidade base e registrar "unidade_assumida": true.
+  - Alternativa duplicada ou nenhuma correta: validação do cadastro recusa.
+  - Enunciado com muitas chaves "{{...}}" sem parâmetro correspondente: erro 422 com a
+    lista dos nomes não resolvidos.
+  - Relógio do servidor/fuso: padronizar UTC (como no doc 1, seção 12).
+  - Nomes de arquivo vinculados em "materiais" que depois são excluídos: a UI mostra
+    "material indisponível" em vez de quebrar.
+  - Aluno abre o mesmo exercício em duas abas: mesma instância (retomar), sem duplicar tentativas.
+  - Grande volume de respostas: ler JSONL em streaming, sem carregar tudo na memória.
+
+
+--------------------------------------------------------------------------------
+14. PLANO DE ENTREGA
+--------------------------------------------------------------------------------
+  Fase 3.0  Papéis (lista de permissão + PIN + token elevado); armazenamento de
+            exercícios e respostas; tipos numerico, multipla_escolha, verdadeiro_falso,
+            texto_curto; API aluno e admin; testes de segurança 12.2 ................. ~5 dias
+  Fase 3.1  UI aluno (sub-aba Exercícios), renderizador de marcação segura, política de
+            tentativas/dicas/gabarito, tipo miller reaproveitando a prática ........... ~4 dias
+  Fase 3.2  Editor do professor com pré-visualização e "Testar como aluno"; importar/
+            exportar JSON; exclusão lógica ............................................ ~4 dias
+  Fase 3.3  Paramétricos com lista branca de funções e semente; testes de regressão e
+            cruzados ................................................................. ~4 dias
+  Fase 3.4  Estatísticas do professor, exportação CSV, integração com perfil (doc 1) .... ~3 dias
+  Fase 3.5  Importação CSV de banco de questões; tabela_numerica com nota parcial; KaTeX
+            (opcional) ............................................................... ~4 dias
+  Fase 4    Autenticação institucional e modo avaliativo (depende de decisão institucional)
+  (Estimativas para 1 desenvolvedor familiarizado com o arquivo; excluem revisão.)
+  Dependências: doc 1 (token de sessão e perfil) deve estar concluído, ao menos a
+  Fase 1.0, antes da Fase 3.0; doc 2 antes dos exercícios "fases.*".
+
+
+--------------------------------------------------------------------------------
+15. RISCOS E QUESTÕES EM ABERTO
+--------------------------------------------------------------------------------
+  R1  Uso avaliativo sem autenticação real. Mitigação: rótulo "modo prática" e
+      Fase 4 antes de qualquer nota.
+  R2  Gabarito mudar silenciosamente quando o motor de cálculo muda. Mitigação:
+      testes de regressão, versão do motor registrada em cada instância (campo
+      "versao_motor" = CrystaLab.versao).
+  R3  Qualidade dos exercícios cadastrados (enunciados ambíguos, gabaritos errados).
+      Mitigação: "Testar como aluno", estatísticas de itens suspeitos, revisão por
+      pares (campo "revisado_por" na Fase 3.5).
+  R4  Arquivo único crescer demais. Considerar extrair módulos (exercicios,
+      perfil, fases) para um pacote quando passar de ~8 000 linhas.
+  R5  PIN compartilhado entre vários professores. Preferir PIN por professor (hash
+      por e-mail em crystalab_professores.json) na Fase 3.0.
+  Q1  Quem administra o servidor e a lista de professores?
+  Q2  Os exercícios podem ser compartilhados entre turmas/semestres? (afeta
+      importação/exportação e identificação de turma.)
+  Q3  Há necessidade de "turmas" (separar estatísticas por turma)? Não previsto aqui.
+  Q4  O colegiado quer fórmulas em LaTeX? Se sim, aceitar a dependência de CDN/offline.
+================================================================================
+FIM DO DOCUMENTO 3
+================================================================================

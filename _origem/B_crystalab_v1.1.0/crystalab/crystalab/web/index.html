@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CrystaLab: Fundamentos Estruturais</title>
+  <link rel="stylesheet" href="static/css/crystalab.css" />
+  <!-- Three.js r128 servido localmente (sem CDN): funciona offline em sala de aula. -->
+  <script src="static/vendor/three/three.min.js" defer></script>
+  <script src="static/vendor/three/OrbitControls.js" defer></script>
+  <script type="module" src="static/js/main.js"></script>
+</head>
+<body data-module="crystalab">
+  <div class="app-shell">
+    <aside class="left-lab">
+      <header class="brand-row">
+        <div>
+          <h1>CRYSTALAB: FUNDAMENTOS ESTRUTURAIS</h1>
+          <p>Módulo 1 · células unitárias, índices de Miller e densidade teórica</p>
+        </div>
+        <div class="lab-badge" id="labBadge">M1 · v__CRYSTALAB_VERSAO__</div>
+      </header>
+
+      <section class="block-bank" aria-label="Metais e estruturas">
+        <div class="section-title">
+          <span>Blocos de cristais</span>
+          <span class="count-pill" id="blockCount">0</span>
+        </div>
+        <div class="block-list" id="blockList" data-testid="block-list"></div>
+      </section>
+
+      <section class="terminal-panel" aria-label="Terminal do cristal">
+        <div class="section-title">
+          <span>Parâmetros da célula</span>
+          <span id="currentName">Fe · CCC</span>
+        </div>
+        <textarea id="parameterEditor" class="composition-editor" spellcheck="false" data-testid="parameter-editor" aria-label="Parâmetros da célula"></textarea>
+        <div class="shortcut-row">
+          <button type="button" data-command="calcular densidade">densidade</button>
+          <button type="button" data-command="plano 1 1 1">plano 111</button>
+          <button type="button" data-command="direcao 1 1 0">direção 110</button>
+          <button type="button" data-command="limpar">limpar</button>
+        </div>
+        <div id="terminalLog" class="terminal-log" data-testid="terminal-log" role="log" aria-live="polite" aria-label="Saída do terminal"></div>
+        <form class="terminal-input-row" id="terminalForm">
+          <input id="terminalInput" class="terminal-input" autocomplete="off" aria-label="Comando" placeholder="comando (ex.: usar Cu)" />
+          <button class="terminal-submit" type="submit">enviar</button>
+        </form>
+      </section>
+    </aside>
+
+    <section class="output-panel">
+      <header class="topbar">
+        <div>
+          <h2 id="resultTitle">Célula unitária</h2>
+          <p id="resultSubtitle">Modelo de esferas rígidas · N_A = 6,022 × 10²³ átomos/mol</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="theme-toggle" id="themeToggle" type="button">☾ escuro</button>
+          <button class="primary-action" id="renderButton" type="button" data-testid="render-button">RENDERIZAR</button>
+        </div>
+      </header>
+
+      <main class="result-scroll" id="resultRoot" data-testid="result-root">
+        <section class="status-band">
+          <div class="verdict-box">
+            <span class="label">Estrutura cristalina</span>
+            <p class="verdict-text" id="structureVerdict">—</p>
+            <p class="verdict-sub" id="structureSub"></p>
+          </div>
+          <div class="phase-box">
+            <span class="label">Geometria</span>
+            <strong id="phaseMain">—</strong>
+            <span id="phaseSub"></span>
+          </div>
+        </section>
+
+        <section class="metrics-grid" id="metricsGrid"></section>
+
+        <section class="chart-panel viewer-panel">
+          <div class="panel-title">Visualização 3D da célula unitária <span>arraste para girar · role para aproximar</span></div>
+          <div class="viewer-toolbar">
+            <form class="miller-form" id="millerForm">
+              <div class="segmented" role="group" aria-label="Tipo de índice">
+                <button type="button" data-mode="plano" class="is-on" aria-pressed="true">Plano (hkl)</button>
+                <button type="button" data-mode="direcao" aria-pressed="false">Direção [uvw]</button>
+              </div>
+              <input id="millerInput" class="miller-input" value="1 1 1" autocomplete="off" aria-label="Índices de Miller" placeholder="1 1 1 ou 1 0 -1 1" />
+              <button type="submit" class="tool-btn primary">desenhar</button>
+              <button type="button" class="tool-btn" id="clearOverlaysButton">limpar índices</button>
+            </form>
+            <div class="toggle-row">
+              <button type="button" class="tool-btn" data-toggle="rigid" aria-pressed="false">esferas rígidas</button>
+              <button type="button" class="tool-btn" data-toggle="rotate" aria-pressed="false">auto-rotação</button>
+              <button type="button" class="tool-btn is-on" data-toggle="axes" aria-pressed="true">eixos</button>
+              <button type="button" class="tool-btn" id="resetViewButton">resetar vista</button>
+            </div>
+          </div>
+          <div class="viewer-stage" id="viewerStage" data-testid="viewer-stage" role="img" aria-label="Célula unitária em 3D">
+            <div class="viewer-legend" id="viewerLegend"></div>
+          </div>
+          <div class="overlay-list" id="overlayList"></div>
+        </section>
+
+        <section class="interpretation-panel density-panel" id="densityPanel" hidden>
+          <div class="panel-title">Passo a passo: densidade teórica <button type="button" class="density-close" id="densityClose">ocultar</button></div>
+          <div class="density-steps" id="densitySteps"></div>
+        </section>
+
+        <section class="lower-grid">
+          <div class="table-panel">
+            <div class="panel-title">Comparação entre estruturas <span>modelo de esferas rígidas</span></div>
+            <div class="table-scroll" id="comparisonTable"></div>
+          </div>
+          <div class="composition-panel">
+            <div class="panel-title">Átomos por célula <span>contribuição por posição</span></div>
+            <div class="composition-body" id="countBody"></div>
+          </div>
+        </section>
+
+        <section class="interpretation-panel">
+          <div class="panel-title">Interpretação didática <span id="interpretationTag">módulo 1</span></div>
+          <div class="interpretation-body" id="interpretationBody"></div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <!-- Dados iniciais: JSON inerte (não executável), escapado no servidor. -->
+  <script id="crystalab-bootstrap" type="application/json">__BOOTSTRAP_JSON__</script>
+</body>
+</html>

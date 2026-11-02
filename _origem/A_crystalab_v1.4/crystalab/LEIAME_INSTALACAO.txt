@@ -1,0 +1,63 @@
+CRYSTALAB - MODULO 1 (v1.4) - COMO INSTALAR E RODAR
+====================================================
+
+O QUE E
+  Laboratorio de celulas unitarias (CS, CCC, CFC, HC), ligas, temperatura,
+  planos/direcoes de Miller e biblioteca de tutoriais. E um servidor local em
+  Python que abre uma pagina no navegador.
+
+DEPENDENCIAS
+  1) Python 3.8 ou superior (testado com Python 3.15).
+     Usa SOMENTE a biblioteca padrao: NAO ha pip install, NAO ha requirements.txt.
+     Download: https://www.python.org/downloads/
+     No Windows, marque "Add python.exe to PATH" no instalador.
+  2) Navegador atual com WebGL (Chrome, Edge ou Firefox).
+  3) Internet ativa na primeira abertura: a cena 3D (Three.js), as fontes e a
+     pre-visualizacao de .xlsx/.docx sao carregadas de CDN (cdnjs, jsdelivr,
+     Google Fonts). Sem internet os calculos funcionam, mas a cena 3D nao aparece.
+
+CONFERIR A INSTALACAO
+  Windows (PowerShell ou CMD):   python --version
+  Linux / macOS (Terminal):      python3 --version
+
+COMO RODAR
+  1) Descompacte o .zip e entre na pasta "crystalab".
+  2) Abra um terminal nessa pasta e execute:
+
+     Windows:          python crystalab_modulo1_v1.4.py --open
+     Linux / macOS:    python3 crystalab_modulo1_v1.4.py --open
+
+     (sem --open, acesse manualmente o endereco impresso, ex.: http://127.0.0.1:8000)
+  3) Para encerrar: Ctrl+C no terminal.
+
+OPCOES
+  --port 8080            porta inicial (se estiver ocupada, usa a proxima livre)
+  --open                 abre o navegador automaticamente
+  --tutoriais CAMINHO    outra pasta para os arquivos da aba Tutoriais
+
+LOGIN (IMPORTANTE PARA TESTE)
+  A tela inicial aceita apenas e-mails terminados em ufc.br (ex.: @alu.ufc.br).
+  Nao ha senha nem verificacao: para testar, use qualquer endereco desse formato,
+  por exemplo  teste@alu.ufc.br . Um e-mail @gmail.com e recusado de proposito.
+  Os acessos ficam registrados em crystalab_usuarios.json (criado ao lado do script).
+
+ROTEIRO RAPIDO DE TESTE
+  1. Entre com um e-mail @ufc.br e confira o ferro (Fe) na tela.
+  2. Botao "Metais" -> escolha Cu, Mg etc.
+  3. Controle "Temperatura" sobre a cena + botao "Vibracao".
+  4. Aba "Liga": Cu + Ni 30% -> formar liga; depois Fe + C 3%.
+  5. Aba "Medir": plano (1 1 1) e "Praticar: qual e o plano?".
+  6. Aba "Tutoriais": adicionar um .pdf/.txt/.xlsx e abri-lo.
+  7. Terminal (Ctrl+J): digite  ajuda
+
+PROBLEMAS COMUNS
+  - "python nao e reconhecido": reinstale o Python marcando "Add to PATH" ou use "py".
+  - Cena 3D vazia: verifique a internet e se o navegador tem WebGL ativado.
+  - Porta ocupada: use --port 8090.
+  - So acesse por 127.0.0.1 ou localhost (o servidor recusa outros enderecos).
+
+CONTEUDO DO PACOTE
+  crystalab_modulo1_v1.4.py   aplicacao (arquivo unico)
+  tutoriais/                  pasta dos tutoriais (vazia no inicio)
+  docs/                       3 especificacoes tecnicas das proximas funcionalidades
+                              (historico por usuario, diagrama de fases, exercicios)

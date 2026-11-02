@@ -1,0 +1,180 @@
+# chave	pt-BR	en	es
+guided.equivalent	Comando equivalente	Equivalent command	Comando equivalente
+guided.noEquivalent	preencha os campos	fill in the fields	complete los campos
+guided.toTerminal	Levar ao terminal	Send to terminal	Llevar al terminal
+guided.chooseMaterial	Escolher o material	Choose the material	Elegir el material
+guided.source	Origem	Source	Origen
+guided.metal	Metal do catálogo	Catalogue metal	Metal del catálogo
+guided.genericCell	Célula genérica	Generic cell	Celda genérica
+guided.fromTable	(valor da tabela do motor)	(engine table value)	(valor de la tabla del motor)
+guided.radius	Raio atômico R (nm)	Atomic radius R (nm)	Radio atómico R (nm)
+guided.mass	Massa atômica A (g/mol)	Atomic mass A (g/mol)	Masa atómica A (g/mol)
+guided.structure	Estrutura	Structure	Estructura
+guided.structureOverride	Forçar outra estrutura	Force another structure	Forzar otra estructura
+guided.structureOverrideHint	Opcional: ex. Fe em CFC (Fe-γ).	Optional: e.g. Fe as FCC (γ-Fe).	Opcional: p. ej. Fe en FCC (Fe-γ).
+guided.keepStructure	(a do catálogo)	(catalogue one)	(la del catálogo)
+guided.load	Carregar	Load	Cargar
+guided.review	Conferir a célula	Check the cell	Revisar la celda
+guided.material	Material	Material	Material
+guided.inUnitsOfR	em unidades de R	in units of R	en unidades de R
+guided.noStructureYet	Nenhuma estrutura carregada ainda.	No structure loaded yet.	Aún no hay estructura cargada.
+guided.density	Calcular a densidade	Compute the density	Calcular la densidad
+guided.densityHelp	O motor devolve cada passo: fórmula, dados e substituição.	The engine returns each step: formula, data and substitution.	El motor devuelve cada paso: fórmula, datos y sustitución.
+guided.miller	Planos e direções	Planes and directions	Planos y direcciones
+guided.hcHint	HC: informe 4 índices (Miller-Bravais); o terceiro deve ser −(h+k).	HCP: enter 4 indices (Miller-Bravais); the third must be −(h+k).	HC: indique 4 índices (Miller-Bravais); el tercero debe ser −(h+k).
+guided.drawPlane	Desenhar plano	Draw plane	Dibujar plano
+guided.drawDirection	Desenhar direção	Draw direction	Dibujar dirección
+prov.engine	Motor CrystaLab	CrystaLab engine	Motor CrystaLab
+prov.engineOnly	{label}: todos os valores da cena vêm do motor CrystaLab.	{label}: every value in the scene comes from the CrystaLab engine.	{label}: todos los valores de la escena vienen del motor CrystaLab.
+prov.noTransfer	Nenhum resultado HEA foi trazido para esta cena.	No HEA result has been brought into this scene.	No se ha traído ningún resultado HEA a esta escena.
+prov.predictor	Preditor HEA	HEA predictor	Predictor HEA
+prov.identical	Resultado HEA idêntico ao recebido	HEA result identical to the one received	Resultado HEA idéntico al recibido
+prov.different	O resultado HEA atual difere do recebido	The current HEA result differs from the one received	El resultado HEA actual difiere del recibido
+prov.originalGone	O resultado HEA original não está mais no módulo HEA (a cópia aqui permanece).	The original HEA result is no longer in the HEA module (the copy here remains).	El resultado HEA original ya no está en el módulo HEA (la copia aquí permanece).
+prov.immutable	Cópia imutável recebida em {at}.	Immutable copy received at {at}.	Copia inmutable recibida el {at}.
+prov.reference	Célula de referência	Reference cell	Celda de referencia
+prov.basis	Base da estrutura	Structure basis	Base de la estructura
+prov.unitsOfR	(em unidades de R)	(in units of R)	(en unidades de R)
+prov.referenceNote	Célula idealizada do motor; não representa o parâmetro de rede da liga.	Idealised engine cell; it does not represent the alloy's lattice parameter.	Celda idealizada del motor; no representa el parámetro de red de la aleación.
+prov.deltaLimitation	δ = {delta} %: a diferença de raios distorce a rede real, o que a célula idealizada não mostra.	δ = {delta} %: the radius mismatch distorts the real lattice, which the idealised cell does not show.	δ = {delta} %: la diferencia de radios distorsiona la red real, lo que la celda idealizada no muestra.
+prov.illustration	Ilustração de ocupação	Occupancy illustration	Ilustración de ocupación
+prov.mixedSite	Numa solução sólida, cada sítio pode ser ocupado por qualquer elemento da liga.	In a solid solution, any site can be occupied by any element of the alloy.	En una solución sólida, cada sitio puede ocuparlo cualquier elemento de la aleación.
+prov.randomDistribution	Colorir sítios por elemento (aleatório)	Colour sites by element (random)	Colorear sitios por elemento (aleatorio)
+prov.randomOnlyDemo	Disponível só com modo demonstrativo permitido.	Available only when demo mode is allowed.	Disponible solo con el modo demostrativo permitido.
+prov.seed	Semente {seed}	Seed {seed}	Semilla {seed}
+prov.newSeed	Nova semente	New seed	Nueva semilla
+prov.legend	Legenda de elementos (cor e forma)	Element legend (colour and shape)	Leyenda de elementos (color y forma)
+hea.brand	HEA Virtual Lab	HEA Virtual Lab	HEA Virtual Lab
+hea.brandSub	Ligas de alta entropia	High-entropy alloys	Aleaciones de alta entropía
+hea.blocks	Banco de ligas	Alloy bank	Banco de aleaciones
+hea.compositionLabel	Composição (Elemento=quantidade por linha)	Composition (Element=amount per line)	Composición (Elemento=cantidad por línea)
+hea.help	Ajuda	Help	Ayuda
+hea.analyzeAlloy	Analisar liga	Analyse alloy	Analizar aleación
+hea.analyze	Analisar	Analyse	Analizar
+hea.normalize	Normalizar	Normalise	Normalizar
+hea.analysisTitle	Análise da liga	Alloy analysis	Análisis de la aleación
+hea.subtitle	Parâmetros termodinâmicos a {T} e {P}	Thermodynamic parameters at {T} and {P}	Parámetros termodinámicos a {T} y {P}
+hea.empty	Defina uma composição e clique em Analisar.	Set a composition and click Analyse.	Defina una composición y pulse Analizar.
+hea.disabled	Preditor HEA indisponível e modo demonstrativo desligado.	HEA predictor unavailable and demo mode off.	Predictor HEA no disponible y modo demostrativo desactivado.
+hea.demoBanner	Modo demonstrativo: o motor HEA não está disponível (D-01). Os valores abaixo são fictícios, gerados com semente fixa, e não servem como resultado.	Demo mode: the HEA engine is not available (D-01). The values below are fictitious, generated with a fixed seed, and are not results.	Modo demostrativo: el motor HEA no está disponible (D-01). Los valores siguientes son ficticios, generados con semilla fija, y no sirven como resultado.
+hea.demoDetail	Valores fictícios com semente fixa (D-01)	Fictitious fixed-seed values (D-01)	Valores ficticios con semilla fija (D-01)
+hea.engine	preditor HEA	HEA predictor	predictor HEA
+hea.properties	Fase e propriedades	Phase and properties	Fase y propiedades
+hea.propertiesLine	Ductilidade {ductility} · dureza {hardness} (índice {index})	Ductility {ductility} · hardness {hardness} (index {index})	Ductilidad {ductility} · dureza {hardness} (índice {index})
+hea.dimensionless	adimensional	dimensionless	adimensional
+hea.electrons	elétrons	electrons	electrones
+hea.tm	Temperatura de fusão média	Mean melting temperature	Temperatura de fusión media
+hea.comparisonTitle	Comparação com a liga de referência	Comparison with the reference alloy	Comparación con la aleación de referencia
+hea.parameter	Parâmetro	Parameter	Parámetro
+hea.calculated	Calculado	Calculated	Calculado
+hea.reference	Referência	Reference	Referencia
+hea.difference	Diferença	Difference	Diferencia
+hea.differenceNote	Diferença = calculado − referência, com os valores devolvidos pelo preditor.	Difference = calculated − reference, using the values returned by the predictor.	Diferencia = calculado − referencia, con los valores devueltos por el predictor.
+hea.row.entropy	Entropia de mistura ΔS	Mixing entropy ΔS	Entropía de mezcla ΔS
+hea.row.omega	Parâmetro Ω	Ω parameter	Parámetro Ω
+hea.row.delta	Diferença de raios δ	Radius mismatch δ	Diferencia de radios δ
+hea.row.enthalpy	Entalpia de mistura ΔH	Mixing enthalpy ΔH	Entalpía de mezcla ΔH
+hea.normalizedComposition	Composição normalizada	Normalised composition	Composición normalizada
+hea.atomicPct	% atômica	atomic %	% atómico
+hea.alloy	Liga	Alloy	Aleación
+hea.phase	Fase prevista	Predicted phase	Fase prevista
+hea.verdict	Veredito	Verdict	Veredicto
+hea.composition	Composição	Composition	Composición
+hea.toCrystalab	Abrir no CrystaLab	Open in CrystaLab	Abrir en CrystaLab
+hea.userAlloy	Liga do usuário	User alloy	Aleación del usuario
+hea.blockLoaded	Liga carregada	Alloy loaded	Aleación cargada
+hea.elementUpdated	{el} atualizado.	{el} updated.	{el} actualizado.
+hea.elementRemoved	{el} removido.	{el} removed.	{el} eliminado.
+hea.nameSet	Nome da liga: {name}.	Alloy name: {name}.	Nombre de la aleación: {name}.
+hea.normalized	Composição normalizada para 100 %.	Composition normalised to 100 %.	Composición normalizada al 100 %.
+hea.nothingToNormalize	Não há composição para normalizar.	There is no composition to normalise.	No hay composición para normalizar.
+hea.editorCleared	Editor de composição limpo.	Composition editor cleared.	Editor de composición limpio.
+hea.analysisDone	Análise concluída	Analysis finished	Análisis terminado
+hea.analysisAnnounce	{name}: {verdict}	{name}: {verdict}	{name}: {verdict}
+hea.chart.stabilityCaption	Mapa de estabilidade δ × ΔH: a zona destacada (δ < 6,6 %, −15 < ΔH < 5 kJ/mol) favorece solução sólida.	δ × ΔH stability map: the highlighted zone (δ < 6.6 %, −15 < ΔH < 5 kJ/mol) favours a solid solution.	Mapa de estabilidad δ × ΔH: la zona destacada (δ < 6,6 %, −15 < ΔH < 5 kJ/mol) favorece la solución sólida.
+hea.chart.stabilityDesc	Mapa de estabilidade: {name} em δ = {delta} % e ΔH = {dh} kJ/mol.	Stability map: {name} at δ = {delta} % and ΔH = {dh} kJ/mol.	Mapa de estabilidad: {name} en δ = {delta} % y ΔH = {dh} kJ/mol.
+hea.chart.deltaAxis	δ (%)	δ (%)	δ (%)
+hea.chart.dhAxis	ΔH mistura (kJ/mol)	ΔH mixing (kJ/mol)	ΔH mezcla (kJ/mol)
+hea.chart.stableZone	solução sólida	solid solution	solución sólida
+hea.chart.gibbsCaption	Energia livre de mistura ΔG = ΔH − TΔS em função da temperatura, com os valores do preditor.	Free energy of mixing ΔG = ΔH − TΔS versus temperature, with the predictor's values.	Energía libre de mezcla ΔG = ΔH − TΔS en función de la temperatura, con los valores del predictor.
+hea.chart.gibbsDesc	ΔG de {name} em função de T; no fim da faixa, ΔG = {g} kJ/mol.	ΔG of {name} versus T; at the end of the range, ΔG = {g} kJ/mol.	ΔG de {name} en función de T; al final del rango, ΔG = {g} kJ/mol.
+hea.chart.tAxis	T (K)	T (K)	T (K)
+hea.chart.gAxis	ΔG (kJ/mol)	ΔG (kJ/mol)	ΔG (kJ/mol)
+hea.chart.data	Dados do gráfico	Chart data	Datos del gráfico
+terminal.title	Terminal	Terminal	Terminal
+terminal.logLabel	Registro do terminal	Terminal log	Registro del terminal
+terminal.inputLabel	Comando	Command	Comando
+terminal.placeholder	Digite um comando (ex.: usar Cu) — Tab completa, ↑ histórico	Type a command (e.g. usar Cu) — Tab completes, ↑ history	Escriba un comando (ej.: usar Cu) — Tab completa, ↑ historial
+terminal.placeholderHea	Digite um comando (ex.: usar cantor, analisar)	Type a command (e.g. usar cantor, analisar)	Escriba un comando (ej.: usar cantor, analisar)
+terminal.send	Enviar	Send	Enviar
+terminal.shortcuts	Atalhos de comando	Command shortcuts	Atajos de comando
+terminal.suggestions	Sugestões	Suggestions	Sugerencias
+terminal.example	exemplo	example	ejemplo
+terminal.examples	Exemplos	Examples	Ejemplos
+terminal.helpTitle	Comandos disponíveis:	Available commands:	Comandos disponibles:
+terminal.metals	Metais	Metals	Metales
+terminal.structures	Estruturas	Structures	Estructuras
+terminal.ready	Alloy Virtual Lab pronto. Digite “ajuda” para ver os comandos.	Alloy Virtual Lab ready. Type “ajuda” (help) to see the commands.	Alloy Virtual Lab listo. Escriba «ajuda» (ayuda) para ver los comandos.
+terminal.status.done	concluído	done	terminado
+terminal.status.failed	falhou	failed	falló
+terminal.status.cancelled	cancelado	cancelled	cancelado
+terminal.source.terminal	terminal	terminal	terminal
+terminal.source.form	via formulário	via form	vía formulario
+terminal.source.palette	via paleta	via palette	vía paleta
+terminal.source.viewer	via cena 3D	via 3D scene	vía escena 3D
+terminal.source.shortcut	via atalho	via shortcut	vía atajo
+terminal.source.block	via bloco	via block	vía bloque
+terminal.source.url	via link	via link	vía enlace
+terminal.source.exercise	via exercício	via exercise	vía ejercicio
+terminal.source.system	sistema	system	sistema
+palette.title	Paleta de comandos	Command palette	Paleta de comandos
+palette.open	Comandos	Commands	Comandos
+palette.search	Buscar comando, material ou atividade	Search for a command, material or activity	Buscar comando, material o actividad
+palette.placeholder	Buscar: densidade, Cu, plano 111, empilhamento…	Search: density, Cu, plane 111, stacking…	Buscar: densidad, Cu, plano 111, apilamiento…
+palette.results	Resultados	Results	Resultados
+palette.count	{n} resultado(s)	{n} result(s)	{n} resultado(s)
+palette.none	Nada encontrado.	Nothing found.	No se encontró nada.
+palette.navigate	navegar	navigate	navegar
+palette.run	executar	run	ejecutar
+palette.toggle	abrir/fechar	open/close	abrir/cerrar
+palette.openModule	abrir módulo	open module	abrir módulo
+palette.animation	animação	animation	animación
+palette.animAbab	Empilhamento ABAB (HC)	ABAB stacking (HCP)	Apilamiento ABAB (HC)
+palette.animAbcabc	Empilhamento ABCABC (CFC)	ABCABC stacking (FCC)	Apilamiento ABCABC (FCC)
+palette.animAlphaGamma	Ferro α → γ	Iron α → γ	Hierro α → γ
+palette.supercell1	Supercélula 1×1×1	Supercell 1×1×1	Supercelda 1×1×1
+palette.supercell2	Supercélula 2×2×2	Supercell 2×2×2	Supercelda 2×2×2
+palette.supercell3	Supercélula 3×3×3	Supercell 3×3×3	Supercelda 3×3×3
+palette.toggleTheme	Alternar tema claro/escuro	Toggle light/dark theme	Alternar tema claro/oscuro
+palette.group.commands	Comandos	Commands	Comandos
+palette.group.materials	Materiais	Materials	Materiales
+palette.group.structures	Estruturas	Structures	Estructuras
+palette.group.operations	Operações	Operations	Operaciones
+palette.group.examples	Exemplos	Examples	Ejemplos
+palette.group.viewer	Visualização	View	Visualización
+palette.group.didactic	Atividades	Activities	Actividades
+palette.group.modules	Módulos	Modules	Módulos
+pwa.offlineTitle	Você está offline	You are offline	Está sin conexión
+pwa.offlineBody	Visualização, caderno e quiz continuam; cálculos voltam quando o motor responder.	Viewing, notebook and quiz keep working; calculations return when the engine responds.	La visualización, el cuaderno y el cuestionario siguen; los cálculos vuelven cuando responda el motor.
+pwa.onlineTitle	Conexão restabelecida	Connection restored	Conexión restablecida
+pwa.onlineBody	Os motores estão sendo verificados novamente.	The engines are being checked again.	Se están verificando de nuevo los motores.
+pwa.onlineNotes	{n} nota(s) criada(s) offline continuam neste navegador (não há sincronização, D-18).	{n} note(s) created offline remain in this browser (there is no sync, D-18).	{n} nota(s) creada(s) sin conexión siguen en este navegador (no hay sincronización, D-18).
+pwa.reviewNotes	Revisar notas	Review notes	Revisar notas
+pwa.updateTitle	Nova versão disponível	New version available	Nueva versión disponible
+pwa.updateBody	Recarregue para usar a versão mais recente.	Reload to use the latest version.	Recargue para usar la versión más reciente.
+pwa.reload	Recarregar	Reload	Recargar
+feature.shell	Interface e navegação	Interface and navigation	Interfaz y navegación
+feature.viewer	Visualizador 3D (cena já carregada)	3D viewer (scene already loaded)	Visor 3D (escena ya cargada)
+feature.notebook	Caderno de laboratório	Lab notebook	Cuaderno de laboratorio
+feature.quiz	Flashcards	Flashcards	Tarjetas
+feature.catalog	Design system	Design system	Sistema de diseño
+feature.share	Compartilhar link	Share link	Compartir enlace
+feature.ai	Assistente de IA	AI assistant	Asistente de IA
+feature.calc	Cálculos de estrutura e densidade	Structure and density calculations	Cálculos de estructura y densidad
+feature.miller	Planos e direções de Miller	Miller planes and directions	Planos y direcciones de Miller
+feature.export	Exportação CIF/XYZ	CIF/XYZ export	Exportación CIF/XYZ
+feature.hea	Preditor HEA	HEA predictor	Predictor HEA
+feature.classroom	Turmas e tarefas	Classes and assignments	Grupos y tareas
+availability.local	funciona offline	works offline	funciona sin conexión
+availability.online	apenas online	online only	solo en línea
+availability.server	exige servidor	requires server	requiere servidor

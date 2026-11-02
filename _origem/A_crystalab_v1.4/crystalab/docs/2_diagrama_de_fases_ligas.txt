@@ -1,0 +1,462 @@
+================================================================================
+CRYSTALAB - ESPECIFICAÇÃO TÉCNICA 2 DE 3
+DIAGRAMA DE FASES SIMPLIFICADO PARA AS LIGAS
+================================================================================
+Origem ......: Sugestão nº 6 do relatório da v1.4
+               ("Adicionar um diagrama de fases simplificado para as ligas, já que a
+                aba Liga só mostra a solução sólida")
+Base ........: crystalab_modulo1_v1.4.py (arquivo único, Python 3 stdlib + HTML/JS embutido)
+Público .....: equipe de desenvolvimento
+Status ......: proposta para implementação (nada deste documento está no código ainda)
+Documentos relacionados:
+  - 1_historico_por_usuario_cores_e_praticas.txt
+  - 3_exercicios_com_gabarito_tutoriais.txt (exercícios de regra da alavanca usam este módulo)
+
+AVISO SOBRE NÚMEROS: valores de entalpia de fusão e composições de pontos invariantes
+citados neste documento são valores de referência de manuais (Callister; CRC Handbook).
+Antes de entrarem no código, cada um deve ser conferido contra a fonte e a fonte deve
+ser citada em comentário. Onde digo "alvo de validação", o número vem de exemplo
+clássico de livro-texto e serve para testar, não para ser embutido sem conferência.
+
+
+--------------------------------------------------------------------------------
+1. OBJETIVO
+--------------------------------------------------------------------------------
+A aba Liga forma soluções sólidas e aplica as regras de Hume-Rothery, mas não diz
+ONDE essa solução existe em temperatura: quando o material é líquido, quando está
+bifásico e quando é solução sólida. O módulo deve:
+
+  1. Desenhar o diagrama de fases binário (T x composição) do par solvente-soluto
+     escolhido, com linhas liquidus, solidus (e solvus/invariantes quando houver).
+  2. Marcar o ponto de trabalho (composição x0 da liga, temperatura T) e dizer em que
+     região está.
+  3. Aplicar a regra da alavanca: fases presentes, composição e fração de cada uma.
+  4. Acompanhar um resfriamento (equilíbrio e, opcionalmente, Scheil) mostrando as
+     fases e a microestrutura esquemática.
+  5. Ligar a fase escolhida à cena 3D (estrutura cristalina da fase naquela T).
+
+O módulo deve ser honesto sobre o que é calculado e o que é curado (seção 3).
+
+
+--------------------------------------------------------------------------------
+2. ESTADO ATUAL (AS-IS) E PONTOS DE INTEGRAÇÃO
+--------------------------------------------------------------------------------
+2.1 Dados já existentes em METAIS[símbolo]
+      fusao (°C), alfa (10^-6/°C), eletroneg, valencia, raio (nm), peso (g/mol),
+      estrutura, c_a (HC), cor, a_exp, c_exp.
+    ALOTROPIA: Fe (α/γ/δ), Ti (α/β), Co (ε/β) com faixas de temperatura e estrutura.
+    LINDEMANN = 0.10, usado em calcular_termico().
+
+2.2 Funções relevantes
+    calcular_liga(payload) .... retorna regras de Hume-Rothery, "termico_base"
+                                (alfa e fusao pela regra das misturas), composição em
+                                % atômica (x_pct) e em peso (pct_peso).
+    calcular_termico(payload) . a(T), vibração, notas de fase (inclui ALOTROPIA);
+                                a nota da liga diz literalmente que o solidus real vem
+                                do diagrama de fases -> este módulo preenche essa lacuna.
+    _regras_substitucional / _regras_intersticial : alimentam a decisão de modelo (seção 3.3).
+
+2.3 Front-end
+    thermalChart(thermal): padrão de gráfico SVG (viewBox, eixos, marcador, aria-label).
+    tempRange (temperatura), ligaX / ligaXRange (composição), state.liga, state.scene.
+    renderScene(): ponto único que reconstrói resumo/legenda/3D; deve publicar
+    "cena:alterada" (já existe) para o diagrama reagir.
+
+2.4 Limitação conhecida a ser tratada
+    calcular_termico aproxima fusão da liga por (1-x)·Tf_A + x·Tf_B (média linear).
+    Para ligas isomorfas isso fica ENTRE liquidus e solidus; o diagrama deve mostrar
+    o intervalo real e a UI deve parar de apresentar a média como "ponto de fusão".
+
+
+--------------------------------------------------------------------------------
+3. ESCOPO E NÍVEIS DE MODELO
+--------------------------------------------------------------------------------
+Nenhum modelo simples cobre todos os pares. Adotar níveis explícitos e rotular o nível
+na UI ("Modelo: solução ideal", "Modelo: dados curados de livro-texto"):
+
+  Nível 1 - Isomorfo ideal (calculado)
+     Solução ideal em ambas as fases (Ω = 0). Reproduz a forma de "lente" de sistemas
+     como Cu-Ni, Ag-Au, Mo-W, Cr-Mo. Só precisa de Tf e ΔHfus dos componentes.
+  Nível 2 - Solução regular (calculado, parâmetros dados)
+     Acrescenta Ω^S e Ω^L (J/mol). Permite eutético, lacuna de miscibilidade no sólido
+     e mínimos/máximos. Os parâmetros NÃO são previstos pelo app: vêm de tabela
+     curada ou de entrada do usuário (modo avançado). Sem fonte confiável, não ofertar.
+  Nível 3 - Diagrama curado (dados tabelados)
+     Linhas desenhadas a partir de pontos tabelados de livros: Fe-Fe3C (obrigatório,
+     é o mais ensinado), Cu-Ni (para comparar com o Nível 1), e eutéticos clássicos
+     que a equipe decidir incluir (ex.: Pb-Sn e Al-Si se forem adicionados ao banco de
+     metais). Não calcula, interpola.
+  Nível 4 - CALPHAD (opcional, fora do arquivo único)
+     Integração com pycalphad + bancos TDB abertos. Exige dependência externa e
+     licenças de dados; documentar como evolução, não como parte da Fase 1.
+
+3.1 Seleção automática do nível para o par (A, B)
+     if par em CURADOS            -> Nível 3
+     elif 4 regras de H-R atendidas (calcular_liga.regras todas ok) -> Nível 1
+     elif par em TABELA_OMEGA     -> Nível 2
+     else                          -> sem diagrama: mensagem "Não há modelo confiável
+                                      para este par; use as regras de Hume-Rothery"
+     O usuário pode forçar Nível 1 com aviso ("estimativa; o diagrama real pode
+     diferir muito se as regras de H-R não são atendidas").
+
+3.2 Solutos intersticiais (C, N, H)
+     Só Fe-C (Nível 3). Para os demais pares com C/N/H: sem diagrama.
+
+3.3 Fora de escopo (Fase 1): diagramas ternários, compostos intermetálicos calculados,
+     transformações fora do equilíbrio além de Scheil, TTT/CCT, microestrutura realista.
+
+
+--------------------------------------------------------------------------------
+4. FUNDAMENTOS TERMODINÂMICOS (NÍVEIS 1 E 2)
+--------------------------------------------------------------------------------
+Notação: A = componente de MENOR Tf (convenção: A é o que tem menor ponto de fusão
+entre o par; trocar o par se necessário). B = componente de maior Tf. x = x_B (fração
+atômica de B). T em kelvin nos cálculos. R = 8,314 J/(mol·K). Fases: L (líquido), S (sólido).
+
+4.1 Energia de fusão dos puros (ΔCp de fusão desprezado)
+      ΔG_fus,i(T) = ΔH_i · (1 - T / T_i)          [J/mol]
+    com ΔH_i = entalpia de fusão e T_i = temperatura de fusão do componente i.
+
+4.2 Nível 1: solução ideal nas duas fases
+    Igualdade de potencial químico de cada componente entre S e L:
+      x_i^S / x_i^L = k_i(T) = exp[ ΔH_i/R · (1/T - 1/T_i) ]
+    Com x_A + x_B = 1 em cada fase, resolve-se em forma FECHADA:
+      x_B^L(T) = (1 - k_A) / (k_B - k_A)         (liquidus)
+      x_B^S(T) = k_B · x_B^L(T)                  (solidus)
+    Verificações de contorno (devem virar testes):
+      T = T_A  ->  k_A = 1  ->  x_B^L = 0 e x_B^S = 0
+      T = T_B  ->  k_B = 1  ->  x_B^L = 1 e x_B^S = 1
+    Válido para T_A <= T <= T_B. Fora disso a liga é totalmente líquida (T > T_B) ou
+    totalmente sólida (T < T_A).
+    Cuidado numérico: perto de T_A e T_B o denominador (k_B - k_A) e o numerador
+    tendem a zero juntos; usar expm1/log1p ou limitar a malha a [T_A+eps, T_B-eps]
+    e acrescentar os extremos exatos como pontos fixos.
+
+4.3 Nível 2: solução regular
+    Energia de Gibbs molar da fase φ ∈ {S, L}:
+      G^φ = x_A G_A°,φ + x_B G_B°,φ + R T (x_A ln x_A + x_B ln x_B) + Ω^φ x_A x_B
+    Potenciais químicos em excesso: μ_A = G_A° + RT ln x_A + Ω x_B² ;
+                                    μ_B = G_B° + RT ln x_B + Ω x_A².
+    Equilíbrio S/L (duas equações, incógnitas x_B^S e x_B^L, para cada T):
+      F1 = R T ln(x_A^S / x_A^L) - ΔG_fus,A - Ω^L (x_B^L)² + Ω^S (x_B^S)² = 0
+      F2 = R T ln(x_B^S / x_B^L) - ΔG_fus,B - Ω^L (x_A^L)² + Ω^S (x_A^S)² = 0
+    Para Ω^S = Ω^L = 0 reduz exatamente à solução fechada da seção 4.2 (teste de regressão).
+    Solução numérica: Newton-Raphson 2x2 com Jacobiano analítico, ponto inicial vindo
+    do Nível 1 para o mesmo T, passo amortecido (backtracking) e critério |F|<1e-10.
+    Se não convergir: marcar o ponto como "sem solução" e não desenhar (nunca inventar).
+
+4.4 Lacuna de miscibilidade no sólido (Ω^S > 0)
+      Espinodal ........: T_esp(x) = 2 Ω^S x (1 - x) / R
+      Ponto crítico ....: T_c = Ω^S / (2R), em x = 1/2
+      Binodal (solvus) .: resolver μ_A(x1) = μ_A(x2) e μ_B(x1) = μ_B(x2) na MESMA fase,
+                          Newton 2x2 com semente simétrica em torno de 1/2.
+    Eutético simples = intersecção do liquidus com o solvus; localizar por bisseção na
+    temperatura onde dois liquidus distintos (ramos A e B) se cruzam.
+
+4.5 Conversões necessárias
+      % em peso w_B = x_B A_B / (x_B A_B + (1 - x_B) A_A)       (A_i = peso atômico)
+      inversa      x_B = (w_B / A_B) / (w_B / A_B + (1 - w_B)/A_A)
+    As funções JS já usadas em updateLigaComposition() implementam a primeira; extrair
+    para um helper único (Python e JS) para não duplicar a fórmula.
+
+4.6 Dados necessários por componente
+    Para cada metal em METAIS: dh_fus (kJ/mol). A Regra de Richards (ΔS_fus ≈ R, ou seja
+    ΔH ≈ R·T_f) é um fallback grosseiro e DEVE ser rotulado como estimativa.
+    Valores típicos de manual (CRC Handbook; CONFERIR antes de usar), em kJ/mol:
+      Cu 13,3 ; Ni 17,5 ; Al 10,7 ; Fe 13,8 ; Ag 11,3 ; Au 12,6 ; Pb 4,8 ;
+      Mg 8,5 ; Zn 7,1 ; Ti 14,2 ; Co 16,1 ; Cr 21,0 ; Mo 37,5 ; W 52,3.
+    Po (polônio): sem valor confiável nesta especificação -> sem diagrama para pares com Po.
+    Estrutura nova no código (sugestão):
+      METAIS[símbolo]["dh_fus"] = (valor_kJ, "fonte curta")   # fonte obrigatória
+
+
+--------------------------------------------------------------------------------
+5. DIAGRAMAS CURADOS (NÍVEL 3)
+--------------------------------------------------------------------------------
+5.1 Formato (dado, não código; vive em dicionário Python CURADOS):
+
+  CURADOS["Fe-C"] = {
+    "eixo_x": "% em peso de C", "x_max": 6.70,
+    "fases": {"L": "líquido", "δ": "ferrita δ", "γ": "austenita", "α": "ferrita α",
+              "Fe3C": "cementita"},
+    "linhas": {                       # polilinhas [(x_wt, T_C), ...], do menor ao maior x
+      "liquidus_ferro": [...], "solidus_delta": [...], ... },
+    "invariantes": [ {...}, {...}, {...} ],
+    "dominios": [ {"nome": "γ", "poligono": [(x,T), ...]}, ... ],
+    "fonte": "Callister, Materials Science and Engineering, fig. do sistema Fe-Fe3C"
+  }
+
+5.2 Pontos invariantes de Fe-Fe3C (valores clássicos de Callister; conferir)
+      Peritético ...: 1495 °C   L (0,53) + δ (0,09)  ->  γ (0,17)        [% em peso de C]
+      Eutético .....: 1147 °C   L (4,30)  ->  γ (2,14) + Fe3C (6,70)
+      Eutetoide ....: 727 °C    γ (0,76)  ->  α (0,022) + Fe3C (6,70)
+      Transformações do Fe puro: 912 °C (α/γ), 1394 °C (γ/δ), 1538 °C (fusão) - já
+      presentes em ALOTROPIA["Fe"]; derivar dali para evitar duplicar.
+      Cementita estequiométrica: 12,011 / (3·55,85 + 12,011) = 6,69 % C em peso.
+    A mesma linha de 0,022 % C (α) e 2,14 % C (γ) já aparece em _regras_intersticial;
+    ao criar CURADOS["Fe-C"], tornar esse texto derivado dos dados (fonte única).
+
+5.3 Cu-Ni curado: usar apenas para comparar com o Nível 1 (modo "comparar modelos").
+    Pontos de livro-texto para as linhas liquidus/solidus; Tf Cu 1085 °C, Ni 1455 °C.
+
+5.4 Qualidade dos dados curados
+    - Cada polilinha com >= 12 pontos e monotônica em x (validar no carregamento).
+    - Teste: os invariantes pertencem às linhas (tolerância 1 K / 0,01 % peso).
+    - Toda linha e todo valor com fonte; sem fonte, não entra.
+    - Se alguém digitalizar um gráfico, registrar método e erro estimado.
+
+
+--------------------------------------------------------------------------------
+6. REGRA DA ALAVANCA E CAMINHOS DE RESFRIAMENTO
+--------------------------------------------------------------------------------
+6.1 Região do ponto (x0, T)
+    Classificar por posição relativa às linhas: acima do liquidus -> L; entre liquidus
+    e solidus -> L+S (ou L+γ etc. nos curados); abaixo do solidus -> sólido; em
+    linha/invariante (|dT| < 0,5 K) -> avisar "sobre a linha: fases coexistem; fração
+    indefinida pela regra da alavanca no invariante".
+
+6.2 Regra da alavanca em duas fases α e β, composições C_α < C0 < C_β, em % em peso:
+      W_α = (C_β - C0) / (C_β - C_α)
+      W_β = (C0 - C_α) / (C_β - C_α)             W_α + W_β = 1
+    Em % atômica a mesma fórmula dá FRAÇÕES ATÔMICAS. Para frações em massa (o que
+    os livros pedem) converter composições para % em peso antes (seção 4.5).
+    A UI mostra as duas bases e deixa claro qual é qual.
+
+6.3 Reação invariante (eutetoide, eutético, peritético)
+    Acima/abaixo da reação aplicar a alavanca em cada lado. Fe-C: mostrar, além das
+    fases (α + Fe3C), os "constituintes": ferrita pró-eutetoide e perlita
+    (hipoeutetoide), perlita e cementita pró-eutetoide (hipereutetoide):
+      0,022 < C0 < 0,76  :  W_α' (pró-eutetoide) = (0,76 - C0)/(0,76 - 0,022)
+                            W_perlita = 1 - W_α'
+      0,76 < C0 < 2,14   :  W_Fe3C' = (C0 - 0,76)/(6,70 - 0,76)
+                            W_perlita = 1 - W_Fe3C'
+
+6.4 Caminho de resfriamento (animação/lista de eventos)
+    Dada x0, percorrer T de T_inicial até T_final detectando cruzamentos de linhas e
+    produzindo eventos: "T = 1310 °C: começa a solidificar (primeiro sólido tem
+    x_S = ...)", "T = ...: acaba o líquido". Retornar uma lista ordenada de eventos
+    + amostras (T, fases, frações) para animar o marcador.
+
+6.5 Scheil-Gulliver (opcional, recomendado para ensinar segregação/"coring")
+    Sem difusão no sólido, mistura completa no líquido:
+      C_L = C0 · (1 - f_S)^(k - 1)               k = x_S/x_L (coeficiente de partição,
+                                                  pode variar com T; integrar numericamente)
+    Mostrar a composição média do sólido e o líquido residual de maior composição.
+    Rotular claramente "fora do equilíbrio".
+
+
+--------------------------------------------------------------------------------
+7. API (BACK-END)
+--------------------------------------------------------------------------------
+Convenções: iguais às existentes ({"ok": true, "result": ...}), POST com
+Content-Type: application/json, cabeçalho X-CrystaLab: 1, corpo <= 1 MiB.
+Registrar em CrystaLabRequestHandler.do_POST no dicionário "rotas".
+
+7.1 POST /api/fases
+    Entrada:
+      {
+        "base": "Cu", "soluto": "Ni",
+        "modelo": "auto" | "ideal" | "regular" | "curado",
+        "omega_s": 0.0, "omega_l": 0.0,          // J/mol; só para "regular"
+        "resolucao": 120,                        // 20..400 pontos por curva
+        "t_min": 25, "t_max": null,              // °C; padrão: 100 K abaixo de min(Tf) a
+                                                 //     50 K acima de max(Tf)
+        "unidade": "peso" | "atomica"
+      }
+    Saída:
+      {
+        "modelo": "ideal", "nivel": 1, "fonte": "calculado: solução ideal (ΔHfus de ...)",
+        "eixo_x": {"rotulo": "% em peso de Ni", "min": 0, "max": 100},
+        "eixo_y": {"rotulo": "T (°C)", "min": 985, "max": 1505},
+        "curvas": {"liquidus": [[x,T],...], "solidus": [[x,T],...], "solvus": [...]},
+        "invariantes": [{"nome": "eutético", "T": 1147, "composicoes": {"L": 4.30, ...},
+                         "reacao": "L → γ + Fe3C"}],
+        "dominios": [{"nome": "L", "rotulo_pos": [x,T]}, ...],
+        "avisos": ["Estimativa: solução ideal pode errar dezenas de K ..."]
+      }
+    Erros: 400 par inválido/ sem modelo; 422 parâmetros fora de faixa (resolucao, Ω).
+
+7.2 POST /api/fases/ponto
+    Entrada: mesma de /api/fases + {"x0": 35.0, "T": 1250.0}
+    Saída:
+      {
+        "regiao": "L+S",
+        "fases": [
+          {"nome": "L",  "composicao": 31.5, "fracao_massa": 0.68, "fracao_atomica": 0.67,
+           "estrutura": null},
+          {"nome": "α",  "composicao": 42.5, "fracao_massa": 0.32, "fracao_atomica": 0.33,
+           "estrutura": "CFC"}
+        ],
+        "alavanca": {"C_alfa": 42.5, "C0": 35.0, "C_L": 31.5, "braco_esq": 3.5, "braco_dir": 7.5},
+        "constituintes": [],                       // Fe-C: perlita, pró-eutetoide
+        "eventos": []                              // preenchido se "resfriar": true
+      }
+    Opcional: "resfriar": true, "scheil": true -> acrescenta "caminho" e "scheil".
+
+7.3 Cache
+    Resultados de /api/fases dependem só de (base, soluto, modelo, Ω, resolução, faixa,
+    unidade): memoizar com functools.lru_cache(maxsize=128) sobre uma chave hashável.
+
+7.4 Desempenho esperado
+    Nível 1: O(resolução), fechado, < 5 ms. Nível 2: Newton por ponto, < 100 ms para
+    400 pontos. Nível 3: leitura de dados, < 5 ms.
+
+
+--------------------------------------------------------------------------------
+8. INTERFACE
+--------------------------------------------------------------------------------
+8.1 Local: novo bloco na aba Liga ("Diagrama de fases") abaixo de "Composição e
+    propriedades", e opção de expandir para a área da cena (botão como o de foco
+    existente, #focusButton). Em telas estreitas o gráfico ocupa a largura toda.
+
+8.2 Gráfico SVG (mesmo padrão de thermalChart: viewBox responsivo, eixos, textos em
+    var(--muted), curvas com classes CSS e cores dos tokens do tema claro/escuro):
+      - x: composição (toggle % peso / % atômica), y: temperatura °C
+      - linhas liquidus/solidus/solvus em estilos distintos (cor + tracejado: não
+        depender só de cor)
+      - regiões rotuladas (L, α, L+α, γ, Fe3C...)
+      - marcador do ponto de trabalho (x0, T) arrastável com ponteiro (Pointer Events)
+      - linhas-guia tracejadas até os eixos; no modo L+S, o segmento horizontal da
+        regra da alavanca com os dois extremos marcados e rotulados
+
+8.3 Sincronização com controles existentes
+      ligaX / ligaXRange  <->  x0 do marcador
+      tempRange           <->  T do marcador
+    Mudar um atualiza o outro. A cena 3D reage: mostra a estrutura da fase estável
+    (seção 10). O arrasto atualiza o gráfico a cada quadro, mas a chamada a
+    /api/fases/ponto é "debounced" (60 ms) e cancela a anterior (AbortController).
+
+8.4 Painel de resultado
+      Região, tabela de fases (nome, composição, fração em massa, fração atômica,
+      estrutura), valores dos braços da alavanca, avisos do modelo, e botão
+      "Mostrar passo a passo" com a conta numérica (reaproveitar stepsHtml()).
+      Para Fe-C: cartões "Constituintes" (perlita, ferrita pró-eutetoide...).
+      Seletor "Modelo": Automático / Ideal / Curado (e Regular em modo avançado), sempre
+      com o rótulo do nível visível.
+
+8.5 Acessibilidade
+      - role="img" + aria-label dinâmico no SVG ("Diagrama Cu-Ni; ponto 35% Ni a
+        1250 °C está na região L+α").
+      - Tabela oculta (visually-hidden) com os pontos das curvas decimados (ex.: 15
+        linhas) para leitores de tela.
+      - Marcador operável por teclado: setas movem x0/T em passos de 1 % / 5 °C
+        (Shift = passo 5x); foco visível (:focus-visible já definido no CSS).
+      - Texto de região em pt-BR, não apenas posição.
+
+8.6 Terminal (registro de comandos existente, função cmd(...)):
+      fases                 abre o diagrama do par atual
+      fases Cu Ni 35 1250   calcula e imprime fases, composições e frações
+      resfriar 35           lista eventos do resfriamento
+
+
+--------------------------------------------------------------------------------
+9. INTEGRAÇÃO COM O RESTO DO APP
+--------------------------------------------------------------------------------
+9.1 Aba Liga / calcular_termico
+      - "termico_base" da liga passa a trazer liquidus e solidus em x0 (quando houver
+        modelo): fusao_inicio (solidus) e fusao_fim (liquidus).
+      - A nota existente "α e Tf são estimados pela regra das misturas; consulte o
+        diagrama" é substituída por texto derivado do modelo.
+      - A vibração (Lindemann) usa o solidus da liga (início da fusão) em vez da média
+        linear. Documentar a mudança de comportamento e atualizar os testes.
+9.2 Cena 3D: na região de uma única fase sólida, mostrar a estrutura dessa fase
+      (CFC para Cu-Ni; α/γ/Fe3C para Fe-C). Em Fe-C, Fe3C (ortorrômbica, 16 átomos/célula)
+      NÃO está no gerador de células: mostrar mensagem "célula não disponível" em vez
+      de desenhar uma estrutura errada. Em região bifásica, avisar que a cena mostra a
+      fase majoritária ou deixar o usuário escolher qual fase ver.
+9.3 Doc 3 (exercícios): geradores paramétricos de regra da alavanca chamam
+      /api/fases/ponto internamente, de modo que gabarito e app nunca divirjam.
+9.4 Doc 1 (perfil): eventos de uso do diagrama podem alimentar estatísticas (opcional).
+
+
+--------------------------------------------------------------------------------
+10. VALIDAÇÃO NUMÉRICA E TESTES
+--------------------------------------------------------------------------------
+10.1 Propriedades matemáticas (testes automáticos sem navegador)
+      T1  x_B^L(T_A) = 0 e x_B^L(T_B) = 1 (tolerância 1e-9)
+      T2  Para T_A < T < T_B: 0 < x_B^S(T) < x_B^L(T) < 1 (solidus abaixo do liquidus em x)
+      T3  Liquidus e solidus monotônicos em T (x cresce com T)
+      T4  Nível 2 com Ω^S = Ω^L = 0 coincide com Nível 1 (diferença < 1e-6)
+      T5  Soma das frações = 1 (tolerância 1e-12); frações em [0, 1]
+      T6  Conversão peso <-> atômico é inversa (ida e volta com erro < 1e-12)
+      T7  Espinodal: T_c = Ω/(2R) em x = 0,5; binodal ⊂ região abaixo da espinodal
+      T8  Dados curados: invariantes pertencem às linhas; polilinhas monotônicas
+
+10.2 Alvos de validação de livro-texto (conferir na fonte antes de fixar tolerâncias)
+      a) Cu-Ni, liga com 35 % em peso de Ni a 1250 °C (exemplo clássico de Callister):
+           C_L ≈ 31,5 % Ni ; C_α ≈ 42,5 % Ni ; W_L ≈ 0,68 ; W_α ≈ 0,32
+         A regra da alavanca deve reproduzir W_L = (42,5-35)/(42,5-31,5) = 0,68 EXATAMENTE
+         quando alimentada com C_L e C_α do livro (teste da fórmula, independente do modelo).
+         O Nível 1 (ideal) pode divergir do diagrama real; medir e documentar a diferença
+         (liquidus em K, composições em % peso). Critério de aceitação PROPOSTO: dentro de
+         25 K no liquidus e 5 % peso nas composições; se exceder, ocultar Nível 1 para
+         esse par e usar o curado.
+      b) Fe-C, 0,40 % C logo abaixo de 727 °C:
+           W_α pró-eutetoide = (0,76-0,40)/(0,76-0,022) = 0,488 ; W_perlita = 0,512
+           Fração total de α = (6,70-0,40)/(6,70-0,022) = 0,943 ; Fe3C = 0,057
+      c) Fe-C, ponto eutetoide: 0,76 % C, 727 °C, γ -> α + Fe3C (fração de α = 0,89
+         pela alavanca com 0,022 e 6,70).
+10.3 Testes de interface (manuais + automatizáveis com o navegador embutido)
+      - Arrastar marcador atualiza ligaX/tempRange e vice-versa.
+      - Troca de par recalcula e cancela requisições pendentes (sem "corrida").
+      - Tema claro/escuro: contraste das linhas >= 3:1 contra o fundo.
+      - Teclado: setas movem; Tab alcança marcador, modelo, passo a passo.
+      - Redimensionar a janela mantém proporção (viewBox).
+
+
+--------------------------------------------------------------------------------
+11. LIMITAÇÕES, AVISOS E ÉTICA DIDÁTICA
+--------------------------------------------------------------------------------
+  - Nível 1 e 2 são modelos; mostrar o rótulo do nível e o aviso em TODA visualização.
+  - Pressão constante (1 atm); sem efeitos de curvatura, tensão ou impurezas.
+  - Diagramas de equilíbrio não preveem o que acontece em resfriamentos rápidos
+    (martensita, bainita): dizer isso quando Fe-C for exibido; remeter a TTT/CCT
+    (fora de escopo).
+  - Pares sem modelo confiável NÃO recebem diagrama. É melhor ausência explícita do
+    que um gráfico bonito e errado.
+  - Toda constante tem fonte citada no código e na tela ("Fonte: ...") ao passar o
+    mouse / abrir detalhes.
+
+
+--------------------------------------------------------------------------------
+12. PLANO DE ENTREGA
+--------------------------------------------------------------------------------
+  Fase 2.0  Helpers (conversão peso/atômico), dh_fus no banco com fonte, Nível 1
+            fechado, /api/fases e /api/fases/ponto, gráfico SVG estático, regra da
+            alavanca, testes T1-T6 ................................................ ~3 dias
+  Fase 2.1  Marcador arrastável + sincronização com ligaX/tempRange, painel de
+            resultado, passo a passo, acessibilidade, comandos de terminal ......... ~3 dias
+  Fase 2.2  Nível 3: Fe-Fe3C e Cu-Ni curados, constituintes (perlita/pró-eutetoide),
+            fonte única com _regras_intersticial, testes T8 e alvos 10.2 b/c ........ ~3 dias
+  Fase 2.3  Integração com calcular_termico (solidus/liquidus), cena 3D por fase,
+            comparação Nível 1 x curado ............................................ ~2 dias
+  Fase 2.4  Nível 2 (solução regular) + espinodal/binodal/eutético, tabela de Ω
+            validada, Scheil, caminho de resfriamento animado ..................... ~5 dias
+  Fase 2.5  (opcional) Estudo de viabilidade do Nível 4 (pycalphad + TDB) em um
+            módulo separado ....................................................... a estimar
+  (Estimativas para 1 desenvolvedor familiarizado com o arquivo; excluem revisão.)
+
+
+--------------------------------------------------------------------------------
+13. RISCOS E QUESTÕES EM ABERTO
+--------------------------------------------------------------------------------
+  R1  Nível 1 produzir diagramas qualitativamente corretos mas quantitativamente
+      distantes e o aluno memorizar números errados. Mitigação: aviso fixo, comparação
+      lado a lado com o curado, uso de Nível 1 apenas para pares que atendem H-R.
+  R2  Digitalização de diagramas introduzir erros. Mitigação: poucos diagramas, todos
+      revisados por um professor da área antes da publicação.
+  R3  Direitos autorais: curvas copiadas de figuras de livros. Mitigação: usar
+      apenas valores numéricos publicados (pontos invariantes, linhas descritas em
+      tabelas) ou bases de dados de licença aberta; citar fontes. Validar com a
+      biblioteca/colegiado antes de distribuir.
+  R4  Newton não converge perto de pontos invariantes. Mitigação: malha adaptativa,
+      pontos invariantes inseridos explicitamente, fallback "sem solução".
+  R5  Fe3C não existe no gerador de células. Decisão: aceitar a limitação (9.2) ou
+      acrescentar estrutura ortorrômbica ao gerador (trabalho próprio).
+  Q1  Quais pares binários a disciplina realmente cobra além de Cu-Ni e Fe-C?
+  Q2  Quem valida os dados curados e as constantes (professor responsável)?
+  Q3  Aceita-se Nível 1 para pares onde as 4 regras de H-R são atendidas, mesmo sem
+      curado?
+================================================================================
+FIM DO DOCUMENTO 2
+================================================================================

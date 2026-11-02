@@ -1,0 +1,54 @@
+{
+  "viewer": {
+    "measuredAt": "2026-10-24T01:14:37.069Z",
+    "environment": {
+      "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+      "cores": 2,
+      "memoryGB": 8,
+      "browser": "chromium 141.0.7390.37 (headless)",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "viewport": "1366×900",
+      "note": "Contêiner de CI sem GPU: WebGL por software (SwiftShader). Não representa o notebook intermediário do plano (D-20)."
+    },
+    "scenario": {
+      "structure": "Cu (CFC) do motor",
+      "supercell": "3×3×3",
+      "drawnAtoms": 172,
+      "instances": 172
+    },
+    "fps": {
+      "target": "≈ 60",
+      "value": 11.5,
+      "frames": 47,
+      "windowMs": 4085,
+      "met": false
+    },
+    "selection": {
+      "target": "< 16 ms",
+      "samples": 14,
+      "pickMedianMs": 1.2,
+      "workMedianMs": 3.6,
+      "workMaxMs": 13.6,
+      "clickToFrameMedianMs": 16.9,
+      "definition": "work = raycast + atualização de estado + quadro do destaque (CPU); clickToFrame inclui a espera do próximo quadro",
+      "met": true
+    }
+  },
+  "bundle": {
+    "measuredAt": "2026-10-24T01:12:17.667Z",
+    "buildId": "20261024011217",
+    "initialBytes": 650519,
+    "initialGzip": 205877,
+    "containsThree": false,
+    "target": "< 300 kB gzip (sem Three.js)",
+    "met": true,
+    "largestLazy": [
+      "assets/chunks/Viewer3D-U26ZYY5W.js 133.4 kB",
+      "assets/chunks/dist-PICPNBLA.js 127.9 kB",
+      "assets/chunks/katex-GEJB2IOB.js 75.1 kB",
+      "assets/chunks/LearnModule-CIUCACIH.js 15.1 kB",
+      "assets/chunks/InstructorModule-NE7J44UK.js 3.8 kB",
+      "assets/chunks/HeaModule-QNYZ4RIQ.js 3.1 kB"
+    ]
+  }
+}

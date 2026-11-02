@@ -1,0 +1,480 @@
+{
+ "_fonte": "Resposta real do motor CrystaLab v1.0 (legacy/crystalab_modulo1.py, POST /api/estrutura {\"nome\":\"Mg\"}), capturada em 2026-10-21.",
+ "result": {
+  "rotulo": "Mg — Magnésio",
+  "simbolo": "Mg",
+  "nome_metal": "Magnésio",
+  "editado": false,
+  "generica": false,
+  "estrutura": "HC",
+  "estrutura_nome": "Hexagonal Compacta",
+  "relacao_a": "a = 2R",
+  "contato": "aresta do hexágono basal",
+  "n": 6,
+  "nc": 12,
+  "fea": 0.7445810198005819,
+  "vazios": 0.2554189801994181,
+  "a_em_R": 2.0,
+  "c_a": 1.624,
+  "raio_nm": 0.16,
+  "peso": 24.31,
+  "a_nm": 0.32,
+  "c_nm": 0.51968,
+  "volume_nm3": 0.13825722834084778,
+  "volume_cm3": 1.3825722834084776e-22,
+  "densidade": 1.7518931389286918,
+  "densidade_exp": 1.74,
+  "erro_percent": 0.6835137315340134,
+  "raio_relativo": 0.5,
+  "atomos": [
+   {
+    "pos": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     0.5,
+     0.866025,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -0.5,
+     0.866025,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -0.5,
+     -0.866025,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     0.5,
+     -0.866025,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     1.0,
+     0.0,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     0.5,
+     0.866025,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -0.5,
+     0.866025,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -1.0,
+     0.0,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     -0.5,
+     -0.866025,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     0.5,
+     -0.866025,
+     1.624
+    ],
+    "tipo": "vertice",
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6"
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "basal",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     1.624
+    ],
+    "tipo": "basal",
+    "fracao": 0.5,
+    "fracao_txt": "1/2"
+   },
+   {
+    "pos": [
+     0.5,
+     0.288675,
+     0.812
+    ],
+    "tipo": "interior",
+    "fracao": 1.0,
+    "fracao_txt": "1"
+   },
+   {
+    "pos": [
+     -0.5,
+     0.288675,
+     0.812
+    ],
+    "tipo": "interior",
+    "fracao": 1.0,
+    "fracao_txt": "1"
+   },
+   {
+    "pos": [
+     0.0,
+     -0.57735,
+     0.812
+    ],
+    "tipo": "interior",
+    "fracao": 1.0,
+    "fracao_txt": "1"
+   }
+  ],
+  "arestas": [
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.5,
+     0.866025,
+     0.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     1.624
+    ],
+    [
+     0.5,
+     0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     1.624
+    ]
+   ],
+   [
+    [
+     0.5,
+     0.866025,
+     0.0
+    ],
+    [
+     -0.5,
+     0.866025,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.5,
+     0.866025,
+     1.624
+    ],
+    [
+     -0.5,
+     0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     0.5,
+     0.866025,
+     0.0
+    ],
+    [
+     0.5,
+     0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     -0.5,
+     0.866025,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     -0.5,
+     0.866025,
+     1.624
+    ],
+    [
+     -1.0,
+     0.0,
+     1.624
+    ]
+   ],
+   [
+    [
+     -0.5,
+     0.866025,
+     0.0
+    ],
+    [
+     -0.5,
+     0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.5,
+     -0.866025,
+     0.0
+    ]
+   ],
+   [
+    [
+     -1.0,
+     0.0,
+     1.624
+    ],
+    [
+     -0.5,
+     -0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     1.624
+    ]
+   ],
+   [
+    [
+     -0.5,
+     -0.866025,
+     0.0
+    ],
+    [
+     0.5,
+     -0.866025,
+     0.0
+    ]
+   ],
+   [
+    [
+     -0.5,
+     -0.866025,
+     1.624
+    ],
+    [
+     0.5,
+     -0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     -0.5,
+     -0.866025,
+     0.0
+    ],
+    [
+     -0.5,
+     -0.866025,
+     1.624
+    ]
+   ],
+   [
+    [
+     0.5,
+     -0.866025,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.5,
+     -0.866025,
+     1.624
+    ],
+    [
+     1.0,
+     0.0,
+     1.624
+    ]
+   ],
+   [
+    [
+     0.5,
+     -0.866025,
+     0.0
+    ],
+    [
+     0.5,
+     -0.866025,
+     1.624
+    ]
+   ]
+  ],
+  "contagem": [
+   {
+    "tipo": "vertice",
+    "rotulo": "Vértices",
+    "quantidade": 12,
+    "fracao": 0.16666666666666666,
+    "fracao_txt": "1/6",
+    "contribuicao": 2.0
+   },
+   {
+    "tipo": "basal",
+    "rotulo": "Centros basais",
+    "quantidade": 2,
+    "fracao": 0.5,
+    "fracao_txt": "1/2",
+    "contribuicao": 1.0
+   },
+   {
+    "tipo": "interior",
+    "rotulo": "Interior",
+    "quantidade": 3,
+    "fracao": 1.0,
+    "fracao_txt": "1",
+    "contribuicao": 3.0
+   }
+  ],
+  "passos_densidade": [
+   {
+    "titulo": "Dados de entrada",
+    "formula": "R = 0,1600 nm   A = 24,31 g/mol   n = 6 átomos/célula   N_A = 6,022 × 10²³ átomos/mol",
+    "detalhe": "Na estrutura HC cada célula unitária contém 6 átomo(s) equivalente(s)."
+   },
+   {
+    "titulo": "Parâmetro de rede",
+    "formula": "a = 2R = 2 × 0,1600 = 0,3200 nm = 3,200 × 10⁻⁸ cm\nc = (c/a)·a = 1,624 × 0,3200 = 0,5197 nm = 5,197 × 10⁻⁸ cm",
+    "detalhe": "Os átomos se tocam ao longo da aresta do hexágono basal."
+   },
+   {
+    "titulo": "Volume da célula unitária",
+    "formula": "Vc = (3√3/2)·a²·c = 2,598 × (3,200 × 10⁻⁸ cm)² × 5,197 × 10⁻⁸ cm = 1,383 × 10⁻²² cm³",
+    "detalhe": "1 nm = 10⁻⁷ cm, logo 1 nm³ = 10⁻²¹ cm³."
+   },
+   {
+    "titulo": "Densidade teórica",
+    "formula": "ρ = n·A / (Vc·N_A) = (6 × 24,31) / (1,383 × 10⁻²² × 6,022 × 10²³) = 1,752 g/cm³",
+    "detalhe": "Massa dos átomos contidos na célula dividida pelo volume da célula."
+   },
+   {
+    "titulo": "Comparação experimental",
+    "formula": "ρ exp = 1,74 g/cm³ → desvio = +0,68 %",
+    "detalhe": "Diferenças vêm de raios tabelados arredondados, lacunas e expansão térmica."
+   }
+  ],
+  "interpretacao": [
+   "Na HC os planos basais (0001) são compactos e se empilham na sequência ABAB.",
+   "Com c/a ideal = 1,633 o FEA vale 0,74, igual ao da CFC. Um c/a real diferente altera o FEA.",
+   "Exemplos: Mg, Ti-α, Zn, Co. Índices de Miller-Bravais (h k i l) usam i = -(h + k).",
+   "c/a usado = 1,624 (ideal 1,633) → FEA = 0,7446.",
+   "Densidade teórica calculada: 1,752 g/cm³ (experimental 1,74 g/cm³, desvio +0,68%)."
+  ]
+ }
+}

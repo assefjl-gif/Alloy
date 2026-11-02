@@ -1,0 +1,4 @@
+{ "name": "three", "version": "0.160.0", "type": "module", "license": "MIT",
+  "main": "./three.module.js", "module": "./three.module.js",
+  "exports": { ".": "./three.module.js", "./examples/jsm/*": "./examples/jsm/*" },
+  "x-origin": "git https://github.com/mrdoob/three.js tag r160 (build/three.module.js, examples/jsm/controls/OrbitControls.js)" }
