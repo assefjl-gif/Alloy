@@ -1,0 +1,11 @@
+/.editorconfig
+/.env.example
+/.gitattributes
+/.gitignore
+/CHANGELOG.md
+/README.md
+/.crystalab_modulo1.py
+/pesquisa.1.5.py
+/pesquisa_front1.17.py
+/pyproject.toml
+/requirements.txt
