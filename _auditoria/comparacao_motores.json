@@ -1,0 +1,827 @@
+{
+ "estruturas": [
+  {
+   "metal": "Ag",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.40870771952582446,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 10.4949747276107,
+    "densidade_exp": 10.49,
+    "erro_percent": 0.04742352345756817
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.40870771952582446,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 10.4947294207171,
+    "densidade_exp": 10.49,
+    "erro_percent": 0.045085040201131577
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.40870771952582446,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 10.4949747276107,
+    "densidade_exp": 10.49,
+    "erro_percent": 0.04742352345756817
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Al",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.40474792155117983,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 2.70275888503648,
+    "densidade_exp": 2.71,
+    "erro_percent": -0.2671998141520304
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.40474792155117983,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 2.7026957114316414,
+    "densidade_exp": 2.71,
+    "erro_percent": -0.269530943481866
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.40474792155117983,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 2.70275888503648,
+    "densidade_exp": 2.71,
+    "erro_percent": -0.2671998141520304
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Au",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.4078591913884006,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 19.28361994080026,
+    "densidade_exp": 19.32,
+    "erro_percent": -0.18830258384958665
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.4078591913884006,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 19.283169210328985,
+    "densidade_exp": 19.32,
+    "erro_percent": -0.19063555730338688
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.4078591913884006,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 19.28361994080026,
+    "densidade_exp": 19.32,
+    "erro_percent": -0.18830258384958665
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Co",
+   "A": {
+    "estrutura": "HC",
+    "a_nm": 0.2506,
+    "c_nm": 0.40672379999999997,
+    "fea": 0.7450397881430345,
+    "densidade": 8.847760008652598,
+    "densidade_exp": 8.9,
+    "erro_percent": -0.5869661949146399
+   },
+   "B": {
+    "estrutura": "HC",
+    "a_nm": 0.2506,
+    "c_nm": 0.40672379999999997,
+    "fea": 0.7450397881430345,
+    "densidade": 8.847553203340592,
+    "densidade_exp": 8.9,
+    "erro_percent": -0.589289850105712
+   },
+   "D": {
+    "estrutura": "HC",
+    "a_nm": 0.2506,
+    "c_nm": 0.40672379999999997,
+    "fea": 0.7450397881430345,
+    "densidade": 8.847760008652598,
+    "densidade_exp": 8.9,
+    "erro_percent": -0.5869661949146399
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Cr",
+   "A": {
+    "estrutura": "CCC",
+    "a_nm": 0.28844419448713704,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.196265553129191,
+    "densidade_exp": 7.19,
+    "erro_percent": 0.08714260263129603
+   },
+   "B": {
+    "estrutura": "CCC",
+    "a_nm": 0.28844419448713704,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.1960973494322635,
+    "densidade_exp": 7.19,
+    "erro_percent": 0.08480319099113398
+   },
+   "D": {
+    "estrutura": "CCC",
+    "a_nm": 0.28844419448713704,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.196265553129191,
+    "densidade_exp": 7.19,
+    "erro_percent": 0.08714260263129603
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Cu",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.3614729865425631,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.937318868060766,
+    "densidade_exp": 8.94,
+    "erro_percent": -0.029990290148029786
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.3614729865425631,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.937109969422558,
+    "densidade_exp": 8.94,
+    "erro_percent": -0.03232696395348844
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.3614729865425631,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.937318868060766,
+    "densidade_exp": 8.94,
+    "erro_percent": -0.029990290148029786
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Fe",
+   "A": {
+    "estrutura": "CCC",
+    "a_nm": 0.28659667362573027,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.8795059088767045,
+    "densidade_exp": 7.87,
+    "erro_percent": 0.12078664392254357
+   },
+   "B": {
+    "estrutura": "CCC",
+    "a_nm": 0.28659667362573027,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.87932173529194,
+    "densidade_exp": 7.87,
+    "erro_percent": 0.11844644589504849
+   },
+   "D": {
+    "estrutura": "CCC",
+    "a_nm": 0.28659667362573027,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 7.8795059088767045,
+    "densidade_exp": 7.87,
+    "erro_percent": 0.12078664392254357
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Mg",
+   "A": {
+    "estrutura": "HC",
+    "a_nm": 0.32,
+    "c_nm": 0.51968,
+    "fea": 0.7445810198005819,
+    "densidade": 1.7518931389286918,
+    "densidade_exp": 1.74,
+    "erro_percent": 0.6835137315340134
+   },
+   "B": {
+    "estrutura": "HC",
+    "a_nm": 0.32,
+    "c_nm": 0.51968,
+    "fea": 0.7445810198005819,
+    "densidade": 1.7518521906200983,
+    "densidade_exp": 1.74,
+    "erro_percent": 0.6811603804654176
+   },
+   "D": {
+    "estrutura": "HC",
+    "a_nm": 0.32,
+    "c_nm": 0.51968,
+    "fea": 0.7445810198005819,
+    "densidade": 1.7518931389286918,
+    "densidade_exp": 1.74,
+    "erro_percent": 0.6835137315340134
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Mo",
+   "A": {
+    "estrutura": "CCC",
+    "a_nm": 0.31477136676218403,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 10.216527285246318,
+    "densidade_exp": 10.22,
+    "erro_percent": -0.0339795964156786
+   },
+   "B": {
+    "estrutura": "CCC",
+    "a_nm": 0.31477136676218403,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 10.216288486713045,
+    "densidade_exp": 10.22,
+    "erro_percent": -0.03631617697608114
+   },
+   "D": {
+    "estrutura": "CCC",
+    "a_nm": 0.31477136676218403,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 10.216527285246318,
+    "densidade_exp": 10.22,
+    "erro_percent": -0.0339795964156786
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Ni",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.35242201974337534,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.906236885914339,
+    "densidade_exp": 8.9,
+    "erro_percent": 0.07007736982402868
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.35242201974337534,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.906028713778543,
+    "densidade_exp": 8.9,
+    "erro_percent": 0.06773835706228581
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.35242201974337534,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 8.906236885914339,
+    "densidade_exp": 8.9,
+    "erro_percent": 0.07007736982402868
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Pb",
+   "A": {
+    "estrutura": "CFC",
+    "a_nm": 0.4949747468305833,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 11.349059285000878,
+    "densidade_exp": 11.35,
+    "erro_percent": -0.008288237877718263
+   },
+   "B": {
+    "estrutura": "CFC",
+    "a_nm": 0.4949747468305833,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 11.34879401495014,
+    "densidade_exp": 11.35,
+    "erro_percent": -0.01062541894149005
+   },
+   "D": {
+    "estrutura": "CFC",
+    "a_nm": 0.4949747468305833,
+    "c_nm": null,
+    "fea": 0.7404804896930608,
+    "densidade": 11.349059285000878,
+    "densidade_exp": 11.35,
+    "erro_percent": -0.008288237877718263
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Po",
+   "A": {
+    "estrutura": "CS",
+    "a_nm": 0.336,
+    "c_nm": null,
+    "fea": 0.5235987755982988,
+    "densidade": 9.149296517276337,
+    "densidade_exp": 9.2,
+    "erro_percent": -0.5511248122137213
+   },
+   "B": {
+    "estrutura": "CS",
+    "a_nm": 0.336,
+    "c_nm": null,
+    "fea": 0.5235987755982988,
+    "densidade": 9.149082663925993,
+    "densidade_exp": 9.2,
+    "erro_percent": -0.5534493051522427
+   },
+   "D": {
+    "estrutura": "CS",
+    "a_nm": 0.336,
+    "c_nm": null,
+    "fea": 0.5235987755982988,
+    "densidade": 9.149296517276337,
+    "densidade_exp": 9.2,
+    "erro_percent": -0.5511248122137213
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Ti",
+   "A": {
+    "estrutura": "HC",
+    "a_nm": 0.289,
+    "c_nm": 0.45864299999999997,
+    "fea": 0.7619405016736894,
+    "densidade": 4.792383731860899,
+    "densidade_exp": 4.51,
+    "erro_percent": 6.261280085607512
+   },
+   "B": {
+    "estrutura": "HC",
+    "a_nm": 0.2951,
+    "c_nm": 0.4684,
+    "fea": 0.7618163854049497,
+    "densidade": 4.500456659185752,
+    "densidade_exp": 4.51,
+    "erro_percent": -0.2116040091850957
+   },
+   "D": {
+    "estrutura": "HC",
+    "a_nm": 0.289,
+    "c_nm": 0.45864299999999997,
+    "fea": 0.7619405016736894,
+    "densidade": 4.792383731860899,
+    "densidade_exp": 4.51,
+    "erro_percent": 6.261280085607512
+   },
+   "B_a_fonte": "medido"
+  },
+  {
+   "metal": "W",
+   "A": {
+    "estrutura": "CCC",
+    "a_nm": 0.3166188876235908,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 19.236178550947212,
+    "densidade_exp": 19.3,
+    "erro_percent": -0.33068108317506617
+   },
+   "B": {
+    "estrutura": "CCC",
+    "a_nm": 0.3166188876235908,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 19.235728929359023,
+    "densidade_exp": 19.3,
+    "erro_percent": -0.33301072870972614
+   },
+   "D": {
+    "estrutura": "CCC",
+    "a_nm": 0.3166188876235908,
+    "c_nm": null,
+    "fea": 0.6801747615878313,
+    "densidade": 19.236178550947212,
+    "densidade_exp": 19.3,
+    "erro_percent": -0.33068108317506617
+   },
+   "B_a_fonte": "derivado_de_R"
+  },
+  {
+   "metal": "Zn",
+   "A": {
+    "estrutura": "HC",
+    "a_nm": 0.2664,
+    "c_nm": 0.49443840000000006,
+    "fea": 0.6515083923255093,
+    "densidade": 7.148618628968881,
+    "densidade_exp": 7.13,
+    "erro_percent": 0.2611308410782831
+   },
+   "B": {
+    "estrutura": "HC",
+    "a_nm": 0.2664,
+    "c_nm": 0.49443840000000006,
+    "fea": 0.6515083923255093,
+    "densidade": 7.148451538959146,
+    "densidade_exp": 7.13,
+    "erro_percent": 0.258787362680879
+   },
+   "D": {
+    "estrutura": "HC",
+    "a_nm": 0.2664,
+    "c_nm": 0.49443840000000006,
+    "fea": 0.6515083923255093,
+    "densidade": 7.148618628968881,
+    "densidade_exp": 7.13,
+    "erro_percent": 0.2611308410782831
+   },
+   "B_a_fonte": "derivado_de_R"
+  }
+ ],
+ "miller": [
+  {
+   "caso": "CS plano [1, 0, 0]",
+   "A": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 1.0,
+    "fracao_planar": 0.7853981633974483
+   },
+   "B": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CCC plano [1, 1, 0]",
+   "A": {
+    "notacao": "(1 1 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7071067811865475,
+    "area_rel": 1.414213562373095,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 2.0,
+    "fracao_planar": 0.8330405509046934
+   },
+   "B": {
+    "notacao": "(1 1 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7071067811865475,
+    "area_rel": 1.414213562373095,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(1 1 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7071067811865475,
+    "area_rel": 1.414213562373095,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CFC plano [1, 1, 1]",
+   "A": {
+    "notacao": "(1 1 1)",
+    "n_atomos_marcados": 6,
+    "d_rel": 0.5773502691896258,
+    "area_rel": 0.8660254037844388,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 2.0,
+    "fracao_planar": 0.9068996821171085
+   },
+   "B": {
+    "notacao": "(1 1 1)",
+    "n_atomos_marcados": 6,
+    "d_rel": 0.5773502691896258,
+    "area_rel": 0.8660254037844388,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(1 1 1)",
+    "n_atomos_marcados": 6,
+    "d_rel": 0.5773502691896258,
+    "area_rel": 0.8660254037844388,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CFC plano [1, 0, 0]",
+   "A": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 2.0,
+    "fracao_planar": 0.7853981633974481
+   },
+   "B": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(1 0 0)",
+    "n_atomos_marcados": 5,
+    "d_rel": 1.0,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CFC plano [2, 0, 0]",
+   "A": {
+    "notacao": "(2 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 0.5,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 2.0,
+    "fracao_planar": 0.7853981633974481
+   },
+   "B": {
+    "notacao": "(2 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 0.5,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(2 0 0)",
+    "n_atomos_marcados": 4,
+    "d_rel": 0.5,
+    "area_rel": 1.0,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "HC plano [0, 0, 0, 1]",
+   "A": {
+    "notacao": "(0 0 0 1)",
+    "n_atomos_marcados": 7,
+    "d_rel": 1.6329931618554523,
+    "area_rel": 2.5980750000000006,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 3.0,
+    "fracao_planar": 0.9069001049593812
+   },
+   "B": {
+    "notacao": "(0 0 0 1)",
+    "n_atomos_marcados": 7,
+    "d_rel": 1.6329931618554523,
+    "area_rel": 2.5980762113533156,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(0 0 0 1)",
+    "n_atomos_marcados": 7,
+    "d_rel": 1.6329931618554523,
+    "area_rel": 2.5980750000000006,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "HC plano [1, 0, -1, 1]",
+   "A": {
+    "notacao": "(1 0 1̄ 1)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7650920556760059,
+    "area_rel": 2.7726328716162705,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": 1.5,
+    "fracao_planar": 0.4249019973601539
+   },
+   "B": {
+    "notacao": "(1 0 1̄ 1)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7650920556760059,
+    "area_rel": 2.772634126602354,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "(1 0 1̄ 1)",
+    "n_atomos_marcados": 5,
+    "d_rel": 0.7650920556760059,
+    "area_rel": 2.7726328716162705,
+    "comprimento_rel": null,
+    "atomos_contados": null,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CCC direcao [1, 1, 1]",
+   "A": {
+    "notacao": "[1 1 1]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.7320508075688772,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "B": {
+    "notacao": "[1 1 1]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.7320508075688772,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "[1 1 1]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.7320508075688772,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "CFC direcao [1, 1, 0]",
+   "A": {
+    "notacao": "[1 1 0]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.4142135623730951,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "B": {
+    "notacao": "[1 1 0]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.4142135623730951,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "[1 1 0]",
+    "n_atomos_marcados": 3,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.4142135623730951,
+    "atomos_contados": 2.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  },
+  {
+   "caso": "HC direcao [2, -1, -1, 0]",
+   "A": {
+    "notacao": "[2 1̄ 1̄ 0]",
+    "n_atomos_marcados": 2,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.0,
+    "atomos_contados": 1.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "B": {
+    "notacao": "[2 1̄ 1̄ 0]",
+    "n_atomos_marcados": 2,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.0,
+    "atomos_contados": 1.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   },
+   "D": {
+    "notacao": "[2 1̄ 1̄ 0]",
+    "n_atomos_marcados": 2,
+    "d_rel": null,
+    "area_rel": null,
+    "comprimento_rel": 1.0,
+    "atomos_contados": 1.0,
+    "atomos_plano (planar)": null,
+    "fracao_planar": null
+   }
+  }
+ ],
+ "divergencias": [
+  {
+   "metal": "Ti",
+   "campo": "a_nm",
+   "A": 0.289,
+   "B": 0.2951,
+   "D": 0.289,
+   "maior_dif_rel_pct": 2.0671
+  },
+  {
+   "metal": "Ti",
+   "campo": "fea",
+   "A": 0.761941,
+   "B": 0.761816,
+   "D": 0.761941,
+   "maior_dif_rel_pct": 0.0163
+  },
+  {
+   "metal": "Ti",
+   "campo": "densidade",
+   "A": 4.792384,
+   "B": 4.500457,
+   "D": 4.792384,
+   "maior_dif_rel_pct": 6.4866
+  }
+ ]
+}
