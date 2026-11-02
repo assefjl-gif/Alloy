@@ -1,66 +1,73 @@
-# CrystaLab 1.1 — Módulo 1 do Alloy (Fundamentos Estruturais)
+# Alloy Virtual Lab — front-end (HEA Virtual Lab + CrystaLab)
 
-Laboratório didático de cristalografia: células unitárias CS/CCC/CFC/HC, índices de Miller
-(planos e direções, incluindo Miller-Bravais), fator de empacotamento, densidade teórica
-passo a passo e exportação CIF/XYZ.
+Plataforma única onde o HEA Virtual Lab e o CrystaLab convivem sem recarga. Todo valor científico vem dos motores; o front-end só exibe, organiza e valida.
 
-## Como rodar
+Todas as 8 etapas do plano foram executadas — ver `docs/relatorio-conclusao.md` (resumo, metas medidas, pendências) e os relatórios por etapa em `docs/`.
+
+## Requisitos
+
+Node 22, Python 3.10+ (motor CrystaLab v1.0, só biblioteca padrão) e Chromium para os testes.
+
+## Instalação
 
 ```bash
-python -m pip install -e .            # instala fastapi, uvicorn, pydantic, pydantic-settings
-python -m crystalab --open            # http://127.0.0.1:8010 (busca a próxima porta livre)
+npm ci                     # com acesso ao registro npm
+node scripts/link-deps.mjs # alternativa usada neste ambiente (dependências locais + vendor/)
 ```
 
-Opções: `--port`, `--host`, `--reload` (desenvolvimento), `--log-level`.
-Documentação interativa da API: `http://127.0.0.1:8010/docs` (só em ambiente de desenvolvimento).
-Sem `pip install -e .`, rode a partir desta pasta com `pip install -r requirements.txt`.
+## Execução
 
-## Testes
+**Um comando só (recomendado):**
 
 ```bash
-python -m pip install -e ".[dev]"     # pytest, httpx, ruff
-pytest                                # motor, exportação, API
-ruff check .
-# opcionais: pip install gemmi  (valida CIF) · pip install playwright && playwright install chromium (UI)
+npm install      # uma vez (no PowerShell: npm.cmd install)
+npm start        # compila, sobe CrystaLab (:8010) e HEA (:8000, se completo), serve em http://127.0.0.1:5173 e abre o navegador
+```
+
+`npm start` localiza o Python sozinho (`py -3`, `python` ou `python3`), reaproveita motores já abertos em outro terminal e encerra tudo com Ctrl+C. Opções: `npm run start:fast` (pula a compilação, usa `dist/`), `npm run dev:all` (recompila ao salvar), `--no-open` (não abre o navegador: `npm start -- --no-open`). Portas por variável: `PORT`, `CRYSTALAB_PORT`, `HEA_PORT`; interpretador específico: `PYTHON`.
+
+**Motor HEA:** precisa de `legacy/pesquisa_front1.17.py` **e** `legacy/hea_engine.py` (pendência D-01: o `hea_engine.py` não está no repositório). Sem eles, o módulo HEA abre em modo demonstrativo rotulado; nada é inventado em silêncio.
+
+**Passo a passo manual (3 terminais), se preferir:**
+
+```bash
+npm run engine   # motor CrystaLab v1.0 em :8010 (legacy/crystalab_modulo1.py)
+npm run hea      # motor HEA em :8000 (precisa de legacy/hea_engine.py)
+npm run build && npm run serve   # http://127.0.0.1:5173 — proxy /engines/crystalab → :8010, /engines/hea → :8000
+```
+
+Configuração sem recompilar em `dist/config.js` (`crystalabBase`, `heaBase`, `demo: auto|on|off`). `?demo=1` força o modo demonstrativo. A interface legada continua em `/legacy/crystalab/`.
+
+## Qualidade
+
+```bash
+npm run typecheck   # TypeScript estrito (app, service worker, testes)
+npm run lint        # regras do projeto (scripts/lint.mjs)
+npm test            # testes unitários e de adaptadores (sobem o motor real)
+npm run measure     # orçamento do bundle inicial (< 300 kB gzip, sem Three.js)
+npm run e2e:etapa2  # Playwright: troca de módulo sem recarga, tema, idioma, data-testid
+npm run e2e:etapa3  # viewer 3D + métricas (reports/metrics.json)
+npm run e2e:etapa4  # terminal, paleta, modo guiado, Fluxos A e B, acessibilidade/teclado
+npm run e2e:etapas5-7  # Fluxos C, D, E, didática, acessibilidade, PWA offline
+npm run e2e         # todos os fluxos (54 testes)
+npm run i18n        # regenera src/i18n/locales/ a partir de src/i18n/source/*.tsv
 ```
 
 ## Estrutura
 
 ```
-crystalab/
-  __init__.py        versão única (__version__)
-  __main__.py        linha de comando (python -m crystalab)
-  modulo.py          manifesto do módulo para a plataforma Alloy
-  core/              motor puro — SEM FastAPI (única cópia do motor)
-    dados/           metais.json (seed versionado) e interpretacoes.json (textos pt-BR)
-    repositorio.py   protocolo RepositorioMateriais + implementação JSON
-    estruturas.py    tipos de estrutura, grupos espaciais, base cristalográfica
-    geometria.py     vetores, conversões, geometria da célula
-    celula.py        célula unitária, densidade, passo a passo, avisos
-    miller.py        planos e direções
-    exportacao.py    CIF e extXYZ
-  api/               FastAPI: app factory, rotas v1, rotas legadas, erros, segurança
-  web/               index.html + static/ (css, js em módulos ES, Three.js local)
-tests/               pytest (+ Playwright opcional)
+src/app            shell, roteador por hash, inicialização
+src/design-system  tokens, temas, primitivos acessíveis, layout (alloy-ui)
+src/services       api/ (HTTP, contratos zod, cancelamento) · adapters/ (modo demonstrativo)
+src/stores         estado por domínio (Zustand) com histórico
+src/modules        crystalab, hea, didactics, notebook, instructor, catalog, about
+src/features       viewer 3D, terminal, paleta, URL de cena, exportação, PWA
+src/i18n           pt-BR (referência), en, es — gerados de source/*.tsv
+legacy/            motor e interface CrystaLab v1.0 (preservados)
+engine-stub/       servidor de contrato /v1 (somente testes)
+docs/              relatórios por etapa
 ```
 
-## Regras para as próximas adições (evitar choques)
+## Desvios registrados
 
-1. **Um motor só.** Cálculo novo entra em `crystalab/core/` como função pura e é importado pela API. Nunca copie funções para outro arquivo.
-2. **Dados não são código.** Material novo ou correção de valor = editar `core/dados/metais.json` (unidades fixas por campo, fonte obrigatória). O repositório valida o arquivo ao iniciar e recusa dados incoerentes. Quando o banco chegar, crie uma classe que implemente `RepositorioMateriais` e passe em `create_app(repositorio=...)`.
-3. **Contrato v1 só cresce.** Campo novo de resposta: opcional ou com valor padrão. Remover/renomear campo exige `/v2`. As rotas `/api/*` estão congeladas — não adicione nada nelas.
-4. **Erros de usuário** levantam subclasses de `ErroDominio` (viram 400 com `code`). Qualquer outra exceção é tratada como bug (500, sem detalhe para o cliente).
-5. **Front-end:** dados da API entram no DOM só via `h()` (nunca `innerHTML`); novos comandos de terminal com `registrarComando()` em um arquivo próprio; URLs sempre relativas; chaves de `localStorage` com o prefixo `crystalab-`.
-6. **Sem CDN.** Bibliotecas de terceiros vão para `web/static/vendor/` com a licença.
-7. **Integração com o Alloy:** porta própria (8010), prefixo `/crystalab`. Veja `crystalab/modulo.py`.
-
-## Configuração (variáveis de ambiente `CRYSTALAB_*`)
-
-Veja `crystalab/api/config.py` e `.env.example`. Em produção: `CRYSTALAB_ENVIRONMENT=production`
-(desliga `/docs`, proíbe CORS `*`). `CRYSTALAB_JWT_ENABLED` ainda não é suportado e impede a inicialização.
-
-## Dados e fontes
-
-Valores de raio, peso e densidade: Callister & Rethwisch (Tabela 3.1 e apêndices) — edição e página
-ainda a registrar. Parâmetros de rede do α-Ti (a = 0,2951 nm; c = 0,4684 nm): indicados pelo relatório
-de auditoria (CR-01), **a conferir na fonte primária**.
+esbuild no lugar do Vite e lint próprio no lugar do ESLint (registro npm bloqueado — D-19); contratos TypeScript manuais (sem OpenAPI executável — D-15); HEA em modo demonstrativo (motor ausente — D-01). Lista completa em `docs/etapa-1/registro-dependencias.md`.
