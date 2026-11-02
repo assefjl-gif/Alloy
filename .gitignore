@@ -7,3 +7,6 @@ dist/
 .pytest_cache/
 test-results/
 playwright-report/
+*.egg-info/
+var/
+*.db

@@ -139,6 +139,8 @@ class RepositorioJSON:
             bruto = json.loads(Path(caminho).read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             raise ErroDeDados(f"Não foi possível ler {Path(caminho).name}: {exc}") from exc
+        # Mesma convenção do repositório SQL: versão do seed base + versão do seed da v1.4.
+        self.versao_dados = f"{self.versao_dados}+{bruto.get('versao_dados', 'desconhecida')}"
         for registro in bruto.get("valores") or []:
             estado = registro.get("estado")
             if estado not in ESTADOS:

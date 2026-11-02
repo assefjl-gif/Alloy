@@ -2,7 +2,7 @@
 
 Workspace da versão unificada do Alloy Virtual Lab (CrystaLab + HEA + módulos educacionais).
 
-**Estado atual: Fase 2 (arquitetura) concluída; aguardando o Gate 1.** Ainda não há código consolidado. Veja `docs/ARQUITETURA_FINAL.md` e `docs/REGISTRO_DE_GATES.md`.
+**Estado atual: Fase 3 (motor, banco e serviços) concluída; aguardando o Gate 2.** Backend em `backend/` (veja `docs/BACKEND.md`); ainda sem API HTTP nem frontend migrado.
 
 ## Estrutura
 

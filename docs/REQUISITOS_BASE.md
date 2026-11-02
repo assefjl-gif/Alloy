@@ -63,8 +63,8 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
 | RQ-ARQ-01 | Monorepo `frontend/` + `backend/` + `database/` + `infrastructure/` + `docs/` + `scripts/` | Estrutura criada; cada pasta com README; build de cada parte executável isoladamente | 06 | 2 | ◐ esqueleto e READMEs criados na Fase 2; builds a partir da Fase 3 |
-| RQ-ARQ-02 | Camadas do backend: api, schemas, services, engines, repositories, models, security, educational, integrations | Imports respeitam a direção das camadas (teste de arquitetura) | 01 | 2–3 | ◐ B (api/core/repositório) |
-| RQ-ARQ-03 | Motor científico independente de API e UI | `engines/` importável e testável sem FastAPI | 01 | 3 | ✔ B (`core/`), ✘ A/D (monolito) |
+| RQ-ARQ-02 | Camadas do backend: api, schemas, services, engines, repositories, models, security, educational, integrations | Imports respeitam a direção das camadas (teste de arquitetura) | 01 | 2–3 | ✔ Fase 3: camadas core/engines/models/repositories/services; regras testadas (`test_arquitetura.py`) |
+| RQ-ARQ-03 | Motor científico independente de API e UI | `engines/` importável e testável sem FastAPI | 01 | 3 | ✔ Fase 3: `engines/` sem I/O nem FastAPI; teste com violação injetada |
 | RQ-ARQ-04 | Frontend em módulos com fronteiras: app, hea, crystalab, didactics, instructor, notebook, assessments, administration, compartilhados | Lint de fronteiras sem violação | 03/06 | 5 | ◐ C (sem assessments/administration) |
 | RQ-ARQ-05 | Nenhum cálculo científico em componentes React | Busca automática por fórmulas no `frontend/src` limpa; valores vêm da API | 06 | 5 | ◐ C (a confirmar na Fase 5) |
 
@@ -73,18 +73,18 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
 | RQ-CIE-01 | Estruturas CS, CCC, CFC, HC com n, NC, FEA, vazios | Testes de referência por estrutura (FEA 0,524/0,680/0,740/0,740 ideal) | 01 | 3 | ✔ A, B, D |
-| RQ-CIE-02 | Parâmetro de rede: modelo de contato + medido com prioridade e procedência | Ti: ρ dentro de ±1% do experimental; fonte do *a* registrada | 01/02 | 3 | ✔ B (só Ti tem *a* medido) · ◐ A (a_exp sem procedência verificada) |
-| RQ-CIE-03 | Densidade teórica com N_A CODATA 2018 e comparação experimental com aviso de desvio | N_A = 6,02214076e23; aviso acima de 3% | 01 | 3 | ✔ B · ◐ A/D (N_A 6,022e23, sem aviso) |
+| RQ-CIE-02 | Parâmetro de rede: modelo de contato + medido com prioridade e procedência | Ti: ρ dentro de ±1% do experimental; fonte do *a* registrada | 01/02 | 3 | ✔ Fase 3: rede medida prioritária + *a* informado (`a_fonte`); Ti −0,2 %; *a* medido só para Ti até Q-03 |
+| RQ-CIE-03 | Densidade teórica com N_A CODATA 2018 e comparação experimental com aviso de desvio | N_A = 6,02214076e23; aviso acima de 3% | 01 | 3 | ✔ Fase 3: N_A CODATA única (teste de unicidade); aviso de desvio > 3 % |
 | RQ-CIE-04 | Miller (hkl) e Miller-Bravais (hkil), planos e direções, distância interplanar, densidade linear | Mesmos resultados em A/B/D para 10 casos (já verificado) + casos de literatura | 01 | 3 | ✔ A, B, D (geometria idêntica) |
-| RQ-CIE-05 | Densidade e fração planar **só se validadas** | Casos CFC(111)=0,907, CCC(110)=0,833, CFC(100)=0,785 e basal HC confirmados por fonte; HC piramidal validado ou ocultado | 01 + especialista | 3 | ◐ A (implementada; HC não basal sem validação) |
+| RQ-CIE-05 | Densidade e fração planar **só se validadas** | Casos CFC(111)=0,907, CCC(110)=0,833, CFC(100)=0,785 e basal HC confirmados por fonte; HC piramidal validado ou ocultado | 01 + especialista | 3 | ✔ Fase 3: publicada só para famílias validadas (Callister §3.11); demais ocultas com motivo |
 | RQ-CIE-06 | Conversões nm/Å/cm e cartesiano↔fracionário centralizadas | Constantes únicas; testes de ida e volta | 01 | 3 | ✔ B (`constantes.py`, `geometria.py`) |
 | RQ-CIE-07 | Grupo espacial e Wyckoff por estrutura | Pm-3m 221, Im-3m 229, Fm-3m 225, P6₃/mmc 194 | 01 | 3 | ✔ B |
-| RQ-CIE-08 | Supercélulas e famílias de planos | Contagem de átomos por n×n×n; planos paralelos dentro da caixa | 01 | 3 | ✔ A (motor) · ◐ C (supercélula só no desenho, D-10/D-11) |
+| RQ-CIE-08 | Supercélulas e famílias de planos | Contagem de átomos por n×n×n; planos paralelos dentro da caixa | 01 | 3 | ✔ Fase 3: supercélula e famílias no motor (contagens por força bruta); consumo pelo viewer na Fase 5 |
 | RQ-CIE-09 | Exportação CIF e XYZ | CIF validado com Gemmi (§13.3) | 01 | 3 | ✔ B (CIF/XYZ) · ◐ A (XYZ no cliente) |
-| RQ-CIE-10 | Passo a passo de *a*, FEA e densidade | Passos com valores intermediários reais (fecha D-12 do C) | 01 | 3 | ✔ A (3 tipos) · ◐ B (só densidade) |
-| RQ-CIE-11 | Ligas: Vegard, Hume-Rothery, % at↔% peso, intersticiais, ordenação, distorção ilustrativa | Cu–Ni conforme Callister; distorção rotulada como ilustrativa | 01 + especialista | 3/6 | ✔ A (dados de eletronegatividade/valência precisam de procedência) |
-| RQ-CIE-12 | Temperatura: dilatação, vibração (Lindemann), alotropia | α e Tf com fonte por metal; modelo rotulado como aproximação | 01 + especialista | 3/6 | ✔ A (procedência dos valores α/Tf pendente) |
-| RQ-CIE-13 | Resultados idênticos em qualquer módulo que os consuma | Teste de contrato garante uma só implementação por fórmula | 06 | 6 | ✘ (hoje A, B e D divergem em Ti e N_A) |
+| RQ-CIE-10 | Passo a passo de *a*, FEA e densidade | Passos com valores intermediários reais (fecha D-12 do C) | 01 | 3 | ✔ Fase 3: passos de *a*, FEA e densidade |
+| RQ-CIE-11 | Ligas: Vegard, Hume-Rothery, % at↔% peso, intersticiais, ordenação, distorção ilustrativa | Cu–Ni conforme Callister; distorção rotulada como ilustrativa | 01 + especialista | 3/6 | ◐ Fase 3: motor pronto; χ e valência em rascunho (bloqueados em prod até Q-03) |
+| RQ-CIE-12 | Temperatura: dilatação, vibração (Lindemann), alotropia | α e Tf com fonte por metal; modelo rotulado como aproximação | 01 + especialista | 3/6 | ◐ Fase 3: motor pronto; α, T_f e alotropia em rascunho (bloqueados em prod até Q-03) |
+| RQ-CIE-13 | Resultados idênticos em qualquer módulo que os consuma | Teste de contrato garante uma só implementação por fórmula | 06 | 6 | ✔ Fase 3: núcleo único; regressão A/B/D com divergências explicadas; banco = JSON campo a campo |
 
 ### 3.3 Motor HEA — §6.3
 
@@ -101,12 +101,12 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
-| RQ-DAD-01 | PostgreSQL como fonte única de verdade; SQLAlchemy 2.x + Alembic | `alembic upgrade head` em banco vazio e downgrade testado | 02 | 3 | ✘ (A: JSON local; B: JSON seed; C: localStorage) |
-| RQ-DAD-02 | Entidades mínimas do §7.1 (usuários, instituições, turmas, materiais, ligas, propriedades, cálculos, educacional, professor) | Diagrama ER + dicionário de dados aprovados | 02 | 2 | ✘ |
-| RQ-DAD-03 | PK, FK, constraints, índices justificados por consulta, transações | Testes de integridade e de violação de FK | 02 | 3 | ✘ |
-| RQ-DAD-04 | Versionamento e histórico de dados científicos | Alterar dado validado cria nova versão; antiga preservada | 02 | 3 | ◐ B (`versao_dados` no seed) |
+| RQ-DAD-01 | PostgreSQL como fonte única de verdade; SQLAlchemy 2.x + Alembic | `alembic upgrade head` em banco vazio e downgrade testado | 02 | 3 | ◐ Fase 3: SQLAlchemy 2 + Alembic (2 migrações, upgrade/downgrade/check ok no SQLite, DDL Postgres gerado); falta executar em PostgreSQL (L-01) |
+| RQ-DAD-02 | Entidades mínimas do §7.1 (usuários, instituições, turmas, materiais, ligas, propriedades, cálculos, educacional, professor) | Diagrama ER + dicionário de dados aprovados | 02 | 2 | ✔ Fase 3: 36 tabelas mapeadas (desvios em BACKEND.md) |
+| RQ-DAD-03 | PK, FK, constraints, índices justificados por consulta, transações | Testes de integridade e de violação de FK | 02 | 3 | ◐ Fase 3: PK/FK/CHECK/índices parciais testados no SQLite com FK ligada; validar no PostgreSQL |
+| RQ-DAD-04 | Versionamento e histórico de dados científicos | Alterar dado validado cria nova versão; antiga preservada | 02 | 3 | ✔ Fase 3: append-only com `substitui_id`/`vigente` (teste) + `versoes_dados` |
 | RQ-DAD-05 | Repositório científico aberto com estados rascunho → aguardando validação → validado / rejeitado / arquivado | Máquina de estados testada; aluno não promove a "validado" | 02/04 | 3/7 | ✘ |
-| RQ-DAD-06 | Unidade, procedência e licença por valor científico | Coluna/metadado obrigatório; inserção sem fonte rejeitada | 02 | 3 | ◐ B (fonte por metal; Callister sem edição/página — CR-10) |
+| RQ-DAD-06 | Unidade, procedência e licença por valor científico | Coluna/metadado obrigatório; inserção sem fonte rejeitada | 02 | 3 | ✔ Fase 3: unidade, classe, estado e fonte por valor; CHECK `validado` exige fonte (teste) |
 | RQ-DAD-07 | Backup e restauração testados | Restore em ambiente de teste documentado | 02 | 8 | ✘ |
 | RQ-DAD-08 | Persistência confirmada após reinicialização | Teste E2E reinicia o serviço e relê | 06/07 | 9 | ✘ |
 
@@ -160,9 +160,9 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
-| RQ-QA-01 | Backend: unitários, integração, API, schemas, persistência, auth, permissões, concorrência, erros, migração | Suíte verde no CI | 07 | 9 | ◐ B (71 passam, 1 pulado) |
+| RQ-QA-01 | Backend: unitários, integração, API, schemas, persistência, auth, permissões, concorrência, erros, migração | Suíte verde no CI | 07 | 9 | ◐ Fase 3: 206 aprovados / 22 pulados (21 PostgreSQL, 1 Gemmi) |
 | RQ-QA-02 | Frontend: typecheck, lint, unitários, componentes, navegação, a11y, responsividade, E2E Playwright | Suíte verde **em Linux e Windows** | 07 | 9 | ◐ C (typecheck ok; lint e 6/76 unitários falham no Windows; E2E não executado aqui) |
-| RQ-QA-03 | Testes científicos de referência com literatura e comparação entre versões | Casos com fonte citada; regressão A/B/D automatizada | 07 + especialista | 3/9 | ◐ `_auditoria/comparar_motores.py` |
+| RQ-QA-03 | Testes científicos de referência com literatura e comparação entre versões | Casos com fonte citada; regressão A/B/D automatizada | 07 + especialista | 3/9 | ✔ Fase 3: `tests/scientific/test_regressao_versoes.py` + referências de literatura nos testes do motor |
 | RQ-QA-04 | Fluxos A–E (seção 4) aprovados sem dados fictícios | Evidência por fluxo | 07 | 9 | ◐ C (A–E aprovados contra stub e demo) |
 | RQ-QA-05 | Validação de CIF com Gemmi | Teste usando o extra `validacao` do B | 07 | 9 | ◐ B (dependência opcional prevista) |
 
