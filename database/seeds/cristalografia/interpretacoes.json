@@ -1,0 +1,23 @@
+{
+  "pt-BR": {
+    "CS": [
+      "Na cúbica simples os átomos se tocam ao longo da aresta: a = 2R.",
+      "Só 52% do volume é ocupado por átomos (NC = 6). É rara em metais; o exemplo clássico é o Po-α."
+    ],
+    "CCC": [
+      "Na CCC os átomos se tocam ao longo da diagonal do cubo: 4R = a√3.",
+      "FEA = 0,68 → 32% de espaços vazios. Cada átomo tem 8 vizinhos mais próximos.",
+      "Exemplos: Fe-α, Cr, Mo, W. A direção compacta é a família ⟨111⟩."
+    ],
+    "CFC": [
+      "Na CFC os átomos se tocam ao longo da diagonal da face: 4R = a√2.",
+      "FEA = 0,74, o máximo para esferas iguais. Os planos {111} são compactos e se empilham na sequência ABCABC.",
+      "Exemplos: Cu, Al, Ni, Ag, Au. A direção compacta é a família ⟨110⟩."
+    ],
+    "HC": [
+      "Na HC os planos basais (0001) são compactos e se empilham na sequência ABAB.",
+      "Com c/a ideal = 1,633 o FEA vale 0,74, igual ao da CFC. Um c/a real diferente altera o FEA.",
+      "Exemplos: Mg, Ti-α, Zn, Co. Índices de Miller-Bravais (h k i l) usam i = -(h + k)."
+    ]
+  }
+}

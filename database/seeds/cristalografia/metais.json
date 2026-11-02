@@ -1,0 +1,39 @@
+{
+  "versao_dados": "2026.10.1",
+  "descricao": "Seed de metais puros do CrystaLab (Módulo 1). Incluir ou corrigir um material é uma alteração DESTE arquivo, sem mudar código. Unidades fixas por campo (ver 'unidades').",
+  "unidades": {
+    "raio_nm": "nm (raio atômico metálico, NC 12 ou o NC da estrutura tabelada)",
+    "peso_g_mol": "g/mol",
+    "densidade_exp_g_cm3": "g/cm³ (temperatura ambiente)",
+    "c_a": "adimensional",
+    "a_nm": "nm (parâmetro de rede medido; quando presente, tem prioridade sobre a = k·R)",
+    "c_nm": "nm (parâmetro de rede medido, apenas HC)"
+  },
+  "fontes": {
+    "callister": {
+      "citacao": "Callister, W. D.; Rethwisch, D. G. Ciência e Engenharia de Materiais: Uma Introdução. Tabela 3.1 e apêndices.",
+      "observacao": "Edição e página ainda não registradas (achado CR-10)."
+    },
+    "auditoria_cr01": {
+      "citacao": "Relatório Técnico de Auditoria Alloy/CrystaLab, 18/10/2026, achado CR-01.",
+      "observacao": "Parâmetros de rede do α-Ti indicados pelo relatório; conferir na fonte primária antes de publicar."
+    }
+  },
+  "metais": [
+    {"simbolo": "Fe", "nome": "Ferro (α)", "estrutura": "CCC", "raio_nm": 0.1241, "peso_g_mol": 55.85, "densidade_exp_g_cm3": 7.87, "aliases": ["ferro", "iron"], "fonte": "callister"},
+    {"simbolo": "Cr", "nome": "Cromo", "estrutura": "CCC", "raio_nm": 0.1249, "peso_g_mol": 52.00, "densidade_exp_g_cm3": 7.19, "aliases": ["cromo", "chromium"], "fonte": "callister"},
+    {"simbolo": "Mo", "nome": "Molibdênio", "estrutura": "CCC", "raio_nm": 0.1363, "peso_g_mol": 95.94, "densidade_exp_g_cm3": 10.22, "aliases": ["molibdenio", "molybdenum"], "fonte": "callister"},
+    {"simbolo": "W", "nome": "Tungstênio", "estrutura": "CCC", "raio_nm": 0.1371, "peso_g_mol": 183.84, "densidade_exp_g_cm3": 19.30, "aliases": ["tungstenio", "tungsten"], "fonte": "callister"},
+    {"simbolo": "Cu", "nome": "Cobre", "estrutura": "CFC", "raio_nm": 0.1278, "peso_g_mol": 63.55, "densidade_exp_g_cm3": 8.94, "aliases": ["cobre", "copper"], "fonte": "callister"},
+    {"simbolo": "Al", "nome": "Alumínio", "estrutura": "CFC", "raio_nm": 0.1431, "peso_g_mol": 26.98, "densidade_exp_g_cm3": 2.71, "aliases": ["aluminio", "aluminum"], "fonte": "callister"},
+    {"simbolo": "Ni", "nome": "Níquel", "estrutura": "CFC", "raio_nm": 0.1246, "peso_g_mol": 58.69, "densidade_exp_g_cm3": 8.90, "aliases": ["niquel", "nickel"], "fonte": "callister"},
+    {"simbolo": "Ag", "nome": "Prata", "estrutura": "CFC", "raio_nm": 0.1445, "peso_g_mol": 107.87, "densidade_exp_g_cm3": 10.49, "aliases": ["prata", "silver"], "fonte": "callister"},
+    {"simbolo": "Au", "nome": "Ouro", "estrutura": "CFC", "raio_nm": 0.1442, "peso_g_mol": 196.97, "densidade_exp_g_cm3": 19.32, "aliases": ["ouro", "gold"], "fonte": "callister"},
+    {"simbolo": "Pb", "nome": "Chumbo", "estrutura": "CFC", "raio_nm": 0.1750, "peso_g_mol": 207.20, "densidade_exp_g_cm3": 11.35, "aliases": ["chumbo", "lead"], "fonte": "callister"},
+    {"simbolo": "Mg", "nome": "Magnésio", "estrutura": "HC", "raio_nm": 0.1600, "peso_g_mol": 24.31, "densidade_exp_g_cm3": 1.74, "c_a": 1.624, "aliases": ["magnesio", "magnesium"], "fonte": "callister"},
+    {"simbolo": "Ti", "nome": "Titânio (α)", "estrutura": "HC", "raio_nm": 0.1445, "peso_g_mol": 47.87, "densidade_exp_g_cm3": 4.51, "c_a": 1.587, "a_nm": 0.2951, "c_nm": 0.4684, "aliases": ["titanio", "titanium"], "fonte": "callister", "fonte_rede": "auditoria_cr01"},
+    {"simbolo": "Zn", "nome": "Zinco", "estrutura": "HC", "raio_nm": 0.1332, "peso_g_mol": 65.41, "densidade_exp_g_cm3": 7.13, "c_a": 1.856, "aliases": ["zinco", "zinc"], "fonte": "callister"},
+    {"simbolo": "Co", "nome": "Cobalto", "estrutura": "HC", "raio_nm": 0.1253, "peso_g_mol": 58.93, "densidade_exp_g_cm3": 8.90, "c_a": 1.623, "aliases": ["cobalto", "cobalt"], "fonte": "callister"},
+    {"simbolo": "Po", "nome": "Polônio (α)", "estrutura": "CS", "raio_nm": 0.1680, "peso_g_mol": 209.00, "densidade_exp_g_cm3": 9.20, "aliases": ["polonio", "polonium"], "fonte": "callister"}
+  ]
+}

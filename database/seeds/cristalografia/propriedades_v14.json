@@ -1,0 +1,742 @@
+{
+ "versao_dados": "2026.11.1-v14",
+ "descricao": "Dados introduzidos pela v1.4. TODOS em rascunho até validação humana com fonte (Q-03).",
+ "valores": [
+  {
+   "simbolo": "Ag",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 19.7,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ag",
+   "codigo": "temperatura_fusao",
+   "valor": 962,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ag",
+   "codigo": "eletronegatividade",
+   "valor": 1.9,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ag",
+   "codigo": "valencia",
+   "valor": 1,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Al",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 23.6,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Al",
+   "codigo": "temperatura_fusao",
+   "valor": 660,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Al",
+   "codigo": "eletronegatividade",
+   "valor": 1.5,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Al",
+   "codigo": "valencia",
+   "valor": 3,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Au",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 14.2,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Au",
+   "codigo": "temperatura_fusao",
+   "valor": 1064,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Au",
+   "codigo": "eletronegatividade",
+   "valor": 2.4,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Au",
+   "codigo": "valencia",
+   "valor": 1,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Co",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 13.0,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Co",
+   "codigo": "temperatura_fusao",
+   "valor": 1495,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Co",
+   "codigo": "eletronegatividade",
+   "valor": 1.8,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Co",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cr",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 6.2,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cr",
+   "codigo": "temperatura_fusao",
+   "valor": 1857,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cr",
+   "codigo": "eletronegatividade",
+   "valor": 1.6,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cr",
+   "codigo": "valencia",
+   "valor": 3,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cu",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 17.0,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cu",
+   "codigo": "temperatura_fusao",
+   "valor": 1085,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cu",
+   "codigo": "eletronegatividade",
+   "valor": 1.9,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Cu",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Fe",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 11.8,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Fe",
+   "codigo": "temperatura_fusao",
+   "valor": 1538,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Fe",
+   "codigo": "eletronegatividade",
+   "valor": 1.8,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Fe",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mg",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 25.2,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mg",
+   "codigo": "temperatura_fusao",
+   "valor": 650,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mg",
+   "codigo": "eletronegatividade",
+   "valor": 1.2,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mg",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mo",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 4.9,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mo",
+   "codigo": "temperatura_fusao",
+   "valor": 2623,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mo",
+   "codigo": "eletronegatividade",
+   "valor": 1.8,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Mo",
+   "codigo": "valencia",
+   "valor": 4,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ni",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 13.3,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ni",
+   "codigo": "temperatura_fusao",
+   "valor": 1455,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ni",
+   "codigo": "eletronegatividade",
+   "valor": 1.8,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ni",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Pb",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 29.0,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Pb",
+   "codigo": "temperatura_fusao",
+   "valor": 327,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Pb",
+   "codigo": "eletronegatividade",
+   "valor": 1.8,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Pb",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Po",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 23.5,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Po",
+   "codigo": "temperatura_fusao",
+   "valor": 254,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Po",
+   "codigo": "eletronegatividade",
+   "valor": 2.0,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Po",
+   "codigo": "valencia",
+   "valor": 4,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ti",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 8.6,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ti",
+   "codigo": "temperatura_fusao",
+   "valor": 1668,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ti",
+   "codigo": "eletronegatividade",
+   "valor": 1.5,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Ti",
+   "codigo": "valencia",
+   "valor": 4,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "W",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 4.5,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "W",
+   "codigo": "temperatura_fusao",
+   "valor": 3422,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "W",
+   "codigo": "eletronegatividade",
+   "valor": 1.7,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "W",
+   "codigo": "valencia",
+   "valor": 4,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Zn",
+   "codigo": "coef_dilatacao_linear",
+   "valor": 30.2,
+   "unidade": "1e-6/K",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Zn",
+   "codigo": "temperatura_fusao",
+   "valor": 420,
+   "unidade": "°C",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Zn",
+   "codigo": "eletronegatividade",
+   "valor": 1.6,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "Zn",
+   "codigo": "valencia",
+   "valor": 2,
+   "unidade": "adimensional",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "C",
+   "codigo": "raio_atomico",
+   "valor": 0.071,
+   "unidade": "nm",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "C",
+   "codigo": "massa_atomica",
+   "valor": 12.011,
+   "unidade": "g/mol",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "C",
+   "codigo": "eletronegatividade",
+   "valor": 2.5,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "H",
+   "codigo": "raio_atomico",
+   "valor": 0.046,
+   "unidade": "nm",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "H",
+   "codigo": "massa_atomica",
+   "valor": 1.008,
+   "unidade": "g/mol",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "H",
+   "codigo": "eletronegatividade",
+   "valor": 2.1,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "N",
+   "codigo": "raio_atomico",
+   "valor": 0.065,
+   "unidade": "nm",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "N",
+   "codigo": "massa_atomica",
+   "valor": 14.007,
+   "unidade": "g/mol",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  },
+  {
+   "simbolo": "N",
+   "codigo": "eletronegatividade",
+   "valor": 3.0,
+   "unidade": "Pauling",
+   "estado": "rascunho",
+   "fonte": null,
+   "origem": "CrystaLab v1.4 (PROPRIEDADES_EXTRAS / INTERSTICIAIS / ALOTROPIA) — sem fonte registrada"
+  }
+ ],
+ "intersticiais": [
+  {
+   "simbolo": "C",
+   "nome": "Carbono",
+   "aliases": [
+    "carbono",
+    "carbon"
+   ]
+  },
+  {
+   "simbolo": "H",
+   "nome": "Hidrogênio",
+   "aliases": [
+    "hidrogenio",
+    "hydrogen"
+   ]
+  },
+  {
+   "simbolo": "N",
+   "nome": "Nitrogênio",
+   "aliases": [
+    "nitrogenio",
+    "nitrogen",
+    "azoto"
+   ]
+  }
+ ],
+ "transicoes_alotropicas": [
+  {
+   "simbolo": "Co",
+   "de_c": -273.15,
+   "ate_c": 422,
+   "fase": "ε",
+   "estrutura": "HC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Co",
+   "de_c": 422,
+   "ate_c": 1495,
+   "fase": "β",
+   "estrutura": "CFC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Fe",
+   "de_c": -273.15,
+   "ate_c": 912,
+   "fase": "α",
+   "estrutura": "CCC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Fe",
+   "de_c": 912,
+   "ate_c": 1394,
+   "fase": "γ",
+   "estrutura": "CFC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Fe",
+   "de_c": 1394,
+   "ate_c": 1538,
+   "fase": "δ",
+   "estrutura": "CCC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Ti",
+   "de_c": -273.15,
+   "ate_c": 882,
+   "fase": "α",
+   "estrutura": "HC",
+   "estado": "rascunho",
+   "fonte": null
+  },
+  {
+   "simbolo": "Ti",
+   "de_c": 882,
+   "ate_c": 1668,
+   "fase": "β",
+   "estrutura": "CCC",
+   "estado": "rascunho",
+   "fonte": null
+  }
+ ],
+ "cores_padrao": {
+  "esquema": "Jmol/CPK (convenção de visualização, não dado científico)",
+  "cores": {
+   "Ag": "#c0c0c0",
+   "Al": "#bfa6a6",
+   "Au": "#ffd123",
+   "Co": "#f090a0",
+   "Cr": "#8a99c7",
+   "Cu": "#c88033",
+   "Fe": "#e06633",
+   "Mg": "#8aff00",
+   "Mo": "#54b5b5",
+   "Ni": "#50d050",
+   "Pb": "#575961",
+   "Po": "#ab5c00",
+   "Ti": "#bfc2c7",
+   "W": "#2194d6",
+   "Zn": "#7d80b0",
+   "C": "#909090",
+   "N": "#3050f8",
+   "H": "#e8e8e8"
+  }
+ }
+}
