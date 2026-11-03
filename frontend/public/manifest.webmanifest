@@ -1,0 +1,19 @@
+{
+  "name": "Alloy Virtual Lab",
+  "short_name": "Alloy Lab",
+  "description": "Laboratório didático de Ciência e Engenharia de Materiais: CrystaLab e HEA Virtual Lab.",
+  "lang": "pt-BR",
+  "start_url": "./#/crystalab",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#11151c",
+  "theme_color": "#11151c",
+  "categories": ["education", "science"],
+  "icons": [
+    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

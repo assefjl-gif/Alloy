@@ -1,0 +1,319 @@
+{
+ "_fonte": "Resposta real do motor CrystaLab v1.0 (legacy/crystalab_modulo1.py, POST /api/estrutura {\"nome\":\"Fe\"}), capturada em 2026-10-21.",
+ "result": {
+  "rotulo": "Fe — Ferro (α)",
+  "simbolo": "Fe",
+  "nome_metal": "Ferro (α)",
+  "editado": false,
+  "generica": false,
+  "estrutura": "CCC",
+  "estrutura_nome": "Cúbica de Corpo Centrado",
+  "relacao_a": "a = 4R/√3",
+  "contato": "diagonal do cubo",
+  "n": 2,
+  "nc": 8,
+  "fea": 0.6801747615878313,
+  "vazios": 0.3198252384121687,
+  "a_em_R": 2.3094010767585034,
+  "c_a": null,
+  "raio_nm": 0.1241,
+  "peso": 55.85,
+  "a_nm": 0.28659667362573027,
+  "c_nm": null,
+  "volume_nm3": 0.023540378224756717,
+  "volume_cm3": 2.3540378224756716e-23,
+  "densidade": 7.8795059088767045,
+  "densidade_exp": 7.87,
+  "erro_percent": 0.12078664392254357,
+  "raio_relativo": 0.43301270189221924,
+  "atomos": [
+   {
+    "pos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     1.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.0,
+     1.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     0.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     1.0,
+     0.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "tipo": "vertice",
+    "fracao": 0.125,
+    "fracao_txt": "1/8"
+   },
+   {
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "tipo": "centro",
+    "fracao": 1.0,
+    "fracao_txt": "1"
+   }
+  ],
+  "arestas": [
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     0.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     0.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   [
+    [
+     1.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0
+    ]
+   ]
+  ],
+  "contagem": [
+   {
+    "tipo": "vertice",
+    "rotulo": "Vértices",
+    "quantidade": 8,
+    "fracao": 0.125,
+    "fracao_txt": "1/8",
+    "contribuicao": 1.0
+   },
+   {
+    "tipo": "centro",
+    "rotulo": "Centro do cubo",
+    "quantidade": 1,
+    "fracao": 1.0,
+    "fracao_txt": "1",
+    "contribuicao": 1.0
+   }
+  ],
+  "passos_densidade": [
+   {
+    "titulo": "Dados de entrada",
+    "formula": "R = 0,1241 nm   A = 55,85 g/mol   n = 2 átomos/célula   N_A = 6,022 × 10²³ átomos/mol",
+    "detalhe": "Na estrutura CCC cada célula unitária contém 2 átomo(s) equivalente(s)."
+   },
+   {
+    "titulo": "Parâmetro de rede",
+    "formula": "a = 4R/√3 = 4 × 0,1241 / √3 = 0,2866 nm = 2,866 × 10⁻⁸ cm",
+    "detalhe": "Os átomos se tocam ao longo da diagonal do cubo."
+   },
+   {
+    "titulo": "Volume da célula unitária",
+    "formula": "Vc = a³ = (2,866 × 10⁻⁸ cm)³ = 2,354 × 10⁻²³ cm³",
+    "detalhe": "1 nm = 10⁻⁷ cm, logo 1 nm³ = 10⁻²¹ cm³."
+   },
+   {
+    "titulo": "Densidade teórica",
+    "formula": "ρ = n·A / (Vc·N_A) = (2 × 55,85) / (2,354 × 10⁻²³ × 6,022 × 10²³) = 7,880 g/cm³",
+    "detalhe": "Massa dos átomos contidos na célula dividida pelo volume da célula."
+   },
+   {
+    "titulo": "Comparação experimental",
+    "formula": "ρ exp = 7,87 g/cm³ → desvio = +0,12 %",
+    "detalhe": "Diferenças vêm de raios tabelados arredondados, lacunas e expansão térmica."
+   }
+  ],
+  "interpretacao": [
+   "Na CCC os átomos se tocam ao longo da diagonal do cubo: 4R = a√3.",
+   "FEA = 0,68 → 32% de espaços vazios. Cada átomo tem 8 vizinhos mais próximos.",
+   "Exemplos: Fe-α, Cr, Mo, W. A direção compacta é a família ⟨111⟩.",
+   "Densidade teórica calculada: 7,880 g/cm³ (experimental 7,87 g/cm³, desvio +0,12%)."
+  ]
+ }
+}

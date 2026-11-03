@@ -1,0 +1,124 @@
+# chave	pt-BR	en	es
+cmd.amb.metalOrStructure	“{text}” pode ser um metal ou uma estrutura. Qual você quis dizer?	“{text}” can be a metal or a structure. Which did you mean?	«{text}» puede ser un metal o una estructura. ¿Cuál quiso decir?
+cmd.amb.chooseMetal	Metal {symbol} ({name})	Metal {symbol} ({name})	Metal {symbol} ({name})
+cmd.amb.chooseStructure	Estrutura {code}	Structure {code}	Estructura {code}
+cmd.amb.lowercaseA	“a={value}” é ambíguo: no CrystaLab v1.0 significava massa atômica (A); também pode ser lido como parâmetro de rede a, que o motor calcula a partir de r.	“a={value}” is ambiguous: in CrystaLab v1.0 it meant atomic mass (A); it can also be read as the lattice parameter a, which the engine computes from r.	«a={value}» es ambiguo: en CrystaLab v1.0 significaba masa atómica (A); también puede leerse como parámetro de red a, que el motor calcula a partir de r.
+cmd.amb.chooseAtomicMass	Usar A = {value} g/mol (massa atômica)	Use A = {value} g/mol (atomic mass)	Usar A = {value} g/mol (masa atómica)
+cmd.amb.chooseLattice	Era o parâmetro de rede: ver ajuda	It was the lattice parameter: see help	Era el parámetro de red: ver ayuda
+cmd.cancelled	Operação cancelada.	Operation cancelled.	Operación cancelada.
+cmd.desc.usar	Carrega um metal do catálogo do motor (ou uma estrutura genérica), com sobrescritas opcionais.	Loads a metal from the engine catalogue (or a generic structure), with optional overrides.	Carga un metal del catálogo del motor (o una estructura genérica), con sobrescrituras opcionales.
+cmd.desc.estrutura	Monta uma célula CS, CCC, CFC ou HC com raio, massa atômica e c/a informados.	Builds an SC, BCC, FCC or HCP cell with the given radius, atomic mass and c/a.	Construye una celda CS, BCC, FCC o HC con el radio, la masa atómica y c/a indicados.
+cmd.desc.plano	Desenha um plano de Miller (3 índices) ou Miller-Bravais (4 índices, HC) calculado pelo motor.	Draws a Miller plane (3 indices) or Miller-Bravais plane (4 indices, HCP) computed by the engine.	Dibuja un plano de Miller (3 índices) o Miller-Bravais (4 índices, HC) calculado por el motor.
+cmd.desc.direcao	Desenha uma direção cristalográfica calculada pelo motor.	Draws a crystallographic direction computed by the engine.	Dibuja una dirección cristalográfica calculada por el motor.
+cmd.desc.densidade	Mostra o passo a passo da densidade teórica devolvido pelo motor.	Shows the theoretical density step by step as returned by the engine.	Muestra el paso a paso de la densidad teórica devuelto por el motor.
+cmd.desc.aplicar	Envia o editor de parâmetros ao motor (equivale ao botão Renderizar).	Sends the parameter editor to the engine (same as the Render button).	Envía el editor de parámetros al motor (equivale al botón Renderizar).
+cmd.desc.listar	Lista os metais e as estruturas do catálogo do motor.	Lists the metals and structures in the engine catalogue.	Lista los metales y las estructuras del catálogo del motor.
+cmd.desc.supercelula	Repete a célula em réplicas gráficas (1 a 4 por eixo); n não muda.	Repeats the cell as graphical replicas (1 to 4 per axis); n does not change.	Repite la celda en réplicas gráficas (1 a 4 por eje); n no cambia.
+cmd.desc.esferas	Alterna o modo de átomos: rígidas, reduzidas, bola-bastão ou pontos.	Switches the atom display: rigid, reduced, ball-and-stick or points.	Alterna el modo de átomos: rígidas, reducidas, bola-varilla o puntos.
+cmd.desc.girar	Liga ou desliga a rotação automática.	Turns automatic rotation on or off.	Activa o desactiva la rotación automática.
+cmd.desc.eixos	Mostra ou oculta os eixos.	Shows or hides the axes.	Muestra u oculta los ejes.
+cmd.desc.arestas	Mostra ou oculta as arestas da célula.	Shows or hides the cell edges.	Muestra u oculta las aristas de la celda.
+cmd.desc.rede	Mostra ou oculta os pontos de rede.	Shows or hides the lattice points.	Muestra u oculta los puntos de red.
+cmd.desc.rotulos	Mostra ou oculta os rótulos.	Shows or hides the labels.	Muestra u oculta las etiquetas.
+cmd.desc.vista	Volta a câmera à vista inicial.	Returns the camera to the initial view.	Devuelve la cámara a la vista inicial.
+cmd.desc.medir	Mede distância (2 átomos) ou ângulo (3 átomos) por clique ou pelo número dos átomos.	Measures distance (2 atoms) or angle (3 atoms) by clicking or by atom number.	Mide distancia (2 átomos) o ángulo (3 átomos) con clic o por el número de los átomos.
+cmd.desc.encerrarMedicao	Encerra o modo de medição.	Ends measuring mode.	Termina el modo de medición.
+cmd.desc.animacao	Abre uma animação didática: empilhamento, α → γ ou vibração térmica.	Opens a teaching animation: stacking, α → γ or thermal vibration.	Abre una animación didáctica: apilamiento, α → γ o vibración térmica.
+cmd.desc.exportar	Exporta a cena: CIF/XYZ (motor), PNG, PDF ou JSON.	Exports the scene: CIF/XYZ (engine), PNG, PDF or JSON.	Exporta la escena: CIF/XYZ (motor), PNG, PDF o JSON.
+cmd.desc.compartilhar	Gera um link que reabre esta cena.	Creates a link that reopens this scene.	Genera un enlace que reabre esta escena.
+cmd.desc.salvar	Salva a cena como workspace neste navegador.	Saves the scene as a workspace in this browser.	Guarda la escena como espacio de trabajo en este navegador.
+cmd.desc.limpar	Limpa a cena (índices, medições) e o registro do terminal.	Clears the scene (indices, measurements) and the terminal log.	Limpia la escena (índices, mediciones) y el registro del terminal.
+cmd.desc.desfazer	Desfaz a última alteração da cena.	Undoes the last scene change.	Deshace el último cambio de la escena.
+cmd.desc.refazer	Refaz a alteração desfeita.	Redoes the undone change.	Rehace el cambio deshecho.
+cmd.desc.heaUsar	Carrega uma liga do banco de blocos HEA.	Loads an alloy from the HEA block bank.	Carga una aleación del banco de bloques HEA.
+cmd.desc.heaSet	Define a composição inteira (frações ou % atômica).	Sets the whole composition (fractions or atomic %).	Define la composición completa (fracciones o % atómico).
+cmd.desc.heaAdd	Adiciona ou altera um elemento da composição.	Adds or changes one element of the composition.	Añade o cambia un elemento de la composición.
+cmd.desc.heaRem	Remove um elemento da composição.	Removes an element from the composition.	Quita un elemento de la composición.
+cmd.desc.heaNome	Dá nome à liga.	Names the alloy.	Da nombre a la aleación.
+cmd.desc.heaAnalisar	Envia a composição ao preditor HEA.	Sends the composition to the HEA predictor.	Envía la composición al predictor HEA.
+cmd.desc.heaNormalizar	Normaliza a composição para 100 %.	Normalises the composition to 100 %.	Normaliza la composición al 100 %.
+cmd.desc.heaLimpar	Limpa o editor de composição.	Clears the composition editor.	Limpia el editor de composición.
+cmd.desc.heaCrystalab	Abre a estrutura prevista no CrystaLab (sem alterar o resultado HEA).	Opens the predicted structure in CrystaLab (without changing the HEA result).	Abre la estructura prevista en CrystaLab (sin alterar el resultado HEA).
+cmd.desc.ajuda	Mostra a lista de comandos ou a ajuda de um comando.	Shows the command list or help for one command.	Muestra la lista de comandos o la ayuda de un comando.
+cmd.desc.tema	Alterna o tema claro/escuro.	Switches light/dark theme.	Alterna el tema claro/oscuro.
+cmd.desc.idioma	Muda o idioma da interface.	Changes the interface language.	Cambia el idioma de la interfaz.
+cmd.desc.abrir	Abre outro módulo.	Opens another module.	Abre otro módulo.
+cmd.desc.cancelar	Cancela a operação em andamento.	Cancels the running operation.	Cancela la operación en curso.
+cmd.err.empty	Comando vazio.	Empty command.	Comando vacío.
+cmd.err.unknownCommand	Comando desconhecido: “{text}”.	Unknown command: “{text}”.	Comando desconocido: «{text}».
+cmd.err.noArgs	Este comando não aceita argumentos (recebeu “{arg}”).	This command takes no arguments (got “{arg}”).	Este comando no acepta argumentos (recibió «{arg}»).
+cmd.err.missingMaterial	Informe o metal ou a estrutura.	Enter the metal or structure.	Indique el metal o la estructura.
+cmd.err.missingStructure	Informe a estrutura (CS, CCC, CFC ou HC).	Enter the structure (SC, BCC, FCC or HCP — CS, CCC, CFC or HC).	Indique la estructura (CS, CCC, CFC o HC).
+cmd.err.unknownStructure	Estrutura desconhecida: “{text}”.	Unknown structure: “{text}”.	Estructura desconocida: «{text}».
+cmd.err.badNumber	Número inválido em “{text}”.	Invalid number in “{text}”.	Número no válido en «{text}».
+cmd.err.unknownKey	Parâmetro desconhecido: “{key}”.	Unknown parameter: “{key}”.	Parámetro desconocido: «{key}».
+cmd.err.expectedPair	Esperava chave=valor e recebeu “{text}”.	Expected key=value and got “{text}”.	Se esperaba clave=valor y se recibió «{text}».
+cmd.err.missingIndices	Informe os índices.	Enter the indices.	Indique los índices.
+cmd.err.notInteger	Índice não inteiro: “{text}”.	Non-integer index: “{text}”.	Índice no entero: «{text}».
+cmd.err.indexCount	São necessários 3 ou 4 índices (recebi {count}).	3 or 4 indices are required (got {count}).	Se necesitan 3 o 4 índices (recibí {count}).
+cmd.err.supercell	Use 1 ou 3 números para a supercélula.	Use 1 or 3 numbers for the supercell.	Use 1 o 3 números para la supercelda.
+cmd.err.supercellRange	Cada dimensão da supercélula vai de 1 a 4.	Each supercell dimension ranges from 1 to 4.	Cada dimensión de la supercelda va de 1 a 4.
+cmd.err.unknownOption	Opção desconhecida: “{text}”.	Unknown option: “{text}”.	Opción desconocida: «{text}».
+cmd.err.atomRef	Referência de átomo inválida: “{text}”.	Invalid atom reference: “{text}”.	Referencia de átomo no válida: «{text}».
+cmd.err.atomCount	Esta medição precisa de {count} átomos.	This measurement needs {count} atoms.	Esta medición necesita {count} átomos.
+cmd.err.missingAlloy	Informe o nome da liga do banco.	Enter the name of an alloy from the bank.	Indique el nombre de la aleación del banco.
+cmd.err.unknownAlloy	Liga não encontrada no banco: “{text}”.	Alloy not found in the bank: “{text}”.	Aleación no encontrada en el banco: «{text}».
+cmd.err.heaPair	Use Elemento=quantidade.	Use Element=amount.	Use Elemento=cantidad.
+cmd.err.heaElement	Símbolo de elemento inválido: “{text}”.	Invalid element symbol: “{text}”.	Símbolo de elemento no válido: «{text}».
+cmd.err.heaTwoElements	A liga precisa de pelo menos dois elementos.	The alloy needs at least two elements.	La aleación necesita al menos dos elementos.
+cmd.err.missingName	Informe o nome.	Enter the name.	Indique el nombre.
+cmd.err.noHandler	Operação sem implementação: {op}.	Operation not implemented: {op}.	Operación sin implementación: {op}.
+cmd.err.noStructure	Carregue uma estrutura primeiro.	Load a structure first.	Cargue una estructura primero.
+cmd.err.editorEmpty	O editor de parâmetros está vazio.	The parameter editor is empty.	El editor de parámetros está vacío.
+cmd.err.engineUnavailable	Motor indisponível: {detail}	Engine unavailable: {detail}	Motor no disponible: {detail}
+cmd.err.timeout	O motor demorou demais para responder: {detail}	The engine took too long to respond: {detail}	El motor tardó demasiado en responder: {detail}
+cmd.err.contract	Resposta do motor fora do contrato: {detail}	Engine response outside the contract: {detail}	Respuesta del motor fuera del contrato: {detail}
+cmd.hint.typeHelp	Digite “ajuda” para ver os comandos.	Type “ajuda” (help) to see the commands.	Escriba «ajuda» (ayuda) para ver los comandos.
+cmd.hint.useExample	Exemplo: usar Fe · usar cobre · usar CFC r=0,128 A=63,55	Example: usar Fe · usar copper · usar CFC r=0.128 A=63.55	Ejemplo: usar Fe · usar cobre · usar CFC r=0,128 A=63,55
+cmd.hint.useKeys	Chaves aceitas: estrutura=, r=, A=, c/a=	Accepted keys: estrutura=, r=, A=, c/a=	Claves aceptadas: estrutura=, r=, A=, c/a=
+cmd.hint.structureExample	Exemplo: estrutura CFC r=0,128 A=63,55	Example: estrutura CFC r=0.128 A=63.55	Ejemplo: estrutura CFC r=0,128 A=63,55
+cmd.hint.structureKeys	Chaves aceitas: r= (nm), A= (g/mol), c/a=	Accepted keys: r= (nm), A= (g/mol), c/a=	Claves aceptadas: r= (nm), A= (g/mol), c/a=
+cmd.hint.decimal	Use vírgula ou ponto decimal: 0,128 ou 0.128	Use a decimal comma or point: 0,128 or 0.128	Use coma o punto decimal: 0,128 o 0.128
+cmd.hint.planeExample	Exemplo: plano 1 1 1 · plano 1-10 · plano 1 0 -1 1 (HC)	Example: plano 1 1 1 · plano 1-10 · plano 1 0 -1 1 (HCP)	Ejemplo: plano 1 1 1 · plano 1-10 · plano 1 0 -1 1 (HC)
+cmd.hint.directionExample	Exemplo: direcao 1 1 0 · direcao 2 -1 -1 0 (HC)	Example: direcao 1 1 0 · direcao 2 -1 -1 0 (HCP)	Ejemplo: direcao 1 1 0 · direcao 2 -1 -1 0 (HC)
+cmd.hint.indicesIntegers	Os índices de Miller são inteiros (negativos com sinal de menos).	Miller indices are integers (negatives with a minus sign).	Los índices de Miller son enteros (negativos con signo menos).
+cmd.hint.supercellExample	Exemplo: supercelula 2 · supercelula 2 2 1	Example: supercelula 2 · supercelula 2 2 1	Ejemplo: supercelula 2 · supercelula 2 2 1
+cmd.hint.spheresOptions	Opções: rigidas, reduzidas, bola-bastao, pontos	Options: rigidas, reduzidas, bola-bastao, pontos	Opciones: rigidas, reduzidas, bola-bastao, pontos
+cmd.hint.atomRef	Use o número do átomo (5) ou número@célula (5@100).	Use the atom number (5) or number@cell (5@100).	Use el número del átomo (5) o número@celda (5@100).
+cmd.hint.measureOptions	Opções: distancia, angulo	Options: distancia, angulo	Opciones: distancia, angulo
+cmd.hint.animationOptions	Opções: empilhamento abab, empilhamento abcabc, alfa-gama, termica	Options: empilhamento abab, empilhamento abcabc, alfa-gama, termica	Opciones: empilhamento abab, empilhamento abcabc, alfa-gama, termica
+cmd.hint.exportOptions	Opções: cif, xyz, png, pdf, json	Options: cif, xyz, png, pdf, json	Opciones: cif, xyz, png, pdf, json
+cmd.hint.themeOptions	Opções: claro, escuro	Options: claro (light), escuro (dark)	Opciones: claro, escuro (oscuro)
+cmd.hint.localeOptions	Opções: pt, en, es	Options: pt, en, es	Opciones: pt, en, es
+cmd.hint.moduleOptions	Opções: crystalab, hea, aprender, professor, diario	Options: crystalab, hea, aprender, professor, diario	Opciones: crystalab, hea, aprender, professor, diario
+cmd.hint.removeArgs	Remova o texto depois do comando.	Remove the text after the command.	Quite el texto después del comando.
+cmd.hint.heaUseExample	Exemplo: usar cantor	Example: usar cantor	Ejemplo: usar cantor
+cmd.hint.heaSetExample	Exemplo: set Co=1 Cr=1 Fe=1 Mn=1 Ni=1	Example: set Co=1 Cr=1 Fe=1 Mn=1 Ni=1	Ejemplo: set Co=1 Cr=1 Fe=1 Mn=1 Ni=1
+cmd.hint.heaAddExample	Exemplo: add Al=0,5	Example: add Al=0.5	Ejemplo: add Al=0,5
+cmd.hint.heaRemExample	Exemplo: rem Mn	Example: rem Mn	Ejemplo: rem Mn
+cmd.hint.heaNameExample	Exemplo: nome Minha liga	Example: nome My alloy	Ejemplo: nome Mi aleación
+cmd.ok.densityTitle	Densidade teórica — {label} (passo a passo do motor)	Theoretical density — {label} (engine step by step)	Densidad teórica — {label} (paso a paso del motor)
+cmd.ok.labCleared	Laboratório limpo.	Lab cleared.	Laboratorio limpio.
+cmd.ok.overlaysCleared	Índices e medições removidos.	Indices and measurements removed.	Índices y mediciones eliminados.
+cmd.ok.planeDetail	Espaçamento d = {spacing} · {count} átomos no plano	Spacing d = {spacing} · {count} atoms on the plane	Espaciado d = {spacing} · {count} átomos en el plano
+cmd.ok.noLinearDensity	O motor não enviou densidade linear para esta direção.	The engine sent no linear density for this direction.	El motor no envió densidad lineal para esta dirección.
+cmd.ok.rigidOn	Esferas rígidas (átomos se tocam).	Hard spheres (atoms touch).	Esferas rígidas (los átomos se tocan).
+cmd.ok.rigidOff	Esferas reduzidas.	Reduced spheres.	Esferas reducidas.
+cmd.ok.toggleOn	{what}: ligado.	{what}: on.	{what}: activado.
+cmd.ok.toggleOff	{what}: desligado.	{what}: off.	{what}: desactivado.
+cmd.ok.viewReset	Vista inicial restaurada.	Initial view restored.	Vista inicial restaurada.
+cmd.ok.supercell	Supercélula {n}.	Supercell {n}.	Supercelda {n}.
+cmd.ok.supercellCounts	As réplicas são gráficas: n, NC, FEA e ρ continuam os da célula unitária.	Replicas are graphical: n, CN, APF and ρ remain those of the unit cell.	Las réplicas son gráficas: n, NC, FEA y ρ siguen siendo los de la celda unitaria.
+cmd.ok.supercellCost	{cells} células: a cena pode ficar mais lenta em computadores modestos.	{cells} cells: the scene may slow down on modest computers.	{cells} celdas: la escena puede volverse más lenta en equipos modestos.
+cmd.ok.undone	Desfeito: {label}	Undone: {label}	Deshecho: {label}
+cmd.ok.redone	Refeito: {label}	Redone: {label}	Rehecho: {label}
+cmd.ok.nothingToUndo	Nada para desfazer.	Nothing to undo.	Nada que deshacer.
+cmd.ok.nothingToRedo	Nada para refazer.	Nothing to redo.	Nada que rehacer.
+cmd.ok.themeDark	Tema escuro.	Dark theme.	Tema oscuro.
+cmd.ok.themeLight	Tema claro.	Light theme.	Tema claro.
+cmd.ok.locale	Idioma: {locale}.	Language: {locale}.	Idioma: {locale}.
+cmd.ok.nothingRunning	Nenhuma operação em andamento.	No operation running.	Ninguna operación en curso.
+cmd.run.structure	Consultando o motor…	Querying the engine…	Consultando el motor…
+cmd.run.miller	Consultando o motor ({kind})…	Querying the engine ({kind})…	Consultando el motor ({kind})…
+cmd.run.export	Exportando {format}…	Exporting {format}…	Exportando {format}…
+cmd.run.hea	Analisando a liga…	Analysing the alloy…	Analizando la aleación…

@@ -1,0 +1,49 @@
+{
+  "name": "alloy-virtual-lab-frontend",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Front-end do Alloy Virtual Lab (CrystaLab + HEA) — React 19 + TypeScript estrito, consumindo a API unificada /api/v1.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "engine": "node scripts/backend.mjs",
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.sw.json && tsc --noEmit -p tsconfig.node.json",
+    "lint": "node scripts/lint.mjs",
+    "test": "node --import tsx --test tests/unit/adapters.test.ts tests/unit/commands.test.ts tests/unit/core.test.ts tests/unit/i18n-tokens.test.ts",
+    "e2e": "playwright test",
+    "measure": "node scripts/measure-bundle.mjs",
+    "ci": "npm run typecheck && npm run lint && npm test && npm run build && npm run measure && npm run e2e",
+    "e2e:etapa2": "playwright test tests/e2e/foundation-regression.spec.ts",
+    "i18n": "node scripts/i18n-build.mjs",
+    "e2e:etapa3": "playwright test tests/e2e/etapa3-viewer.spec.ts tests/e2e/perf-metrics.spec.ts",
+    "e2e:etapa4": "playwright test tests/e2e/etapa4-interaction.spec.ts tests/e2e/flow-a-density.spec.ts tests/e2e/flow-b-miller.spec.ts tests/e2e/a11y-keyboard.spec.ts",
+    "e2e:etapas5-7": "playwright test tests/e2e/flow-c-hea.spec.ts tests/e2e/flow-d-instructor.spec.ts tests/e2e/flow-e-mobile-offline.spec.ts tests/e2e/etapas5-7.spec.ts tests/e2e/viewer-didactics.spec.ts tests/e2e/a11y-keyboard.spec.ts",
+    "types:api": "npx -y openapi-typescript@7.4.4 ../docs/openapi.json --default-non-nullable false -o src/services/api/openapi.gen.ts"
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.160.0",
+    "zustand": "5.0.1",
+    "katex": "0.16.47",
+    "zod": "3.25.76",
+    "docx": "9.8.1"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "esbuild": "0.28.2",
+    "playwright": "1.56.0",
+    "tsx": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "0.160.0",
+    "@types/node": "^22",
+    "@types/katex": "^0.16"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

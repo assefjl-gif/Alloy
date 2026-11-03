@@ -19,7 +19,7 @@ from app.core.config import Settings
 from app.main import create_app
 
 RAIZ = Path(__file__).resolve().parents[3]
-FRONTEND = RAIZ / "_origem" / "C_alloy_frontend" / "alloy-frontend"   # Fase 5: passa a ser RAIZ / "frontend"
+FRONTEND = RAIZ / "frontend"
 TSX = FRONTEND / "node_modules" / ".bin" / ("tsx.cmd" if shutil.which("cmd") else "tsx")
 
 

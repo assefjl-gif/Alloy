@@ -1,0 +1,137 @@
+# chave	pt-BR	en	es
+a11y.minus	menos	minus	menos
+a11y.notifications	Notificações	Notifications	Notificaciones
+a11y.overlayAdded	{name} {notation} adicionado à cena	{name} {notation} added to the scene	{name} {notation} añadido a la escena
+a11y.skip	Pular para o conteúdo	Skip to content	Saltar al contenido
+a11y.structureLoaded	{label} carregado: estrutura {structure}	{label} loaded: {structure} structure	{label} cargado: estructura {structure}
+about.title	Sobre e estado do sistema	About and system status	Acerca de y estado del sistema
+about.lead	O que está conectado, o que funciona offline e o que ainda depende de outras equipes.	What is connected, what works offline and what still depends on other teams.	Qué está conectado, qué funciona sin conexión y qué depende aún de otros equipos.
+about.engines	Motores e serviços	Engines and services	Motores y servicios
+about.service	Serviço	Service	Servicio
+about.mode	Modo	Mode	Modo
+about.detail	Detalhe	Detail	Detalle
+about.api.v1	API unificada /api/v1	unified /api/v1 API	API unificada /api/v1
+about.api.none	sem resposta	no response	sin respuesta
+about.heaMissing	Motor HEA não encontrado (D-01): módulo em modo demonstrativo	HEA engine not found (D-01): module in demo mode	Motor HEA no encontrado (D-01): módulo en modo demostrativo
+about.exportCif	Exportação CIF/XYZ	CIF/XYZ export	Exportación CIF/XYZ
+about.classroom	Turmas e tarefas	Classes and assignments	Grupos y tareas
+about.recheck	Verificar novamente	Check again	Verificar de nuevo
+about.offline	Disponibilidade sem conexão	Offline availability	Disponibilidad sin conexión
+about.item	Item	Item	Elemento
+about.behavior	Comportamento atual	Current behaviour	Comportamiento actual
+about.references	Bibliografia do projeto	Project bibliography	Bibliografía del proyecto
+about.refsNote	Os textos didáticos citam estas obras com seção e página. Outras fontes só entram com autorização do coordenador.	Teaching texts cite these works with section and page. Other sources are added only with the coordinator's approval.	Los textos didácticos citan estas obras con sección y página. Otras fuentes solo entran con autorización del coordinador.
+about.version	Versão {version} · build {build}	Version {version} · build {build}	Versión {version} · build {build}
+ai.title	Assistente de IA	AI assistant	Asistente de IA
+ai.off	desativado	disabled	desactivado
+ai.reason	Nenhum serviço de IA está configurado (pendência D-08). Quando houver, as sugestões aparecerão como apoio, com a origem identificada, nunca como resultado calculado.	No AI service is configured (pending item D-08). When there is one, suggestions will appear as support with their origin shown, never as calculated results.	No hay ningún servicio de IA configurado (pendiente D-08). Cuando lo haya, las sugerencias aparecerán como apoyo, con el origen identificado, nunca como resultado calculado.
+ai.ask	Pedir sugestão	Ask for a suggestion	Pedir sugerencia
+anim.choose	Escolha uma animação acima.	Choose an animation above.	Elija una animación arriba.
+anim.close	Fechar animação	Close animation	Cerrar animación
+anim.controls	Controles da animação	Animation controls	Controles de la animación
+anim.play	Reproduzir	Play	Reproducir
+anim.pause	Pausar	Pause	Pausar
+anim.restart	Recomeçar	Restart	Reiniciar
+anim.stepBack	Passo anterior	Previous step	Paso anterior
+anim.stepForward	Próximo passo	Next step	Paso siguiente
+anim.step	Passo	Step	Paso
+anim.reducedMotion	Movimento reduzido ativo: avance passo a passo.	Reduced motion is on: advance step by step.	Movimiento reducido activo: avance paso a paso.
+anim.changes	O que muda	What changes	Qué cambia
+anim.stays	O que permanece	What stays the same	Qué se mantiene
+anim.observe	O que observar	What to observe	Qué observar
+anim.illustrativeDetail	Esquema didático das camadas compactas; as posições não são calculadas pelo motor (D-13).	Teaching schematic of close-packed layers; positions are not computed by the engine (D-13).	Esquema didáctico de las capas compactas; las posiciones no las calcula el motor (D-13).
+anim.layers	Camadas: {shown} (de {total})	Layers: {shown} (of {total})	Capas: {shown} (de {total})
+anim.pending	pendência {id}	pending item {id}	pendiente {id}
+anim.stacking.changes	A posição (A, B ou C) de cada nova camada compacta.	The position (A, B or C) of each new close-packed layer.	La posición (A, B o C) de cada nueva capa compacta.
+anim.stacking.stays	O arranjo compacto dentro de cada camada (cada átomo toca seis vizinhos no plano).	The close-packed arrangement within each layer (each atom touches six neighbours in the plane).	El arreglo compacto dentro de cada capa (cada átomo toca seis vecinos en el plano).
+anim.stacking.observeAbab	Na sequência ABAB… a terceira camada repete a primeira: empilhamento da HC.	In the ABAB… sequence the third layer repeats the first: HCP stacking.	En la secuencia ABAB… la tercera capa repite la primera: apilamiento de la HC.
+anim.stacking.observeAbcabc	Na sequência ABCABC… só a quarta camada repete a primeira: empilhamento da CFC, planos {111}.	In the ABCABC… sequence only the fourth layer repeats the first: FCC stacking on {111} planes.	En la secuencia ABCABC… solo la cuarta capa repite la primera: apilamiento de la FCC, planos {111}.
+anim.ag.alpha	Fe-α (CCC) — dados do motor	α-Fe (BCC) — engine data	Fe-α (BCC) — datos del motor
+anim.ag.gamma	Fe-γ (CFC) — dados do motor	γ-Fe (FCC) — engine data	Fe-γ (FCC) — datos del motor
+anim.ag.mixing	Transição ilustrativa: {pct} %	Illustrative transition: {pct} %	Transición ilustrativa: {pct} %
+anim.ag.caption	Comparação entre as duas formas do ferro, com valores do motor	Comparison of the two forms of iron, with engine values	Comparación entre las dos formas del hierro, con valores del motor
+anim.ag.phase	Fase	Phase	Fase
+anim.ag.changes	A célula unitária (CCC → CFC), o número de átomos por célula (2 → 4) e o fator de empacotamento.	The unit cell (BCC → FCC), the number of atoms per cell (2 → 4) and the packing factor.	La celda unitaria (BCC → FCC), el número de átomos por celda (2 → 4) y el factor de empaquetamiento.
+anim.ag.stays	O elemento químico: é o mesmo ferro, em outra forma alotrópica.	The chemical element: it is the same iron in another allotropic form.	El elemento químico: es el mismo hierro en otra forma alotrópica.
+anim.ag.observe	Compare n, NC e FEA nas duas colunas; os quadros intermediários são só uma transição visual.	Compare n, CN and APF in both columns; the intermediate frames are only a visual transition.	Compare n, NC y FEA en las dos columnas; los cuadros intermedios son solo una transición visual.
+anim.ag.warning	Os quadros intermediários não representam o mecanismo real da transformação nem uma temperatura específica.	The intermediate frames represent neither the real transformation mechanism nor a specific temperature.	Los cuadros intermedios no representan el mecanismo real de la transformación ni una temperatura específica.
+anim.thermal.title	Vibração térmica	Thermal vibration	Vibración térmica
+anim.thermal.detail	Vibração em torno das posições de rede, sem escala nem valores: o motor não fornece parâmetros térmicos (D-07).	Vibration around lattice positions, without scale or values: the engine provides no thermal parameters (D-07).	Vibración alrededor de las posiciones de red, sin escala ni valores: el motor no proporciona parámetros térmicos (D-07).
+anim.thermal.changes	A amplitude ilustrativa de vibração dos átomos.	The illustrative vibration amplitude of the atoms.	La amplitud ilustrativa de vibración de los átomos.
+anim.thermal.stays	As posições médias de rede e a estrutura cristalina.	The mean lattice positions and the crystal structure.	Las posiciones medias de red y la estructura cristalina.
+anim.thermal.observe	Os átomos oscilam em torno de posições fixas; a estrutura não muda.	Atoms oscillate around fixed positions; the structure does not change.	Los átomos oscilan alrededor de posiciones fijas; la estructura no cambia.
+anim.opened.stacking	Animação de empilhamento aberta.	Stacking animation opened.	Animación de apilamiento abierta.
+anim.opened.alpha-gamma	Animação Fe-α → Fe-γ aberta.	α-Fe → γ-Fe animation opened.	Animación Fe-α → Fe-γ abierta.
+anim.opened.thermal	Animação de vibração térmica aberta (ilustrativa).	Thermal vibration animation opened (illustrative).	Animación de vibración térmica abierta (ilustrativa).
+atom.title	Átomo {n}	Atom {n}	Átomo {n}
+atom.element	Elemento	Element	Elemento
+atom.generic	genérico	generic	genérico
+atom.site	Sítio	Site	Sitio
+atom.positionA	Posição (unidades de a)	Position (units of a)	Posición (unidades de a)
+atom.fractional	Coordenadas fracionárias	Fractional coordinates	Coordenadas fraccionarias
+atom.fracUnavailable	não enviadas pelo motor (D-09)	not sent by the engine (D-09)	no enviadas por el motor (D-09)
+atom.cartesianNm	Posição (nm)	Position (nm)	Posición (nm)
+atom.needsRadius	exige raio atômico	requires an atomic radius	requiere radio atómico
+atom.contribution	Contribuição para a célula	Contribution to the cell	Contribución a la celda
+atom.replica	réplica gráfica (não conta em n)	graphical replica (not counted in n)	réplica gráfica (no cuenta en n)
+atom.replicaShort	réplica	replica	réplica
+atom.ofAtom	do átomo	of the atom	del átomo
+atom.material	Material	Material	Material
+atom.cell	Célula	Cell	Celda
+atom.noteCubic	Na célula cúbica, a fração indica quanto do átomo pertence a esta célula.	In the cubic cell, the fraction shows how much of the atom belongs to this cell.	En la celda cúbica, la fracción indica cuánto del átomo pertenece a esta celda.
+atom.noteHc	No prisma hexagonal (3 células primitivas), vértices contam 1/6, centros das bases 1/2 e átomos internos 1.	In the hexagonal prism (3 primitive cells), corners count 1/6, base centres 1/2 and interior atoms 1.	En el prisma hexagonal (3 celdas primitivas), los vértices cuentan 1/6, los centros de las bases 1/2 y los átomos internos 1.
+atom.clear	Limpar seleção	Clear selection	Limpiar selección
+atom.none	Clique em um átomo na cena (ou use Tab e as setas) para ver os detalhes.	Click an atom in the scene (or use Tab and the arrow keys) to see its details.	Haga clic en un átomo de la escena (o use Tab y las flechas) para ver los detalles.
+atom.listTitle	Átomos da cena ({count})	Atoms in the scene ({count})	Átomos de la escena ({count})
+site.vertice	vértice	corner	vértice
+site.centro	centro do corpo	body centre	centro del cuerpo
+site.face	centro de face	face centre	centro de cara
+site.basal	centro da base	base centre	centro de la base
+site.interior	interior	interior	interior
+shape.sphere	esfera	sphere	esfera
+shape.cube	cubo	cube	cubo
+shape.octahedron	octaedro	octahedron	octaedro
+shape.tetrahedron	tetraedro	tetrahedron	tetraedro
+shape.icosahedron	icosaedro	icosahedron	icosaedro
+shape.dodecahedron	dodecaedro	dodecahedron	dodecaedro
+shape.cylinder	cilindro	cylinder	cilindro
+blocks.title	Banco de blocos	Block bank	Banco de bloques
+blocks.cell	Célula	Cell	Celda
+blocks.generic	genérica	generic	genérica
+blocks.count	{count} blocos	{count} blocks	{count} bloques
+blocks.filter	Filtrar blocos	Filter blocks	Filtrar bloques
+blocks.filterPlaceholder	Filtrar: Fe, CFC, HC…	Filter: Fe, FCC, HC…	Filtrar: Fe, FCC, HC…
+blocks.listLabel	Metais e células disponíveis no motor	Metals and cells available in the engine	Metales y celdas disponibles en el motor
+blocks.unavailable	Catálogo indisponível: o motor não respondeu.	Catalogue unavailable: the engine did not respond.	Catálogo no disponible: el motor no respondió.
+bridge.title	Abrir no CrystaLab	Open in CrystaLab	Abrir en CrystaLab
+bridge.direct	A fase prevista ({phase}) cita uma única estrutura: {code}.	The predicted phase ({phase}) names a single structure: {code}.	La fase prevista ({phase}) cita una única estructura: {code}.
+bridge.needsChoice	A fase prevista ({phase}) não indica uma única estrutura. Escolha qual célula abrir — a escolha será registrada como sua, não como predição.	The predicted phase ({phase}) does not indicate a single structure. Choose which cell to open — the choice will be recorded as yours, not as a prediction.	La fase prevista ({phase}) no indica una única estructura. Elija qué celda abrir: la elección se registrará como suya, no como predicción.
+bridge.open	Abrir célula {code} no CrystaLab	Open {code} cell in CrystaLab	Abrir celda {code} en CrystaLab
+bridge.openAsChoice	Abrir como {code} (minha escolha)	Open as {code} (my choice)	Abrir como {code} (mi elección)
+bridge.choose	Escolher estrutura para abrir	Choose a structure to open	Elegir estructura para abrir
+bridge.chooseOption	Abrir como {code}	Open as {code}	Abrir como {code}
+bridge.noDataCreated	Nenhum valor novo é criado: o CrystaLab mostra a célula idealizada do motor e o resultado HEA fica guardado sem alterações.	No new value is created: CrystaLab shows the engine's idealised cell and the HEA result is kept unchanged.	No se crea ningún valor nuevo: CrystaLab muestra la celda idealizada del motor y el resultado HEA se guarda sin cambios.
+bridge.noResult	Analise uma liga no módulo HEA antes de abri-la no CrystaLab.	Analyse an alloy in the HEA module before opening it in CrystaLab.	Analice una aleación en el módulo HEA antes de abrirla en CrystaLab.
+bridge.ambiguousPhase	A fase “{phase}” cita mais de uma estrutura. Escolha qual abrir:	The phase “{phase}” names more than one structure. Choose which to open:	La fase «{phase}» cita más de una estructura. Elija cuál abrir:
+bridge.noStructure	A fase “{phase}” não cita estrutura conhecida. Escolha qual abrir:	The phase “{phase}” names no known structure. Choose which to open:	La fase «{phase}» no cita ninguna estructura conocida. Elija cuál abrir:
+bridge.opened	{name} aberto no CrystaLab como {code} ({basis}).	{name} opened in CrystaLab as {code} ({basis}).	{name} abierto en CrystaLab como {code} ({basis}).
+bridge.bannerTitle	Liga HEA: {name}	HEA alloy: {name}	Aleación HEA: {name}
+bridge.fromPredictor	Resultado do preditor	Predictor result	Resultado del predictor
+bridge.basisPredictorLong	Estrutura {code} citada pelo preditor na fase “{phase}”.	Structure {code} named by the predictor in the phase “{phase}”.	Estructura {code} citada por el predictor en la fase «{phase}».
+bridge.basisUserLong	Estrutura {code} escolhida por você — não é predição do modelo.	Structure {code} chosen by you — not a model prediction.	Estructura {code} elegida por usted: no es predicción del modelo.
+bridge.idealized	A célula exibida é a idealizada de um metal puro na mesma estrutura; a liga real tem sítios ocupados aleatoriamente por vários elementos.	The cell shown is the idealised cell of a pure metal with the same structure; the real alloy has sites randomly occupied by several elements.	La celda mostrada es la idealizada de un metal puro con la misma estructura; la aleación real tiene sitios ocupados aleatoriamente por varios elementos.
+bridge.backToHea	Voltar ao HEA	Back to HEA	Volver a HEA
+bridge.coloringDetail	Distribuição aleatória com semente fixa, só para ilustrar a ocupação mista; não é um resultado do modelo.	Random distribution with a fixed seed, only to illustrate mixed occupancy; not a model result.	Distribución aleatoria con semilla fija, solo para ilustrar la ocupación mixta; no es un resultado del modelo.
+bridge.basis.predictor-field	campo estrutura_sugerida do preditor	predictor's estrutura_sugerida field	campo estrutura_sugerida del predictor
+bridge.basis.predictor-phase	estrutura citada na fase prevista	structure named in the predicted phase	estructura citada en la fase prevista
+bridge.basis.user-choice	escolha do usuário	user's choice	elección del usuario
+category.result	Resultado	Result	Resultado
+category.param	Parâmetro	Parameter	Parámetro
+category.reference	Referência	Reference	Referencia
+category.control	Controle	Control	Control
+category.feedback	Retorno didático	Learning feedback	Retroalimentación
+category.demo	Demonstrativo	Demo	Demostrativo
+category.note	Nota	Note	Nota
+bridge.restore.missing	O resultado HEA desta cena não está mais disponível nesta aba; abra-o de novo pelo módulo HEA.	The HEA result for this scene is no longer available in this tab; open it again from the HEA module.	El resultado HEA de esta escena ya no está disponible en esta pestaña; ábralo de nuevo desde el módulo HEA.
+bridge.restore.tampered	O resultado HEA desta cena foi alterado e foi descartado: o transporte só aceita a cópia original.	The HEA result for this scene was altered and discarded: only the original copy is accepted.	El resultado HEA de esta escena fue alterado y se descartó: solo se acepta la copia original.
+bridge.restore.schema	A referência ao resultado HEA no link é inválida.	The HEA result reference in the link is invalid.	La referencia al resultado HEA en el enlace no es válida.

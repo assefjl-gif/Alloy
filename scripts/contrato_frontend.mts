@@ -5,14 +5,15 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
 const base = process.argv[2] ?? 'http://127.0.0.1:8130';
-const frontend = process.argv[3] ?? '_origem/C_alloy_frontend/alloy-frontend';
+const frontend = process.argv[3] ?? 'frontend';
 const contratos = await import(pathToFileURL(resolve(frontend, 'src/services/api/contracts.ts')).href);
 const { StructureResult, MillerResult, MetalTable, StructureTable, ExportFile } = contratos;
 
 type Schema = { safeParse: (v: unknown) => { success: boolean; error?: { issues: unknown[] } } };
 type Caso = { nome: string; metodo: 'GET' | 'POST'; rota: string; corpo?: unknown; schema: Schema };
 
-// Mesmos casos nas rotas que o frontend usa hoje (/v1, depreciadas) e nas canônicas (/api/v1).
+// Mesmos casos nas rotas canônicas (/api/v1, usadas pelo front desde a Fase 5) e nos aliases /v1
+// depreciados (mantidos para clientes antigos até a remoção — API.md §3).
 const pares: Array<[string, string, string, 'GET' | 'POST', Schema, unknown[]]> = [
   ['metais', '/v1/crystals/metals', '/api/v1/crystallography/metals', 'GET', MetalTable, [undefined]],
   ['estruturas', '/v1/crystals/structures', '/api/v1/crystallography/structures', 'GET', StructureTable, [undefined]],

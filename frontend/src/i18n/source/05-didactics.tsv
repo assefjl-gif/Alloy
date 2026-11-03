@@ -1,0 +1,298 @@
+# chave	pt-BR	en	es
+didactic.format.guided	Exercício guiado	Guided exercise	Ejercicio guiado
+didactic.format.pbl	Problema (ABP)	Problem (PBL)	Problema (ABP)
+didactic.format.quiz	Quiz e flashcards	Quiz and flashcards	Cuestionario y tarjetas
+topic.estruturas	Estruturas cristalinas	Crystal structures	Estructuras cristalinas
+topic.celulas	Células unitárias	Unit cells	Celdas unitarias
+topic.fea	Fator de empacotamento	Packing factor	Factor de empaquetamiento
+topic.densidade	Densidade teórica	Theoretical density	Densidad teórica
+topic.miller-planos	Planos de Miller	Miller planes	Planos de Miller
+topic.miller-direcoes	Direções de Miller	Miller directions	Direcciones de Miller
+topic.hea-parametros	Parâmetros de ligas HEA	HEA alloy parameters	Parámetros de aleaciones HEA
+level.introdutorio	Introdutório	Introductory	Introductorio
+level.intermediario	Intermediário	Intermediate	Intermedio
+level.avancado	Avançado	Advanced	Avanzado
+exercise.stepsLabel	Etapas do exercício	Exercise steps	Etapas del ejercicio
+exercise.step.dados	Dados	Data	Datos
+exercise.step.grandezas	Grandezas	Quantities	Magnitudes
+exercise.step.equacao	Equação	Equation	Ecuación
+exercise.step.substituicao	Substituição	Substitution	Sustitución
+exercise.step.validacao	Validação	Validation	Validación
+exercise.step.motor	Resultado do motor	Engine result	Resultado del motor
+exercise.step.revisao	Revisão	Review	Revisión
+exercise.start	Começar	Start	Empezar
+exercise.next	Próximo	Next	Siguiente
+exercise.check	Verificar	Check	Verificar
+exercise.seeEngine	Ver o resultado do motor	See the engine result	Ver el resultado del motor
+exercise.complete	Concluir atividade	Complete activity	Completar actividad
+exercise.completed	Atividade concluída e registrada no seu progresso.	Activity completed and recorded in your progress.	Actividad completada y registrada en su progreso.
+exercise.correct	Correto	Correct	Correcto
+exercise.engineNeeded	Esta atividade usa dados do motor CrystaLab, que não respondeu. Tente de novo quando ele estiver disponível.	This activity uses data from the CrystaLab engine, which did not respond. Try again when it is available.	Esta actividad usa datos del motor CrystaLab, que no respondió. Inténtelo de nuevo cuando esté disponible.
+exercise.dataFromEngine	Dados do motor	Engine data	Datos del motor
+exercise.openLab	Abrir no laboratório	Open in the lab	Abrir en el laboratorio
+exercise.hint	Dica {n} de {total}	Hint {n} of {total}	Pista {n} de {total}
+exercise.hintConceptual	Conceito:	Concept:	Concepto:
+exercise.hintSpecific	Pista:	Hint:	Pista:
+exercise.noMoreHints	Não há mais dicas.	No more hints.	No hay más pistas.
+exercise.partial	Resultado por grandeza	Result per quantity	Resultado por magnitud
+exercise.error.input	Resposta não numérica	Not a number	Respuesta no numérica
+exercise.error.conceptual	Erro conceitual	Conceptual error	Error conceptual
+exercise.error.unit	Erro de unidade	Unit error	Error de unidad
+exercise.error.algebraic	Erro de cálculo	Calculation error	Error de cálculo
+exercise.errorHelp.input	Digite um número (vírgula ou ponto decimal; potências como 4,7e-23).	Enter a number (decimal comma or point; powers like 4.7e-23).	Escriba un número (coma o punto decimal; potencias como 4,7e-23).
+exercise.errorHelp.conceptual	Seu valor coincide com o de outra estrutura ou relação: revise qual relação a–R e qual n valem para esta célula.	Your value matches another structure or relation: check which a–R relation and which n apply to this cell.	Su valor coincide con el de otra estructura o relación: revise qué relación a–R y qué n valen para esta celda.
+exercise.errorHelp.unit	O valor difere por um fator de 10^{power}: confira as conversões (1 nm = 10⁻⁷ cm; 1 nm³ = 10⁻²¹ cm³).	The value differs by a factor of 10^{power}: check the conversions (1 nm = 10⁻⁷ cm; 1 nm³ = 10⁻²¹ cm³).	El valor difiere por un factor de 10^{power}: revise las conversiones (1 nm = 10⁻⁷ cm; 1 nm³ = 10⁻²¹ cm³).
+exercise.errorHelp.algebraic	Refaça a conta passo a passo; confira potências e a ordem das operações.	Redo the calculation step by step; check powers and the order of operations.	Rehaga la cuenta paso a paso; revise potencias y el orden de las operaciones.
+exercise.unitNm	em nm	in nm	en nm
+exercise.unitCm3	em cm³	in cm³	en cm³
+exercise.quantity	Grandeza	Quantity	Magnitud
+exercise.yours	Sua resposta	Your answer	Su respuesta
+exercise.engine	Motor	Engine	Motor
+exercise.compareCaption	Sua resolução comparada com o motor	Your solution compared with the engine	Su resolución comparada con el motor
+exercise.reviewSummary	{attempts} tentativa(s), {errors} com erro.	{attempts} attempt(s), {errors} with errors.	{attempts} intento(s), {errors} con error.
+exercise.noErrors	Nenhum erro registrado.	No errors recorded.	Ningún error registrado.
+exercise.toNotebook	Registrar no caderno	Record in the notebook	Registrar en el cuaderno
+exercise.noteBody	Minha resposta: ρ = {rho} g/cm³. Motor: ρ = {engine} g/cm³.	My answer: ρ = {rho} g/cm³. Engine: ρ = {engine} g/cm³.	Mi respuesta: ρ = {rho} g/cm³. Motor: ρ = {engine} g/cm³.
+exercise.density.statement	Calcule a densidade teórica de {name} ({structure}) a partir dos dados abaixo.	Compute the theoretical density of {name} ({structure}) from the data below.	Calcule la densidad teórica de {name} ({structure}) a partir de los datos siguientes.
+exercise.density.quantitiesQ	Quais grandezas são necessárias para calcular ρ?	Which quantities are needed to compute ρ?	¿Qué magnitudes se necesitan para calcular ρ?
+exercise.density.equationQ	Qual equação dá a densidade teórica?	Which equation gives the theoretical density?	¿Qué ecuación da la densidad teórica?
+exercise.density.substitutionQ	Calcule n, a e Vc para esta célula.	Compute n, a and Vc for this cell.	Calcule n, a y Vc para esta celda.
+exercise.density.nLabel	n (átomos por célula)	n (atoms per cell)	n (átomos por celda)
+exercise.density.aLabel	Parâmetro de rede a	Lattice parameter a	Parámetro de red a
+exercise.density.vcLabel	Volume da célula Vc	Cell volume Vc	Volumen de la celda Vc
+exercise.density.rhoQ	Agora calcule a densidade.	Now compute the density.	Ahora calcule la densidad.
+exercise.density.rhoLabel	ρ (g/cm³)	ρ (g/cm³)	ρ (g/cm³)
+exercise.atoms.statement	Quantos átomos equivalentes há na célula de {name} ({structure})?	How many equivalent atoms are in the {name} cell ({structure})?	¿Cuántos átomos equivalentes hay en la celda de {name} ({structure})?
+exercise.atoms.position	Posição	Position	Posición
+exercise.atoms.quantity	Quantidade	Count	Cantidad
+exercise.atoms.fraction	Fração por átomo	Fraction per atom	Fracción por átomo
+exercise.atoms.fractionOf	Fração de cada átomo em {site}	Fraction of each atom at {site}	Fracción de cada átomo en {site}
+exercise.atoms.total	Total n	Total n	Total n
+exercise.apf.statement	Calcule o fator de empacotamento atômico de {name} ({structure}).	Compute the atomic packing factor of {name} ({structure}).	Calcule el factor de empaquetamiento atómico de {name} ({structure}).
+exercise.apf.noSteps	O motor não envia passos intermediários do FEA (D-12): use a fórmula e os dados.	The engine sends no intermediate APF steps (D-12): use the formula and the data.	El motor no envía pasos intermedios del FEA (D-12): use la fórmula y los datos.
+exercise.apf.engineValue	FEA do motor: {value}	Engine APF: {value}	FEA del motor: {value}
+exercise.miller.planeStatement	Observe o plano desenhado na célula de {name} e informe os índices (hkl).	Look at the plane drawn in the {name} cell and enter its (hkl) indices.	Observe el plano dibujado en la celda de {name} e indique sus índices (hkl).
+exercise.miller.dirStatement	Observe a direção desenhada na célula de {name} e informe os índices [uvw].	Look at the direction drawn in the {name} cell and enter its [uvw] indices.	Observe la dirección dibujada en la celda de {name} e indique sus índices [uvw].
+exercise.miller.vertices	Vértices do plano (unidades de a):	Plane vertices (units of a):	Vértices del plano (unidades de a):
+exercise.miller.tail	Origem	Tail	Origen
+exercise.miller.head	Ponta	Head	Punta
+exercise.miller.units	Coordenadas em unidades do parâmetro de rede, devolvidas pelo motor.	Coordinates in units of the lattice parameter, returned by the engine.	Coordenadas en unidades del parámetro de red, devueltas por el motor.
+learn.title	Aprender	Learn	Aprender
+learn.lead	Atividades guiadas, problemas e quizzes. Os dados vêm do motor; o seu progresso fica neste navegador e não é comparado com o de ninguém.	Guided activities, problems and quizzes. Data comes from the engine; your progress stays in this browser and is not compared with anyone's.	Actividades guiadas, problemas y cuestionarios. Los datos vienen del motor; su progreso queda en este navegador y no se compara con el de nadie.
+learn.filters	Filtros de atividades	Activity filters	Filtros de actividades
+learn.all	Todos	All	Todos
+learn.level	Nível	Level	Nivel
+learn.format	Formato	Format	Formato
+learn.count	{n} atividade(s)	{n} activity(ies)	{n} actividad(es)
+learn.done	concluída	completed	completada
+learn.breadcrumb	Caminho	Breadcrumb	Ruta
+learn.seed	semente {seed}	seed {seed}	semilla {seed}
+learn.newSeed	Nova variação	New variation	Nueva variación
+learn.awaitingSpecialist	faixas aguardando validação (D-17)	ranges awaiting validation (D-17)	rangos a la espera de validación (D-17)
+learn.criteria	Critérios de avaliação	Assessment criteria	Criterios de evaluación
+learn.notFound	Atividade não encontrada.	Activity not found.	Actividad no encontrada.
+progress.title	Meu progresso	My progress	Mi progreso
+progress.private	Visível só para você, neste navegador. Sem ranking.	Visible only to you, in this browser. No ranking.	Visible solo para usted, en este navegador. Sin ranking.
+progress.completed	{n} de {total} atividades concluídas	{n} of {total} activities completed	{n} de {total} actividades completadas
+progress.empty	Nenhuma tentativa registrada ainda.	No attempts recorded yet.	Aún no hay intentos registrados.
+progress.caption	Tentativas e acertos por tópico	Attempts and correct answers per topic	Intentos y aciertos por tema
+progress.topic	Tópico	Topic	Tema
+progress.attempts	Tentativas	Attempts	Intentos
+progress.correct	Acertos	Correct	Aciertos
+progress.mainError	Erro mais frequente	Most frequent error	Error más frecuente
+progress.reset	Apagar meu progresso	Clear my progress	Borrar mi progreso
+quiz.modes	Modo de estudo	Study mode	Modo de estudio
+quiz.quiz	Quiz	Quiz	Cuestionario
+quiz.cards	Flashcards	Flashcards	Tarjetas
+quiz.seed	Ordem das perguntas pela semente {seed}.	Question order from seed {seed}.	Orden de las preguntas según la semilla {seed}.
+quiz.progress	Pergunta {n} de {total}	Question {n} of {total}	Pregunta {n} de {total}
+quiz.answer	Sua resposta	Your answer	Su respuesta
+quiz.wrong	Ainda não	Not quite	Todavía no
+quiz.finished	Você acertou {ok} de {total}.	You got {ok} of {total} right.	Acertó {ok} de {total}.
+quiz.flip	toque para virar	tap to flip	toque para girar
+quiz.flipHint	Ative para ver a fórmula e a explicação.	Activate to see the formula and explanation.	Active para ver la fórmula y la explicación.
+quiz.hea.needsResult	Analise uma liga no módulo HEA primeiro: o exercício usa apenas o que o preditor retornou.	Analyse an alloy in the HEA module first: the exercise uses only what the predictor returned.	Analice primero una aleación en el módulo HEA: el ejercicio usa solo lo que devolvió el predictor.
+quiz.hea.question	{name} tem δ = {delta} % e ΔH = {dh} kJ/mol. Ela está dentro ou fora da zona de solução sólida do mapa?	{name} has δ = {delta} % and ΔH = {dh} kJ/mol. Is it inside or outside the solid-solution zone of the map?	{name} tiene δ = {delta} % y ΔH = {dh} kJ/mol. ¿Está dentro o fuera de la zona de solución sólida del mapa?
+quiz.hea.legend	Posição no mapa de estabilidade	Position on the stability map	Posición en el mapa de estabilidad
+quiz.hea.inside	Dentro da zona	Inside the zone	Dentro de la zona
+quiz.hea.outside	Fora da zona	Outside the zone	Fuera de la zona
+quiz.hea.explain	A zona do mapa usa δ < 6,6 % e −15 < ΔH < 5 kJ/mol; compare os dois valores da liga com esses limites.	The map zone uses δ < 6.6 % and −15 < ΔH < 5 kJ/mol; compare the alloy's two values with those limits.	La zona del mapa usa δ < 6,6 % y −15 < ΔH < 5 kJ/mol; compare los dos valores de la aleación con esos límites.
+pbl.situation	Situação-problema	Problem situation	Situación problema
+pbl.alcu.situation	Uma equipe precisa escolher entre alumínio e cobre para uma peça leve. Os dois metais são CFC, mas a densidade do cobre é mais de três vezes a do alumínio. Se a estrutura é a mesma, de onde vem a diferença?	A team must choose between aluminium and copper for a lightweight part. Both metals are FCC, yet copper's density is more than three times aluminium's. If the structure is the same, where does the difference come from?	Un equipo debe elegir entre aluminio y cobre para una pieza ligera. Ambos metales son FCC, pero la densidad del cobre es más de tres veces la del aluminio. Si la estructura es la misma, ¿de dónde viene la diferencia?
+pbl.objective	Objetivo	Objective	Objetivo
+pbl.available	Evidências disponíveis	Available evidence	Evidencias disponibles
+pbl.metal	Metal	Metal	Metal
+pbl.densityHidden	A densidade teórica calculada fica de fora: chegue a ela pelo laboratório.	The computed theoretical density is left out: reach it through the lab.	La densidad teórica calculada queda fuera: llegue a ella mediante el laboratorio.
+pbl.exploreAl	Explorar Al no laboratório	Explore Al in the lab	Explorar Al en el laboratorio
+pbl.exploreCu	Explorar Cu no laboratório	Explore Cu in the lab	Explorar Cu en el laboratorio
+pbl.guiding	Questões orientadoras	Guiding questions	Preguntas orientadoras
+pbl.alcu.q1	O número de átomos por célula (n) é igual nos dois metais?	Is the number of atoms per cell (n) the same for both metals?	¿Es igual el número de átomos por celda (n) en los dos metales?
+pbl.alcu.q2	Como a massa atômica A e o raio R mudam de um metal para o outro?	How do the atomic mass A and the radius R change from one metal to the other?	¿Cómo cambian la masa atómica A y el radio R de un metal al otro?
+pbl.alcu.q3	Qual dessas diferenças pesa mais em ρ = nA/(Vc·N_A)?	Which of these differences weighs more in ρ = nA/(Vc·N_A)?	¿Cuál de esas diferencias pesa más en ρ = nA/(Vc·N_A)?
+pbl.hypotheses	Hipóteses	Hypotheses	Hipótesis
+pbl.newHypothesis	Nova hipótese	New hypothesis	Nueva hipótesis
+pbl.add	Adicionar	Add	Añadir
+pbl.hypothesisAdded	Hipótese adicionada.	Hypothesis added.	Hipótesis añadida.
+pbl.removeHypothesis	Remover hipótese H{n}	Remove hypothesis H{n}	Quitar hipótesis H{n}
+pbl.compareHint	Compare as hipóteses pelo número de evidências a favor (+) e contra (−).	Compare the hypotheses by the number of supporting (+) and contradicting (−) pieces of evidence.	Compare las hipótesis por el número de evidencias a favor (+) y en contra (−).
+pbl.record	Registro de evidências	Evidence log	Registro de evidencias
+pbl.evidenceText	Evidência	Evidence	Evidencia
+pbl.evidenceKind	Tipo	Type	Tipo
+pbl.kind.observation	Observação	Observation	Observación
+pbl.kind.calculation	Cálculo	Calculation	Cálculo
+pbl.kind.interpretation	Interpretação	Interpretation	Interpretación
+pbl.relatesTo	Relacionada a	Related to	Relacionada con
+pbl.noHypothesis	(nenhuma hipótese)	(no hypothesis)	(ninguna hipótesis)
+pbl.effect	Efeito	Effect	Efecto
+pbl.supports	apoia	supports	apoya
+pbl.contradicts	contradiz	contradicts	contradice
+pbl.evidenceAdded	Evidência registrada.	Evidence recorded.	Evidencia registrada.
+pbl.kindsCount	Tipos de evidência registrados: {n} de 3.	Evidence types recorded: {n} of 3.	Tipos de evidencia registrados: {n} de 3.
+pbl.conclusion	Conclusão e reflexão	Conclusion and reflection	Conclusión y reflexión
+pbl.conclusionLabel	Conclusão	Conclusion	Conclusión
+pbl.reflectionLabel	Reflexão: o que você faria diferente?	Reflection: what would you do differently?	Reflexión: ¿qué haría de otra manera?
+pbl.mentionsOk	Sua conclusão cita n, A e Vc.	Your conclusion mentions n, A and Vc.	Su conclusión cita n, A y Vc.
+pbl.mentionsHint	Uma boa conclusão relaciona n, A (massa) e Vc (volume).	A good conclusion relates n, A (mass) and Vc (volume).	Una buena conclusión relaciona n, A (masa) y Vc (volumen).
+pbl.finish	Concluir problema	Finish problem	Terminar problema
+pbl.finishHint	Para concluir, registre ao menos uma evidência de cada tipo e escreva a conclusão.	To finish, record at least one piece of evidence of each type and write the conclusion.	Para terminar, registre al menos una evidencia de cada tipo y escriba la conclusión.
+notebook.title	Caderno de laboratório	Lab notebook	Cuaderno de laboratorio
+notebook.new	Nova nota	New note	Nueva nota
+notebook.type	Tipo	Type	Tipo
+notebook.kind.observation	Observação	Observation	Observación
+notebook.kind.hypothesis	Hipótese	Hypothesis	Hipótesis
+notebook.kind.calculation	Cálculo	Calculation	Cálculo
+notebook.kind.conclusion	Conclusão	Conclusion	Conclusión
+notebook.kind.free	Livre	Free	Libre
+notebook.titleLabel	Título	Title	Título
+notebook.body	Texto	Text	Texto
+notebook.draftHint	O rascunho é salvo automaticamente.	The draft is saved automatically.	El borrador se guarda automáticamente.
+notebook.attach	Anexar a cena atual ({name}): estrutura, valores do motor, medições e link	Attach the current scene ({name}): structure, engine values, measurements and link	Adjuntar la escena actual ({name}): estructura, valores del motor, mediciones y enlace
+notebook.attachNone	Anexar cena (nenhuma estrutura carregada)	Attach scene (no structure loaded)	Adjuntar escena (ninguna estructura cargada)
+notebook.save	Salvar nota	Save note	Guardar nota
+notebook.saved	Nota salva.	Note saved.	Nota guardada.
+notebook.localOnly	As notas ficam neste navegador (D-18). Exporte para guardar uma cópia.	Notes stay in this browser (D-18). Export to keep a copy.	Las notas quedan en este navegador (D-18). Exporte para guardar una copia.
+notebook.filter	Filtrar por tipo	Filter by type	Filtrar por tipo
+notebook.all	Todas	All	Todas
+notebook.exportMd	Markdown	Markdown	Markdown
+notebook.empty	Nenhuma nota ainda. Registre observações enquanto explora o laboratório.	No notes yet. Record observations while you explore the lab.	Aún no hay notas. Registre observaciones mientras explora el laboratorio.
+notebook.listLabel	{n} nota(s)	{n} note(s)	{n} nota(s)
+notebook.offline	criada offline	created offline	creada sin conexión
+notebook.edit	Editar nota	Edit note	Editar nota
+notebook.delete	Excluir nota	Delete note	Eliminar nota
+notebook.deleteTitle	Excluir esta nota?	Delete this note?	¿Eliminar esta nota?
+notebook.deleteBody	A nota será removida deste navegador. Esta ação não pode ser desfeita.	The note will be removed from this browser. This cannot be undone.	La nota se eliminará de este navegador. Esta acción no se puede deshacer.
+notebook.deleted	Nota excluída.	Note deleted.	Nota eliminada.
+notebook.engineValues	Valores copiados da resposta do motor no momento da nota.	Values copied from the engine response at the time of the note.	Valores copiados de la respuesta del motor en el momento de la nota.
+notebook.openScene	Reabrir cena	Reopen scene	Reabrir escena
+instructor.title	Painel do professor	Instructor dashboard	Panel del docente
+instructor.lead	Acompanhe erros por etapa e tópicos com mais dificuldade. Sem ranking de estudantes.	Follow errors by step and the hardest topics. No student ranking.	Siga los errores por etapa y los temas con más dificultad. Sin ranking de estudiantes.
+instructor.source	Fonte dos dados	Data source	Fuente de los datos
+instructor.sourceDemo	Turma demonstrativa	Demo class	Grupo demostrativo
+instructor.sourceLocal	Dados deste navegador	Data from this browser	Datos de este navegador
+instructor.demoNotice	Dados fictícios com semente {seed}: não há serviço de turmas (D-03).	Fictitious data with seed {seed}: there is no class service (D-03).	Datos ficticios con semilla {seed}: no hay servicio de grupos (D-03).
+instructor.localNotice	Tentativas reais registradas neste navegador (um único usuário).	Real attempts recorded in this browser (a single user).	Intentos reales registrados en este navegador (un único usuario).
+instructor.local	local	local	local
+instructor.completion	Atividades concluídas	Activities completed	Actividades completadas
+instructor.classes	Turmas	Classes	Grupos
+instructor.noService	sem serviço	no service	sin servicio
+instructor.empty	Ainda não há tentativas para mostrar.	There are no attempts to show yet.	Aún no hay intentos para mostrar.
+instructor.stepErrors	Erros por etapa	Errors by step	Errores por etapa
+instructor.step	Etapa	Step	Etapa
+instructor.errors	Erros	Errors	Errores
+instructor.topics	Tópicos com mais dificuldade	Hardest topics	Temas con más dificultad
+instructor.errorRate	Taxa de erro	Error rate	Tasa de error
+instructor.noRanking	Dados agregados por tópico; nenhum estudante é comparado com outro.	Data aggregated by topic; no student is compared with another.	Datos agregados por tema; ningún estudiante se compara con otro.
+instructor.exportPdf	Exportar PDF	Export PDF	Exportar PDF
+instructor.exportDocx	Exportar Word	Export Word	Exportar Word
+instructor.exportNeedsData	A exportação fica disponível quando houver dados.	Export becomes available when there is data.	La exportación estará disponible cuando haya datos.
+instructor.exported	Relatório exportado.	Report exported.	Informe exportado.
+instructor.exportFailed	Falha ao exportar	Export failed	Error al exportar
+instructor.reportTitle	Relatório de acompanhamento — CrystaLab	Progress report — CrystaLab	Informe de seguimiento — CrystaLab
+instructor.assign	Atribuir tarefa	Assign task	Asignar tarea
+instructor.activity	Atividade	Activity	Actividad
+instructor.class	Turma	Class	Grupo
+instructor.classesDemo	Turmas demonstrativas	Demo classes	Grupos demostrativos
+instructor.due	Prazo	Due date	Plazo
+instructor.publish	Publicar tarefa	Publish task	Publicar tarea
+instructor.publishHint	A publicação depende do serviço de turmas (D-03).	Publishing depends on the class service (D-03).	La publicación depende del servicio de grupos (D-03).
+instructor.notPublished	Não publicado	Not published	No publicado
+instructor.publishFailed	O serviço de turmas não está disponível: nada foi publicado.	The class service is not available: nothing was published.	El servicio de grupos no está disponible: no se publicó nada.
+instructor.publishFailedTitle	Tarefa não publicada	Task not published	Tarea no publicada
+settings.title	Configurações	Settings	Configuración
+settings.appearance	Aparência	Appearance	Apariencia
+settings.theme	Tema	Theme	Tema
+settings.themeLight	Claro	Light	Claro
+settings.themeDark	Escuro	Dark	Oscuro
+settings.themeSystem	Sistema	System	Sistema
+settings.motion	Animações	Motion	Animaciones
+settings.motionReduce	Reduzir	Reduce	Reducir
+settings.motionFull	Completas	Full	Completas
+settings.language	Idioma	Language	Idioma
+settings.languageHint	Textos do motor continuam em português.	Engine texts stay in Portuguese.	Los textos del motor siguen en portugués.
+settings.demo	Modo demonstrativo	Demo mode	Modo demostrativo
+settings.demoHint	Controla se serviços ausentes usam dados fictícios rotulados.	Controls whether missing services use labelled fictitious data.	Controla si los servicios ausentes usan datos ficticios etiquetados.
+settings.demoConfig	Padrão da instalação	Installation default	Predeterminado de la instalación
+settings.demoAuto	Automático	Automatic	Automático
+settings.demoOn	Sempre	Always	Siempre
+settings.demoOff	Nunca	Never	Nunca
+settings.role	Perfil	Role	Perfil
+settings.roleHint	O perfil de professor mostra o painel do professor na navegação.	The instructor role shows the instructor dashboard in the navigation.	El perfil de docente muestra el panel del docente en la navegación.
+settings.student	Estudante	Student	Estudiante
+settings.instructor	Professor	Instructor	Docente
+settings.touch	Telas de toque	Touch screens	Pantallas táctiles
+settings.touchLock	Começar com a cena 3D travada	Start with the 3D scene locked	Empezar con la escena 3D bloqueada
+settings.touchLockHint	Um dedo rola a página; dois dedos giram e aproximam a cena.	One finger scrolls the page; two fingers rotate and zoom the scene.	Un dedo desplaza la página; dos dedos giran y acercan la escena.
+settings.pending	Pendências registradas	Recorded pending items	Pendientes registrados
+settings.pendingHint	Recursos que dependem de outras equipes e o que o app faz enquanto isso.	Features that depend on other teams and what the app does meanwhile.	Recursos que dependen de otros equipos y lo que hace la aplicación mientras tanto.
+catalog.title	Design system alloy-ui	alloy-ui design system	Sistema de diseño alloy-ui
+catalog.lead	Tokens, categorias de informação e componentes usados em todo o Alloy.	Tokens, information categories and components used across Alloy.	Tokens, categorías de información y componentes usados en todo Alloy.
+catalog.tokens	Tokens de cor	Colour tokens	Tokens de color
+catalog.categories	Categorias de informação	Information categories	Categorías de información
+catalog.categoriesHint	Cada categoria combina cor, ícone e rótulo: a cor nunca é o único código.	Each category combines colour, icon and label: colour is never the only cue.	Cada categoría combina color, icono y etiqueta: el color nunca es el único código.
+catalog.cat.result	Valor calculado pelo motor.	Value computed by the engine.	Valor calculado por el motor.
+catalog.cat.param	Entrada informada pelo usuário ou pelo catálogo.	Input given by the user or the catalogue.	Entrada indicada por el usuario o el catálogo.
+catalog.cat.reference	Dado de referência com fonte (tabela, livro).	Reference data with a source (table, book).	Dato de referencia con fuente (tabla, libro).
+catalog.cat.control	Ação que altera a cena ou o estado.	Action that changes the scene or the state.	Acción que altera la escena o el estado.
+catalog.cat.feedback	Retorno didático: dicas, correção, explicação.	Learning feedback: hints, correction, explanation.	Retroalimentación didáctica: pistas, corrección, explicación.
+catalog.cat.demo	Dado demonstrativo ou ilustrativo, nunca resultado.	Demo or illustrative data, never a result.	Dato demostrativo o ilustrativo, nunca resultado.
+catalog.cat.note	Anotação do usuário.	User annotation.	Anotación del usuario.
+catalog.demoSeal	Selo aplicado a todo dado fictício.	Seal applied to all fictitious data.	Sello aplicado a todo dato ficticio.
+catalog.buttons	Botões e indicadores	Buttons and indicators	Botones e indicadores
+catalog.disabled	Desativado	Disabled	Desactivado
+catalog.toggle	Alternância	Toggle	Alternancia
+catalog.menu	Menu	Menu	Menú
+catalog.disabledReason	Motivo exibido ao desativar	Reason shown when disabled	Motivo mostrado al desactivar
+catalog.fields	Campos	Fields	Campos
+catalog.text	Texto	Text	Texto
+catalog.hint	Texto de ajuda	Help text	Texto de ayuda
+catalog.error	Com erro	With error	Con error
+catalog.errorText	Mensagem de erro associada ao campo	Error message associated with the field	Mensaje de error asociado al campo
+catalog.select	Seleção	Select	Selección
+catalog.textarea	Área de texto	Text area	Área de texto
+catalog.segmented	Segmentado	Segmented	Segmentado
+catalog.slider	Controle deslizante	Slider	Control deslizante
+catalog.checkbox	Caixa de seleção	Checkbox	Casilla
+catalog.layout	Estrutura e padrões	Layout and patterns	Estructura y patrones
+catalog.steps	Passos	Steps	Pasos
+catalog.tabs	Abas	Tabs	Pestañas
+catalog.disclosure	Seção recolhível	Collapsible section	Sección plegable
+catalog.disclosureBody	Conteúdo revelado sob demanda.	Content revealed on demand.	Contenido revelado bajo demanda.
+catalog.openDialog	Abrir diálogo	Open dialog	Abrir diálogo
+catalog.dialog	Diálogo	Dialog	Diálogo
+catalog.dialogBody	O foco fica preso no diálogo e volta ao botão ao fechar.	Focus is trapped in the dialog and returns to the button on close.	El foco queda en el diálogo y vuelve al botón al cerrar.
+catalog.showToast	Mostrar notificação	Show notification	Mostrar notificación
+catalog.toast	Notificação de exemplo	Example notification	Notificación de ejemplo
+progress.review	Sugestões de revisão	Suggested review	Sugerencias de repaso
+progress.rate	{pct} % de acertos	{pct} % correct	{pct} % de aciertos
+progress.seals	Selos de conclusão	Completion badges	Sellos de finalización
+notebook.captureScene	Anotar cena no caderno (imagem, valores do motor e link)	Note scene in notebook (image, engine values and link)	Anotar escena en el cuaderno (imagen, valores del motor y enlace)
+notebook.sceneTitle	cena	scene	escena
+notebook.captured	Cena anotada no caderno.	Scene noted in the notebook.	Escena anotada en el cuaderno.
+notebook.imageAlt	Captura da cena 3D de {name}	3D scene capture of {name}	Captura de la escena 3D de {name}
+instructor.instructions	Instruções para a turma	Instructions for the class	Instrucciones para el grupo
+instructor.instructionsHint	Os critérios de avaliação vêm da atividade escolhida.	Assessment criteria come from the chosen activity.	Los criterios de evaluación vienen de la actividad elegida.
+instructor.saveDraft	Salvar rascunho	Save draft	Guardar borrador
+instructor.draftSaved	Rascunho salvo neste navegador ({id}).	Draft saved in this browser ({id}).	Borrador guardado en este navegador ({id}).
+instructor.drafts	Rascunhos locais	Local drafts	Borradores locales
+instructor.draftLocal	rascunho local, não publicado	local draft, not published	borrador local, no publicado
+instructor.deleteDraft	Excluir rascunho	Delete draft	Eliminar borrador
