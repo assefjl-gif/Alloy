@@ -1,0 +1,44 @@
+# Alloy Virtual Lab — borda única (ADR-011): estáticos do front + proxy /api → backend.
+# ALLOY_DOMINIO: domínio público (Caddy obtém TLS automaticamente); "localhost" em teste local.
+{$ALLOY_DOMINIO:localhost} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# Mesma CSP do servidor de desenvolvimento (scripts/serve.mjs): nada externo, nenhum script inline.
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'"
+		-Server
+	}
+
+	# API e saúde: backend (o cookie de sessão tem Path=/api).
+	@api path /api/* /health /health/*
+	handle @api {
+		reverse_proxy {$ALLOY_API_UPSTREAM:api:8000} {
+			header_up X-Request-ID {http.request.header.X-Request-ID}
+		}
+	}
+
+	# Aliases /v1 depreciados (API.md §3): só enquanto houver clientes antigos.
+	handle /v1/* {
+		reverse_proxy {$ALLOY_API_UPSTREAM:api:8000}
+	}
+
+	handle {
+		root * /srv
+		@imutavel path /assets/chunks/* /assets/media/* /assets/*.js /assets/*.css
+		header @imutavel Cache-Control "public, max-age=31536000, immutable"
+		@mutavel path /index.html /sw.js /config.js /manifest.webmanifest /
+		header @mutavel Cache-Control "no-cache"
+		try_files {path} /index.html
+		file_server
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

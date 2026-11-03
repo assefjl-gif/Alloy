@@ -1,0 +1,72 @@
+# Alloy Virtual Lab — produção mínima em um host (DEPLOY.md). Requer um .env (ver .env.example).
+#   docker compose up -d --build
+# Ordem: db saudável → migrate (migrações + seed, uma vez) → api saudável → web.
+name: alloy-virtual-lab
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-alloy}
+      POSTGRES_USER: ${POSTGRES_USER:-alloy}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - db-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-alloy} -d ${POSTGRES_DB:-alloy}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [interna]
+
+  migrate:
+    build: { context: ., dockerfile: infrastructure/docker/backend.Dockerfile }
+    image: alloy-api:${ALLOY_VERSAO:-local}
+    command: ["python", "-m", "app.cli", "preparar"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-alloy}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-alloy}
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+    networks: [interna]
+
+  api:
+    image: alloy-api:${ALLOY_VERSAO:-local}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-alloy}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-alloy}
+      ALLOY_ENV: ${ALLOY_ENV:-prod}
+    volumes:
+      - arquivos:/app/var/arquivos
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    networks: [interna]
+
+  web:
+    build: { context: ., dockerfile: infrastructure/docker/web.Dockerfile }
+    image: alloy-web:${ALLOY_VERSAO:-local}
+    restart: unless-stopped
+    environment:
+      ALLOY_DOMINIO: ${ALLOY_DOMINIO:-localhost}
+      ALLOY_API_UPSTREAM: api:8000
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy-dados:/data
+      - caddy-config:/config
+    depends_on:
+      api: { condition: service_healthy }
+    networks: [interna]
+
+volumes:
+  db-dados:
+  arquivos:
+  caddy-dados:
+  caddy-config:
+
+networks:
+  interna:

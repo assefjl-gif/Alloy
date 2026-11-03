@@ -1,0 +1,128 @@
+# CI do Alloy Virtual Lab (ADR-015: Linux e Windows). Gates: lint, testes (incl. PostgreSQL no
+# Linux), contrato real API ↔ frontend, build com orçamento de bundle, E2E e build das imagens.
+name: ci
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-linux:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env: { POSTGRES_PASSWORD: teste, POSTGRES_DB: alloy_teste }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 20
+    env:
+      ALLOY_TEST_POSTGRES_URL: postgresql+psycopg://postgres:teste@localhost:5432/alloy_teste
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', cache: pip, cache-dependency-path: backend/pyproject.toml }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: pip install -e ".[dev,validacao]"
+      - run: ruff check .
+      - name: modelos e migrações sem divergência
+        run: python -m app.cli preparar && alembic check
+        env: { DATABASE_URL: 'sqlite:///ci.db' }
+      # frontend instalado: habilita o teste de contrato com os esquemas zod reais
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      - run: python -m pytest -rs
+      - name: OpenAPI versionado está em dia
+        run: python ../scripts/exportar_openapi.py && git diff --exit-code -- ../docs/openapi.json
+
+  backend-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', cache: pip, cache-dependency-path: backend/pyproject.toml }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      # sem contêineres no runner Windows: as variantes PostgreSQL são puladas (registradas no -rs)
+      - run: python -m pytest -rs
+
+  frontend:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      # os testes de adaptador e de conta sobem o backend real
+      - run: pip install -e ../backend
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+        env: { ALLOY_PYTHON: python }
+      - run: npm run build
+      - run: npm run measure
+
+  e2e:
+    needs: [backend-linux, backend-windows, frontend]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -e ../backend
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build && npm run measure
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+        env: { ALLOY_PYTHON: python }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: e2e-reports, path: frontend/reports/ }
+
+  imagens:
+    needs: [backend-linux, backend-windows, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cp .env.example .env && sed -i 's/^ALLOY_SESSION_SECRET=$/ALLOY_SESSION_SECRET=ci-segredo-de-sessao-com-tamanho-suficiente/; s/^ALLOY_CSRF_SECRET=$/ALLOY_CSRF_SECRET=ci-segredo-csrf-com-tamanho-suficiente-000/' .env
+      - run: docker compose config --quiet
+      - run: docker compose build
+      - name: subida completa (db → migrate → api → web) e checagem de saúde
+        run: |
+          sed -i 's/^ALLOY_DOMINIO=.*/ALLOY_DOMINIO=localhost/' .env
+          docker compose up -d
+          for i in $(seq 1 60); do curl -fsk https://localhost/health/ready && break; sleep 2; done
+          curl -fsk https://localhost/api/v1/meta/version
+          curl -fsk https://localhost/ | grep -q "Alloy"
+      - if: always()
+        run: docker compose logs --no-color && docker compose down -v

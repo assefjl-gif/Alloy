@@ -17,5 +17,6 @@ from app.main import create_app  # noqa: E402
 
 esquema = create_app(Settings(_env_file=None, env="dev"), motor_banco=None).openapi()
 destino = RAIZ / "docs" / "openapi.json"
-destino.write_text(json.dumps(esquema, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+# LF fixo: o CI compara com o arquivo versionado também no Windows.
+destino.write_text(json.dumps(esquema, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
 print(f"{len(esquema['paths'])} rotas, {len(esquema['components']['schemas'])} schemas → {destino.relative_to(RAIZ)}")

@@ -1,0 +1,15 @@
+**/node_modules
+**/__pycache__
+**/*.pyc
+.venv
+.git
+.env
+var
+_origem
+_auditoria
+frontend/dist
+frontend/reports
+frontend/test-results
+frontend/playwright-report
+backend/.pytest_cache
+backend/.ruff_cache
