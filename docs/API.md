@@ -223,3 +223,19 @@ Enquanto Q-01 não for resolvida: `/meta/capabilities` informa `hea.preditor_fas
 | Respostas de tentativa | 30/min por usuário |
 | Supercélula | n ≤ 4 (pior caso CFC 4×4×4 = 5³ vértices + 3·(4·4·5) faces = 365 átomos) |
 | Índices de Miller | \|índice\| ≤ 9 (B) |
+
+## 5. Estado da implementação (Fase 4, commit `bd80d6f`)
+
+| Grupo | Implementado | Pendente |
+|---|---|---|
+| Cristalografia | `GET metals, structures`; `POST cells, density, miller, supercells, solid-solutions` | — |
+| Termodinâmica | `POST thermal` | `phase-diagram` (especificação A/docs/2) |
+| Exportação | `POST exports/cif, exports/xyz` | — |
+| HEA | `/hea/*` → 503 `CAPACIDADE_INDISPONIVEL` | Fase 6 |
+| Plataforma | `/health`, `/health/live`, `/health/ready`, `meta/capabilities`, `meta/version` | — |
+| Aliases `/v1` | 7 rotas do B com `Deprecation` + `Link` | Remover após a Fase 5 |
+| Auth, usuários, turmas, educacional, arquivos | — | Fases 7 e 8 |
+
+Executar: `cd backend && ../.venv/Scripts/python -m uvicorn app.main:create_app --factory --port 8000` (sem `DATABASE_URL` usa o seed JSON).
+Documentação interativa (fora de produção): `/api/v1/docs`. Esquema: `docs/openapi.json` (`scripts/exportar_openapi.py`).
+Contrato com o frontend: `backend/tests/contract/test_contrato_frontend.py` (34/34).

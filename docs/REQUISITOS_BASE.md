@@ -114,10 +114,10 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
-| RQ-API-01 | REST versionada `/api/v1/...` por domínio (§8.2) | Rotas do §8.2 mapeadas ou justificadas | 01 | 4 | ◐ B (`/v1/crystals`, `/v1/crystallography`, `/v1/export`) |
-| RQ-API-02 | Schemas Pydantic de entrada/saída; envelope e erros padronizados | Schemas para 100% das rotas; erros com `code` | 01 | 4 | ✔ B |
-| RQ-API-03 | OpenAPI funcional e **tipos TS gerados ou validados a partir dele** | Pipeline gera tipos; divergência quebra o CI | 01/06 | 4 | ◐ B (OpenAPI) + C (Zod manual) — compatibilidade 15/15 verificada |
-| RQ-API-04 | Correlation ID, paginação, filtros, ordenação, rate limit, controle de acesso | Cabeçalho `X-Request-ID` propagado; coleções paginadas | 01 | 4 | ◐ B (rate limit desligado por padrão; sem correlation ID) |
+| RQ-API-01 | REST versionada `/api/v1/...` por domínio (§8.2) | Rotas do §8.2 mapeadas ou justificadas | 01 | 4 | ✔ Fase 4: `/api/v1` por domínio + aliases `/v1` depreciados |
+| RQ-API-02 | Schemas Pydantic de entrada/saída; envelope e erros padronizados | Schemas para 100% das rotas; erros com `code` | 01 | 4 | ✔ Fase 4: Pydantic em todas as rotas; envelope com `code` e `request_id` |
+| RQ-API-03 | OpenAPI funcional e **tipos TS gerados ou validados a partir dele** | Pipeline gera tipos; divergência quebra o CI | 01/06 | 4 | ◐ Fase 4: OpenAPI exportado; contrato real 34/34 com o Zod do frontend; tipos TS na Fase 5 |
+| RQ-API-04 | Correlation ID, paginação, filtros, ordenação, rate limit, controle de acesso | Cabeçalho `X-Request-ID` propagado; coleções paginadas | 01 | 4 | ◐ Fase 4: request ID e rate limit; paginação entra com as coleções (Fases 7/8) |
 | RQ-API-05 | Cliente HTTP central no frontend com cancelamento, timeout, interceptação de erro e auth | Lint R1 do C (fetch só em `http.ts`) mantido | 06 | 5 | ✔ C (`http.ts`, `latest.ts`) |
 | RQ-API-06 | Cálculos longos fora da requisição HTTP | Jobs com estado/progresso quando a medição justificar (§15) | 04 | 9 | ✘ (desnecessário até agora; medir antes) |
 
