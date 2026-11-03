@@ -15,6 +15,7 @@ import { log } from '../stores/terminal.ts';
 import { useOverlays } from '../stores/overlays.ts';
 import { useViewer } from '../stores/viewer.ts';
 import { useHistory } from '../stores/history.ts';
+import { refreshAccount } from '../stores/account.ts';
 import { toast } from '../stores/toast.ts';
 import { tr } from '../commands/bus.ts';
 import { startConnectivity } from '../features/pwa/connectivity.ts';
@@ -73,6 +74,7 @@ export function boot(): void {
   void detectEngines().then(() => {
     const cl = useCapabilities.getState().crystalab;
     if (cl?.api === 'none') toast({ tone: 'warning', title: tr('engine.offTitle'), body: tr('engine.offBody') });
+    void refreshAccount(cl?.api !== 'none');
   });
   startConnectivity();
   registerServiceWorker();

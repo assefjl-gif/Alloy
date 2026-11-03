@@ -553,6 +553,55 @@ class HeaBootstrap(BaseModel):
     versao_motor: str
 
 
+# --------------------------------------------------------------------------- conta (Fase 8)
+_EMAIL = r"^[^@\s]{1,64}@[^@\s]+\.[^@\s]{2,}$"
+
+
+class RegisterRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    nome: str = Field(..., min_length=2, max_length=120)
+    email: str = Field(..., max_length=254, pattern=_EMAIL)
+    senha: str = Field(..., min_length=1, max_length=256, description="mínimo de 10 caracteres; não pode ser comum")
+
+
+class LoginRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    email: str = Field(..., max_length=254)
+    senha: str = Field(..., max_length=256)
+
+
+class UserInfo(BaseModel):
+    id: str
+    nome: str
+    email: str
+    admin_geral: bool
+    email_verificado: bool
+
+
+class SessionInfo(BaseModel):
+    usuario: UserInfo
+    csrf: str = Field(..., description="Enviar no cabeçalho X-Alloy-CSRF em POST/PUT/PATCH/DELETE")
+    expira_em: str
+
+
+class HistoryItem(BaseModel):
+    id: str
+    operacao: str
+    motor: str
+    versao_motor: str
+    versao_dados: str
+    classe: str
+    parametros: Dict[str, Any]
+    criado_em: str
+
+
+class HistoryPage(BaseModel):
+    total: int
+    pagina: int
+    limite: int
+    itens: List[HistoryItem]
+
+
 # --------------------------------------------------------------------------- plataforma
 class ServicoCapacidade(BaseModel):
     disponivel: bool

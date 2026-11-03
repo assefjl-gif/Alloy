@@ -2,8 +2,8 @@
  "openapi": "3.1.0",
  "info": {
   "title": "Alloy Virtual Lab",
-  "description": "API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, supercélulas, soluções sólidas), temperatura e exportação CIF/XYZ. Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados).",
-  "version": "0.6.0"
+  "description": "API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, supercélulas, soluções sólidas), temperatura, HEA, exportação CIF/XYZ e contas. Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados).",
+  "version": "0.8.0"
  },
  "paths": {
   "/api/v1/crystallography/metals": {
@@ -813,6 +813,539 @@
         }
        }
       }
+     }
+    }
+   }
+  },
+  "/api/v1/auth/register": {
+   "post": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Cria uma conta",
+    "operationId": "registrar_api_v1_auth_register_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/RegisterRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_UserInfo_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "429": {
+      "description": "Too Many Requests",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/auth/login": {
+   "post": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Abre sessão (cookie HttpOnly)",
+    "description": "Devolve o token anti-CSRF no corpo; o token de sessão vai SÓ no cookie.",
+    "operationId": "entrar_api_v1_auth_login_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LoginRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_SessionInfo_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "429": {
+      "description": "Too Many Requests",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/auth/me": {
+   "get": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Usuário da sessão + CSRF renovado",
+    "operationId": "eu_api_v1_auth_me_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_SessionInfo_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "429": {
+      "description": "Too Many Requests",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/auth/logout": {
+   "post": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Encerra esta sessão",
+    "operationId": "sair_api_v1_auth_logout_post",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_dict_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "429": {
+      "description": "Too Many Requests",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/auth/logout-all": {
+   "post": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Encerra todas as sessões da conta",
+    "operationId": "sair_de_todos_api_v1_auth_logout_all_post",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_dict_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "429": {
+      "description": "Too Many Requests",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/me/history": {
+   "get": {
+    "tags": [
+     "conta"
+    ],
+    "summary": "Histórico pessoal de cálculos",
+    "operationId": "historico_api_v1_me_history_get",
+    "parameters": [
+     {
+      "name": "limite",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 100,
+       "minimum": 1,
+       "default": 20,
+       "title": "Limite"
+      }
+     },
+     {
+      "name": "pagina",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 10000,
+       "minimum": 1,
+       "default": 1,
+       "title": "Pagina"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_HistoryPage_"
+        }
+       }
+      }
+     },
+     "401": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unauthorized"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Forbidden"
+     },
+     "409": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Conflict"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     },
+     "429": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Too Many Requests"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Service Unavailable"
      }
     }
    }
@@ -2568,6 +3101,107 @@
     ],
     "title": "HealthResponse"
    },
+   "HistoryItem": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "operacao": {
+      "type": "string",
+      "title": "Operacao"
+     },
+     "motor": {
+      "type": "string",
+      "title": "Motor"
+     },
+     "versao_motor": {
+      "type": "string",
+      "title": "Versao Motor"
+     },
+     "versao_dados": {
+      "type": "string",
+      "title": "Versao Dados"
+     },
+     "classe": {
+      "type": "string",
+      "title": "Classe"
+     },
+     "parametros": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Parametros"
+     },
+     "criado_em": {
+      "type": "string",
+      "title": "Criado Em"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "operacao",
+     "motor",
+     "versao_motor",
+     "versao_dados",
+     "classe",
+     "parametros",
+     "criado_em"
+    ],
+    "title": "HistoryItem"
+   },
+   "HistoryPage": {
+    "properties": {
+     "total": {
+      "type": "integer",
+      "title": "Total"
+     },
+     "pagina": {
+      "type": "integer",
+      "title": "Pagina"
+     },
+     "limite": {
+      "type": "integer",
+      "title": "Limite"
+     },
+     "itens": {
+      "items": {
+       "$ref": "#/components/schemas/HistoryItem"
+      },
+      "type": "array",
+      "title": "Itens"
+     }
+    },
+    "type": "object",
+    "required": [
+     "total",
+     "pagina",
+     "limite",
+     "itens"
+    ],
+    "title": "HistoryPage"
+   },
+   "LoginRequest": {
+    "properties": {
+     "email": {
+      "type": "string",
+      "maxLength": 254,
+      "title": "Email"
+     },
+     "senha": {
+      "type": "string",
+      "maxLength": 256,
+      "title": "Senha"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "email",
+     "senha"
+    ],
+    "title": "LoginRequest"
+   },
    "MetalInfo": {
     "properties": {
      "nome": {
@@ -3184,6 +3818,23 @@
     ],
     "title": "OkEnvelope[HeaResponse]"
    },
+   "OkEnvelope_HistoryPage_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/HistoryPage"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[HistoryPage]"
+   },
    "OkEnvelope_List_StructureInfo__": {
     "properties": {
      "ok": {
@@ -3221,6 +3872,23 @@
      "result"
     ],
     "title": "OkEnvelope[MillerResponse]"
+   },
+   "OkEnvelope_SessionInfo_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/SessionInfo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[SessionInfo]"
    },
    "OkEnvelope_SolidSolutionResponse_": {
     "properties": {
@@ -3290,6 +3958,23 @@
     ],
     "title": "OkEnvelope[ThermalResponse]"
    },
+   "OkEnvelope_UserInfo_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/UserInfo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[UserInfo]"
+   },
    "OkEnvelope_VersionInfo_": {
     "properties": {
      "ok": {
@@ -3306,6 +3991,25 @@
      "result"
     ],
     "title": "OkEnvelope[VersionInfo]"
+   },
+   "OkEnvelope_dict_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Result"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[dict]"
    },
    "PlanarInfo": {
     "properties": {
@@ -3468,6 +4172,37 @@
     "title": "Procedencia",
     "description": "PI-06/07: de onde veio o resultado (ARQUITETURA_FINAL §6)."
    },
+   "RegisterRequest": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Nome"
+     },
+     "email": {
+      "type": "string",
+      "maxLength": 254,
+      "pattern": "^[^@\\s]{1,64}@[^@\\s]+\\.[^@\\s]{2,}$",
+      "title": "Email"
+     },
+     "senha": {
+      "type": "string",
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Senha",
+      "description": "mínimo de 10 caracteres; não pode ser comum"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "nome",
+     "email",
+     "senha"
+    ],
+    "title": "RegisterRequest"
+   },
    "RegraSolubilidade": {
     "properties": {
      "criterio": {
@@ -3559,6 +4294,29 @@
      "demo_permitido"
     ],
     "title": "ServicoCapacidade"
+   },
+   "SessionInfo": {
+    "properties": {
+     "usuario": {
+      "$ref": "#/components/schemas/UserInfo"
+     },
+     "csrf": {
+      "type": "string",
+      "title": "Csrf",
+      "description": "Enviar no cabeçalho X-Alloy-CSRF em POST/PUT/PATCH/DELETE"
+     },
+     "expira_em": {
+      "type": "string",
+      "title": "Expira Em"
+     }
+    },
+    "type": "object",
+    "required": [
+     "usuario",
+     "csrf",
+     "expira_em"
+    ],
+    "title": "SessionInfo"
    },
    "SitioBase": {
     "properties": {
@@ -4680,6 +5438,39 @@
      "procedencia"
     ],
     "title": "ThermalResponse"
+   },
+   "UserInfo": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "email": {
+      "type": "string",
+      "title": "Email"
+     },
+     "admin_geral": {
+      "type": "boolean",
+      "title": "Admin Geral"
+     },
+     "email_verificado": {
+      "type": "boolean",
+      "title": "Email Verificado"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "nome",
+     "email",
+     "admin_geral",
+     "email_verificado"
+    ],
+    "title": "UserInfo"
    },
    "VersionInfo": {
     "properties": {

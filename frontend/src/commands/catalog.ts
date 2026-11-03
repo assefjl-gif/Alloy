@@ -173,7 +173,7 @@ function parseSpheres(args: Token[]): ParseResult {
 }
 
 const EXPORTS: ExportFormat[] = ['cif', 'xyz', 'png', 'pdf', 'json'];
-const MODULES: Record<string, ModuleId> = { crystalab: 'crystalab', cristalab: 'crystalab', hea: 'hea', aprender: 'aprender', exercicios: 'aprender', professor: 'professor', diario: 'diario', catalogo: 'catalogo', sobre: 'sobre' };
+const MODULES: Record<string, ModuleId> = { crystalab: 'crystalab', cristalab: 'crystalab', hea: 'hea', aprender: 'aprender', exercicios: 'aprender', professor: 'professor', diario: 'diario', catalogo: 'catalogo', sobre: 'sobre', conta: 'conta' };
 
 function parseHeaPairs(args: Token[]): Record<string, number> {
   const out: Record<string, number> = {};

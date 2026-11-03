@@ -1,5 +1,5 @@
 // Servidor estático do build + proxy para a API unificada (desenvolvimento e E2E).
-// Em produção quem faz este papel é o Caddy (infra/caddy/Caddyfile — ADR-010, mesmo domínio).
+// Em produção quem faz este papel é o Caddy (infra/caddy/Caddyfile — ADR-011, mesmo domínio).
 //   /                 → dist/ (front)
 //   /api/*, /health   → backend FastAPI (padrão http://127.0.0.1:8010)
 //   /v1/*             → backend (aliases depreciados; o front não os usa — mantidos para clientes antigos)

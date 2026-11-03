@@ -16,7 +16,9 @@ from app.core.config import Settings
 from app.repositories.materiais_json import repositorio_padrao
 from app.repositories.materiais_sql import RepositorioSQL
 
+from .autenticacao import LimitadorLogin, ServicoAutenticacao
 from .calculo import ServicoCalculo
+from .erros import CapacidadeIndisponivel
 
 
 def criar_motor_banco(settings: Settings) -> Optional[Engine]:
@@ -26,15 +28,39 @@ def criar_motor_banco(settings: Settings) -> Optional[Engine]:
 
 
 @contextmanager
-def servico_calculo(settings: Settings, motor_banco: Optional[Engine]) -> Iterator[ServicoCalculo]:
+def unidade_de_trabalho(motor_banco: Optional[Engine]) -> Iterator[Optional[Session]]:
+    """Uma sessão por requisição, compartilhada por todos os serviços dela; commit no fim, rollback em erro."""
     if motor_banco is None:
-        repo = repositorio_padrao()
-        yield ServicoCalculo(repo, repo, settings.politica_dados())
+        yield None
         return
     with Session(motor_banco) as sessao:
-        repo = RepositorioSQL(sessao)
-        yield ServicoCalculo(repo, repo, settings.politica_dados(), sessao)
-        sessao.commit()
+        try:
+            yield sessao
+            sessao.commit()
+        except BaseException:
+            sessao.rollback()
+            raise
+
+
+def montar_servico_calculo(settings: Settings, sessao: Optional[Session]) -> ServicoCalculo:
+    if sessao is None:
+        repo = repositorio_padrao()
+        return ServicoCalculo(repo, repo, settings.politica_dados())
+    repo_sql = RepositorioSQL(sessao)
+    return ServicoCalculo(repo_sql, repo_sql, settings.politica_dados(), sessao)
+
+
+@contextmanager
+def servico_calculo(settings: Settings, motor_banco: Optional[Engine]) -> Iterator[ServicoCalculo]:
+    with unidade_de_trabalho(motor_banco) as sessao:
+        yield montar_servico_calculo(settings, sessao)
+
+
+def montar_servico_autenticacao(sessao: Optional[Session], limitador: LimitadorLogin) -> ServicoAutenticacao:
+    if sessao is None:
+        raise CapacidadeIndisponivel("Contas de usuário exigem banco de dados (DATABASE_URL); "
+                                     "este servidor roda só com o seed JSON.")
+    return ServicoAutenticacao(sessao, limitador)
 
 
 def banco_responde(motor_banco: Optional[Engine]) -> Optional[bool]:

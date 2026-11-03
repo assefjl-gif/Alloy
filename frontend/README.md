@@ -24,7 +24,7 @@ demonstrativo rotulado — nunca simulados em silêncio.
 ## Configuração em tempo de implantação
 
 `public/config.js` define `apiBase` (padrão `'.'`: mesmo domínio do front, servido pelo Caddy —
-ADR-010) e a política `demo` (`auto` | `on` | `off`). Não é preciso recompilar para mudar.
+ADR-011) e a política `demo` (`auto` | `on` | `off`). Não é preciso recompilar para mudar.
 
 ## Contrato com o backend
 

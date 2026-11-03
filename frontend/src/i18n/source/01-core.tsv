@@ -135,3 +135,27 @@ category.note	Nota	Note	Nota
 bridge.restore.missing	O resultado HEA desta cena não está mais disponível nesta aba; abra-o de novo pelo módulo HEA.	The HEA result for this scene is no longer available in this tab; open it again from the HEA module.	El resultado HEA de esta escena ya no está disponible en esta pestaña; ábralo de nuevo desde el módulo HEA.
 bridge.restore.tampered	O resultado HEA desta cena foi alterado e foi descartado: o transporte só aceita a cópia original.	The HEA result for this scene was altered and discarded: only the original copy is accepted.	El resultado HEA de esta escena fue alterado y se descartó: solo se acepta la copia original.
 bridge.restore.schema	A referência ao resultado HEA no link é inválida.	The HEA result reference in the link is invalid.	La referencia al resultado HEA en el enlace no es válida.
+nav.account	Conta	Account	Cuenta
+account.lead	Entre para guardar o histórico dos seus cálculos no servidor. Sem conta, tudo funciona igual e nada é gravado.	Sign in to keep a server-side history of your calculations. Without an account everything works the same and nothing is stored.	Inicia sesión para guardar en el servidor el historial de tus cálculos. Sin cuenta todo funciona igual y no se guarda nada.
+account.signIn	Entrar	Sign in	Entrar
+account.createAccount	Criar conta	Create account	Crear cuenta
+account.mode	Entrar ou criar conta	Sign in or create account	Entrar o crear cuenta
+account.name	Nome	Name	Nombre
+account.email	E-mail	Email	Correo electrónico
+account.password	Senha	Password	Contraseña
+account.passwordHint	Pelo menos 10 caracteres; senhas comuns são recusadas.	At least 10 characters; common passwords are rejected.	Al menos 10 caracteres; se rechazan contraseñas comunes.
+account.privacy	A sessão fica num cookie protegido (HttpOnly); nenhum dado de identidade é guardado no navegador.	The session lives in a protected (HttpOnly) cookie; no identity data is stored in the browser.	La sesión vive en una cookie protegida (HttpOnly); no se guardan datos de identidad en el navegador.
+account.welcome	Bem-vindo(a), {name}	Welcome, {name}	Bienvenido(a), {name}
+account.signedInAs	Conta: {name}	Account: {name}	Cuenta: {name}
+account.signOut	Sair	Sign out	Salir
+account.signOutAll	Sair de todos os dispositivos	Sign out everywhere	Salir de todos los dispositivos
+account.signedOut	Sessão encerrada	Signed out	Sesión cerrada
+account.signedOutAll	{n} sessão(ões) encerrada(s)	{n} session(s) closed	{n} sesión(es) cerrada(s)
+account.unavailable	Este servidor não oferece contas (roda sem banco de dados). Os cálculos continuam disponíveis, sem histórico.	This server does not offer accounts (it runs without a database). Calculations remain available, without history.	Este servidor no ofrece cuentas (funciona sin base de datos). Los cálculos siguen disponibles, sin historial.
+account.history	Histórico de cálculos	Calculation history	Historial de cálculos
+account.historyTotal	{n} registro(s)	{n} record(s)	{n} registro(s)
+account.historyEmpty	Nenhum cálculo registrado ainda.	No calculations recorded yet.	Aún no hay cálculos registrados.
+account.when	Quando	When	Cuándo
+account.operation	Operação	Operation	Operación
+account.parameters	Parâmetros	Parameters	Parámetros
+account.provenance	Procedência	Provenance	Procedencia

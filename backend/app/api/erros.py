@@ -25,15 +25,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.request_id import request_id_de
 from app.engines.crystallography.erros import ErroDominio
+from app.services.erros import STATUS_HTTP as STATUS_SERVICOS
 
 logger = logging.getLogger("alloy.api")
 
 #: Erros de domínio cujo status não é 400 (API.md §1.4).
-STATUS_POR_CODIGO = {"DADO_NAO_VALIDADO": 422}
+STATUS_POR_CODIGO = {"DADO_NAO_VALIDADO": 422, **STATUS_SERVICOS}
 
 _CODIGOS_HTTP = {
     400: "REQUISICAO_INVALIDA", 401: "NAO_AUTENTICADO", 403: "PROIBIDO", 404: "NAO_ENCONTRADO",
-    405: "METODO_NAO_PERMITIDO", 413: "CORPO_GRANDE_DEMAIS", 415: "TIPO_NAO_SUPORTADO",
+    405: "METODO_NAO_PERMITIDO", 409: "CONFLITO", 413: "CORPO_GRANDE_DEMAIS", 415: "TIPO_NAO_SUPORTADO",
     422: "VALIDACAO", 429: "LIMITE_DE_REQUISICOES", 500: "ERRO_INTERNO",
 }
 

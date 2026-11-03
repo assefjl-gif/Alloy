@@ -23,6 +23,13 @@ export class ApiError extends Error {
   }
 }
 
+/** Token anti-CSRF da sessão (ADR-008): só em memória; enviado em toda escrita. */
+let csrfToken: string | null = null;
+
+export function setCsrfToken(token: string | null): void {
+  csrfToken = token;
+}
+
 export function isAbort(err: unknown): boolean {
   return err instanceof ApiError ? err.kind === 'aborted' : err instanceof DOMException && err.name === 'AbortError';
 }
@@ -58,7 +65,12 @@ export async function requestJson<T>(url: string, opts: RequestOptions<T> = {}):
   try {
     response = await fetch(url, {
       method,
-      headers: body === undefined ? { Accept: 'application/json' } : { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
+        ...(method !== 'GET' && csrfToken ? { 'X-Alloy-CSRF': csrfToken } : {}),
+      },
+      credentials: 'same-origin',
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: combined,
       cache: 'no-store',

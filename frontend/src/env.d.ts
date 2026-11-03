@@ -7,7 +7,7 @@ declare module '*.svg' {
 }
 
 interface AlloyRuntimeConfig {
-  /** Prefixo da API unificada (mesmo domínio por padrão — ADR-010). */
+  /** Prefixo da API unificada (mesmo domínio por padrão — ADR-011). */
   apiBase?: string;
   demo?: 'auto' | 'on' | 'off';
 }

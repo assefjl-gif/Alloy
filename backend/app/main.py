@@ -14,11 +14,12 @@ from sqlalchemy import Engine
 
 from . import __version__
 from .api.erros import register_exception_handlers
-from .api.v1 import rotas
+from .api.v1 import auth, rotas
 from .api.v1.schemas import HealthResponse
 from .core.config import Settings
 from .core.request_id import RequestIdMiddleware
 from .security.middlewares import CabecalhosSegurancaMiddleware, LimiteCorpoMiddleware, RateLimitMiddleware
+from .services.autenticacao import LimitadorLogin
 from .services.provedor import banco_responde, criar_motor_banco, servico_calculo
 
 logger = logging.getLogger("alloy.api")
@@ -35,7 +36,7 @@ def create_app(settings: Optional[Settings] = None, motor_banco: Optional[Engine
         title=settings.app_name,
         version=__version__,
         description=("API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, "
-                     "supercélulas, soluções sólidas), temperatura e exportação CIF/XYZ. "
+                     "supercélulas, soluções sólidas), temperatura, HEA, exportação CIF/XYZ e contas. "
                      "Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados)."),
         docs_url=ROTAS_DOCS[0] if docs else None,
         redoc_url=ROTAS_DOCS[1] if docs else None,
@@ -43,6 +44,7 @@ def create_app(settings: Optional[Settings] = None, motor_banco: Optional[Engine
     )
     app.state.settings = settings
     app.state.motor_banco = motor_banco
+    app.state.limitador_login = LimitadorLogin()
 
     # Ordem: o último adicionado é o mais externo (o ID de requisição envolve tudo).
     if settings.cors_origins:
@@ -57,6 +59,7 @@ def create_app(settings: Optional[Settings] = None, motor_banco: Optional[Engine
 
     register_exception_handlers(app)
     app.include_router(rotas.router)
+    app.include_router(auth.router)
     app.include_router(rotas.alias)
 
     @app.get("/health", response_model=HealthResponse, tags=["plataforma"], summary="Saúde (compatível com o B e o C)")

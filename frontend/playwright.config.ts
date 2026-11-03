@@ -1,7 +1,7 @@
 /**
  * Testes de fluxo. Rodam contra o build de produção (dist/) servido por scripts/serve.mjs, com o
  * BACKEND REAL da plataforma (backend/, FastAPI) atrás do proxy /api — o mesmo arranjo do Caddy
- * em produção (ADR-010). O módulo HEA usa o serviço /api/v1/hea quando disponível.
+ * em produção (ADR-011). O módulo HEA usa o serviço /api/v1/hea quando disponível.
  *
  * Pré-requisitos: `npm run build`; venv do backend (../.venv) ou ALLOY_PYTHON; navegador
  * Chromium do Playwright (`npx playwright install chromium`).

@@ -15,6 +15,7 @@ import { Badge, Spinner, Kbd } from '../design-system/primitives/misc.tsx';
 import { Icon } from '../design-system/Icon.tsx';
 import { useCapabilities, useServiceMode } from '../stores/capabilities.ts';
 import { usePreferences } from '../stores/preferences.ts';
+import { useAccount } from '../stores/account.ts';
 import { CommandPalette } from '../features/palette/CommandPalette.tsx';
 import { SettingsDialog } from './SettingsDialog.tsx';
 import CrystaLabModule from '../modules/crystalab/CrystaLabModule.tsx';
@@ -25,6 +26,7 @@ const NotebookModule = lazy(() => import('../modules/notebook/NotebookModule.tsx
 const InstructorModule = lazy(() => import('../modules/instructor/InstructorModule.tsx'));
 const CatalogModule = lazy(() => import('../modules/catalog/CatalogModule.tsx'));
 const AboutModule = lazy(() => import('../modules/about/AboutModule.tsx'));
+const AccountModule = lazy(() => import('../modules/account/AccountModule.tsx'));
 
 function ConnectivityIndicator() {
   const { t } = useI18n();
@@ -38,6 +40,13 @@ function ConnectivityIndicator() {
       <span className="conn__text">{t(`conn.short.${state}`)}</span>
     </a>
   );
+}
+
+function AccountLink() {
+  const { t } = useI18n();
+  const user = useAccount((s) => s.user);
+  const label = user ? t('account.signedInAs', { name: user.nome }) : t('nav.account');
+  return <a className="ds-btn ds-btn--ghost ds-btn--icon" href="#/conta" aria-label={label} title={label} data-testid="account-link"><Icon name={user ? 'unlock' : 'lock'} size={18} /></a>;
 }
 
 function DemoIndicator() {
@@ -55,6 +64,7 @@ function ModuleView({ module }: { module: ModuleId }) {
     case 'professor': return <InstructorModule />;
     case 'catalogo': return <CatalogModule />;
     case 'sobre': return <AboutModule />;
+    case 'conta': return <AccountModule />;
     default: return <CrystaLabModule />;
   }
 }
@@ -79,7 +89,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const titles: Record<ModuleId, string> = { crystalab: t('nav.crystalab'), hea: t('nav.hea'), aprender: t('nav.learn'), diario: t('nav.notebook'), professor: t('nav.instructor'), catalogo: t('nav.catalog'), sobre: t('nav.about') };
+    const titles: Record<ModuleId, string> = { crystalab: t('nav.crystalab'), hea: t('nav.hea'), aprender: t('nav.learn'), diario: t('nav.notebook'), professor: t('nav.instructor'), catalogo: t('nav.catalog'), sobre: t('nav.about'), conta: t('nav.account') };
     document.title = `${titles[route.module]} · Alloy Virtual Lab`;
     if (firstRender.current) { firstRender.current = false; return; }
     const h = window.setTimeout(() => (document.getElementById('main-content') as HTMLElement | null)?.focus({ preventScroll: true }), 60);
@@ -107,6 +117,7 @@ export function App() {
             <Icon name="search" size={16} /><span className="palette-trigger__text">{t('palette.open')}</span><span className="palette-trigger__kbd" aria-hidden="true"><Kbd>Ctrl</Kbd><Kbd>K</Kbd></span>
           </button>
           <IconButton icon="settings" label={t('settings.title')} onClick={() => setSettingsOpen(true)} data-testid="settings-button" />
+          <AccountLink />
           <a className="ds-btn ds-btn--ghost ds-btn--icon" href="#/sobre" aria-label={t('nav.about')} title={t('nav.about')}><Icon name="info" size={18} /></a>
         </>
       }

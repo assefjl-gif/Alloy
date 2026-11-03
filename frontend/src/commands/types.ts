@@ -4,7 +4,7 @@ import type { AtomRef } from '../stores/overlays.ts';
 import type { Locale } from '../utils/format.ts';
 import type { MessageKey, Vars } from '../i18n/index.ts';
 
-export type ModuleId = 'crystalab' | 'hea' | 'aprender' | 'professor' | 'diario' | 'catalogo' | 'sobre';
+export type ModuleId = 'crystalab' | 'hea' | 'aprender' | 'professor' | 'diario' | 'catalogo' | 'sobre' | 'conta';
 export type ViewToggleKey = 'edges' | 'axes' | 'latticePoints' | 'labels' | 'autoRotate' | 'rigid';
 export type ExportFormat = 'cif' | 'xyz' | 'png' | 'pdf' | 'json';
 

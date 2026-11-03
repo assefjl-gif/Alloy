@@ -2,7 +2,7 @@
 export type DemoPolicy = 'auto' | 'on' | 'off';
 
 export interface AlloyConfig {
-  /** Prefixo da API unificada; '.' = mesmo domínio e mesmo caminho do front (ADR-010). */
+  /** Prefixo da API unificada; '.' = mesmo domínio e mesmo caminho do front (ADR-011). */
   apiBase: string;
   demo: DemoPolicy;
   version: string;

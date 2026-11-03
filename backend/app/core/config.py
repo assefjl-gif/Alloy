@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     rate_limit_window_seconds: int = 60
 
     session_secret: Optional[SecretStr] = None
+    #: Cookie de sessão com ``Secure``; padrão: ligado fora de dev (atrás do Caddy com HTTPS).
+    cookie_secure: Optional[bool] = None
     csrf_secret: Optional[SecretStr] = None
     storage_dir: str = "./var/arquivos"
     ia_enabled: bool = False
@@ -46,6 +48,10 @@ class Settings(BaseSettings):
     @property
     def rate_limit_ativo(self) -> bool:
         return self.rate_limit if self.rate_limit is not None else self.env != "dev"
+
+    @property
+    def cookie_seguro(self) -> bool:
+        return self.cookie_secure if self.cookie_secure is not None else self.env != "dev"
 
     @property
     def demo_permitido(self) -> bool:
@@ -65,6 +71,8 @@ class Settings(BaseSettings):
                 raise ValueError("Em produção defina ALLOY_SESSION_SECRET e ALLOY_CSRF_SECRET.")
             if "*" in self.cors_origins:
                 raise ValueError("CORS '*' não é permitido em produção.")
+            if self.cookie_secure is False:
+                raise ValueError("Em produção o cookie de sessão precisa de Secure (ALLOY_COOKIE_SECURE).")
             if self.ia_enabled:
                 raise ValueError("IA não pode ser ligada em produção antes da decisão registrada (RQ-EDU-05).")
         if self.max_body_bytes < 1024:

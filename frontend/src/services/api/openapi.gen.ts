@@ -263,6 +263,111 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cria uma conta */
+        post: operations["registrar_api_v1_auth_register_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Abre sessão (cookie HttpOnly)
+         * @description Devolve o token anti-CSRF no corpo; o token de sessão vai SÓ no cookie.
+         */
+        post: operations["entrar_api_v1_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Usuário da sessão + CSRF renovado */
+        get: operations["eu_api_v1_auth_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Encerra esta sessão */
+        post: operations["sair_api_v1_auth_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/logout-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Encerra todas as sessões da conta */
+        post: operations["sair_de_todos_api_v1_auth_logout_all_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Histórico pessoal de cálculos */
+        get: operations["historico_api_v1_me_history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/crystals/metals": {
         parameters: {
             query?: never;
@@ -903,6 +1008,45 @@ export interface components {
                 [key: string]: boolean;
             } | null;
         };
+        /** HistoryItem */
+        HistoryItem: {
+            /** Id */
+            id: string;
+            /** Operacao */
+            operacao: string;
+            /** Motor */
+            motor: string;
+            /** Versao Motor */
+            versao_motor: string;
+            /** Versao Dados */
+            versao_dados: string;
+            /** Classe */
+            classe: string;
+            /** Parametros */
+            parametros: {
+                [key: string]: unknown;
+            };
+            /** Criado Em */
+            criado_em: string;
+        };
+        /** HistoryPage */
+        HistoryPage: {
+            /** Total */
+            total: number;
+            /** Pagina */
+            pagina: number;
+            /** Limite */
+            limite: number;
+            /** Itens */
+            itens: components["schemas"]["HistoryItem"][];
+        };
+        /** LoginRequest */
+        LoginRequest: {
+            /** Email */
+            email: string;
+            /** Senha */
+            senha: string;
+        };
         /** MetalInfo */
         MetalInfo: {
             /** Nome */
@@ -1105,6 +1249,15 @@ export interface components {
             ok?: boolean;
             result: components["schemas"]["HeaResponse"];
         };
+        /** OkEnvelope[HistoryPage] */
+        OkEnvelope_HistoryPage_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["HistoryPage"];
+        };
         /** OkEnvelope[List[StructureInfo]] */
         OkEnvelope_List_StructureInfo__: {
             /**
@@ -1123,6 +1276,15 @@ export interface components {
              */
             ok?: boolean;
             result: components["schemas"]["MillerResponse"];
+        };
+        /** OkEnvelope[SessionInfo] */
+        OkEnvelope_SessionInfo_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["SessionInfo"];
         };
         /** OkEnvelope[SolidSolutionResponse] */
         OkEnvelope_SolidSolutionResponse_: {
@@ -1160,6 +1322,15 @@ export interface components {
             ok?: boolean;
             result: components["schemas"]["ThermalResponse"];
         };
+        /** OkEnvelope[UserInfo] */
+        OkEnvelope_UserInfo_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["UserInfo"];
+        };
         /** OkEnvelope[VersionInfo] */
         OkEnvelope_VersionInfo_: {
             /**
@@ -1168,6 +1339,18 @@ export interface components {
              */
             ok?: boolean;
             result: components["schemas"]["VersionInfo"];
+        };
+        /** OkEnvelope[dict] */
+        OkEnvelope_dict_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            };
         };
         /** PlanarInfo */
         PlanarInfo: {
@@ -1221,6 +1404,18 @@ export interface components {
             /** Calculado Em */
             calculado_em?: string | null;
         };
+        /** RegisterRequest */
+        RegisterRequest: {
+            /** Nome */
+            nome: string;
+            /** Email */
+            email: string;
+            /**
+             * Senha
+             * @description mínimo de 10 caracteres; não pode ser comum
+             */
+            senha: string;
+        };
         /** RegraSolubilidade */
         RegraSolubilidade: {
             /** Criterio */
@@ -1247,6 +1442,17 @@ export interface components {
             versao?: string | null;
             /** Motivo */
             motivo?: string | null;
+        };
+        /** SessionInfo */
+        SessionInfo: {
+            usuario: components["schemas"]["UserInfo"];
+            /**
+             * Csrf
+             * @description Enviar no cabeçalho X-Alloy-CSRF em POST/PUT/PATCH/DELETE
+             */
+            csrf: string;
+            /** Expira Em */
+            expira_em: string;
         };
         /** SitioBase */
         SitioBase: {
@@ -1597,6 +1803,19 @@ export interface components {
             /** Notas */
             notas: components["schemas"]["NotaTermica"][];
             procedencia: components["schemas"]["Procedencia"];
+        };
+        /** UserInfo */
+        UserInfo: {
+            /** Id */
+            id: string;
+            /** Nome */
+            nome: string;
+            /** Email */
+            email: string;
+            /** Admin Geral */
+            admin_geral: boolean;
+            /** Email Verificado */
+            email_verificado: boolean;
         };
         /** VersionInfo */
         VersionInfo: {
@@ -2303,6 +2522,461 @@ export interface operations {
             };
             /** @description Internal Server Error */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    registrar_api_v1_auth_register_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_UserInfo_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    entrar_api_v1_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_SessionInfo_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    eu_api_v1_auth_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_SessionInfo_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    sair_api_v1_auth_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_dict_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    sair_de_todos_api_v1_auth_logout_all_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_dict_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    historico_api_v1_me_history_get: {
+        parameters: {
+            query?: {
+                limite?: number;
+                pagina?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_HistoryPage_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };

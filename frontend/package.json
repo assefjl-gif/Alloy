@@ -12,7 +12,7 @@
     "serve": "node scripts/serve.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.sw.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "node scripts/lint.mjs",
-    "test": "node --import tsx --test tests/unit/adapters.test.ts tests/unit/commands.test.ts tests/unit/core.test.ts tests/unit/i18n-tokens.test.ts",
+    "test": "node --import tsx --test tests/unit/adapters.test.ts tests/unit/account.test.ts tests/unit/commands.test.ts tests/unit/core.test.ts tests/unit/i18n-tokens.test.ts",
     "e2e": "playwright test",
     "measure": "node scripts/measure-bundle.mjs",
     "ci": "npm run typecheck && npm run lint && npm test && npm run build && npm run measure && npm run e2e",

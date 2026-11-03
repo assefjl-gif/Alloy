@@ -1,6 +1,6 @@
 /**
  * Roteador por hash (sem recarga, sem exigir reescrita no servidor Python).
- * Rotas: #/crystalab, #/hea, #/aprender[/<atividade>], #/professor, #/diario, #/catalogo, #/sobre.
+ * Rotas: #/crystalab, #/hea, #/aprender[/<atividade>], #/professor, #/diario, #/catalogo, #/sobre, #/conta.
  * Estado de cena serializável vai em ?s=<v1.base64url> (ver features/url/sceneUrl.ts).
  */
 import { useSyncExternalStore } from 'react';
@@ -12,7 +12,7 @@ export interface Route {
   query: URLSearchParams;
 }
 
-const MODULES: ModuleId[] = ['crystalab', 'hea', 'aprender', 'professor', 'diario', 'catalogo', 'sobre'];
+const MODULES: ModuleId[] = ['crystalab', 'hea', 'aprender', 'professor', 'diario', 'catalogo', 'sobre', 'conta'];
 
 export function parseHash(hash: string): Route {
   const clean = hash.replace(/^#\/?/, '');

@@ -2,20 +2,22 @@
 
 Os aliases chamam os MESMOS handlers: não existe segunda implementação. Handlers são ``def``
 (threadpool), como no B: os cálculos são síncronos e curtos (< 1,1 ms medidos).
-Autenticação ainda não existe (Fase 8): todos os cálculos são anônimos e não gravam histórico.
+Com sessão (cookie + X-Alloy-CSRF), os cálculos com procedência entram no histórico pessoal;
+anônimos não gravam nada (RQ-DAD-05).
 """
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Request, Response
 
 from app import __version__
 from app.core.config import Settings
+from app.services.autenticacao import Autenticado
 from app.services.calculo import ServicoCalculo, versoes_motores
 
-from ..dependencias import get_servico, get_settings
+from ..dependencias import get_autenticado_opcional, get_servico, get_settings, usuario_id
 from .schemas import (
     Capabilities,
     DensityRequest,
@@ -74,9 +76,10 @@ def listar_estruturas(response: Response):
 
 @router.post("/crystallography/cells", response_model=OkEnvelope[StructureResponse], tags=["cristalografia"],
              summary="Calcula a célula unitária completa")
-def calcular_celula(payload: StructureRequest, servico: ServicoCalculo = Depends(get_servico)):
+def calcular_celula(payload: StructureRequest, servico: ServicoCalculo = Depends(get_servico),
+                    autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
     """Rede (medida, derivada ou informada), FEA, densidade, átomos, base, passos e procedência."""
-    return _ok(servico.celula(_payload(payload)))
+    return _ok(servico.celula(_payload(payload), usuario_id(autenticado)))
 
 
 @router.post("/crystallography/density", response_model=OkEnvelope[DensityResponse], tags=["cristalografia"],
@@ -87,9 +90,10 @@ def calcular_densidade(payload: DensityRequest, servico: ServicoCalculo = Depend
 
 @router.post("/crystallography/miller", response_model=OkEnvelope[MillerResponse], tags=["cristalografia"],
              summary="Planos (hkl)/(hkil) e direções [uvw]/[uvtw]")
-def calcular_miller(payload: MillerRequest, servico: ServicoCalculo = Depends(get_servico)):
+def calcular_miller(payload: MillerRequest, servico: ServicoCalculo = Depends(get_servico),
+                    autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
     """Polígono, normal, área, espaçamento, densidade planar validada e família em supercélula."""
-    return _ok(servico.miller(_payload(payload)))
+    return _ok(servico.miller(_payload(payload), usuario_id(autenticado)))
 
 
 @router.post("/crystallography/supercells", response_model=OkEnvelope[SupercellResponse], tags=["cristalografia"],
@@ -100,15 +104,17 @@ def calcular_supercelula(payload: SupercellRequest, servico: ServicoCalculo = De
 
 @router.post("/crystallography/solid-solutions", response_model=OkEnvelope[SolidSolutionResponse],
              tags=["cristalografia"], summary="Solução sólida substitucional ou intersticial")
-def calcular_solucao_solida(payload: SolidSolutionRequest, servico: ServicoCalculo = Depends(get_servico)):
+def calcular_solucao_solida(payload: SolidSolutionRequest, servico: ServicoCalculo = Depends(get_servico),
+                            autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
     """Vegard, % em peso, Hume-Rothery e supercélula com o soluto (estimativa de modelo)."""
-    return _ok(servico.solucao_solida(_payload(payload)))
+    return _ok(servico.solucao_solida(_payload(payload), usuario_id(autenticado)))
 
 
 @router.post("/thermodynamics/thermal", response_model=OkEnvelope[ThermalResponse], tags=["termodinamica"],
              summary="Dilatação, vibração (Lindemann) e alotropia")
-def calcular_termico(payload: ThermalRequest, servico: ServicoCalculo = Depends(get_servico)):
-    return _ok(servico.termico(_payload(payload)))
+def calcular_termico(payload: ThermalRequest, servico: ServicoCalculo = Depends(get_servico),
+                     autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
+    return _ok(servico.termico(_payload(payload), usuario_id(autenticado)))
 
 
 # --------------------------------------------------------------------------- exportação
@@ -134,14 +140,15 @@ def hea_bootstrap(response: Response, servico: ServicoCalculo = Depends(get_serv
 
 @router.post("/hea/analyses", response_model=OkEnvelope[HeaResponse], tags=["hea"],
              summary="ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)")
-def hea_analisar(payload: HeaRequest, servico: ServicoCalculo = Depends(get_servico)):
+def hea_analisar(payload: HeaRequest, servico: ServicoCalculo = Depends(get_servico),
+                 autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
     """Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo."""
-    return _ok(servico.hea(_payload(payload)))
+    return _ok(servico.hea(_payload(payload), usuario_id(autenticado)))
 
 
 # --------------------------------------------------------------------------- plataforma
 @router.get("/meta/capabilities", response_model=OkEnvelope[Capabilities], tags=["plataforma"])
-def capacidades(settings: Settings = Depends(get_settings)):
+def capacidades(request: Request, settings: Settings = Depends(get_settings)):
     """Estado de cada serviço para o frontend (live/demo/disabled). Em produção, demonstração é proibida."""
     demo = settings.demo_permitido
     motores = versoes_motores()
@@ -161,8 +168,9 @@ def capacidades(settings: Settings = Depends(get_settings)):
                     "Parcial: ΔH_mix e Ω indisponíveis (Q-01). " + (nao_validados or ""))),
         "ia": ServicoCapacidade(disponivel=settings.ia_enabled, demo_permitido=False,
                                 motivo=None if settings.ia_enabled else "Desligada até decisão (RQ-EDU-05)."),
-        "autenticacao": ServicoCapacidade(disponivel=False, demo_permitido=False,
-                                          motivo="Implementada na Fase 8 (ADR-008)."),
+        "autenticacao": ServicoCapacidade(
+            disponivel=request.app.state.motor_banco is not None, demo_permitido=False,
+            motivo=None if request.app.state.motor_banco is not None else "Contas exigem banco (DATABASE_URL)."),
     })
 
 
