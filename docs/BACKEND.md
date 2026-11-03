@@ -1,27 +1,36 @@
-# Backend (Fase 3)
+# Backend
 
-## Estrutura entregue
+## Estrutura
 
 ```text
 backend/
 ├── alembic.ini                 → migrações em ../database/migrations
 ├── pyproject.toml              → dependências, pytest, ruff
 ├── app/
-│   ├── core/config.py          → Settings por ambiente (ALLOY_ENV dev/test/prod) e política de dados
-│   ├── engines/                → motores puros (ver MOTOR_CIENTIFICO.md)
+│   ├── main.py                 → create_app(): middlewares, roteadores, /health*
+│   ├── cli.py                  → python -m app.cli migrar | seed | preparar
+│   ├── core/                   → Settings por ambiente (ALLOY_ENV dev/test/prod), request ID
+│   ├── engines/                → motores PUROS: crystallography, thermodynamics, hea (MOTOR_CIENTIFICO.md, MOTOR_HEA.md)
+│   ├── educational/            → geradores de questões (puros; o gabarito vem dos motores)
 │   ├── models/                 → 36 tabelas SQLAlchemy 2.x (identidade, ciência, educacional)
-│   ├── repositories/
-│   │   ├── materiais_json.py   → seed JSON (testes do motor, ambiente sem banco)
-│   │   ├── materiais_sql.py    → retrato dos valores vigentes do banco
-│   │   └── seed_sql.py         → carga idempotente por versão dos seeds
-│   └── services/calculo.py     → casos de uso: célula, Miller, solução sólida, temperatura + histórico
+│   ├── repositories/           → seed JSON, retrato SQL dos valores vigentes, carga idempotente de seeds
+│   ├── security/               → senhas (Argon2id), tokens, RBAC, middlewares HTTP
+│   ├── services/               → calculo, autenticacao, educacao, provedor (unidade de trabalho), erros
+│   └── api/                    → dependências e rotas /api/v1 (rotas, auth, educacao) + aliases /v1
 └── tests/
-    ├── unit/                   → motor (B + v1.4) e regras de arquitetura
+    ├── unit/                   → motores, segurança/RBAC, regras de arquitetura (camadas por análise de imports)
     ├── scientific/             → regressão entre versões A/B/D
-    └── integration/            → migração real + seed + repositório SQL + serviço
+    ├── integration/            → migração real + seed + repositório SQL + serviço (SQLite e PostgreSQL)
+    ├── api/                    → HTTP real (TestClient): cálculo, HEA, contas, educacional, produção
+    └── contract/               → uvicorn real × esquemas zod do frontend
 ```
 
-Ainda **não** existem: a API `/api/v1` (Fase 4), autenticação e sessões (Fase 8; as tabelas já existem) e os serviços educacionais (Fase 7; as tabelas já existem).
+**Regras de camada** (verificadas por `tests/unit/test_arquitetura.py`): `engines` e `educational` não
+importam banco, HTTP nem serviços; `api` não importa `models`, `repositories`, `engines` (a não ser os
+contratos listados) nem `sqlalchemy`; `services` não importa `api` nem `fastapi`.
+
+**Unidade de trabalho:** uma sessão de banco por requisição (`get_sessao_db`), compartilhada pelos
+serviços. O cálculo, o histórico e a renovação da sessão entram no mesmo commit, e um erro faz rollback de tudo.
 
 ## Executar
 
@@ -45,14 +54,13 @@ Testes de integração no PostgreSQL. Use um banco **descartável**: o fixture r
 ALLOY_TEST_POSTGRES_URL=postgresql+psycopg://usuario:senha@localhost:5432/alloy_teste ../.venv/Scripts/python -m pytest tests/integration
 ```
 
-## Resultado da última execução (02/11/2026, Windows, Python 3.15.1)
+## Resultado da última execução (Fase 9, 02/11/2026, Windows, Python 3.15.1)
 
 | Conjunto | Resultado |
 |---|---|
-| Suíte completa | **206 aprovados, 22 pulados**, 0 falhas |
-| Pulados | 21 = variantes PostgreSQL (sem servidor nesta máquina, L-01); 1 = validação CIF com Gemmi (sem pacote para Python 3.15) |
+| Suíte completa | ver [TESTES_E_QA.md](TESTES_E_QA.md) |
 | Lint (`ruff`) | sem achados |
-| Migrações | `upgrade head` → `downgrade base` → `upgrade head` no SQLite; `alembic check` sem diferenças; DDL do PostgreSQL gerado em modo offline (`database/schemas/0001_esquema_inicial.postgresql.sql`) |
+| Migrações | `upgrade head` no SQLite pelo CLI; `alembic check` sem diferenças |
 
 ## Divergências do modelo da Fase 2 (BANCO_DE_DADOS.md)
 
@@ -64,4 +72,5 @@ ALLOY_TEST_POSTGRES_URL=postgresql+psycopg://usuario:senha@localhost:5432/alloy_
 | `materiais.tipo` | sem `intersticial` | `intersticial` incluído | C, N e H não são "elemento puro" estrutural |
 | `materiais_estruturas` | sem `c_a`, `fonte_rede_id`, `referencia_ambiente` | incluídos | Fidelidade ao `Metal` do B (teste de ida e volta) |
 | `versoes_dados` | não previsto | tabela nova (migração 0002) | `procedencia.versao_dados` vem do banco |
-| Soma das frações da composição | gatilho `DEFERRABLE` | ainda não | Será validada no serviço de materiais (Fase 6/7) e o gatilho escrito com PostgreSQL disponível |
+| Soma das frações da composição | gatilho `DEFERRABLE` | ainda não | Pendência T-02 (escrever com PostgreSQL disponível) |
+| Propriedade `vec` | não prevista | nova no catálogo + seed `hea/vec.json` (conjunto `hea`) | Motor HEA (Fase 6) |

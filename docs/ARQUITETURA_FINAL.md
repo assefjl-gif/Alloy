@@ -165,7 +165,7 @@ Todo resultado científico devolvido pela API inclui:
 - `demonstrativo` só existe com `ALLOY_DEMO=permitido` (dev ou teste). Em produção a API recusa gerar esse tipo de resultado.
 - Um valor de referência **sem fonte** não alimenta o motor em produção. Ele aparece como "a validar" e o cálculo informa o campo ausente.
 
-## 7. Segurança (resumo; detalhes no ADR-008/009 e no futuro `SEGURANCA.md`)
+## 7. Segurança (resumo; detalhes no ADR-008/009 e em [SEGURANCA.md](SEGURANCA.md))
 
 - **Sessão:** token opaco de 256 bits em cookie `HttpOnly; Secure; SameSite=Lax; Path=/api`. O banco guarda só o hash SHA-256. Expira por inatividade e por tempo máximo, e pode ser revogada.
 - **CSRF:** toda escrita exige o cabeçalho `X-Alloy-CSRF` com o token de sessão CSRF. O `SameSite=Lax` é a segunda barreira (mesmo padrão de cabeçalho já usado na A).

@@ -312,6 +312,9 @@ export function registerCrystalabHandlers(): void {
   registerHandler('share', async (_op, ctx) => {
     const { buildShareUrl } = await import('../features/url/sceneUrl.ts');
     const { url, length, truncated } = buildShareUrl();
+    // A barra de endereço passa a mostrar exatamente o link compartilhado (a sincronização automática
+    // da URL tem atraso de 700 ms e podia exibir o estado anterior, sem a última camada).
+    if (new URL(url, window.location.href).origin === window.location.origin) window.history.replaceState(null, '', url);
     let copied = false;
     try { await navigator.clipboard.writeText(url); copied = true; } catch { /* sem permissão de área de transferência */ }
     log('ok', tr(copied ? 'share.copied' : 'share.ready', { length }), { opId: ctx.opId });

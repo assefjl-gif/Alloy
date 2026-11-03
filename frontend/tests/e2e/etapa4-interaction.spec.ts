@@ -10,7 +10,12 @@ import { test, expect, openCrystalab, terminal } from './fixtures.ts';
 import type { Page } from 'playwright/test';
 
 type Item = { kind: string; label: string; visible: boolean; color: string; data: unknown };
-const overlays = (page: Page) => page.evaluate(() => (window as unknown as { __alloy: { stores: { overlays: { getState: () => { items: Item[] } } } } }).__alloy.stores.overlays.getState().items.map((i) => ({ kind: i.kind, label: i.label, visible: i.visible, color: i.color, data: i.data })));
+// procedencia.calculado_em (instante do cálculo no servidor) muda a cada chamada e não faz parte da cena.
+const overlays = (page: Page) => page.evaluate(() => (window as unknown as { __alloy: { stores: { overlays: { getState: () => { items: Item[] } } } } }).__alloy.stores.overlays.getState().items.map((i) => {
+  const data = structuredClone(i.data) as { procedencia?: Record<string, unknown> };
+  if (data.procedencia) delete data.procedencia.calculado_em;
+  return { kind: i.kind, label: i.label, visible: i.visible, color: i.color, data };
+}));
 
 test('Fluxo B sem digitar: bloco HC → formulário Miller-Bravais → compartilhar → mesma cena', async ({ app: page, browser }) => {
   await openCrystalab(page);
@@ -122,12 +127,11 @@ test('4.14 · workspaces locais: salvar, reabrir, exportar e importar JSON', asy
   await expect(ws).toContainText('aula-3');
 });
 
-test('4.15 · exportação: PNG e JSON locais; CIF/XYZ desabilitados com motivo no motor v1.0', async ({ app: page }) => {
+test('4.15 · exportação: PNG e JSON locais; CIF/XYZ habilitados pela API unificada', async ({ app: page }) => {
   await openCrystalab(page);
   await page.getByRole('button', { name: 'Exportar' }).click();
   const cif = page.getByRole('menuitem', { name: /CIF/ });
-  await expect(cif).toHaveAttribute('aria-disabled', 'true');
-  await expect(cif).toContainText('API /v1');
+  await expect(cif).not.toHaveAttribute('aria-disabled', 'true');
   const [png] = await Promise.all([page.waitForEvent('download'), page.getByRole('menuitem', { name: /PNG/ }).click()]);
   expect(png.suggestedFilename()).toMatch(/\.png$/);
   const head = readFileSync((await png.path())!).subarray(0, 4).toString('hex');

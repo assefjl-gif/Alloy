@@ -7,7 +7,9 @@ import { test, expect, openCrystalab, terminal, viewerReady } from './fixtures.t
 type Item = { kind: string; label: string; data: Record<string, unknown> };
 const overlays = (page: import('playwright/test').Page) => page.evaluate(() => {
   const s = (window as unknown as { __alloy: { stores: { overlays: { getState: () => { items: Item[] } } } } }).__alloy.stores.overlays.getState();
-  return s.items.map((i) => ({ kind: i.kind, label: i.label, data: i.data }));
+  // procedencia.calculado_em é o instante do cálculo no servidor: muda a cada chamada e não faz parte da cena.
+  const semCarimbo = (d: Record<string, unknown>) => { const c = structuredClone(d) as { procedencia?: Record<string, unknown> }; if (c.procedencia) delete c.procedencia.calculado_em; return c; };
+  return s.items.map((i) => ({ kind: i.kind, label: i.label, data: semCarimbo(i.data) }));
 });
 
 test('B1 · formulário e terminal produzem o mesmo plano, com os dados do motor', async ({ app: page }) => {

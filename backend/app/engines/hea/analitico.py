@@ -195,9 +195,10 @@ def _equimolar(nome: str, grupo: str, *elementos: str) -> Dict[str, Any]:
     return {"nome": nome, "grupo": grupo, "composicao": dict.fromkeys(elementos, 1.0)}
 
 
+#: O primeiro é o carregado por padrão no front: CoCrFeNi tem fase única pelo critério (VEC 8,25 → CFC).
 EXEMPLOS = {
-    "AlCoCrFeNi": _equimolar("AlCoCrFeNi", "CCC/B2 (literatura)", "Al", "Co", "Cr", "Fe", "Ni"),
     "CoCrFeNi": _equimolar("CoCrFeNi", "CFC (literatura)", "Co", "Cr", "Fe", "Ni"),
+    "AlCoCrFeNi": _equimolar("AlCoCrFeNi", "CCC/B2 (literatura)", "Al", "Co", "Cr", "Fe", "Ni"),
     "CoCrCuFeNi": _equimolar("CoCrCuFeNi", "CFC (literatura)", "Co", "Cr", "Cu", "Fe", "Ni"),
     "Al0.5CoCrCuFeNi": {"nome": "Al0.5CoCrCuFeNi", "grupo": "CFC (Yeh 2004)",
                         "composicao": {"Al": 0.5, "Co": 1.0, "Cr": 1.0, "Cu": 1.0, "Fe": 1.0, "Ni": 1.0}},

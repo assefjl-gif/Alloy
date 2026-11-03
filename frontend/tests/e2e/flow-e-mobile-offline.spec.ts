@@ -70,7 +70,7 @@ test('E3 · offline: shell abre do cache, estado comunicado, nota criada offline
 
   // cálculo exige servidor: não é simulado
   await page.goto('/#/crystalab');
-  await expect(page.getByTestId('engine-unavailable').or(page.getByTestId('connectivity'))).toBeVisible();
+  await expect(page.getByTestId('engine-unavailable').or(page.getByTestId('connectivity')).first()).toBeVisible();
 
   await context.setOffline(false);
   await expect(page.getByTestId('toast').filter({ hasText: 'nota(s) criada(s) offline' })).toBeVisible();

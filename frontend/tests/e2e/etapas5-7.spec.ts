@@ -32,14 +32,17 @@ test('5.3 · resultado HEA atravessa por store + URL: recarregar mantém a cópi
 });
 
 test('5.4/5.5 · cores e formas por elemento: só ilustração, com semente reproduzível e legenda textual', async ({ app: page }) => {
-  await page.goto('/#/hea');
+  await page.goto('/?demo=1#/hea');   // coloração aleatória por elemento só existe no modo demonstrativo
   await page.getByTestId('analyze-button').click();
   await page.getByTestId('open-in-crystalab').click();
   await page.getByRole('tab', { name: 'Procedência' }).click();
   await page.getByTestId('toggle-coloring').click();
   await expect(page.getByTestId('coloring-seed')).toContainText('Semente');
   const legend = page.getByRole('list', { name: /Legenda de elementos/ });
-  await expect(legend.getByRole('listitem')).toHaveCount(5);
+  // uma entrada por elemento da composição analisada (CoCrFeNi no motor real; 5 na liga demonstrativa)
+  const elements = await page.evaluate(() => Object.keys((window as unknown as { __alloy: { stores: { hea: { getState: () => { result: { comp_percent: Record<string, number> } } } } } }).__alloy.stores.hea.getState().result.comp_percent).length);
+  expect(elements).toBeGreaterThanOrEqual(2);
+  await expect(legend.getByRole('listitem')).toHaveCount(elements);
   await expect(legend).toContainText('esfera');
   await expect(page.getByTestId('viewer-stage').getByTestId('demo-seal')).toContainText('Ilustrativo');
   const seed1 = await page.getByTestId('coloring-seed').innerText();

@@ -1,4 +1,4 @@
-# API — contratos `/api/v1` (Fase 2)
+# API — contratos `/api/v1`
 
 | Item | Valor |
 |---|---|
@@ -224,18 +224,31 @@ Enquanto Q-01 não for resolvida: `/meta/capabilities` informa `hea.preditor_fas
 | Supercélula | n ≤ 4 (pior caso CFC 4×4×4 = 5³ vértices + 3·(4·4·5) faces = 365 átomos) |
 | Índices de Miller | \|índice\| ≤ 9 (B) |
 
-## 5. Estado da implementação (Fase 4, commit `bd80d6f`)
+## 5. Estado da implementação (Fase 10 — 35 rotas, API 0.9.0)
+
+O catálogo do §2 é o **contrato-alvo**. Esta tabela registra o que está implementado e testado. O
+esquema executável está em `docs/openapi.json` (gerado; o CI falha se estiver desatualizado).
 
 | Grupo | Implementado | Pendente |
 |---|---|---|
 | Cristalografia | `GET metals, structures`; `POST cells, density, miller, supercells, solid-solutions` | — |
 | Termodinâmica | `POST thermal` | `phase-diagram` (especificação A/docs/2) |
 | Exportação | `POST exports/cif, exports/xyz` | — |
-| HEA | `/hea/*` → 503 `CAPACIDADE_INDISPONIVEL` | Fase 6 |
+| HEA | `GET hea/bootstrap`; `POST hea/analyses` (ΔS_mix, δ, T_m, VEC, fase; ΔH_mix e Ω `null` com motivo) | `compositions/validate`, `compare`, `predictions/{id}` (o histórico já cobre); ΔH_mix/Ω dependem de Q-01 |
+| Conta | `POST auth/register, auth/login, auth/logout, auth/logout-all`; `GET auth/me`, `me/history` | `verify-email`, `password/*` (dependem de SMTP, Q-04); `auth/sessions` |
+| Educacional | `GET edu/generators, edu/questions, me/progress`; `POST edu/questions, edu/questions/{id}/instances, edu/instances/{id}/attempts` | atividades, atribuições a turmas, entregas e notas (tabelas prontas, sem rotas) |
+| Organização acadêmica | — (instituições e vínculos são criados direto no banco) | `/institutions`, `/classes` |
+| Materiais e arquivos | — | `/materials`, `/sources`, `/files` |
 | Plataforma | `/health`, `/health/live`, `/health/ready`, `meta/capabilities`, `meta/version` | — |
-| Aliases `/v1` | 7 rotas do B com `Deprecation` + `Link` | Remover após a Fase 5 |
-| Auth, usuários, turmas, educacional, arquivos | — | Fases 7 e 8 |
+| Aliases `/v1` | 7 rotas do B com `Deprecation` + `Link`; o front não usa mais | remover quando não houver clientes antigos |
 
-Executar: `cd backend && ../.venv/Scripts/python -m uvicorn app.main:create_app --factory --port 8000` (sem `DATABASE_URL` usa o seed JSON).
-Documentação interativa (fora de produção): `/api/v1/docs`. Esquema: `docs/openapi.json` (`scripts/exportar_openapi.py`).
-Contrato com o frontend: `backend/tests/contract/test_contrato_frontend.py` (34/34).
+Diferenças em relação ao §2: a análise HEA ficou em `POST /hea/analyses`, no lugar de `/hea/predictions`, porque
+não há preditor de fase com dados completos. Os nomes do §2 continuam reservados para quando Q-01 for resolvida.
+
+**Autenticação nas rotas de cálculo:** são públicas. Quando a requisição traz cookie de sessão, precisa trazer também
+`X-Alloy-CSRF` (senão volta 403 `CSRF_INVALIDO`), e o cálculo entra no histórico pessoal.
+
+Executar: `cd frontend && npm run engine -- --db ../var/dev.db` (API em 8010 com SQLite migrado) ou
+`cd backend && python -m uvicorn app.main:create_app --factory --port 8000` (só o seed JSON, sem contas).
+Documentação interativa (fora de produção): `/api/v1/docs`.
+Contrato com o frontend: `backend/tests/contract/test_contrato_frontend.py` (38/38 respostas reais validadas pelos esquemas zod).

@@ -33,10 +33,27 @@ export function applyDocumentPreferences(): void {
   root.dataset.reducedMotion = String(prefersReducedMotion(p.motion));
 }
 
+/**
+ * Uma falha de detecção não é definitiva: na primeira carga a API pode demorar (cold start, ou o
+ * navegador com as conexões ocupadas pela pré-carga do service worker). Tenta de novo com espera
+ * crescente enquanto houver rede; a cena e o HEA reagem quando o modo passa a "live".
+ */
+const RETRY_MS = [1500, 4000, 10000];
+let retries = 0;
+let retryTimer = 0;
+
+function scheduleRetry(apiDown: boolean): void {
+  window.clearTimeout(retryTimer);
+  if (!apiDown) { retries = 0; return; }
+  if (retries >= RETRY_MS.length || !(globalThis.navigator?.onLine ?? true)) return;
+  retryTimer = window.setTimeout(() => { retries += 1; void detectEngines(); }, RETRY_MS[retries]);
+}
+
 export async function detectEngines(): Promise<void> {
   const caps = useCapabilities.getState();
   const [cl, hea] = await Promise.all([detectCrystalab(), detectHea()]);
   caps.set({ crystalab: cl, hea: hea.caps, ready: true });
+  scheduleRetry(cl.api === 'none');
   const heaMode = serviceMode('hea');
   if (heaMode === 'live' && hea.bootstrap) useHea.getState().set({ bootstrap: hea.bootstrap, origin: 'engine' });
   else if (heaMode === 'demo') useHea.getState().set({ bootstrap: demoBootstrap(), origin: 'demo' });

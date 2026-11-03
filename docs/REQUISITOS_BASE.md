@@ -180,9 +180,9 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 
 | ID | Requisito | Critério de aceitação | Agente | Fase | Cobertura atual |
 |---|---|---|---|---|---|
-| RQ-DOC-01 | Os 15 documentos de `docs/` do §16 | Existem e batem com o código entregue | todos | 10 | ◐ (este documento + relatório de auditoria) |
-| RQ-DOC-02 | README, dependências Python e JS, `.env.example`, Dockerfile, compose, OpenAPI | Outro desenvolvedor instala e roda sem ajuda externa | 06 | 10 | ◐ por base, sem unificação |
-| RQ-DOC-03 | Relatório de encerramento A–J (§19) | Entregue na Fase 10 | 05 | 10 | ✘ |
+| RQ-DOC-01 | Os 15 documentos de `docs/` do §16 | Existem e batem com o código entregue | todos | 10 | ✔ Fase 10 |
+| RQ-DOC-02 | README, dependências Python e JS, `.env.example`, Dockerfile, compose, OpenAPI | Outro desenvolvedor instala e roda sem ajuda externa | 06 | 10 | ✔ Fase 10 (Docker não executado aqui) |
+| RQ-DOC-03 | Relatório de encerramento A–J (§19) | Entregue na Fase 10 | 05 | 10 | ✔ `RELATORIO_ENCERRAMENTO.md` |
 
 ## 4. Fluxos de aceitação (§13.4)
 

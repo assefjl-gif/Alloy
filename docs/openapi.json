@@ -3,7 +3,7 @@
  "info": {
   "title": "Alloy Virtual Lab",
   "description": "API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, supercélulas, soluções sólidas), temperatura, HEA, exportação CIF/XYZ e contas. Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados).",
-  "version": "0.8.0"
+  "version": "0.9.0"
  },
  "paths": {
   "/api/v1/crystallography/metals": {

@@ -1,4 +1,4 @@
-# Motor científico (Fase 3)
+# Motor científico (cristalografia e temperatura; HEA em [MOTOR_HEA.md](MOTOR_HEA.md))
 
 Núcleo único de cálculo do Alloy Virtual Lab (ADR-004). Código em `backend/app/engines/`.
 

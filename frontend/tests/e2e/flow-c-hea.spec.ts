@@ -1,7 +1,8 @@
 /**
  * Fluxo C — HEA → CrystaLab: a transição não cria dados nem altera o resultado original (Etapa 5).
- * O motor HEA não existe neste repositório (D-01): o preditor roda em modo demonstrativo,
- * e o teste também confere que o selo demonstrativo acompanha o resultado até o CrystaLab.
+ * C1–C3 rodam no modo demonstrativo FORÇADO (?demo=1): conferem que o selo acompanha o resultado
+ * até o CrystaLab. C4 usa o motor HEA real da API (/api/v1/hea): grandezas sem base aparecem como
+ * indisponíveis, com o motivo, e a ponte usa a estrutura sugerida pelo critério de VEC.
  */
 import { test, expect } from './fixtures.ts';
 import type { Page } from 'playwright/test';
@@ -13,7 +14,7 @@ const transfer = (page: Page) => page.evaluate(() => {
 });
 
 test('C1 · fase com estrutura única: abre direto, parâmetros idênticos antes e depois', async ({ app: page }) => {
-  await page.goto('/#/hea');
+  await page.goto('/?demo=1#/hea');
   await page.getByTestId('analyze-button').click();
   await expect(page.getByTestId('hea-demo-banner')).toBeVisible();
   const before = await heaResult(page);
@@ -40,7 +41,7 @@ test('C1 · fase com estrutura única: abre direto, parâmetros idênticos antes
 });
 
 test('C2 · fase ambígua: exige escolha explícita, registrada como do usuário (não predição)', async ({ app: page }) => {
-  await page.goto('/#/hea');
+  await page.goto('/?demo=1#/hea');
   await page.getByRole('button', { name: /Liga demonstrativa B/ }).click();
   await page.getByTestId('analyze-button').click();
   const card = page.getByTestId('bridge-card');
@@ -56,7 +57,7 @@ test('C2 · fase ambígua: exige escolha explícita, registrada como do usuário
 });
 
 test('C3 · terminal HEA: "cristalab" sem escolha em fase ambígua pede opção e não abre nada', async ({ app: page }) => {
-  await page.goto('/#/hea');
+  await page.goto('/?demo=1#/hea');
   await page.getByRole('button', { name: /Liga demonstrativa B/ }).click();
   const input = page.locator('#term-input-hea');
   await input.fill('analisar');
@@ -65,4 +66,21 @@ test('C3 · terminal HEA: "cristalab" sem escolha em fase ambígua pede opção 
   await input.press('Enter');
   await expect(page.getByRole('group', { name: /cita mais de uma estrutura|não cita estrutura/ })).toBeVisible();
   await expect(page).toHaveURL(/#\/hea/);
+});
+
+test('C4 · motor HEA real: indisponíveis com motivo, estrutura pelo VEC e transporte sem alteração', async ({ app: page }) => {
+  await page.goto('/#/hea');
+  await page.getByTestId('analyze-button').click();
+  await expect(page.getByTestId('hea-demo-banner')).toHaveCount(0);
+  const unavailable = page.getByTestId('hea-unavailable');
+  await expect(unavailable).toContainText('dH');
+  await expect(unavailable).toContainText('Q-01');
+  await expect(page.getByTestId('chart-unavailable').first()).toBeVisible();
+  const before = await heaResult(page);
+  expect(JSON.parse(before)).toMatchObject({ nome: 'CoCrFeNi', dH: null, omega: null, estrutura_sugerida: 'CFC' });
+  await page.getByTestId('open-in-crystalab').click();
+  await expect(page.getByTestId('hea-banner')).toBeVisible();
+  const tr = await transfer(page);
+  expect(tr).toMatchObject({ code: 'CFC', basis: 'predictor-field', origin: 'engine', frozen: true });
+  expect(tr!.result).toBe(before);
 });

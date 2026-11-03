@@ -46,3 +46,20 @@ O responsável aprovou o Gate 1 e autorizou a Fase 3 em 02/11/2026 ("Sim, Fase 3
 | Riscos residuais | Variantes PostgreSQL dos testes não executadas (L-01). Gemmi indisponível em Python 3.15. Seed do B usado em produção com aviso até a validação (decisão em MOTOR_CIENTIFICO §4) |
 | Módulos protegidos | `backend/app/engines/` (mudanças só com teste de referência e regressão) |
 | Próxima etapa | Fase 4 — API `/api/v1` sobre `ServicoCalculo`, aliases `/v1` e teste de contrato com o frontend |
+
+## Gates das fases 4–10 (execução contínua autorizada)
+
+O responsável aprovou as Fases 2, 3 e 4 uma de cada vez e depois autorizou "finalize as demais fases".
+Por isso os gates abaixo foram executados em sequência, **sem pausa para aprovação humana entre eles**. Cada um
+registra a recomendação técnica. A decisão formal de release (Gate 6) continua sendo do responsável.
+
+| Gate | Fase | Commit | Recomendação | Evidências | Ressalvas |
+|---|---|---|---|---|---|
+| G2/3-F4 | 4 — API | `bd80d6f` | APROVADO | OpenAPI; contrato 34/34; testes de API | — |
+| G2/3-F5 | 5 — Frontend | `a4c330d` | APROVADO | typecheck 0, lint ok, 76/76 (incl. adaptadores × backend real), build 200,8 kB gzip, contrato 34/34 | — |
+| G4-F6 | 6 — Integração científica (Fluxo B) | `d75db0a` | APROVADO COM RESSALVAS | motor HEA testado à mão; banco = JSON; contrato 38/38 | ΔH_mix/Ω indisponíveis (Q-01); em prod só ΔS_mix até Q-03 |
+| G3/4-F8a | 8 — Segurança | `f437ac8` | APROVADO COM RESSALVAS | 38 testes de conta/segurança; fluxo do front × backend real | sem SMTP (Q-04); limitador por processo; sem pentest externo |
+| G4-F7 | 7 — Educacional (Fluxos C/E parciais) | `0ad16bd` | APROVADO COM RESSALVAS | 10 testes (gabarito não vaza, IDOR, escopo, progresso) | turmas, atribuições e notas sem rota (T-04/T-05) |
+| G3/4-F8b | 8 — Infraestrutura | `92b5aad` | **PENDENTE DE EXECUÇÃO** | YAML validado; `alembic check` e CLI verificados | Docker/PostgreSQL/CI não executados aqui (L-01/L-02/Q-07) |
+| G5 | 9 — Homologação | (Fase 10) | APROVADO COM RESSALVAS | backend 311/23 pulados/0 falhas; front 77/77; E2E 54/55 (1 intermitente) | variantes PostgreSQL e Linux só no CI |
+| G6 | 10 — Release | (Fase 10) | **AGUARDA O RESPONSÁVEL** | 15 documentos do §16 + RELATORIO_ENCERRAMENTO | publicação depende de Q-02, Q-03 e Q-07 |
