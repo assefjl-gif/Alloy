@@ -15,9 +15,23 @@ from typing import Any, Callable, Dict, Mapping, Optional
 
 from sqlalchemy.orm import Session
 
-from app.engines.crystallography import ESTRUTURAS, VERSAO_MOTOR, calcular_estrutura, calcular_miller
+from app.engines.crystallography import (
+    ESTRUTURAS,
+    VERSAO_MOTOR,
+    EntradaInvalida,
+    calcular_densidade,
+    calcular_estrutura,
+    calcular_miller,
+    gerar_cif,
+    gerar_xyz,
+    metais_publicos,
+    normalizar_estrutura,
+    tabela_estruturas,
+)
+from app.engines.crystallography.geometria import arredondar, vetores_de_rede
 from app.engines.crystallography.ligas import calcular_solucao_solida
 from app.engines.crystallography.referencia import RepositorioMateriais
+from app.engines.crystallography.supercelula import geometria_supercelula
 from app.engines.procedencia import PoliticaDados, RepositorioPropriedades, bloco_procedencia, sha256_parametros
 from app.engines.thermodynamics.termico import VERSAO_MOTOR as VERSAO_TERMICO
 from app.engines.thermodynamics.termico import calcular_termico
@@ -25,6 +39,10 @@ from app.models import ExecucaoCalculo
 
 AVISO_SEED_BASE = ("Raio, massa atômica e densidade experimental vêm do seed da v1.1.0 e aguardam validação "
                    "(citação do Callister sem edição e página — CR-10).")
+
+
+def versoes_motores() -> Dict[str, str]:
+    return {"crystallography": VERSAO_MOTOR, "thermodynamics": VERSAO_TERMICO}
 
 
 def _agora_iso() -> str:
@@ -98,6 +116,40 @@ class ServicoCalculo:
                            "temperatura_c": temperatura}
             return calcular_termico(entrada, self.props, self.politica)
         return self._executar("termico", "thermodynamics", VERSAO_TERMICO, payload, usuario_id, executar)
+
+    def densidade(self, payload: Mapping[str, Any]) -> Dict[str, Any]:
+        return calcular_densidade(payload, self.repo)
+
+    def supercelula(self, payload: Mapping[str, Any]) -> Dict[str, Any]:
+        estrutura = normalizar_estrutura(str(payload.get("estrutura") or ""))
+        if not estrutura:
+            raise EntradaInvalida("Estrutura desconhecida. Use CS, CCC, CFC ou HC.")
+        n = payload.get("n") or 2
+        c_a = payload.get("c_a") if estrutura == "HC" else None
+        if estrutura == "HC" and c_a is None:
+            c_a = float(ESTRUTURAS["HC"]["c_a_ideal"])
+        atomos, arestas = geometria_supercelula(estrutura, c_a, n)
+        return {"estrutura": estrutura, "n": n, "c_a": c_a,
+                "atomos": [{"pos": arredondar(a["pos"]), "frac": arredondar(a["frac"]), "tipo": a["tipo"]}
+                           for a in atomos],
+                "arestas": [[arredondar(p) for p in aresta] for aresta in arestas],
+                "vetores_rede": [arredondar(v) for v in vetores_de_rede(estrutura, 1.0, c_a)]}
+
+    def exportar(self, formato: str, payload: Mapping[str, Any]) -> Dict[str, Any]:
+        return gerar_cif(payload, self.repo) if formato == "cif" else gerar_xyz(payload, self.repo)
+
+    def metais(self) -> Dict[str, Dict[str, Any]]:
+        return metais_publicos(self.repo)
+
+    @staticmethod
+    def estruturas() -> list:
+        return tabela_estruturas()
+
+    def versao_dados(self) -> str:
+        return self.repo.versao_dados
+
+    def quantidade_materiais(self) -> int:
+        return len(self.repo.listar())
 
     # --- infraestrutura --------------------------------------------------------------
     def _executar(self, operacao: str, motor: str, versao: str, payload: Mapping[str, Any],

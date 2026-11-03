@@ -1,0 +1,4306 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "Alloy Virtual Lab",
+  "description": "API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, supercélulas, soluções sólidas), temperatura e exportação CIF/XYZ. Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados).",
+  "version": "0.4.0"
+ },
+ "paths": {
+  "/api/v1/crystallography/metals": {
+   "get": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Listar Metais",
+    "description": "Metais cadastrados com propriedades cristalinas.",
+    "operationId": "listar_metais_api_v1_crystallography_metals_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_Dict_str__MetalInfo__"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/structures": {
+   "get": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Listar Estruturas",
+    "description": "Tabela comparativa CS, CCC, CFC e HC.",
+    "operationId": "listar_estruturas_api_v1_crystallography_structures_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_List_StructureInfo__"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/cells": {
+   "post": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Calcula a célula unitária completa",
+    "description": "Rede (medida, derivada ou informada), FEA, densidade, átomos, base, passos e procedência.",
+    "operationId": "calcular_celula_api_v1_crystallography_cells_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StructureRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_StructureResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/density": {
+   "post": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Densidade teórica passo a passo + FEA",
+    "operationId": "calcular_densidade_api_v1_crystallography_density_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DensityRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_DensityResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/miller": {
+   "post": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Planos (hkl)/(hkil) e direções [uvw]/[uvtw]",
+    "description": "Polígono, normal, área, espaçamento, densidade planar validada e família em supercélula.",
+    "operationId": "calcular_miller_api_v1_crystallography_miller_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MillerRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_MillerResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/supercells": {
+   "post": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Supercélula n×n×n",
+    "operationId": "calcular_supercelula_api_v1_crystallography_supercells_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SupercellRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_SupercellResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/crystallography/solid-solutions": {
+   "post": {
+    "tags": [
+     "cristalografia"
+    ],
+    "summary": "Solução sólida substitucional ou intersticial",
+    "description": "Vegard, % em peso, Hume-Rothery e supercélula com o soluto (estimativa de modelo).",
+    "operationId": "calcular_solucao_solida_api_v1_crystallography_solid_solutions_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SolidSolutionRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_SolidSolutionResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/thermodynamics/thermal": {
+   "post": {
+    "tags": [
+     "termodinamica"
+    ],
+    "summary": "Dilatação, vibração (Lindemann) e alotropia",
+    "operationId": "calcular_termico_api_v1_thermodynamics_thermal_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ThermalRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ThermalResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/exports/cif": {
+   "post": {
+    "tags": [
+     "exportacao"
+    ],
+    "summary": "CIF (Å, grupo espacial, Wyckoff)",
+    "operationId": "exportar_cif_api_v1_exports_cif_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExportRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ExportResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/exports/xyz": {
+   "post": {
+    "tags": [
+     "exportacao"
+    ],
+    "summary": "XYZ estendido (base em Å + vetores de rede)",
+    "operationId": "exportar_xyz_api_v1_exports_xyz_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExportRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ExportResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/hea/{caminho}": {
+   "post": {
+    "tags": [
+     "hea"
+    ],
+    "summary": "Motor HEA (indisponível até Q-01)",
+    "description": "Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).",
+    "operationId": "hea_indisponivel_post",
+    "parameters": [
+     {
+      "name": "caminho",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Caminho"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Bad Request"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Internal Server Error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Service Unavailable"
+     }
+    }
+   },
+   "get": {
+    "tags": [
+     "hea"
+    ],
+    "summary": "Motor HEA (indisponível até Q-01)",
+    "description": "Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).",
+    "operationId": "hea_indisponivel_get",
+    "parameters": [
+     {
+      "name": "caminho",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Caminho"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "400": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Bad Request"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     },
+     "500": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Internal Server Error"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Service Unavailable"
+     }
+    }
+   }
+  },
+  "/api/v1/meta/capabilities": {
+   "get": {
+    "tags": [
+     "plataforma"
+    ],
+    "summary": "Capacidades",
+    "description": "Estado de cada serviço para o frontend (live/demo/disabled). Em produção, demonstração é proibida.",
+    "operationId": "capacidades_api_v1_meta_capabilities_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_Capabilities_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/meta/version": {
+   "get": {
+    "tags": [
+     "plataforma"
+    ],
+    "summary": "Versao",
+    "operationId": "versao_api_v1_meta_version_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_VersionInfo_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/crystals/metals": {
+   "get": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Listar Metais",
+    "description": "Metais cadastrados com propriedades cristalinas.",
+    "operationId": "alias_listar_metais",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_Dict_str__MetalInfo__"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/crystals/structures": {
+   "get": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Listar Estruturas",
+    "description": "Tabela comparativa CS, CCC, CFC e HC.",
+    "operationId": "alias_listar_estruturas",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_List_StructureInfo__"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/crystals/structure": {
+   "post": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Calcular Celula",
+    "description": "Rede (medida, derivada ou informada), FEA, densidade, átomos, base, passos e procedência.",
+    "operationId": "alias_calcular_celula",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StructureRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_StructureResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/crystallography/miller": {
+   "post": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Calcular Miller",
+    "description": "Polígono, normal, área, espaçamento, densidade planar validada e família em supercélula.",
+    "operationId": "alias_calcular_miller",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MillerRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_MillerResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/calculations/density": {
+   "post": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Calcular Densidade",
+    "operationId": "alias_calcular_densidade",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DensityRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_DensityResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/export/cif": {
+   "post": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Exportar Cif",
+    "operationId": "alias_exportar_cif",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExportRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ExportResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/v1/export/xyz": {
+   "post": {
+    "tags": [
+     "compatibilidade /v1 (depreciado)"
+    ],
+    "summary": "Alias Exportar Xyz",
+    "operationId": "alias_exportar_xyz",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExportRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ExportResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    },
+    "deprecated": true
+   }
+  },
+  "/health": {
+   "get": {
+    "tags": [
+     "plataforma"
+    ],
+    "summary": "Saúde (compatível com o B e o C)",
+    "operationId": "health_health_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/health/live": {
+   "get": {
+    "tags": [
+     "plataforma"
+    ],
+    "summary": "Health Live",
+    "operationId": "health_live_health_live_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/health/ready": {
+   "get": {
+    "tags": [
+     "plataforma"
+    ],
+    "summary": "Health Ready",
+    "operationId": "health_ready_health_ready_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HealthResponse"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "AtomGroup": {
+    "properties": {
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     },
+     "rotulo": {
+      "type": "string",
+      "title": "Rotulo"
+     },
+     "quantidade": {
+      "type": "integer",
+      "title": "Quantidade"
+     },
+     "fracao": {
+      "type": "number",
+      "title": "Fracao"
+     },
+     "fracao_txt": {
+      "type": "string",
+      "title": "Fracao Txt"
+     },
+     "contribuicao": {
+      "type": "number",
+      "title": "Contribuicao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "tipo",
+     "rotulo",
+     "quantidade",
+     "fracao",
+     "fracao_txt",
+     "contribuicao"
+    ],
+    "title": "AtomGroup"
+   },
+   "Atomo": {
+    "properties": {
+     "pos": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Pos"
+     },
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     },
+     "fracao": {
+      "type": "number",
+      "title": "Fracao"
+     },
+     "fracao_txt": {
+      "type": "string",
+      "title": "Fracao Txt"
+     },
+     "elemento": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Elemento"
+     }
+    },
+    "type": "object",
+    "required": [
+     "pos",
+     "tipo",
+     "fracao",
+     "fracao_txt"
+    ],
+    "title": "Atomo"
+   },
+   "AtomoLiga": {
+    "properties": {
+     "pos": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Pos"
+     },
+     "frac": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Frac"
+     },
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "rede",
+       "intersticial"
+      ],
+      "title": "Tipo"
+     },
+     "elemento": {
+      "type": "string",
+      "title": "Elemento"
+     },
+     "raio_rel": {
+      "type": "number",
+      "title": "Raio Rel"
+     }
+    },
+    "type": "object",
+    "required": [
+     "pos",
+     "frac",
+     "tipo",
+     "elemento",
+     "raio_rel"
+    ],
+    "title": "AtomoLiga"
+   },
+   "AtomoRede": {
+    "properties": {
+     "pos": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Pos",
+      "description": "Cartesiano em unidades de a"
+     },
+     "frac": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Frac"
+     },
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "pos",
+     "frac",
+     "tipo"
+    ],
+    "title": "AtomoRede"
+   },
+   "Capabilities": {
+    "properties": {
+     "ambiente": {
+      "type": "string",
+      "enum": [
+       "dev",
+       "test",
+       "prod"
+      ],
+      "title": "Ambiente"
+     },
+     "crystallography": {
+      "$ref": "#/components/schemas/ServicoCapacidade"
+     },
+     "thermodynamics": {
+      "$ref": "#/components/schemas/ServicoCapacidade"
+     },
+     "hea": {
+      "$ref": "#/components/schemas/ServicoCapacidade"
+     },
+     "ia": {
+      "$ref": "#/components/schemas/ServicoCapacidade"
+     },
+     "autenticacao": {
+      "$ref": "#/components/schemas/ServicoCapacidade"
+     }
+    },
+    "type": "object",
+    "required": [
+     "ambiente",
+     "crystallography",
+     "thermodynamics",
+     "hea",
+     "ia",
+     "autenticacao"
+    ],
+    "title": "Capabilities"
+   },
+   "DadoUsado": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "valor": {
+      "type": "number",
+      "title": "Valor"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "estado": {
+      "type": "string",
+      "title": "Estado"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "codigo",
+     "valor",
+     "unidade",
+     "estado"
+    ],
+    "title": "DadoUsado"
+   },
+   "DensityRequest": {
+    "properties": {
+     "nome": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 64
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome",
+      "description": "Metal (Fe, Cu, Al, ...) ou estrutura (CS/CCC/CFC/HC)"
+     },
+     "estrutura": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 32
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura",
+      "description": "Sobrescreve a estrutura do metal"
+     },
+     "raio": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 0.5,
+        "minimum": 0.02
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio",
+      "description": "Raio atômico em nm"
+     },
+     "peso": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 300.0,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Peso",
+      "description": "Peso atômico em g/mol"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.5,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A",
+      "description": "Razão c/a (apenas HC)"
+     },
+     "a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.0,
+        "minimum": 0.01
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A",
+      "description": "Parâmetro de rede a em nm; define R pela condição de contato (tem prioridade)"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "DensityRequest",
+    "examples": [
+     {
+      "nome": "Fe"
+     },
+     {
+      "estrutura": "CFC",
+      "nome": "Cu"
+     },
+     {
+      "c_a": 1.624,
+      "nome": "HC",
+      "peso": 24.31,
+      "raio": 0.16
+     }
+    ]
+   },
+   "DensityResponse": {
+    "properties": {
+     "rotulo": {
+      "type": "string",
+      "title": "Rotulo"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "fea": {
+      "type": "number",
+      "title": "Fea"
+     },
+     "vazios": {
+      "type": "number",
+      "title": "Vazios"
+     },
+     "densidade": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade"
+     },
+     "densidade_exp": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Exp"
+     },
+     "erro_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Erro Percent"
+     },
+     "volume_cm3": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Volume Cm3"
+     },
+     "raio_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio Nm"
+     },
+     "peso": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Peso"
+     },
+     "a_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Nm"
+     },
+     "c_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C Nm"
+     },
+     "a_fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Fonte"
+     },
+     "passos": {
+      "items": {
+       "$ref": "#/components/schemas/DensityStep"
+      },
+      "type": "array",
+      "title": "Passos"
+     },
+     "avisos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos"
+     }
+    },
+    "type": "object",
+    "required": [
+     "rotulo",
+     "estrutura",
+     "n",
+     "nc",
+     "fea",
+     "vazios",
+     "densidade",
+     "densidade_exp",
+     "erro_percent",
+     "volume_cm3",
+     "raio_nm",
+     "peso",
+     "passos"
+    ],
+    "title": "DensityResponse"
+   },
+   "DensityStep": {
+    "properties": {
+     "titulo": {
+      "type": "string",
+      "title": "Titulo"
+     },
+     "formula": {
+      "type": "string",
+      "title": "Formula"
+     },
+     "detalhe": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Detalhe",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "required": [
+     "titulo",
+     "formula"
+    ],
+    "title": "DensityStep"
+   },
+   "Distorcao": {
+    "properties": {
+     "classe": {
+      "type": "string",
+      "const": "simulacao_ilustrativa",
+      "title": "Classe"
+     },
+     "descricao": {
+      "type": "string",
+      "title": "Descricao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "classe",
+     "descricao"
+    ],
+    "title": "Distorcao"
+   },
+   "ErroEnvelope": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": false
+     },
+     "error": {
+      "type": "string",
+      "title": "Error",
+      "description": "Mensagem legível (pt-BR)"
+     },
+     "code": {
+      "type": "string",
+      "title": "Code",
+      "description": "Código estável do erro, ex.: ENTRADA_INVALIDA"
+     },
+     "status": {
+      "type": "integer",
+      "title": "Status"
+     },
+     "request_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Request Id",
+      "description": "Identificador da requisição (também em X-Request-ID)"
+     },
+     "correlation_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Correlation Id"
+     },
+     "details": {
+      "anyOf": [
+       {
+        "items": {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Details"
+     }
+    },
+    "type": "object",
+    "required": [
+     "error",
+     "code",
+     "status"
+    ],
+    "title": "ErroEnvelope"
+   },
+   "ExportRequest": {
+    "properties": {
+     "nome": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 64
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome",
+      "description": "Metal (Fe, Cu, Al, ...) ou estrutura (CS/CCC/CFC/HC)"
+     },
+     "estrutura": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 32
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura",
+      "description": "Sobrescreve a estrutura do metal"
+     },
+     "raio": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 0.5,
+        "minimum": 0.02
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio",
+      "description": "Raio atômico em nm"
+     },
+     "peso": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 300.0,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Peso",
+      "description": "Peso atômico em g/mol"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.5,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A",
+      "description": "Razão c/a (apenas HC)"
+     },
+     "a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.0,
+        "minimum": 0.01
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A",
+      "description": "Parâmetro de rede a em nm; define R pela condição de contato (tem prioridade)"
+     },
+     "formula": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 64
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Formula",
+      "description": "Fórmula química para o cabeçalho CIF"
+     },
+     "comentario": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comentario",
+      "description": "Comentário (XYZ)"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "ExportRequest"
+   },
+   "ExportResponse": {
+    "properties": {
+     "formato": {
+      "type": "string",
+      "enum": [
+       "cif",
+       "xyz"
+      ],
+      "title": "Formato"
+     },
+     "filename": {
+      "type": "string",
+      "title": "Filename"
+     },
+     "content": {
+      "type": "string",
+      "title": "Content"
+     },
+     "content_type": {
+      "type": "string",
+      "title": "Content Type"
+     }
+    },
+    "type": "object",
+    "required": [
+     "formato",
+     "filename",
+     "content",
+     "content_type"
+    ],
+    "title": "ExportResponse"
+   },
+   "FamiliaPlano": {
+    "properties": {
+     "m": {
+      "type": "integer",
+      "title": "M",
+      "description": "h·x + k·y + l·z = m (coordenadas fracionárias)"
+     },
+     "poligono": {
+      "items": {
+       "items": {
+        "type": "number"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Poligono"
+     },
+     "centro": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Centro"
+     }
+    },
+    "type": "object",
+    "required": [
+     "m",
+     "poligono",
+     "centro"
+    ],
+    "title": "FamiliaPlano"
+   },
+   "GrupoEspacial": {
+    "properties": {
+     "hm": {
+      "type": "string",
+      "title": "Hm",
+      "description": "Símbolo Hermann-Mauguin"
+     },
+     "numero": {
+      "type": "integer",
+      "title": "Numero",
+      "description": "Número nas International Tables"
+     }
+    },
+    "type": "object",
+    "required": [
+     "hm",
+     "numero"
+    ],
+    "title": "GrupoEspacial"
+   },
+   "HealthResponse": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "version": {
+      "type": "string",
+      "title": "Version"
+     },
+     "data_version": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data Version"
+     },
+     "checks": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "type": "boolean"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Checks"
+     }
+    },
+    "type": "object",
+    "required": [
+     "status",
+     "version"
+    ],
+    "title": "HealthResponse"
+   },
+   "MetalInfo": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "raio": {
+      "type": "number",
+      "title": "Raio",
+      "description": "Raio atômico em nm"
+     },
+     "peso": {
+      "type": "number",
+      "title": "Peso",
+      "description": "Peso atômico em g/mol"
+     },
+     "densidade_exp": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Exp",
+      "description": "Densidade experimental em g/cm³"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "a_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Nm",
+      "description": "Parâmetro de rede medido (nm), quando disponível"
+     },
+     "c_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C Nm"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte",
+      "description": "Chave da fonte bibliográfica do dado"
+     }
+    },
+    "type": "object",
+    "required": [
+     "nome",
+     "estrutura",
+     "raio",
+     "peso",
+     "nc"
+    ],
+    "title": "MetalInfo"
+   },
+   "MillerRequest": {
+    "properties": {
+     "estrutura": {
+      "type": "string",
+      "maxLength": 32,
+      "title": "Estrutura",
+      "description": "CS | CCC | CFC | HC"
+     },
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "plano",
+       "direcao"
+      ],
+      "title": "Tipo",
+      "default": "plano"
+     },
+     "indices": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "maxItems": 4,
+      "minItems": 3,
+      "title": "Indices"
+     },
+     "a_nm": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.0,
+        "minimum": 0.01
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Nm",
+      "description": "Parâmetro de rede em nm"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.5,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A",
+      "description": "Razão c/a (apenas HC)"
+     },
+     "supercelula": {
+      "type": "integer",
+      "maximum": 4.0,
+      "minimum": 1.0,
+      "title": "Supercelula",
+      "description": "n > 1: desenha a família de planos paralelos na supercélula n×n×n",
+      "default": 1
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "estrutura",
+     "indices"
+    ],
+    "title": "MillerRequest",
+    "examples": [
+     {
+      "a_nm": 0.3615,
+      "estrutura": "CFC",
+      "indices": [
+       1,
+       1,
+       1
+      ],
+      "tipo": "plano"
+     },
+     {
+      "c_a": 1.624,
+      "estrutura": "HC",
+      "indices": [
+       1,
+       0,
+       -1,
+       1
+      ],
+      "tipo": "plano"
+     },
+     {
+      "estrutura": "CCC",
+      "indices": [
+       1,
+       1,
+       0
+      ],
+      "tipo": "direcao"
+     }
+    ]
+   },
+   "MillerResponse": {
+    "properties": {
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "plano",
+       "direcao"
+      ],
+      "title": "Tipo"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "indices": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Indices"
+     },
+     "notacao": {
+      "type": "string",
+      "title": "Notacao"
+     },
+     "notacao_alternativa": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notacao Alternativa"
+     },
+     "poligono": {
+      "anyOf": [
+       {
+        "items": {
+         "items": {
+          "type": "number"
+         },
+         "type": "array"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Poligono"
+     },
+     "centro": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Centro"
+     },
+     "normal": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Normal"
+     },
+     "area_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Area Rel"
+     },
+     "area_nm2": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Area Nm2"
+     },
+     "d_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "D Rel"
+     },
+     "d_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "D Nm"
+     },
+     "inicio": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Inicio"
+     },
+     "fim": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fim"
+     },
+     "comprimento_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comprimento Rel"
+     },
+     "comprimento_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comprimento Nm"
+     },
+     "atomos_contados": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Atomos Contados"
+     },
+     "densidade_linear_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Linear Rel"
+     },
+     "densidade_linear_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Linear Nm"
+     },
+     "atomos": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Atomos"
+     },
+     "ordem": {
+      "type": "integer",
+      "title": "Ordem",
+      "description": "MDC dos índices; > 1 indica plano/direção não reduzido",
+      "default": 1
+     },
+     "indices_reduzidos": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "integer"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Indices Reduzidos"
+     },
+     "avisos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos"
+     },
+     "planar": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/PlanarInfo"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "supercelula": {
+      "type": "integer",
+      "title": "Supercelula",
+      "default": 1
+     },
+     "familia": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/FamiliaPlano"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Familia"
+     },
+     "procedencia": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Procedencia"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "type": "object",
+    "required": [
+     "tipo",
+     "estrutura",
+     "indices",
+     "notacao",
+     "atomos"
+    ],
+    "title": "MillerResponse"
+   },
+   "NotaTermica": {
+    "properties": {
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "info",
+       "alerta"
+      ],
+      "title": "Tipo"
+     },
+     "texto": {
+      "type": "string",
+      "title": "Texto"
+     }
+    },
+    "type": "object",
+    "required": [
+     "tipo",
+     "texto"
+    ],
+    "title": "NotaTermica"
+   },
+   "OkEnvelope_Capabilities_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/Capabilities"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[Capabilities]"
+   },
+   "OkEnvelope_DensityResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/DensityResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[DensityResponse]"
+   },
+   "OkEnvelope_Dict_str__MetalInfo__": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/MetalInfo"
+      },
+      "type": "object",
+      "title": "Result"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[Dict[str, MetalInfo]]"
+   },
+   "OkEnvelope_ExportResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/ExportResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[ExportResponse]"
+   },
+   "OkEnvelope_List_StructureInfo__": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "items": {
+       "$ref": "#/components/schemas/StructureInfo"
+      },
+      "type": "array",
+      "title": "Result"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[List[StructureInfo]]"
+   },
+   "OkEnvelope_MillerResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/MillerResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[MillerResponse]"
+   },
+   "OkEnvelope_SolidSolutionResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/SolidSolutionResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[SolidSolutionResponse]"
+   },
+   "OkEnvelope_StructureResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/StructureResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[StructureResponse]"
+   },
+   "OkEnvelope_SupercellResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/SupercellResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[SupercellResponse]"
+   },
+   "OkEnvelope_ThermalResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/ThermalResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[ThermalResponse]"
+   },
+   "OkEnvelope_VersionInfo_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/VersionInfo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[VersionInfo]"
+   },
+   "PlanarInfo": {
+    "properties": {
+     "validado": {
+      "type": "boolean",
+      "title": "Validado"
+     },
+     "motivo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Motivo"
+     },
+     "atomos_no_plano": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Atomos No Plano"
+     },
+     "densidade_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Rel",
+      "description": "Átomos por a²"
+     },
+     "densidade_nm2": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Nm2",
+      "description": "Átomos por nm²"
+     },
+     "fracao_planar": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fracao Planar"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     }
+    },
+    "type": "object",
+    "required": [
+     "validado"
+    ],
+    "title": "PlanarInfo"
+   },
+   "Procedencia": {
+    "properties": {
+     "classe": {
+      "type": "string",
+      "enum": [
+       "analitico",
+       "estimativa_modelo",
+       "experimental",
+       "simulacao_ilustrativa",
+       "demonstrativo"
+      ],
+      "title": "Classe"
+     },
+     "motor": {
+      "type": "string",
+      "title": "Motor"
+     },
+     "versao_motor": {
+      "type": "string",
+      "title": "Versao Motor"
+     },
+     "versao_dados": {
+      "type": "string",
+      "title": "Versao Dados"
+     },
+     "fontes_modelo": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Fontes Modelo"
+     },
+     "fontes_dados": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Fontes Dados"
+     },
+     "dados_usados": {
+      "items": {
+       "$ref": "#/components/schemas/DadoUsado"
+      },
+      "type": "array",
+      "title": "Dados Usados"
+     },
+     "parametros_sha256": {
+      "type": "string",
+      "title": "Parametros Sha256"
+     },
+     "avisos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos"
+     },
+     "calculado_em": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Calculado Em"
+     }
+    },
+    "type": "object",
+    "required": [
+     "classe",
+     "motor",
+     "versao_motor",
+     "versao_dados",
+     "parametros_sha256"
+    ],
+    "title": "Procedencia",
+    "description": "PI-06/07: de onde veio o resultado (ARQUITETURA_FINAL §6)."
+   },
+   "RegraSolubilidade": {
+    "properties": {
+     "criterio": {
+      "type": "string",
+      "title": "Criterio"
+     },
+     "valor": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Valor"
+     },
+     "ok": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ok",
+      "description": "None = indisponível (ver 'indisponivel')"
+     },
+     "detalhe": {
+      "type": "string",
+      "title": "Detalhe"
+     },
+     "indisponivel": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Indisponivel"
+     }
+    },
+    "type": "object",
+    "required": [
+     "criterio",
+     "detalhe"
+    ],
+    "title": "RegraSolubilidade"
+   },
+   "ServicoCapacidade": {
+    "properties": {
+     "disponivel": {
+      "type": "boolean",
+      "title": "Disponivel"
+     },
+     "demo_permitido": {
+      "type": "boolean",
+      "title": "Demo Permitido"
+     },
+     "versao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Versao"
+     },
+     "motivo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Motivo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "disponivel",
+     "demo_permitido"
+    ],
+    "title": "ServicoCapacidade"
+   },
+   "SitioBase": {
+    "properties": {
+     "frac": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Frac",
+      "description": "Coordenadas fracionárias em [0,1)"
+     },
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "frac",
+     "tipo"
+    ],
+    "title": "SitioBase"
+   },
+   "SitioIntersticial": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "fator": {
+      "type": "number",
+      "title": "Fator"
+     },
+     "raio_nm": {
+      "type": "number",
+      "title": "Raio Nm"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     }
+    },
+    "type": "object",
+    "required": [
+     "nome",
+     "fator",
+     "raio_nm",
+     "nc"
+    ],
+    "title": "SitioIntersticial"
+   },
+   "SolidSolutionRequest": {
+    "properties": {
+     "base": {
+      "type": "string",
+      "maxLength": 32,
+      "title": "Base",
+      "description": "Metal solvente"
+     },
+     "soluto": {
+      "type": "string",
+      "maxLength": 32,
+      "title": "Soluto",
+      "description": "Metal (substitucional) ou C, N, H (intersticial)"
+     },
+     "x": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 100.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "X",
+      "description": "% atômica do soluto",
+      "default": 10.0
+     },
+     "n": {
+      "type": "integer",
+      "maximum": 4.0,
+      "minimum": 1.0,
+      "title": "N",
+      "default": 3
+     },
+     "arranjo": {
+      "type": "string",
+      "enum": [
+       "aleatorio",
+       "ordenado"
+      ],
+      "title": "Arranjo",
+      "default": "aleatorio"
+     },
+     "distorcer": {
+      "type": "boolean",
+      "title": "Distorcer",
+      "default": false
+     },
+     "semente": {
+      "type": "integer",
+      "maximum": 2147483647.0,
+      "minimum": 0.0,
+      "title": "Semente",
+      "default": 1
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "base",
+     "soluto"
+    ],
+    "title": "SolidSolutionRequest",
+    "examples": [
+     {
+      "base": "Cu",
+      "soluto": "Ni",
+      "x": 30
+     },
+     {
+      "base": "Fe",
+      "distorcer": true,
+      "soluto": "C",
+      "x": 2
+     },
+     {
+      "arranjo": "ordenado",
+      "base": "Cu",
+      "n": 2,
+      "soluto": "Au",
+      "x": 25
+     }
+    ]
+   },
+   "SolidSolutionResponse": {
+    "properties": {
+     "rotulo": {
+      "type": "string",
+      "title": "Rotulo"
+     },
+     "base": {
+      "type": "string",
+      "title": "Base"
+     },
+     "soluto": {
+      "type": "string",
+      "title": "Soluto"
+     },
+     "intersticial": {
+      "type": "boolean",
+      "title": "Intersticial"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "estrutura_nome": {
+      "type": "string",
+      "title": "Estrutura Nome"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     },
+     "supercelula": {
+      "type": "integer",
+      "title": "Supercelula"
+     },
+     "semente": {
+      "type": "integer",
+      "title": "Semente"
+     },
+     "x_pct": {
+      "type": "number",
+      "title": "X Pct"
+     },
+     "pct_peso": {
+      "type": "number",
+      "title": "Pct Peso"
+     },
+     "a_nm": {
+      "type": "number",
+      "title": "A Nm"
+     },
+     "c_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C Nm"
+     },
+     "a_base_nm": {
+      "type": "number",
+      "title": "A Base Nm"
+     },
+     "raio_relativo": {
+      "type": "number",
+      "title": "Raio Relativo"
+     },
+     "densidade": {
+      "type": "number",
+      "title": "Densidade"
+     },
+     "densidade_base": {
+      "type": "number",
+      "title": "Densidade Base"
+     },
+     "n_soluto": {
+      "type": "integer",
+      "title": "N Soluto"
+     },
+     "n_solvente": {
+      "type": "integer",
+      "title": "N Solvente"
+     },
+     "fase_ordenada": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fase Ordenada"
+     },
+     "nota_arranjo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nota Arranjo"
+     },
+     "sitio": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/SitioIntersticial"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "regras": {
+      "items": {
+       "$ref": "#/components/schemas/RegraSolubilidade"
+      },
+      "type": "array",
+      "title": "Regras"
+     },
+     "conclusao": {
+      "type": "string",
+      "title": "Conclusao"
+     },
+     "passos": {
+      "items": {
+       "$ref": "#/components/schemas/DensityStep"
+      },
+      "type": "array",
+      "title": "Passos"
+     },
+     "distorcao": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Distorcao"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "atomos": {
+      "items": {
+       "$ref": "#/components/schemas/AtomoLiga"
+      },
+      "type": "array",
+      "title": "Atomos"
+     },
+     "arestas": {
+      "items": {
+       "items": {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Arestas"
+     },
+     "procedencia": {
+      "$ref": "#/components/schemas/Procedencia"
+     }
+    },
+    "type": "object",
+    "required": [
+     "rotulo",
+     "base",
+     "soluto",
+     "intersticial",
+     "estrutura",
+     "estrutura_nome",
+     "nc",
+     "supercelula",
+     "semente",
+     "x_pct",
+     "pct_peso",
+     "a_nm",
+     "a_base_nm",
+     "raio_relativo",
+     "densidade",
+     "densidade_base",
+     "n_soluto",
+     "n_solvente",
+     "regras",
+     "conclusao",
+     "passos",
+     "atomos",
+     "arestas",
+     "procedencia"
+    ],
+    "title": "SolidSolutionResponse"
+   },
+   "StructureInfo": {
+    "properties": {
+     "sigla": {
+      "type": "string",
+      "title": "Sigla"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "a_em_R": {
+      "type": "number",
+      "title": "A Em R"
+     },
+     "relacao": {
+      "type": "string",
+      "title": "Relacao"
+     },
+     "fea": {
+      "type": "number",
+      "title": "Fea"
+     }
+    },
+    "type": "object",
+    "required": [
+     "sigla",
+     "nome",
+     "n",
+     "nc",
+     "a_em_R",
+     "relacao",
+     "fea"
+    ],
+    "title": "StructureInfo"
+   },
+   "StructureRequest": {
+    "properties": {
+     "nome": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 64
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome",
+      "description": "Metal (Fe, Cu, Al, ...) ou estrutura (CS/CCC/CFC/HC)"
+     },
+     "estrutura": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 32
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura",
+      "description": "Sobrescreve a estrutura do metal"
+     },
+     "raio": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 0.5,
+        "minimum": 0.02
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio",
+      "description": "Raio atômico em nm"
+     },
+     "peso": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 300.0,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Peso",
+      "description": "Peso atômico em g/mol"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.5,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A",
+      "description": "Razão c/a (apenas HC)"
+     },
+     "a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.0,
+        "minimum": 0.01
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A",
+      "description": "Parâmetro de rede a em nm; define R pela condição de contato (tem prioridade)"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "StructureRequest",
+    "examples": [
+     {
+      "nome": "Fe"
+     },
+     {
+      "estrutura": "CFC",
+      "nome": "Cu"
+     },
+     {
+      "c_a": 1.624,
+      "nome": "HC",
+      "peso": 24.31,
+      "raio": 0.16
+     }
+    ]
+   },
+   "StructureResponse": {
+    "properties": {
+     "rotulo": {
+      "type": "string",
+      "title": "Rotulo"
+     },
+     "simbolo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Simbolo"
+     },
+     "nome_metal": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome Metal"
+     },
+     "editado": {
+      "type": "boolean",
+      "title": "Editado"
+     },
+     "generica": {
+      "type": "boolean",
+      "title": "Generica"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "estrutura_nome": {
+      "type": "string",
+      "title": "Estrutura Nome"
+     },
+     "relacao_a": {
+      "type": "string",
+      "title": "Relacao A"
+     },
+     "contato": {
+      "type": "string",
+      "title": "Contato"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "fea": {
+      "type": "number",
+      "title": "Fea"
+     },
+     "vazios": {
+      "type": "number",
+      "title": "Vazios"
+     },
+     "a_em_R": {
+      "type": "number",
+      "title": "A Em R"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     },
+     "raio_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio Nm"
+     },
+     "peso": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Peso"
+     },
+     "a_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Nm"
+     },
+     "c_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C Nm"
+     },
+     "a_fonte": {
+      "type": "string",
+      "enum": [
+       "medido",
+       "derivado_de_R",
+       "informado",
+       "relativo"
+      ],
+      "title": "A Fonte",
+      "default": "derivado_de_R"
+     },
+     "volume_nm3": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Volume Nm3"
+     },
+     "volume_cm3": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Volume Cm3"
+     },
+     "densidade": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade"
+     },
+     "densidade_exp": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade Exp"
+     },
+     "erro_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Erro Percent"
+     },
+     "raio_relativo": {
+      "type": "number",
+      "title": "Raio Relativo"
+     },
+     "atomos": {
+      "items": {
+       "$ref": "#/components/schemas/Atomo"
+      },
+      "type": "array",
+      "title": "Atomos",
+      "description": "Átomos de DESENHO (inclui réplicas de fronteira)"
+     },
+     "arestas": {
+      "items": {
+       "items": {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Arestas"
+     },
+     "contagem": {
+      "items": {
+       "$ref": "#/components/schemas/AtomGroup"
+      },
+      "type": "array",
+      "title": "Contagem"
+     },
+     "base": {
+      "items": {
+       "$ref": "#/components/schemas/SitioBase"
+      },
+      "type": "array",
+      "title": "Base",
+      "description": "Base cristalográfica (sítios únicos)"
+     },
+     "z": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Z",
+      "description": "Átomos na célula cristalográfica (Z)"
+     },
+     "grupo_espacial": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/GrupoEspacial"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "passos_densidade": {
+      "items": {
+       "$ref": "#/components/schemas/DensityStep"
+      },
+      "type": "array",
+      "title": "Passos Densidade"
+     },
+     "interpretacao": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Interpretacao"
+     },
+     "avisos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "passos_parametro": {
+      "items": {
+       "$ref": "#/components/schemas/DensityStep"
+      },
+      "type": "array",
+      "title": "Passos Parametro"
+     },
+     "passos_fea": {
+      "items": {
+       "$ref": "#/components/schemas/DensityStep"
+      },
+      "type": "array",
+      "title": "Passos Fea"
+     },
+     "procedencia": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Procedencia"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "type": "object",
+    "required": [
+     "rotulo",
+     "simbolo",
+     "nome_metal",
+     "editado",
+     "generica",
+     "estrutura",
+     "estrutura_nome",
+     "relacao_a",
+     "contato",
+     "n",
+     "nc",
+     "fea",
+     "vazios",
+     "a_em_R",
+     "c_a",
+     "raio_nm",
+     "peso",
+     "a_nm",
+     "c_nm",
+     "volume_nm3",
+     "volume_cm3",
+     "densidade",
+     "densidade_exp",
+     "erro_percent",
+     "raio_relativo",
+     "atomos",
+     "arestas",
+     "contagem",
+     "passos_densidade",
+     "interpretacao"
+    ],
+    "title": "StructureResponse"
+   },
+   "SupercellRequest": {
+    "properties": {
+     "estrutura": {
+      "type": "string",
+      "maxLength": 32,
+      "title": "Estrutura",
+      "description": "CS | CCC | CFC | HC"
+     },
+     "n": {
+      "type": "integer",
+      "maximum": 4.0,
+      "minimum": 1.0,
+      "title": "N",
+      "default": 2
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 2.5,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "estrutura"
+    ],
+    "title": "SupercellRequest",
+    "examples": [
+     {
+      "estrutura": "CFC",
+      "n": 3
+     }
+    ]
+   },
+   "SupercellResponse": {
+    "properties": {
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     },
+     "atomos": {
+      "items": {
+       "$ref": "#/components/schemas/AtomoRede"
+      },
+      "type": "array",
+      "title": "Atomos"
+     },
+     "arestas": {
+      "items": {
+       "items": {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Arestas"
+     },
+     "vetores_rede": {
+      "items": {
+       "items": {
+        "type": "number"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Vetores Rede",
+      "description": "a₁, a₂, a₃ (ou c) em unidades de a"
+     }
+    },
+    "type": "object",
+    "required": [
+     "estrutura",
+     "n",
+     "atomos",
+     "arestas",
+     "vetores_rede"
+    ],
+    "title": "SupercellResponse"
+   },
+   "ThermalRequest": {
+    "properties": {
+     "material": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 32
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Material"
+     },
+     "liga": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/SolidSolutionRequest"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "temperatura_c": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 5000.0,
+        "minimum": -273.15
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Temperatura C",
+      "default": 20.0
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "ThermalRequest",
+    "examples": [
+     {
+      "material": "Fe",
+      "temperatura_c": 1000
+     },
+     {
+      "liga": {
+       "base": "Cu",
+       "soluto": "Ni",
+       "x": 30
+      },
+      "temperatura_c": 500
+     }
+    ]
+   },
+   "ThermalResponse": {
+    "properties": {
+     "temperatura_c": {
+      "type": "number",
+      "title": "Temperatura C"
+     },
+     "temperatura_k": {
+      "type": "number",
+      "title": "Temperatura K"
+     },
+     "fusao_c": {
+      "type": "number",
+      "title": "Fusao C"
+     },
+     "homologa": {
+      "type": "number",
+      "title": "Homologa"
+     },
+     "alfa_1e6_k": {
+      "type": "number",
+      "title": "Alfa 1E6 K"
+     },
+     "fator": {
+      "type": "number",
+      "title": "Fator"
+     },
+     "a_ref_nm": {
+      "type": "number",
+      "title": "A Ref Nm"
+     },
+     "a_nm": {
+      "type": "number",
+      "title": "A Nm"
+     },
+     "delta_a_pct": {
+      "type": "number",
+      "title": "Delta A Pct"
+     },
+     "densidade": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Densidade"
+     },
+     "delta_v_pct": {
+      "type": "number",
+      "title": "Delta V Pct"
+     },
+     "u_nm": {
+      "type": "number",
+      "title": "U Nm"
+     },
+     "razao_lindemann": {
+      "type": "number",
+      "title": "Razao Lindemann"
+     },
+     "amplitude_rel": {
+      "type": "number",
+      "title": "Amplitude Rel"
+     },
+     "lindemann": {
+      "type": "number",
+      "title": "Lindemann"
+     },
+     "fundido": {
+      "type": "boolean",
+      "title": "Fundido"
+     },
+     "curva": {
+      "items": {
+       "items": {
+        "type": "number"
+       },
+       "type": "array"
+      },
+      "type": "array",
+      "title": "Curva",
+      "description": "[T (°C), u/d] de 0 K até T_f + 200 °C"
+     },
+     "notas": {
+      "items": {
+       "$ref": "#/components/schemas/NotaTermica"
+      },
+      "type": "array",
+      "title": "Notas"
+     },
+     "procedencia": {
+      "$ref": "#/components/schemas/Procedencia"
+     }
+    },
+    "type": "object",
+    "required": [
+     "temperatura_c",
+     "temperatura_k",
+     "fusao_c",
+     "homologa",
+     "alfa_1e6_k",
+     "fator",
+     "a_ref_nm",
+     "a_nm",
+     "delta_a_pct",
+     "delta_v_pct",
+     "u_nm",
+     "razao_lindemann",
+     "amplitude_rel",
+     "lindemann",
+     "fundido",
+     "curva",
+     "notas",
+     "procedencia"
+    ],
+    "title": "ThermalResponse"
+   },
+   "VersionInfo": {
+    "properties": {
+     "api": {
+      "type": "string",
+      "title": "Api"
+     },
+     "motores": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Motores"
+     },
+     "versao_dados": {
+      "type": "string",
+      "title": "Versao Dados"
+     }
+    },
+    "type": "object",
+    "required": [
+     "api",
+     "motores",
+     "versao_dados"
+    ],
+    "title": "VersionInfo"
+   }
+  }
+ }
+}

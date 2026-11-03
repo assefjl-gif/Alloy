@@ -19,7 +19,12 @@ PROIBIDOS = {
     "repositories": ("app.api", "app.services", "app.educational"),
     "models": ("app.api", "app.services", "app.repositories", "app.engines"),
     "services": ("app.api", "fastapi"),
+    "api": ("app.repositories", "app.models", "app.engines", "sqlalchemy"),
 }
+#: Importações de motor aceitas na camada api: só contrato (faixas, tipos de erro, normalização de tipo),
+#: nunca funções de cálculo — essas passam pelos serviços.
+EXCECOES = {"api": {"app.engines.crystallography.constantes", "app.engines.crystallography.erros",
+                    "app.engines.crystallography.miller"}}
 #: módulos de I/O vetados dentro dos motores (puros)
 IO_PROIBIDO_NOS_MOTORES = ("open", "pathlib", "os", "io", "socket", "urllib", "http", "sqlite3", "subprocess")
 
@@ -50,6 +55,8 @@ def test_camada_nao_importa_o_que_e_proibido(camada):
     violacoes = []
     for arquivo in _modulos(camada):
         for nome, linha in _imports(arquivo):
+            if nome in EXCECOES.get(camada, ()):
+                continue
             if any(nome == p or nome.startswith(p + ".") for p in PROIBIDOS[camada]):
                 violacoes.append(f"{arquivo.relative_to(APP)}:{linha} importa {nome}")
     assert not violacoes, "\n".join(violacoes)
