@@ -37,3 +37,9 @@ Atualizado na Fase 10. "Responsável" = quem precisa agir; nada aqui se resolve 
 | T-10 | Repositório de materiais e ligas (`/materials`, `/sources`) e upload de tutoriais (`/files`) | média | Fluxo D; tabelas prontas |
 | T-11 | Remover os aliases `/v1` | baixa | depois de confirmar que não há clientes antigos |
 | T-12 | E2E 4.9 (gerenciador de camadas) intermitente: 1 falha em uma rodada completa, 5/5 isolado | baixa | investigar com trace no CI; possível corrida entre comandos de terminal enviados em sequência |
+| T-13 | Portar para o frontend novo as telas da v1.4: Ligas e Temperatura (Miná 2, 3, 6) | **alta** | motor e API prontos; falta a interface |
+| T-14 | Seletor de cor por elemento (Miná 1 / Gisele 1) | alta | `viewer.elementColoring` e tabela `cores_elementos` existem |
+| T-15 | Aba Tutoriais com upload seguro (.txt, .md, .mp4, .pdf, planilhas, docs) | alta | tabela `arquivos` pronta, sem rotas |
+| T-16 | Barra lateral única e 3D maior (Gisele 3) | média | hoje há painel à esquerda e à direita |
+| T-17 | Login restrito a `@ufc.br` configurável + tela de início (Gisele 4) | média | verificação de e-mail depende de Q-04 |
+| T-18 | Levantamento documentado de pacotes abertos (Gisele 2) | baixa | — |
