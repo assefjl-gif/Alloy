@@ -147,6 +147,7 @@ function HeaMapQuiz({ activity }: { activity: Activity }) {
   const [answer, setAnswer] = useState('');
   const [res, setRes] = useState<boolean | null>(null);
   if (!r) return <CategoryBox category="feedback"><p>{t('quiz.hea.needsResult')}</p><a className="ds-btn ds-btn--secondary" href="#/hea">{t('nav.hea')}</a></CategoryBox>;
+  if (r.delta === null || r.dH === null) return <CategoryBox category="feedback"><p>{t('quiz.hea.needsDeltaDh')}</p></CategoryBox>;
   const inside = r.delta < 6.6 && r.dH > -15 && r.dH < 5;
   return (
     <div className="quiz" data-testid="hea-quiz">

@@ -3,7 +3,7 @@
  "info": {
   "title": "Alloy Virtual Lab",
   "description": "API do Alloy Virtual Lab — cristalografia (células, Miller, densidade, FEA, planar, supercélulas, soluções sólidas), temperatura e exportação CIF/XYZ. Todo resultado científico traz `procedencia` (classe, motor, versão, dados usados).",
-  "version": "0.4.0"
+  "version": "0.6.0"
  },
  "paths": {
   "/api/v1/crystallography/metals": {
@@ -601,142 +601,115 @@
     }
    }
   },
-  "/api/v1/hea/{caminho}": {
-   "post": {
-    "tags": [
-     "hea"
-    ],
-    "summary": "Motor HEA (indisponível até Q-01)",
-    "description": "Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).",
-    "operationId": "hea_indisponivel_post",
-    "parameters": [
-     {
-      "name": "caminho",
-      "in": "path",
-      "required": true,
-      "schema": {
-       "type": "string",
-       "title": "Caminho"
-      }
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Successful Response",
-      "content": {
-       "application/json": {
-        "schema": {}
-       }
-      }
-     },
-     "400": {
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/ErroEnvelope"
-        }
-       }
-      },
-      "description": "Bad Request"
-     },
-     "422": {
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/ErroEnvelope"
-        }
-       }
-      },
-      "description": "Unprocessable Content"
-     },
-     "500": {
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/ErroEnvelope"
-        }
-       }
-      },
-      "description": "Internal Server Error"
-     },
-     "503": {
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/ErroEnvelope"
-        }
-       }
-      },
-      "description": "Service Unavailable"
-     }
-    }
-   },
+  "/api/v1/hea/bootstrap": {
    "get": {
     "tags": [
      "hea"
     ],
-    "summary": "Motor HEA (indisponível até Q-01)",
-    "description": "Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).",
-    "operationId": "hea_indisponivel_get",
-    "parameters": [
-     {
-      "name": "caminho",
-      "in": "path",
-      "required": true,
-      "schema": {
-       "type": "string",
-       "title": "Caminho"
-      }
-     }
-    ],
+    "summary": "Elementos, ligas de exemplo e limiares dos critérios",
+    "operationId": "hea_bootstrap_api_v1_hea_bootstrap_get",
     "responses": {
      "200": {
       "description": "Successful Response",
       "content": {
        "application/json": {
-        "schema": {}
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_HeaBootstrap_"
+        }
        }
       }
      },
      "400": {
+      "description": "Bad Request",
       "content": {
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/ErroEnvelope"
         }
        }
-      },
-      "description": "Bad Request"
+      }
      },
      "422": {
+      "description": "Unprocessable Content",
       "content": {
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/ErroEnvelope"
         }
        }
-      },
-      "description": "Unprocessable Content"
+      }
      },
      "500": {
+      "description": "Internal Server Error",
       "content": {
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/ErroEnvelope"
         }
        }
-      },
-      "description": "Internal Server Error"
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/hea/analyses": {
+   "post": {
+    "tags": [
+     "hea"
+    ],
+    "summary": "ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)",
+    "description": "Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.",
+    "operationId": "hea_analisar_api_v1_hea_analyses_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/HeaRequest"
+       }
+      }
      },
-     "503": {
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_HeaResponse_"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Bad Request",
       "content": {
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/ErroEnvelope"
         }
        }
-      },
-      "description": "Service Unavailable"
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "Internal Server Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
      }
     }
    }
@@ -2148,6 +2121,405 @@
     ],
     "title": "GrupoEspacial"
    },
+   "HeaAlloy": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "grupo": {
+      "type": "string",
+      "title": "Grupo"
+     },
+     "composicao": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "title": "Composicao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "nome",
+     "grupo",
+     "composicao"
+    ],
+    "title": "HeaAlloy"
+   },
+   "HeaBootstrap": {
+    "properties": {
+     "elements": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/HeaElement"
+      },
+      "type": "object",
+      "title": "Elements"
+     },
+     "alloys": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/HeaAlloy"
+      },
+      "type": "object",
+      "title": "Alloys"
+     },
+     "reference": {
+      "$ref": "#/components/schemas/HeaReference"
+     },
+     "samples": {
+      "items": {
+       "$ref": "#/components/schemas/HeaResponse"
+      },
+      "type": "array",
+      "title": "Samples"
+     },
+     "versao_motor": {
+      "type": "string",
+      "title": "Versao Motor"
+     }
+    },
+    "type": "object",
+    "required": [
+     "elements",
+     "alloys",
+     "reference",
+     "samples",
+     "versao_motor"
+    ],
+    "title": "HeaBootstrap"
+   },
+   "HeaElement": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "raio_nm": {
+      "type": "number",
+      "title": "Raio Nm"
+     },
+     "tem_fusao": {
+      "type": "boolean",
+      "title": "Tem Fusao"
+     },
+     "tem_vec": {
+      "type": "boolean",
+      "title": "Tem Vec"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "nome",
+     "raio_nm",
+     "tem_fusao",
+     "tem_vec"
+    ],
+    "title": "HeaElement"
+   },
+   "HeaReference": {
+    "properties": {
+     "dS": {
+      "type": "number",
+      "title": "Ds"
+     },
+     "omega": {
+      "type": "number",
+      "title": "Omega"
+     },
+     "delta": {
+      "type": "number",
+      "title": "Delta"
+     },
+     "VEC": {
+      "type": "number",
+      "title": "Vec"
+     },
+     "dH": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dh"
+     },
+     "T_padrao": {
+      "type": "string",
+      "title": "T Padrao"
+     },
+     "P_padrao": {
+      "type": "string",
+      "title": "P Padrao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "dS",
+     "omega",
+     "delta",
+     "VEC",
+     "T_padrao",
+     "P_padrao"
+    ],
+    "title": "HeaReference"
+   },
+   "HeaRequest": {
+    "properties": {
+     "nome": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nome"
+     },
+     "composicao": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "maxProperties": 12,
+      "minProperties": 2,
+      "title": "Composicao",
+      "description": "{elemento: quantidade}; normalizada para frações molares"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "composicao"
+    ],
+    "title": "HeaRequest",
+    "examples": [
+     {
+      "composicao": {
+       "Co": 1,
+       "Cr": 1,
+       "Fe": 1,
+       "Ni": 1
+      },
+      "nome": "CoCrFeNi"
+     },
+     {
+      "composicao": {
+       "Al": 0.5,
+       "Co": 1,
+       "Cr": 1,
+       "Cu": 1,
+       "Fe": 1,
+       "Ni": 1
+      },
+      "nome": "Al0.5CoCrCuFeNi"
+     }
+    ]
+   },
+   "HeaResponse": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "veredito": {
+      "type": "string",
+      "title": "Veredito"
+     },
+     "fase": {
+      "type": "string",
+      "title": "Fase"
+     },
+     "estrutura_sugerida": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "CS",
+         "CCC",
+         "CFC",
+         "HC"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura Sugerida"
+     },
+     "ductilidade": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ductilidade"
+     },
+     "dureza": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dureza"
+     },
+     "dureza_indice": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dureza Indice"
+     },
+     "dS": {
+      "type": "number",
+      "title": "Ds",
+      "description": "ΔS_mix ideal, J/(mol·K)"
+     },
+     "dH": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dh",
+      "description": "ΔH_mix, kJ/mol — indisponível até Q-01"
+     },
+     "delta": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Delta",
+      "description": "δ, %"
+     },
+     "omega": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Omega"
+     },
+     "VEC": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vec"
+     },
+     "Tm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tm",
+      "description": "T_m pela regra das misturas, K"
+     },
+     "comp_percent": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "title": "Comp Percent"
+     },
+     "fracoes": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "title": "Fracoes"
+     },
+     "interpretacao": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Interpretacao"
+     },
+     "fragilidade": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fragilidade"
+     },
+     "gibbs": {
+      "items": {
+       "additionalProperties": {
+        "type": "number"
+       },
+       "type": "object"
+      },
+      "type": "array",
+      "title": "Gibbs"
+     },
+     "indisponiveis": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Indisponiveis",
+      "description": "grandeza → motivo de não ter sido calculada"
+     },
+     "procedencia": {
+      "$ref": "#/components/schemas/Procedencia"
+     }
+    },
+    "type": "object",
+    "required": [
+     "nome",
+     "veredito",
+     "fase",
+     "dS",
+     "comp_percent",
+     "fracoes",
+     "interpretacao",
+     "gibbs",
+     "indisponiveis",
+     "procedencia"
+    ],
+    "title": "HeaResponse"
+   },
    "HealthResponse": {
     "properties": {
      "ok": {
@@ -2777,6 +3149,40 @@
      "result"
     ],
     "title": "OkEnvelope[ExportResponse]"
+   },
+   "OkEnvelope_HeaBootstrap_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/HeaBootstrap"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[HeaBootstrap]"
+   },
+   "OkEnvelope_HeaResponse_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/HeaResponse"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[HeaResponse]"
    },
    "OkEnvelope_List_StructureInfo__": {
     "properties": {

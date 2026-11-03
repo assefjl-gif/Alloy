@@ -75,7 +75,7 @@ function ComparisonWithReference({ r }: { r: HeaResult }) {
   const { t, num } = useI18n();
   const ref = useHea((s) => s.bootstrap?.reference);
   if (!ref) return null;
-  const rows: Array<[string, number, number, string]> = [
+  const rows: Array<[string, number | null, number | null, string]> = [
     [t('hea.row.entropy'), r.dS, ref.dS, 'J/mol·K'], [t('hea.row.omega'), r.omega, ref.omega, ''], [t('hea.row.delta'), r.delta, ref.delta, '%'], ['VEC', r.VEC, ref.VEC, ''], [t('hea.row.enthalpy'), r.dH, ref.dH, 'kJ/mol'],
   ];
   return (
@@ -83,11 +83,24 @@ function ComparisonWithReference({ r }: { r: HeaResult }) {
       <div className="ds-table-wrap">
         <table className="ds-table">
           <thead><tr><th scope="col">{t('hea.parameter')}</th><th scope="col">{t('hea.calculated')}</th><th scope="col">{t('hea.reference')}</th><th scope="col">{t('hea.difference')}</th></tr></thead>
-          <tbody>{rows.map(([label, v, rv, unit]) => <tr key={label}><th scope="row">{label}</th><td>{`${num(v, 2)} ${unit}`}</td><td>{`${num(rv, 2)} ${unit}`}</td><td>{`${v - rv >= 0 ? '+' : ''}${num(v - rv, 2)}`}</td></tr>)}</tbody>
+          <tbody>{rows.map(([label, v, rv, unit]) => <tr key={label}><th scope="row">{label}</th><td>{v === null ? t('hea.unavailable') : `${num(v, 2)} ${unit}`}</td><td>{rv === null ? '—' : `${num(rv, 2)} ${unit}`}</td><td>{v === null || rv === null ? '—' : `${v - rv >= 0 ? '+' : ''}${num(v - rv, 2)}`}</td></tr>)}</tbody>
         </table>
       </div>
       <p className="table-note">{t('hea.differenceNote')}</p>
     </Panel>
+  );
+}
+
+/** Grandezas que o servidor não calculou, com o motivo (nunca substituídas por estimativas no front). */
+function Unavailable({ r }: { r: HeaResult }) {
+  const { t } = useI18n();
+  const items = Object.entries(r.indisponiveis ?? {});
+  if (!items.length) return null;
+  return (
+    <CategoryBox category="feedback" as="section" aria-labelledby="hea-unavailable-title" data-testid="hea-unavailable">
+      <h2 id="hea-unavailable-title">{t('hea.unavailableTitle')}</h2>
+      <ul>{items.map(([k, motivo]) => <li key={k} lang="pt-BR"><strong>{k}</strong>: {motivo}</li>)}</ul>
+    </CategoryBox>
   );
 }
 
@@ -142,7 +155,7 @@ function HeaResults() {
         <div className={`phase-box ds-cat-box ds-cat-box--${cat}`}>
           <span className="ds-label">{t('hea.properties')}</span>
           <strong lang="pt-BR">{r.fase}</strong>
-          <span>{t('hea.propertiesLine', { ductility: r.ductilidade.toLowerCase(), hardness: r.dureza.toLowerCase(), index: num(r.dureza_indice, 0) })}</span>
+          <span>{r.ductilidade && r.dureza ? t('hea.propertiesLine', { ductility: r.ductilidade.toLowerCase(), hardness: r.dureza.toLowerCase(), index: num(r.dureza_indice, 0) }) : t('hea.propertiesUnavailable')}</span>
         </div>
       </section>
       <section className="metrics-grid" aria-label={t('metrics.label')}>
@@ -153,6 +166,7 @@ function HeaResults() {
         <MetricCard label="VEC" value={num(r.VEC, 2)} unit={t('hea.electrons')} category={cat} categoryLabel={catLabel} />
         <MetricCard label={t('hea.tm')} value={num(r.Tm, 0)} unit="K" category={cat} categoryLabel={catLabel} />
       </section>
+      <Unavailable r={r} />
       <BridgeCard r={r} />
       <Suspense fallback={<div className="empty-state"><Spinner size={20} label={t('common.loading')} /></div>}>
         <HeaCharts samples={samples} selected={r} />

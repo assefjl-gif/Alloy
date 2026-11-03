@@ -1,0 +1,129 @@
+{
+ "versao_dados": "2026.11.2-hea",
+ "descricao": "Concentração de elétrons de valência (VEC) por elemento, na convenção usada pelo critério de fases de HEA de Guo et al. (2011): elétrons s+d para metais de transição (inclui a camada d cheia de Cu, Ag, Au, Zn); s+p para Al e Mg. Estado inicial aguardando_validacao: a convenção é citada, mas a transcrição ainda não teve revisão humana registrada (ADR-014).",
+ "fontes": {
+  "guo2011": {
+   "citacao": "Guo, S.; Ng, C.; Lu, J.; Liu, C. T. Effect of valence electron concentration on stability of fcc or bcc phase in high entropy alloys. Journal of Applied Physics 109, 103505 (2011).",
+   "observacao": "Convenção de contagem de VEC; conferir a tabela da fonte na revisão de validação."
+  }
+ },
+ "valores": [
+  {
+   "simbolo": "Ag",
+   "codigo": "vec",
+   "valor": 11,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Al",
+   "codigo": "vec",
+   "valor": 3,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Au",
+   "codigo": "vec",
+   "valor": 11,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Co",
+   "codigo": "vec",
+   "valor": 9,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Cr",
+   "codigo": "vec",
+   "valor": 6,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Cu",
+   "codigo": "vec",
+   "valor": 11,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Fe",
+   "codigo": "vec",
+   "valor": 8,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Mg",
+   "codigo": "vec",
+   "valor": 2,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Mo",
+   "codigo": "vec",
+   "valor": 6,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Ni",
+   "codigo": "vec",
+   "valor": 10,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Ti",
+   "codigo": "vec",
+   "valor": 4,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "W",
+   "codigo": "vec",
+   "valor": 6,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  },
+  {
+   "simbolo": "Zn",
+   "codigo": "vec",
+   "valor": 12,
+   "unidade": "e/átomo",
+   "estado": "aguardando_validacao",
+   "fonte": "guo2011",
+   "origem": "Fase 6 — convenção de Guo et al. (2011)"
+  }
+ ]
+}

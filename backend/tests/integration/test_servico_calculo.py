@@ -35,7 +35,7 @@ def test_celula_traz_procedencia_e_fica_no_historico(servico_e_usuario):
     sessao.commit()
     p = resultado["procedencia"]
     assert p["classe"] == "analitico"
-    assert p["versao_dados"] == "2026.10.1+2026.11.1-v14"
+    assert p["versao_dados"] == "2026.10.1+2026.11.1-v14+2026.11.2-hea"
     assert p["calculado_em"].endswith("+00:00")
     assert any("aguardam validação" in a for a in p["avisos"])
     execucao = sessao.scalars(select(ExecucaoCalculo).where(ExecucaoCalculo.usuario_id == usuario_id)).one()
@@ -102,3 +102,20 @@ def test_id_de_usuario_inexistente_falha_na_chave_estrangeira(sessao):
     with pytest.raises(IntegrityError):
         servico.celula({"nome": "Cu"}, uuid.uuid4())
     sessao.rollback()
+
+
+def test_hea_pelo_banco_igual_ao_json_e_registrado(servico_e_usuario):
+    from app.repositories.materiais_json import repositorio_padrao
+
+    servico, usuario_id, sessao = servico_e_usuario
+    payload = {"nome": "AlCoCrFeNi", "composicao": dict.fromkeys(("Al", "Co", "Cr", "Fe", "Ni"), 1)}
+    do_banco = servico.hea(payload, usuario_id)
+    sessao.commit()
+    json_repo = repositorio_padrao()
+    do_json = ServicoCalculo(json_repo, json_repo, PoliticaDados(permitir_nao_validado=True)).hea(payload)
+    for campo in ("dS", "delta", "VEC", "Tm", "fase", "indisponiveis"):
+        assert do_banco[campo] == do_json[campo], campo
+    assert do_banco["procedencia"]["dados_usados"] == do_json["procedencia"]["dados_usados"]
+    execucao = sessao.scalars(select(ExecucaoCalculo)).one()
+    assert (execucao.operacao, execucao.motor_codigo, execucao.classe_resultado) == ("hea_analise", "hea",
+                                                                                    "estimativa_modelo")

@@ -3,6 +3,7 @@
  * temas (tokens --chart-*), com descrição textual e tabela de dados para leitores de tela.
  * Os pontos são exatamente os valores recebidos (δ, ΔH, curva G×T) — nada é recalculado.
  * Limites do mapa (δ < 6,6 %; −15 < ΔH < 5 kJ/mol) são os mesmos do HEA Virtual Lab v1.17.
+ * Sem δ e ΔH (ou sem curva G×T) o gráfico não é desenhado: aparece o aviso de indisponibilidade.
  */
 import type { HeaResult } from '../../services/api/contracts.ts';
 import { useI18n } from '../../i18n/index.ts';
@@ -33,7 +34,21 @@ export function spreadLabels(ys: number[], gap = 12): number[] {
   return out;
 }
 
+type Plotted = HeaResult & { delta: number; dH: number };
+const plottable = (s: HeaResult): s is Plotted => s.delta !== null && s.dH !== null;
+
+function ChartUnavailable({ title }: { title: string }) {
+  const { t } = useI18n();
+  return <figure className="chart" data-testid="chart-unavailable"><figcaption>{title}</figcaption><p className="empty-state">{t('hea.chart.unavailable')}</p></figure>;
+}
+
 export function StabilityMap({ samples, selected }: { samples: HeaResult[]; selected: HeaResult }) {
+  const { t } = useI18n();
+  if (!plottable(selected)) return <ChartUnavailable title={t('hea.chart.stabilityCaption')} />;
+  return <StabilityMapPlot samples={samples.filter(plottable)} selected={selected} />;
+}
+
+function StabilityMapPlot({ samples, selected }: { samples: Plotted[]; selected: Plotted }) {
   const { t, num } = useI18n();
   const pts = [...samples.filter((s) => s.nome !== selected.nome), selected];
   const xTicks = niceTicks(0, Math.max(8, ...pts.map((p) => p.delta + 1)), 5);
@@ -79,6 +94,12 @@ export function StabilityMap({ samples, selected }: { samples: HeaResult[]; sele
 }
 
 export function GibbsChart({ samples, selected }: { samples: HeaResult[]; selected: HeaResult }) {
+  const { t } = useI18n();
+  if (!selected.gibbs.length) return <ChartUnavailable title={t('hea.chart.gibbsCaption')} />;
+  return <GibbsPlot samples={samples} selected={selected} />;
+}
+
+function GibbsPlot({ samples, selected }: { samples: HeaResult[]; selected: HeaResult }) {
   const { t, num } = useI18n();
   const series = [...samples.filter((s) => s.nome !== selected.nome).slice(0, 3), selected];
   const all = series.flatMap((s) => s.gibbs.map((g) => g.G));

@@ -178,3 +178,8 @@ feature.classroom	Turmas e tarefas	Classes and assignments	Grupos y tareas
 availability.local	funciona offline	works offline	funciona sin conexión
 availability.online	apenas online	online only	solo en línea
 availability.server	exige servidor	requires server	requiere servidor
+hea.unavailable	indisponível	unavailable	no disponible
+hea.unavailableTitle	Grandezas não calculadas (sem base citável)	Quantities not computed (no citable basis)	Magnitudes no calculadas (sin base citable)
+hea.propertiesUnavailable	Dureza e ductilidade: sem modelo com fonte	Hardness and ductility: no sourced model	Dureza y ductilidad: sin modelo con fuente
+hea.chart.unavailable	Gráfico indisponível: faltam grandezas que o servidor não calcula sem dados com fonte.	Chart unavailable: it needs quantities the server does not compute without sourced data.	Gráfico no disponible: faltan magnitudes que el servidor no calcula sin datos con fuente.
+quiz.hea.needsDeltaDh	Este exercício precisa de δ e ΔH_mix; o servidor ainda não calcula ΔH_mix (sem dados com fonte).	This exercise needs δ and ΔH_mix; the server does not compute ΔH_mix yet (no sourced data).	Este ejercicio necesita δ y ΔH_mix; el servidor aún no calcula ΔH_mix (sin datos con fuente).

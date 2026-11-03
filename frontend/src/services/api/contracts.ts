@@ -163,35 +163,37 @@ export interface MillerRequest {
 
 // ------------------------------- HEA (Etapa 5) -------------------------------
 /**
- * Contrato do resultado HEA conforme o que a UI v1.17 lê de /api/analyze (o motor
- * hea_engine não está no projeto; ver matriz de dados). Não existe campo de estrutura
- * sugerida; `estrutura_sugerida` é aceito se um dia o motor passar a enviá-lo.
+ * Contrato do resultado HEA da API unificada (POST /api/v1/hea/analyses). Grandezas sem base
+ * citável (ΔH_mix, Ω; e, em produção, as que dependem de dados não validados) chegam como null,
+ * com o motivo em `indisponiveis` — a UI mostra "—" e o motivo, nunca um valor estimado.
  */
 export const GibbsPoint = z.object({ T: z.number(), G: z.number() });
 export const HeaResult = z.object({
   nome: z.string(),
   veredito: z.string(),
   fase: z.string(),
-  ductilidade: z.string(),
-  dureza: z.string(),
-  dureza_indice: z.number(),
+  ductilidade: z.string().nullable(),
+  dureza: z.string().nullable(),
+  dureza_indice: z.number().nullable(),
   dS: z.number(),
-  dH: z.number(),
-  delta: z.number(),
-  omega: z.number(),
-  VEC: z.number(),
-  Tm: z.number(),
+  // null = grandeza sem base citável neste ambiente (o motivo vem em `indisponiveis`).
+  dH: z.number().nullable(),
+  delta: z.number().nullable(),
+  omega: z.number().nullable(),
+  VEC: z.number().nullable(),
+  Tm: z.number().nullable(),
   comp_percent: z.record(z.string(), z.number()),
   interpretacao: z.array(z.string()),
   fragilidade: z.string().nullable().optional(),
   gibbs: z.array(GibbsPoint),
-  estrutura_sugerida: StructureCode.optional(),
+  estrutura_sugerida: StructureCode.nullable().optional(),
+  indisponiveis: z.record(z.string(), z.string()).optional(),
 }).passthrough();
 export type HeaResult = z.infer<typeof HeaResult>;
 
 export const HeaAlloy = z.object({ nome: z.string(), grupo: z.string(), composicao: z.record(z.string(), z.number()) }).passthrough();
 export type HeaAlloy = z.infer<typeof HeaAlloy>;
-export const HeaReference = z.object({ dS: z.number(), omega: z.number(), delta: z.number(), VEC: z.number(), dH: z.number(), T_padrao: z.union([z.string(), z.number()]), P_padrao: z.union([z.string(), z.number()]) }).passthrough();
+export const HeaReference = z.object({ dS: z.number(), omega: z.number(), delta: z.number(), VEC: z.number(), dH: z.number().nullable(), T_padrao: z.union([z.string(), z.number()]), P_padrao: z.union([z.string(), z.number()]) }).passthrough();
 export type HeaReference = z.infer<typeof HeaReference>;
 export const HeaBootstrap = z.object({
   elements: z.unknown(),

@@ -9,14 +9,13 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import APIRouter, Depends, Response
 
 from app import __version__
 from app.core.config import Settings
 from app.services.calculo import ServicoCalculo, versoes_motores
 
 from ..dependencias import get_servico, get_settings
-from ..erros import envelope_erro
 from .schemas import (
     Capabilities,
     DensityRequest,
@@ -24,6 +23,9 @@ from .schemas import (
     ErroEnvelope,
     ExportRequest,
     ExportResponse,
+    HeaBootstrap,
+    HeaRequest,
+    HeaResponse,
     MetalInfo,
     MillerRequest,
     MillerResponse,
@@ -122,16 +124,19 @@ def exportar_xyz(payload: ExportRequest, servico: ServicoCalculo = Depends(get_s
     return _ok(servico.exportar("xyz", _payload(payload)))
 
 
-# --------------------------------------------------------------------------- HEA (ADR-013)
-@router.get("/hea/{caminho:path}", tags=["hea"], responses={503: {"model": ErroEnvelope}},
-            operation_id="hea_indisponivel_get", summary="Motor HEA (indisponível até Q-01)")
-@router.post("/hea/{caminho:path}", tags=["hea"], responses={503: {"model": ErroEnvelope}},
-             operation_id="hea_indisponivel_post", summary="Motor HEA (indisponível até Q-01)")
-def hea_indisponivel(caminho: str, request: Request):
-    """Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02)."""
-    return envelope_erro("Motor HEA indisponível: falta a base de dados com fonte (questão Q-01). "
-                         "Nenhum valor é simulado.", "CAPACIDADE_INDISPONIVEL", 503,
-                         request_id=request.scope.get("state", {}).get("request_id"))
+# --------------------------------------------------------------------------- HEA (Fase 6)
+@router.get("/hea/bootstrap", response_model=OkEnvelope[HeaBootstrap], tags=["hea"],
+            summary="Elementos, ligas de exemplo e limiares dos critérios")
+def hea_bootstrap(response: Response, servico: ServicoCalculo = Depends(get_servico)):
+    response.headers["Cache-Control"] = _CACHE_TABELAS
+    return _ok(servico.hea_catalogo())
+
+
+@router.post("/hea/analyses", response_model=OkEnvelope[HeaResponse], tags=["hea"],
+             summary="ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)")
+def hea_analisar(payload: HeaRequest, servico: ServicoCalculo = Depends(get_servico)):
+    """Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo."""
+    return _ok(servico.hea(_payload(payload)))
 
 
 # --------------------------------------------------------------------------- plataforma
@@ -149,8 +154,11 @@ def capacidades(settings: Settings = Depends(get_settings)):
         "thermodynamics": ServicoCapacidade(
             disponivel=not settings.producao, demo_permitido=False, versao=motores["thermodynamics"],
             motivo=("α, T_f e alotropia ainda sem validação (Q-03)." if settings.producao else nao_validados)),
-        "hea": ServicoCapacidade(disponivel=False, demo_permitido=demo,
-                                 motivo="Sem modelo nem dados com fonte (Q-01)."),
+        "hea": ServicoCapacidade(
+            disponivel=True, demo_permitido=demo, versao=motores["hea"],
+            motivo=("Parcial: ΔS_mix sempre; δ, T_m e VEC só com dados validados; ΔH_mix e Ω indisponíveis (Q-01)."
+                    if settings.producao else
+                    "Parcial: ΔH_mix e Ω indisponíveis (Q-01). " + (nao_validados or ""))),
         "ia": ServicoCapacidade(disponivel=settings.ia_enabled, demo_permitido=False,
                                 motivo=None if settings.ia_enabled else "Desligada até decisão (RQ-EDU-05)."),
         "autenticacao": ServicoCapacidade(disponivel=False, demo_permitido=False,

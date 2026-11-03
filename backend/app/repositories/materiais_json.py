@@ -20,6 +20,7 @@ PASTA_SEEDS = Path(__file__).resolve().parents[3] / "database" / "seeds" / "cris
 CAMINHO_PADRAO = PASTA_SEEDS / "metais.json"
 CAMINHO_INTERPRETACOES = PASTA_SEEDS / "interpretacoes.json"
 CAMINHO_PROPRIEDADES = PASTA_SEEDS / "propriedades_v14.json"
+CAMINHO_HEA = PASTA_SEEDS.parent / "hea" / "vec.json"
 
 
 def _numero(bruto: Any, campo: str, simbolo: str, obrigatorio: bool = True) -> Optional[float]:
@@ -37,7 +38,8 @@ class RepositorioJSON:
 
     def __init__(self, caminho: Path = CAMINHO_PADRAO,
                  caminho_interpretacoes: Path = CAMINHO_INTERPRETACOES,
-                 caminho_propriedades: Optional[Path] = CAMINHO_PROPRIEDADES) -> None:
+                 caminho_propriedades: Optional[Path] = CAMINHO_PROPRIEDADES,
+                 caminho_hea: Optional[Path] = CAMINHO_HEA) -> None:
         try:
             bruto = json.loads(Path(caminho).read_text(encoding="utf-8"))
             textos = json.loads(Path(caminho_interpretacoes).read_text(encoding="utf-8"))
@@ -69,6 +71,7 @@ class RepositorioJSON:
                 self._por_alias[chave] = simbolo
 
         self._carregar_propriedades(caminho_propriedades)
+        self._carregar_hea(caminho_hea)
 
         for estrutura in ESTRUTURAS:
             if estrutura not in self._textos.get("pt-BR", {}):
@@ -141,18 +144,7 @@ class RepositorioJSON:
             raise ErroDeDados(f"Não foi possível ler {Path(caminho).name}: {exc}") from exc
         # Mesma convenção do repositório SQL: versão do seed base + versão do seed da v1.4.
         self.versao_dados = f"{self.versao_dados}+{bruto.get('versao_dados', 'desconhecida')}"
-        for registro in bruto.get("valores") or []:
-            estado = registro.get("estado")
-            if estado not in ESTADOS:
-                raise ErroDeDados(f"{Path(caminho).name}: estado inválido {estado!r}.")
-            if estado == "validado" and not registro.get("fonte"):
-                raise ErroDeDados(f"{Path(caminho).name}: valor validado sem fonte ({registro.get('simbolo')}).")
-            chave = (registro["simbolo"], registro["codigo"])
-            if chave in self._valores:
-                raise ErroDeDados(f"{Path(caminho).name}: valor duplicado {chave}.")
-            self._valores[chave] = ValorReferencia(
-                simbolo=registro["simbolo"], codigo=registro["codigo"], valor=float(registro["valor"]),
-                unidade=registro["unidade"], estado=estado, fonte=registro.get("fonte"))
+        self._carregar_valores(bruto, Path(caminho).name)
         for registro in bruto.get("intersticiais") or []:
             self._intersticiais[registro["simbolo"]] = registro
         for registro in bruto.get("transicoes_alotropicas") or []:
@@ -161,6 +153,32 @@ class RepositorioJSON:
                 fase=registro["fase"], estrutura=registro["estrutura"], estado=registro["estado"],
                 fonte=registro.get("fonte")))
 
+
+    def _carregar_valores(self, bruto: Mapping[str, Any], arquivo: str) -> None:
+        for registro in bruto.get("valores") or []:
+            estado = registro.get("estado")
+            if estado not in ESTADOS:
+                raise ErroDeDados(f"{arquivo}: estado inválido {estado!r}.")
+            if estado == "validado" and not registro.get("fonte"):
+                raise ErroDeDados(f"{arquivo}: valor validado sem fonte ({registro.get('simbolo')}).")
+            chave = (registro["simbolo"], registro["codigo"])
+            if chave in self._valores:
+                raise ErroDeDados(f"{arquivo}: valor duplicado {chave}.")
+            self._valores[chave] = ValorReferencia(
+                simbolo=registro["simbolo"], codigo=registro["codigo"], valor=float(registro["valor"]),
+                unidade=registro["unidade"], estado=estado, fonte=registro.get("fonte"))
+
+    def _carregar_hea(self, caminho: Optional[Path]) -> None:
+        """Seed da Fase 6 (VEC com fonte citada): mesma convenção de versão composta do SQL."""
+        if caminho is None:
+            return
+        try:
+            bruto = json.loads(Path(caminho).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ErroDeDados(f"Não foi possível ler {Path(caminho).name}: {exc}") from exc
+        self.versao_dados = f"{self.versao_dados}+{bruto.get('versao_dados', 'desconhecida')}"
+        self._fontes.update(bruto.get("fontes") or {})
+        self._carregar_valores(bruto, Path(caminho).name)
     def propriedade(self, simbolo: str, codigo: str) -> Optional[ValorReferencia]:
         return self._valores.get((simbolo, codigo))
 

@@ -174,10 +174,26 @@ def test_termico_exige_material_ou_liga(client):
     assert r.status_code == 422
 
 
-def test_hea_responde_indisponivel_sem_inventar_valor(client):
-    r = client.post("/api/v1/hea/predictions", json={"composicao": {"Fe": 20, "Ni": 20}})
-    assert r.status_code == 503 and r.json()["code"] == "CAPACIDADE_INDISPONIVEL"
-    assert "result" not in r.json()
+def test_hea_analise_calcula_so_o_que_tem_base(client):
+    corpo = {"nome": "CoCrFeNi", "composicao": {"Co": 1, "Cr": 1, "Fe": 1, "Ni": 1}}
+    r = client.post("/api/v1/hea/analyses", json=corpo)
+    assert r.status_code == 200, r.text
+    res = r.json()["result"]
+    assert res["dS"] == pytest.approx(8.314462618 * 1.3862944, abs=1e-3)   # R·ln 4
+    assert res["dH"] is None and res["omega"] is None and "dH" in res["indisponiveis"]
+    assert res["VEC"] == pytest.approx(8.25) and res["estrutura_sugerida"] == "CFC"
+    assert res["veredito"].startswith("INCONCLUSIVO") and res["gibbs"] == []
+    assert res["procedencia"]["classe"] == "estimativa_modelo" and res["procedencia"]["motor"] == "hea"
+
+
+def test_hea_bootstrap_e_erros(client):
+    boot = client.get("/api/v1/hea/bootstrap").json()["result"]
+    assert "CoCrFeNi" in boot["alloys"] and boot["reference"]["delta"] == 6.6 and boot["reference"]["dH"] is None
+    assert client.post("/api/v1/hea/analyses", json={"composicao": {"Fe": 1}}).status_code == 422
+    r = client.post("/api/v1/hea/analyses", json={"composicao": {"Fe": 1, "Xx": 1}})
+    assert r.status_code == 200 and r.json()["result"]["delta"] is None   # elemento sem dados → δ indisponível
+    assert "Xx" in r.json()["result"]["indisponiveis"]["delta"]
+    assert client.post("/api/v1/hea/predictions", json={}).status_code == 404
 
 
 def test_request_id_do_cliente_e_respeitado(client):
@@ -219,7 +235,19 @@ def test_producao_capacidades(producao):
     cap = producao.get("/api/v1/meta/capabilities").json()["result"]
     assert cap["ambiente"] == "prod"
     assert all(cap[s]["demo_permitido"] is False for s in ("crystallography", "thermodynamics", "hea", "ia"))
-    assert cap["thermodynamics"]["disponivel"] is False and cap["hea"]["disponivel"] is False
+    assert cap["thermodynamics"]["disponivel"] is False and cap["hea"]["disponivel"] is True
+    assert "Parcial" in cap["hea"]["motivo"]
+
+
+def test_producao_hea_so_entropia(producao):
+    """Em produção nenhum dado validado existe ainda: só ΔS_mix (sem dados) sai; o resto, com motivo."""
+    r = producao.post("/api/v1/hea/analyses", json={"composicao": {"Al": 1, "Co": 1, "Cr": 1, "Fe": 1, "Ni": 1}})
+    assert r.status_code == 200, r.text
+    res = r.json()["result"]
+    assert res["dS"] == pytest.approx(13.3816, abs=1e-3)
+    assert res["delta"] is None and res["VEC"] is None and res["Tm"] is None
+    assert {"delta", "VEC", "Tm", "dH", "omega"} <= set(res["indisponiveis"])
+    assert res["procedencia"]["dados_usados"] == []
 
 
 def test_rate_limit_429():

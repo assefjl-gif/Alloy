@@ -7,14 +7,14 @@ import { resolve } from 'node:path';
 const base = process.argv[2] ?? 'http://127.0.0.1:8130';
 const frontend = process.argv[3] ?? 'frontend';
 const contratos = await import(pathToFileURL(resolve(frontend, 'src/services/api/contracts.ts')).href);
-const { StructureResult, MillerResult, MetalTable, StructureTable, ExportFile } = contratos;
+const { StructureResult, MillerResult, MetalTable, StructureTable, ExportFile, HeaResult, HeaBootstrap } = contratos;
 
 type Schema = { safeParse: (v: unknown) => { success: boolean; error?: { issues: unknown[] } } };
 type Caso = { nome: string; metodo: 'GET' | 'POST'; rota: string; corpo?: unknown; schema: Schema };
 
 // Mesmos casos nas rotas canônicas (/api/v1, usadas pelo front desde a Fase 5) e nos aliases /v1
 // depreciados (mantidos para clientes antigos até a remoção — API.md §3).
-const pares: Array<[string, string, string, 'GET' | 'POST', Schema, unknown[]]> = [
+const pares: Array<[string, string | null, string, 'GET' | 'POST', Schema, unknown[]]> = [
   ['metais', '/v1/crystals/metals', '/api/v1/crystallography/metals', 'GET', MetalTable, [undefined]],
   ['estruturas', '/v1/crystals/structures', '/api/v1/crystallography/structures', 'GET', StructureTable, [undefined]],
   ['célula', '/v1/crystals/structure', '/api/v1/crystallography/cells', 'POST', StructureResult, [
@@ -29,13 +29,20 @@ const pares: Array<[string, string, string, 'GET' | 'POST', Schema, unknown[]]> 
   ]],
   ['CIF', '/v1/export/cif', '/api/v1/exports/cif', 'POST', ExportFile, [{ nome: 'Cu' }]],
   ['XYZ', '/v1/export/xyz', '/api/v1/exports/xyz', 'POST', ExportFile, [{ nome: 'Mg' }]],
+  // HEA (Fase 6): só rotas canônicas — nunca houve alias /v1.
+  ['HEA bootstrap', null, '/api/v1/hea/bootstrap', 'GET', HeaBootstrap, [undefined]],
+  ['HEA análise', null, '/api/v1/hea/analyses', 'POST', HeaResult, [
+    { nome: 'AlCoCrFeNi', composicao: { Al: 1, Co: 1, Cr: 1, Fe: 1, Ni: 1 } },
+    { composicao: { Cr: 1, Mo: 1, W: 1 } },
+    { composicao: { Fe: 1, Xx: 1 } },
+  ]],
 ];
 
 const casos: Caso[] = [];
 for (const [nome, antiga, nova, metodo, schema, corpos] of pares) {
   for (const corpo of corpos) {
     const rotulo = `${nome}${corpo ? ' ' + JSON.stringify(corpo) : ''}`;
-    casos.push({ nome: `[v1]     ${rotulo}`, metodo, rota: antiga, corpo, schema });
+    if (antiga) casos.push({ nome: `[v1]     ${rotulo}`, metodo, rota: antiga, corpo, schema });
     casos.push({ nome: `[api/v1] ${rotulo}`, metodo, rota: nova, corpo, schema });
   }
 }

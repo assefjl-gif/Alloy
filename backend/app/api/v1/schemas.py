@@ -487,6 +487,72 @@ class ThermalResponse(BaseModel):
     procedencia: Procedencia
 
 
+# --------------------------------------------------------------------------- HEA (Fase 6)
+class HeaRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", json_schema_extra={"examples": [
+        {"nome": "CoCrFeNi", "composicao": {"Co": 1, "Cr": 1, "Fe": 1, "Ni": 1}},
+        {"nome": "Al0.5CoCrCuFeNi", "composicao": {"Al": 0.5, "Co": 1, "Cr": 1, "Cu": 1, "Fe": 1, "Ni": 1}},
+    ]})
+    nome: Optional[str] = Field(None, max_length=80)
+    composicao: Dict[str, float] = Field(..., min_length=2, max_length=12,
+                                          description="{elemento: quantidade}; normalizada para frações molares")
+
+
+class HeaResponse(BaseModel):
+    nome: str
+    veredito: str
+    fase: str
+    estrutura_sugerida: Optional[Literal["CS", "CCC", "CFC", "HC"]] = None
+    ductilidade: Optional[str] = None
+    dureza: Optional[str] = None
+    dureza_indice: Optional[float] = None
+    dS: float = Field(..., description="ΔS_mix ideal, J/(mol·K)")
+    dH: Optional[float] = Field(None, description="ΔH_mix, kJ/mol — indisponível até Q-01")
+    delta: Optional[float] = Field(None, description="δ, %")
+    omega: Optional[float] = None
+    VEC: Optional[float] = None
+    Tm: Optional[float] = Field(None, description="T_m pela regra das misturas, K")
+    comp_percent: Dict[str, float]
+    fracoes: Dict[str, float]
+    interpretacao: List[str]
+    fragilidade: Optional[str] = None
+    gibbs: List[Dict[str, float]]
+    indisponiveis: Dict[str, str] = Field(..., description="grandeza → motivo de não ter sido calculada")
+    procedencia: Procedencia
+
+
+class HeaAlloy(BaseModel):
+    nome: str
+    grupo: str
+    composicao: Dict[str, float]
+
+
+class HeaElement(BaseModel):
+    simbolo: str
+    nome: str
+    raio_nm: float
+    tem_fusao: bool
+    tem_vec: bool
+
+
+class HeaReference(BaseModel):
+    dS: float
+    omega: float
+    delta: float
+    VEC: float
+    dH: Optional[float] = None
+    T_padrao: str
+    P_padrao: str
+
+
+class HeaBootstrap(BaseModel):
+    elements: Dict[str, HeaElement]
+    alloys: Dict[str, HeaAlloy]
+    reference: HeaReference
+    samples: List[HeaResponse]
+    versao_motor: str
+
+
 # --------------------------------------------------------------------------- plataforma
 class ServicoCapacidade(BaseModel):
     disponivel: bool

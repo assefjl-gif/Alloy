@@ -3,7 +3,8 @@
 Estados de partida (ADR-014, Q-03):
 * seed do B (metais.json): ``aguardando_validacao`` — citação do Callister sem edição/página (CR-10)
   e rede do α-Ti de relatório interno ("conferir na fonte primária");
-* seed da v1.4 (propriedades_v14.json): ``rascunho`` — sem fonte nenhuma (CIE-03).
+* seed da v1.4 (propriedades_v14.json): ``rascunho`` — sem fonte nenhuma (CIE-03);
+* seed HEA (../hea/vec.json): ``aguardando_validacao`` — convenção citada (Guo 2011), sem revisão.
 Nada entra como ``validado``: isso exige revisão humana registrada em ``revisoes_validacao``.
 """
 
@@ -20,6 +21,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.engines.crystallography import ESTRUTURAS, VERSAO_MOTOR
+from app.engines.hea.analitico import VERSAO_MOTOR as VERSAO_HEA
 from app.engines.thermodynamics.termico import VERSAO_MOTOR as VERSAO_TERMICO
 from app.models import (
     Elemento,
@@ -35,7 +37,7 @@ from app.models import (
 
 from .materiais_json import PASTA_SEEDS
 
-TIPO_FONTE = {"callister": "livro", "auditoria_cr01": "relatorio"}
+TIPO_FONTE = {"callister": "livro", "auditoria_cr01": "relatorio", "guo2011": "artigo"}
 
 #: código → (nome, grupo, unidade SI, unidade de exibição)
 CATALOGO_PROPRIEDADES = {
@@ -46,6 +48,7 @@ CATALOGO_PROPRIEDADES = {
     "valencia": ("Valência usual", "quimica", "adimensional", "adimensional"),
     "temperatura_fusao": ("Temperatura de fusão", "termica", "K", "°C"),
     "coef_dilatacao_linear": ("Coeficiente de dilatação linear", "termica", "1/K", "1e-6/K"),
+    "vec": ("Concentração de elétrons de valência", "quimica", "adimensional", "e/átomo"),
 }
 
 
@@ -86,7 +89,7 @@ def carregar_seeds(sessao: Session, pasta: Path = PASTA_SEEDS) -> Dict[str, int]
     base = json.loads((pasta / "metais.json").read_text(encoding="utf-8"))
     v14 = json.loads((pasta / "propriedades_v14.json").read_text(encoding="utf-8"))
 
-    for codigo, versao in (("crystallography", VERSAO_MOTOR), ("thermodynamics", VERSAO_TERMICO)):
+    for codigo, versao in (("crystallography", VERSAO_MOTOR), ("thermodynamics", VERSAO_TERMICO), ("hea", VERSAO_HEA)):
         if sessao.get(Motor, (codigo, versao)) is None:
             sessao.add(Motor(codigo=codigo, versao=versao))
     for sigla, info in ESTRUTURAS.items():
@@ -169,4 +172,26 @@ def carregar_seeds(sessao: Session, pasta: Path = PASTA_SEEDS) -> Dict[str, int]
             contagem["estruturas_material"] += 1
         sessao.add(VersaoDados(conjunto="propriedades_v14", versao=versao_v14, carregado_em=agora))
         sessao.flush()
+
+    caminho_hea = pasta.parent / "hea" / "vec.json"
+    if caminho_hea.exists():
+        hea = json.loads(caminho_hea.read_text(encoding="utf-8"))
+        versao_hea = str(hea["versao_dados"])
+        carregada = _versao_carregada(sessao, "hea")
+        if carregada not in (None, versao_hea):
+            raise SeedJaCarregadoComOutraVersao(f"hea: banco {carregada}, seed {versao_hea}.")
+        if carregada is None:
+            for chave, fonte in hea["fontes"].items():
+                if sessao.get(Fonte, chave) is None:
+                    sessao.add(Fonte(id=chave, tipo=TIPO_FONTE.get(chave, "outro"), citacao=fonte["citacao"],
+                                     observacao=fonte.get("observacao")))
+                    contagem["fontes"] += 1
+            sessao.flush()
+            for registro in hea["valores"]:
+                material = _material_do_elemento(sessao, registro["simbolo"])
+                sessao.add(_valor(material, registro["codigo"], registro["valor"], registro["unidade"], "importado",
+                                  registro["estado"], registro.get("fonte"), registro["origem"]))
+                contagem["valores"] += 1
+            sessao.add(VersaoDados(conjunto="hea", versao=versao_hea, carregado_em=agora))
+            sessao.flush()
     return contagem

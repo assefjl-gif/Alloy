@@ -31,7 +31,7 @@ def _f(valor: Any) -> Optional[float]:
 class RepositorioSQL:
     def __init__(self, sessao: Session, caminho_interpretacoes: Path = CAMINHO_INTERPRETACOES) -> None:
         versoes = {v.conjunto: v.versao for v in sessao.scalars(select(VersaoDados))}
-        self.versao_dados = "+".join(versoes[c] for c in ("cristalografia", "propriedades_v14") if c in versoes)
+        self.versao_dados = "+".join(versoes[c] for c in ("cristalografia", "propriedades_v14", "hea") if c in versoes)
         self._textos: Dict[str, Dict[str, List[str]]] = json.loads(
             Path(caminho_interpretacoes).read_text(encoding="utf-8"))
         self._fontes = {f.id: {"citacao": f.citacao, "observacao": f.observacao} for f in sessao.scalars(select(Fonte))}

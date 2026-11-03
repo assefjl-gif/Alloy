@@ -32,6 +32,9 @@ from app.engines.crystallography.geometria import arredondar, vetores_de_rede
 from app.engines.crystallography.ligas import calcular_solucao_solida
 from app.engines.crystallography.referencia import RepositorioMateriais
 from app.engines.crystallography.supercelula import geometria_supercelula
+from app.engines.hea.analitico import VERSAO_MOTOR as VERSAO_HEA
+from app.engines.hea.analitico import analisar_liga
+from app.engines.hea.analitico import catalogo as catalogo_hea
 from app.engines.procedencia import PoliticaDados, RepositorioPropriedades, bloco_procedencia, sha256_parametros
 from app.engines.thermodynamics.termico import VERSAO_MOTOR as VERSAO_TERMICO
 from app.engines.thermodynamics.termico import calcular_termico
@@ -42,7 +45,7 @@ AVISO_SEED_BASE = ("Raio, massa atômica e densidade experimental vêm do seed d
 
 
 def versoes_motores() -> Dict[str, str]:
-    return {"crystallography": VERSAO_MOTOR, "thermodynamics": VERSAO_TERMICO}
+    return {"crystallography": VERSAO_MOTOR, "thermodynamics": VERSAO_TERMICO, "hea": VERSAO_HEA}
 
 
 def _agora_iso() -> str:
@@ -116,6 +119,13 @@ class ServicoCalculo:
                            "temperatura_c": temperatura}
             return calcular_termico(entrada, self.props, self.politica)
         return self._executar("termico", "thermodynamics", VERSAO_TERMICO, payload, usuario_id, executar)
+
+    def hea(self, payload: Mapping[str, Any], usuario_id: Optional[uuid.UUID] = None) -> Dict[str, Any]:
+        return self._executar("hea_analise", "hea", VERSAO_HEA, payload, usuario_id,
+                              lambda: analisar_liga(payload, self.repo, self.props, self.politica))
+
+    def hea_catalogo(self) -> Dict[str, Any]:
+        return catalogo_hea(self.repo, self.props)
 
     def densidade(self, payload: Mapping[str, Any]) -> Dict[str, Any]:
         return calcular_densidade(payload, self.repo)

@@ -36,7 +36,7 @@ export interface StructureMatch {
   basis: StructureBasis;
 }
 
-export function matchStructure(result: Pick<HeaResult, 'fase'> & { estrutura_sugerida?: StructureCode | undefined }): StructureMatch {
+export function matchStructure(result: Pick<HeaResult, 'fase'> & { estrutura_sugerida?: StructureCode | null | undefined }): StructureMatch {
   if (result.estrutura_sugerida) return { code: result.estrutura_sugerida, candidates: [result.estrutura_sugerida], basis: 'predictor-field' };
   const found = PATTERNS.filter(([, re]) => re.test(result.fase)).map(([code]) => code);
   if (found.length === 1) return { code: found[0] ?? null, candidates: found, basis: 'predictor-phase' };

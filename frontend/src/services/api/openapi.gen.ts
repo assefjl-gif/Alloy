@@ -189,24 +189,37 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/hea/{caminho}": {
+    "/api/v1/hea/bootstrap": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Motor HEA (indisponível até Q-01)
-         * @description Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).
-         */
-        get: operations["hea_indisponivel_get"];
+        /** Elementos, ligas de exemplo e limiares dos critérios */
+        get: operations["hea_bootstrap_api_v1_hea_bootstrap_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/hea/analyses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
         /**
-         * Motor HEA (indisponível até Q-01)
-         * @description Responde 503 explícito: nenhum valor HEA é inventado enquanto não houver modelo com fonte (PI-02).
+         * ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)
+         * @description Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.
          */
-        post: operations["hea_indisponivel_post"];
+        post: operations["hea_analisar_api_v1_hea_analyses_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -738,6 +751,140 @@ export interface components {
              */
             numero: number;
         };
+        /** HeaAlloy */
+        HeaAlloy: {
+            /** Nome */
+            nome: string;
+            /** Grupo */
+            grupo: string;
+            /** Composicao */
+            composicao: {
+                [key: string]: number;
+            };
+        };
+        /** HeaBootstrap */
+        HeaBootstrap: {
+            /** Elements */
+            elements: {
+                [key: string]: components["schemas"]["HeaElement"];
+            };
+            /** Alloys */
+            alloys: {
+                [key: string]: components["schemas"]["HeaAlloy"];
+            };
+            reference: components["schemas"]["HeaReference"];
+            /** Samples */
+            samples: components["schemas"]["HeaResponse"][];
+            /** Versao Motor */
+            versao_motor: string;
+        };
+        /** HeaElement */
+        HeaElement: {
+            /** Simbolo */
+            simbolo: string;
+            /** Nome */
+            nome: string;
+            /** Raio Nm */
+            raio_nm: number;
+            /** Tem Fusao */
+            tem_fusao: boolean;
+            /** Tem Vec */
+            tem_vec: boolean;
+        };
+        /** HeaReference */
+        HeaReference: {
+            /** Ds */
+            dS: number;
+            /** Omega */
+            omega: number;
+            /** Delta */
+            delta: number;
+            /** Vec */
+            VEC: number;
+            /** Dh */
+            dH?: number | null;
+            /** T Padrao */
+            T_padrao: string;
+            /** P Padrao */
+            P_padrao: string;
+        };
+        /** HeaRequest */
+        HeaRequest: {
+            /** Nome */
+            nome?: string | null;
+            /**
+             * Composicao
+             * @description {elemento: quantidade}; normalizada para frações molares
+             */
+            composicao: {
+                [key: string]: number;
+            };
+        };
+        /** HeaResponse */
+        HeaResponse: {
+            /** Nome */
+            nome: string;
+            /** Veredito */
+            veredito: string;
+            /** Fase */
+            fase: string;
+            /** Estrutura Sugerida */
+            estrutura_sugerida?: ("CS" | "CCC" | "CFC" | "HC") | null;
+            /** Ductilidade */
+            ductilidade?: string | null;
+            /** Dureza */
+            dureza?: string | null;
+            /** Dureza Indice */
+            dureza_indice?: number | null;
+            /**
+             * Ds
+             * @description ΔS_mix ideal, J/(mol·K)
+             */
+            dS: number;
+            /**
+             * Dh
+             * @description ΔH_mix, kJ/mol — indisponível até Q-01
+             */
+            dH?: number | null;
+            /**
+             * Delta
+             * @description δ, %
+             */
+            delta?: number | null;
+            /** Omega */
+            omega?: number | null;
+            /** Vec */
+            VEC?: number | null;
+            /**
+             * Tm
+             * @description T_m pela regra das misturas, K
+             */
+            Tm?: number | null;
+            /** Comp Percent */
+            comp_percent: {
+                [key: string]: number;
+            };
+            /** Fracoes */
+            fracoes: {
+                [key: string]: number;
+            };
+            /** Interpretacao */
+            interpretacao: string[];
+            /** Fragilidade */
+            fragilidade?: string | null;
+            /** Gibbs */
+            gibbs: {
+                [key: string]: number;
+            }[];
+            /**
+             * Indisponiveis
+             * @description grandeza → motivo de não ter sido calculada
+             */
+            indisponiveis: {
+                [key: string]: string;
+            };
+            procedencia: components["schemas"]["Procedencia"];
+        };
         /** HealthResponse */
         HealthResponse: {
             /**
@@ -939,6 +1086,24 @@ export interface components {
              */
             ok?: boolean;
             result: components["schemas"]["ExportResponse"];
+        };
+        /** OkEnvelope[HeaBootstrap] */
+        OkEnvelope_HeaBootstrap_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["HeaBootstrap"];
+        };
+        /** OkEnvelope[HeaResponse] */
+        OkEnvelope_HeaResponse_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["HeaResponse"];
         };
         /** OkEnvelope[List[StructureInfo]] */
         OkEnvelope_List_StructureInfo__: {
@@ -1955,13 +2120,11 @@ export interface operations {
             };
         };
     };
-    hea_indisponivel_get: {
+    hea_bootstrap_api_v1_hea_bootstrap_get: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                caminho: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -1972,7 +2135,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["OkEnvelope_HeaBootstrap_"];
                 };
             };
             /** @description Bad Request */
@@ -1995,15 +2158,6 @@ export interface operations {
             };
             /** @description Internal Server Error */
             500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErroEnvelope"];
-                };
-            };
-            /** @description Service Unavailable */
-            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2013,16 +2167,18 @@ export interface operations {
             };
         };
     };
-    hea_indisponivel_post: {
+    hea_analisar_api_v1_hea_analyses_post: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                caminho: string;
-            };
+            path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HeaRequest"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -2030,7 +2186,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["OkEnvelope_HeaResponse_"];
                 };
             };
             /** @description Bad Request */
@@ -2053,15 +2209,6 @@ export interface operations {
             };
             /** @description Internal Server Error */
             500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErroEnvelope"];
-                };
-            };
-            /** @description Service Unavailable */
-            503: {
                 headers: {
                     [name: string]: unknown;
                 };
