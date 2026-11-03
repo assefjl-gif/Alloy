@@ -18,6 +18,7 @@ from app.repositories.materiais_sql import RepositorioSQL
 
 from .autenticacao import LimitadorLogin, ServicoAutenticacao
 from .calculo import ServicoCalculo
+from .educacao import ServicoEducacao
 from .erros import CapacidadeIndisponivel
 
 
@@ -73,3 +74,9 @@ def banco_responde(motor_banco: Optional[Engine]) -> Optional[bool]:
         return True
     except Exception:  # noqa: BLE001 — health check: qualquer falha de conexão é "não pronto"
         return False
+
+
+def montar_servico_educacao(sessao: Optional[Session]) -> ServicoEducacao:
+    if sessao is None:
+        raise CapacidadeIndisponivel("Questões e progresso exigem banco de dados (DATABASE_URL).")
+    return ServicoEducacao(sessao, RepositorioSQL(sessao))

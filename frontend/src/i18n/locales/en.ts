@@ -453,6 +453,16 @@ const en: DeepPartialMessages<typeof ptBR> = {
     label: "Cell parameters (CrystaLab v1.0 format)",
     title: "Parameter editor",
   },
+  edu: {
+    answer: "Your answer ({unit})",
+    answerKey: "Answer key: {value} {unit}",
+    errorType: "Likely error: {type}",
+    invalidNumber: "Type a number (comma or dot).",
+    none: "No questions available to you yet.",
+    serverGraded: "the answer key is computed by the engine and only shown after the attempt",
+    title: "Server-graded questions",
+    wrong: "Not yet — {n} attempt(s) left",
+  },
   engine: {
     checking: "Checking the engine…",
     offBody: "Calculations (structure, density, Miller) are done only by the engine. Without it, no value is shown or simulated.",

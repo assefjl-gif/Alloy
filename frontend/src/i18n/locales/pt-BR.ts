@@ -450,6 +450,16 @@ const ptBR = {
     label: "Parâmetros da célula (formato do CrystaLab v1.0)",
     title: "Editor de parâmetros",
   },
+  edu: {
+    answer: "Sua resposta ({unit})",
+    answerKey: "Gabarito: {value} {unit}",
+    errorType: "Erro provável: {type}",
+    invalidNumber: "Digite um número (vírgula ou ponto).",
+    none: "Nenhuma questão disponível para você ainda.",
+    serverGraded: "o gabarito é calculado pelo motor e só aparece depois da tentativa",
+    title: "Questões corrigidas no servidor",
+    wrong: "Ainda não — {n} tentativa(s) restante(s)",
+  },
   engine: {
     checking: "Verificando o motor…",
     offBody: "Os cálculos (estrutura, densidade, Miller) são feitos só pelo motor. Sem ele, nenhum valor é mostrado ou simulado.",

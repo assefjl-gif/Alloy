@@ -13,8 +13,60 @@ import { Badge, Spinner } from '../../design-system/primitives/misc.tsx';
 import { Panel } from '../../design-system/layout/Panel.tsx';
 import { Workbench } from '../../design-system/layout/AppShell.tsx';
 import { toast } from '../../stores/toast.ts';
+import { eduApi, type AttemptResult, type QuestionInfo, type QuestionInstance } from '../../services/api/edu.ts';
+import { parseUserNumber } from '../../utils/format.ts';
 
 const message = (err: unknown): string => (err instanceof Error ? err.message : String(err));
+
+/** Questões corrigidas no servidor: o front envia a resposta e mostra o veredito — nunca calcula o gabarito. */
+function ServerQuestions() {
+  const { t, num } = useI18n();
+  const [questions, setQuestions] = useState<QuestionInfo[] | null>(null);
+  const [instance, setInstance] = useState<QuestionInstance | null>(null);
+  const [answer, setAnswer] = useState('');
+  const [result, setResult] = useState<AttemptResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [started, setStarted] = useState(0);
+  useEffect(() => {
+    const ctrl = new AbortController();
+    eduApi.questions(ctrl.signal).then(setQuestions).catch((err: unknown) => { if (!(err instanceof ApiError && err.kind === 'aborted')) setError(message(err)); });
+    return () => ctrl.abort();
+  }, []);
+
+  async function start(id: string) {
+    setError(null); setResult(null); setAnswer('');
+    try { setInstance(await eduApi.start(id)); setStarted(Date.now()); } catch (err) { setError(message(err)); }
+  }
+  async function send(e: FormEvent) {
+    e.preventDefault();
+    if (!instance) return;
+    const value = parseUserNumber(answer);
+    if (value === null) { setError(t('edu.invalidNumber')); return; }
+    try { setError(null); setResult(await eduApi.answer(instance.id, value, Math.min(Date.now() - started, 3_600_000))); } catch (err) { setError(message(err)); }
+  }
+
+  return (
+    <Panel title={t('edu.title')} aside={t('edu.serverGraded')} headingLevel={2} testId="server-questions">
+      {!questions ? (error ? <p role="alert">{error}</p> : <Spinner size={18} label={t('common.loading')} />) : questions.length === 0 ? <p className="empty-state">{t('edu.none')}</p> : (
+        <ul className="ds-stack">{questions.map((q) => <li key={q.id}><Button size="sm" onClick={() => void start(q.id)}>{q.titulo}</Button> {q.topicos.map((tp) => <Badge key={tp}>{tp}</Badge>)}</li>)}</ul>
+      )}
+      {instance ? (
+        <form className="ds-stack" onSubmit={(e) => void send(e)} data-testid="server-question">
+          <p lang="pt-BR">{instance.enunciado}</p>
+          <TextInput label={t('edu.answer', { unit: instance.unidade })} inputMode="decimal" value={answer} onChange={(e) => setAnswer(e.target.value)} error={error ?? undefined} />
+          <Button type="submit" variant="primary" disabled={Boolean(result && (result.correta || result.restantes === 0))}>{t('exercise.check')}</Button>
+          {result ? (
+            <div role="status">
+              <strong>{result.correta ? `✓ ${t('exercise.correct')}` : `✗ ${t('edu.wrong', { n: result.restantes })}`}</strong>
+              {result.tipo_erro && result.tipo_erro !== 'nao_classificado' ? <p>{t('edu.errorType', { type: result.tipo_erro })}</p> : null}
+              {result.gabarito ? <><p>{t('edu.answerKey', { value: num(result.gabarito.valor, 4), unit: result.gabarito.unidade })}</p><ol>{result.gabarito.resolucao.map((s, i) => <li key={i} lang="pt-BR">{s}</li>)}</ol></> : null}
+            </div>
+          ) : null}
+        </form>
+      ) : null}
+    </Panel>
+  );
+}
 
 function SignIn() {
   const { t } = useI18n();
@@ -112,6 +164,7 @@ export default function AccountModule() {
                 <Button variant="ghost" onClick={() => void signOut(true)}>{t('account.signOutAll')}</Button>
               </div>
             </Panel>
+            <ServerQuestions />
             <History />
           </>
         ) : null}

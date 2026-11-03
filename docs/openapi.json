@@ -1350,6 +1350,532 @@
     }
    }
   },
+  "/api/v1/edu/generators": {
+   "get": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Geradores de questões",
+    "operationId": "listar_geradores_api_v1_edu_generators_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_List_GeneratorInfo__"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not Found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/edu/questions": {
+   "get": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Questões visíveis para mim",
+    "operationId": "listar_questoes_api_v1_edu_questions_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_List_QuestionInfo__"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not Found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Cria questão parametrizada (professor/pesquisador da instituição)",
+    "operationId": "criar_questao_api_v1_edu_questions_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/QuestionCreate"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_QuestionInfo_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not Found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/edu/questions/{questao_id}/instances": {
+   "post": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Sorteia uma instância (o gabarito fica no servidor)",
+    "operationId": "nova_instancia_api_v1_edu_questions__questao_id__instances_post",
+    "parameters": [
+     {
+      "name": "questao_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Questao Id"
+      }
+     }
+    ],
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_QuestionInstance_"
+        }
+       }
+      }
+     },
+     "401": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unauthorized"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Forbidden"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Not Found"
+     },
+     "409": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Conflict"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Service Unavailable"
+     }
+    }
+   }
+  },
+  "/api/v1/edu/instances/{instancia_id}/attempts": {
+   "post": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Envia uma resposta; a correção é feita no servidor",
+    "operationId": "responder_api_v1_edu_instances__instancia_id__attempts_post",
+    "parameters": [
+     {
+      "name": "instancia_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Instancia Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AttemptRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_AttemptResult_"
+        }
+       }
+      }
+     },
+     "401": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unauthorized"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Forbidden"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Not Found"
+     },
+     "409": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Conflict"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     },
+     "503": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Service Unavailable"
+     }
+    }
+   }
+  },
+  "/api/v1/me/progress": {
+   "get": {
+    "tags": [
+     "educacional"
+    ],
+    "summary": "Meu progresso por tópico",
+    "operationId": "progresso_api_v1_me_progress_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_Progress_"
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "Unauthorized",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "403": {
+      "description": "Forbidden",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "Not Found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "409": {
+      "description": "Conflict",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Unprocessable Content",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     },
+     "503": {
+      "description": "Service Unavailable",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/v1/crystals/metals": {
    "get": {
     "tags": [
@@ -1993,6 +2519,85 @@
     ],
     "title": "AtomoRede"
    },
+   "AttemptRequest": {
+    "properties": {
+     "resposta": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Resposta"
+     },
+     "tempo_ms": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 3600000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tempo Ms"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "resposta"
+    ],
+    "title": "AttemptRequest"
+   },
+   "AttemptResult": {
+    "properties": {
+     "correta": {
+      "type": "boolean",
+      "title": "Correta"
+     },
+     "tentativa": {
+      "type": "integer",
+      "title": "Tentativa"
+     },
+     "restantes": {
+      "type": "integer",
+      "title": "Restantes"
+     },
+     "tipo_erro": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tipo Erro"
+     },
+     "gabarito": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Gabarito"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "só quando acerta ou esgota as tentativas"
+     }
+    },
+    "type": "object",
+    "required": [
+     "correta",
+     "tentativa",
+     "restantes"
+    ],
+    "title": "AttemptResult"
+   },
    "Capabilities": {
     "properties": {
      "ambiente": {
@@ -2633,6 +3238,58 @@
      "centro"
     ],
     "title": "FamiliaPlano"
+   },
+   "Gabarito": {
+    "properties": {
+     "valor": {
+      "type": "number",
+      "title": "Valor"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "resolucao": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Resolucao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "valor",
+     "unidade",
+     "resolucao"
+    ],
+    "title": "Gabarito"
+   },
+   "GeneratorInfo": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "titulo": {
+      "type": "string",
+      "title": "Titulo"
+     },
+     "topicos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Topicos"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "titulo",
+     "topicos"
+    ],
+    "title": "GeneratorInfo"
    },
    "GrupoEspacial": {
     "properties": {
@@ -3712,6 +4369,23 @@
     ],
     "title": "NotaTermica"
    },
+   "OkEnvelope_AttemptResult_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/AttemptResult"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[AttemptResult]"
+   },
    "OkEnvelope_Capabilities_": {
     "properties": {
      "ok": {
@@ -3835,6 +4509,48 @@
     ],
     "title": "OkEnvelope[HistoryPage]"
    },
+   "OkEnvelope_List_GeneratorInfo__": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "items": {
+       "$ref": "#/components/schemas/GeneratorInfo"
+      },
+      "type": "array",
+      "title": "Result"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[List[GeneratorInfo]]"
+   },
+   "OkEnvelope_List_QuestionInfo__": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "items": {
+       "$ref": "#/components/schemas/QuestionInfo"
+      },
+      "type": "array",
+      "title": "Result"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[List[QuestionInfo]]"
+   },
    "OkEnvelope_List_StructureInfo__": {
     "properties": {
      "ok": {
@@ -3872,6 +4588,57 @@
      "result"
     ],
     "title": "OkEnvelope[MillerResponse]"
+   },
+   "OkEnvelope_Progress_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/Progress"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[Progress]"
+   },
+   "OkEnvelope_QuestionInfo_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/QuestionInfo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[QuestionInfo]"
+   },
+   "OkEnvelope_QuestionInstance_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/QuestionInstance"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[QuestionInstance]"
    },
    "OkEnvelope_SessionInfo_": {
     "properties": {
@@ -4171,6 +4938,239 @@
     ],
     "title": "Procedencia",
     "description": "PI-06/07: de onde veio o resultado (ARQUITETURA_FINAL §6)."
+   },
+   "Progress": {
+    "properties": {
+     "topicos": {
+      "items": {
+       "$ref": "#/components/schemas/TopicProgress"
+      },
+      "type": "array",
+      "title": "Topicos"
+     },
+     "resolvidas": {
+      "type": "integer",
+      "title": "Resolvidas"
+     },
+     "instancias": {
+      "type": "integer",
+      "title": "Instancias"
+     }
+    },
+    "type": "object",
+    "required": [
+     "topicos",
+     "resolvidas",
+     "instancias"
+    ],
+    "title": "Progress"
+   },
+   "QuestionCreate": {
+    "properties": {
+     "gerador": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Gerador"
+     },
+     "instituicao_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Instituicao Id",
+      "description": "vazio = questão pública (só administração geral)"
+     },
+     "titulo": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Titulo"
+     },
+     "enunciado": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Enunciado"
+     },
+     "topicos": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array",
+        "maxItems": 10
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Topicos"
+     },
+     "dificuldade": {
+      "type": "integer",
+      "maximum": 5.0,
+      "minimum": 1.0,
+      "title": "Dificuldade",
+      "default": 2
+     },
+     "max_tentativas": {
+      "type": "integer",
+      "maximum": 10.0,
+      "minimum": 1.0,
+      "title": "Max Tentativas",
+      "default": 3
+     },
+     "publicada": {
+      "type": "boolean",
+      "title": "Publicada",
+      "default": true
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "gerador"
+    ],
+    "title": "QuestionCreate"
+   },
+   "QuestionInfo": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "titulo": {
+      "type": "string",
+      "title": "Titulo"
+     },
+     "enunciado": {
+      "type": "string",
+      "title": "Enunciado"
+     },
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     },
+     "gerador": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Gerador"
+     },
+     "topicos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Topicos"
+     },
+     "dificuldade": {
+      "type": "integer",
+      "title": "Dificuldade"
+     },
+     "instituicao_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Instituicao Id"
+     },
+     "max_tentativas": {
+      "type": "integer",
+      "title": "Max Tentativas"
+     },
+     "publicada": {
+      "type": "boolean",
+      "title": "Publicada"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "titulo",
+     "enunciado",
+     "tipo",
+     "topicos",
+     "dificuldade",
+     "max_tentativas",
+     "publicada"
+    ],
+    "title": "QuestionInfo"
+   },
+   "QuestionInstance": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "title": "Id"
+     },
+     "questao_id": {
+      "type": "string",
+      "title": "Questao Id"
+     },
+     "titulo": {
+      "type": "string",
+      "title": "Titulo"
+     },
+     "enunciado": {
+      "type": "string",
+      "title": "Enunciado"
+     },
+     "parametros": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Parametros"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "max_tentativas": {
+      "type": "integer",
+      "title": "Max Tentativas"
+     },
+     "semente": {
+      "type": "integer",
+      "title": "Semente"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "questao_id",
+     "titulo",
+     "enunciado",
+     "parametros",
+     "unidade",
+     "max_tentativas",
+     "semente"
+    ],
+    "title": "QuestionInstance"
    },
    "RegisterRequest": {
     "properties": {
@@ -5438,6 +6438,34 @@
      "procedencia"
     ],
     "title": "ThermalResponse"
+   },
+   "TopicProgress": {
+    "properties": {
+     "topico": {
+      "type": "string",
+      "title": "Topico"
+     },
+     "instancias": {
+      "type": "integer",
+      "title": "Instancias"
+     },
+     "tentativas": {
+      "type": "integer",
+      "title": "Tentativas"
+     },
+     "resolvidas": {
+      "type": "integer",
+      "title": "Resolvidas"
+     }
+    },
+    "type": "object",
+    "required": [
+     "topico",
+     "instancias",
+     "tentativas",
+     "resolvidas"
+    ],
+    "title": "TopicProgress"
    },
    "UserInfo": {
     "properties": {

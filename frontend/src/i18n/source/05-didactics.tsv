@@ -296,3 +296,11 @@ instructor.draftSaved	Rascunho salvo neste navegador ({id}).	Draft saved in this
 instructor.drafts	Rascunhos locais	Local drafts	Borradores locales
 instructor.draftLocal	rascunho local, não publicado	local draft, not published	borrador local, no publicado
 instructor.deleteDraft	Excluir rascunho	Delete draft	Eliminar borrador
+edu.title	Questões corrigidas no servidor	Server-graded questions	Preguntas corregidas en el servidor
+edu.serverGraded	o gabarito é calculado pelo motor e só aparece depois da tentativa	the answer key is computed by the engine and only shown after the attempt	la respuesta la calcula el motor y solo aparece después del intento
+edu.none	Nenhuma questão disponível para você ainda.	No questions available to you yet.	Aún no hay preguntas disponibles para ti.
+edu.answer	Sua resposta ({unit})	Your answer ({unit})	Tu respuesta ({unit})
+edu.invalidNumber	Digite um número (vírgula ou ponto).	Type a number (comma or dot).	Escribe un número (coma o punto).
+edu.wrong	Ainda não — {n} tentativa(s) restante(s)	Not yet — {n} attempt(s) left	Todavía no — {n} intento(s) restante(s)
+edu.errorType	Erro provável: {type}	Likely error: {type}	Error probable: {type}
+edu.answerKey	Gabarito: {value} {unit}	Answer key: {value} {unit}	Respuesta: {value} {unit}

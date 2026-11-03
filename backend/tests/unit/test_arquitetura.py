@@ -20,6 +20,8 @@ PROIBIDOS = {
     "models": ("app.api", "app.services", "app.repositories", "app.engines"),
     "services": ("app.api", "fastapi"),
     "api": ("app.repositories", "app.models", "app.engines", "sqlalchemy"),
+    # geradores de questões: puros como os motores (usam os motores, nunca banco nem HTTP)
+    "educational": ("app.api", "app.services", "app.repositories", "app.models", "fastapi", "sqlalchemy"),
 }
 #: Importações de motor aceitas na camada api: só contrato (faixas, tipos de erro, normalização de tipo),
 #: nunca funções de cálculo — essas passam pelos serviços.

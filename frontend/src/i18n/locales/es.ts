@@ -453,6 +453,16 @@ const es: DeepPartialMessages<typeof ptBR> = {
     label: "Parámetros de la celda (formato de CrystaLab v1.0)",
     title: "Editor de parámetros",
   },
+  edu: {
+    answer: "Tu respuesta ({unit})",
+    answerKey: "Respuesta: {value} {unit}",
+    errorType: "Error probable: {type}",
+    invalidNumber: "Escribe un número (coma o punto).",
+    none: "Aún no hay preguntas disponibles para ti.",
+    serverGraded: "la respuesta la calcula el motor y solo aparece después del intento",
+    title: "Preguntas corregidas en el servidor",
+    wrong: "Todavía no — {n} intento(s) restante(s)",
+  },
   engine: {
     checking: "Verificando el motor…",
     offBody: "Los cálculos (estructura, densidad, Miller) los hace solo el motor. Sin él, no se muestra ni se simula ningún valor.",

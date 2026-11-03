@@ -368,6 +368,92 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/edu/generators": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Geradores de questões */
+        get: operations["listar_geradores_api_v1_edu_generators_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edu/questions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Questões visíveis para mim */
+        get: operations["listar_questoes_api_v1_edu_questions_get"];
+        put?: never;
+        /** Cria questão parametrizada (professor/pesquisador da instituição) */
+        post: operations["criar_questao_api_v1_edu_questions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edu/questions/{questao_id}/instances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sorteia uma instância (o gabarito fica no servidor) */
+        post: operations["nova_instancia_api_v1_edu_questions__questao_id__instances_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edu/instances/{instancia_id}/attempts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Envia uma resposta; a correção é feita no servidor */
+        post: operations["responder_api_v1_edu_instances__instancia_id__attempts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Meu progresso por tópico */
+        get: operations["progresso_api_v1_me_progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/crystals/metals": {
         parameters: {
             query?: never;
@@ -623,6 +709,26 @@ export interface components {
             /** Tipo */
             tipo: string;
         };
+        /** AttemptRequest */
+        AttemptRequest: {
+            /** Resposta */
+            resposta: number | null;
+            /** Tempo Ms */
+            tempo_ms?: number | null;
+        };
+        /** AttemptResult */
+        AttemptResult: {
+            /** Correta */
+            correta: boolean;
+            /** Tentativa */
+            tentativa: number;
+            /** Restantes */
+            restantes: number;
+            /** Tipo Erro */
+            tipo_erro?: string | null;
+            /** @description só quando acerta ou esgota as tentativas */
+            gabarito?: components["schemas"]["Gabarito"] | null;
+        };
         /** Capabilities */
         Capabilities: {
             /**
@@ -842,6 +948,24 @@ export interface components {
             poligono: number[][];
             /** Centro */
             centro: number[];
+        };
+        /** Gabarito */
+        Gabarito: {
+            /** Valor */
+            valor: number;
+            /** Unidade */
+            unidade: string;
+            /** Resolucao */
+            resolucao: string[];
+        };
+        /** GeneratorInfo */
+        GeneratorInfo: {
+            /** Codigo */
+            codigo: string;
+            /** Titulo */
+            titulo: string;
+            /** Topicos */
+            topicos: string[];
         };
         /** GrupoEspacial */
         GrupoEspacial: {
@@ -1192,6 +1316,15 @@ export interface components {
             /** Texto */
             texto: string;
         };
+        /** OkEnvelope[AttemptResult] */
+        OkEnvelope_AttemptResult_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["AttemptResult"];
+        };
         /** OkEnvelope[Capabilities] */
         OkEnvelope_Capabilities_: {
             /**
@@ -1258,6 +1391,26 @@ export interface components {
             ok?: boolean;
             result: components["schemas"]["HistoryPage"];
         };
+        /** OkEnvelope[List[GeneratorInfo]] */
+        OkEnvelope_List_GeneratorInfo__: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            /** Result */
+            result: components["schemas"]["GeneratorInfo"][];
+        };
+        /** OkEnvelope[List[QuestionInfo]] */
+        OkEnvelope_List_QuestionInfo__: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            /** Result */
+            result: components["schemas"]["QuestionInfo"][];
+        };
         /** OkEnvelope[List[StructureInfo]] */
         OkEnvelope_List_StructureInfo__: {
             /**
@@ -1276,6 +1429,33 @@ export interface components {
              */
             ok?: boolean;
             result: components["schemas"]["MillerResponse"];
+        };
+        /** OkEnvelope[Progress] */
+        OkEnvelope_Progress_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["Progress"];
+        };
+        /** OkEnvelope[QuestionInfo] */
+        OkEnvelope_QuestionInfo_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["QuestionInfo"];
+        };
+        /** OkEnvelope[QuestionInstance] */
+        OkEnvelope_QuestionInstance_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["QuestionInstance"];
         };
         /** OkEnvelope[SessionInfo] */
         OkEnvelope_SessionInfo_: {
@@ -1403,6 +1583,90 @@ export interface components {
             avisos?: string[];
             /** Calculado Em */
             calculado_em?: string | null;
+        };
+        /** Progress */
+        Progress: {
+            /** Topicos */
+            topicos: components["schemas"]["TopicProgress"][];
+            /** Resolvidas */
+            resolvidas: number;
+            /** Instancias */
+            instancias: number;
+        };
+        /** QuestionCreate */
+        QuestionCreate: {
+            /** Gerador */
+            gerador: string;
+            /**
+             * Instituicao Id
+             * @description vazio = questão pública (só administração geral)
+             */
+            instituicao_id?: string | null;
+            /** Titulo */
+            titulo?: string | null;
+            /** Enunciado */
+            enunciado?: string | null;
+            /** Topicos */
+            topicos?: string[] | null;
+            /**
+             * Dificuldade
+             * @default 2
+             */
+            dificuldade?: number;
+            /**
+             * Max Tentativas
+             * @default 3
+             */
+            max_tentativas?: number;
+            /**
+             * Publicada
+             * @default true
+             */
+            publicada?: boolean;
+        };
+        /** QuestionInfo */
+        QuestionInfo: {
+            /** Id */
+            id: string;
+            /** Titulo */
+            titulo: string;
+            /** Enunciado */
+            enunciado: string;
+            /** Tipo */
+            tipo: string;
+            /** Gerador */
+            gerador?: string | null;
+            /** Topicos */
+            topicos: string[];
+            /** Dificuldade */
+            dificuldade: number;
+            /** Instituicao Id */
+            instituicao_id?: string | null;
+            /** Max Tentativas */
+            max_tentativas: number;
+            /** Publicada */
+            publicada: boolean;
+        };
+        /** QuestionInstance */
+        QuestionInstance: {
+            /** Id */
+            id: string;
+            /** Questao Id */
+            questao_id: string;
+            /** Titulo */
+            titulo: string;
+            /** Enunciado */
+            enunciado: string;
+            /** Parametros */
+            parametros: {
+                [key: string]: unknown;
+            };
+            /** Unidade */
+            unidade: string;
+            /** Max Tentativas */
+            max_tentativas: number;
+            /** Semente */
+            semente: number;
         };
         /** RegisterRequest */
         RegisterRequest: {
@@ -1803,6 +2067,17 @@ export interface components {
             /** Notas */
             notas: components["schemas"]["NotaTermica"][];
             procedencia: components["schemas"]["Procedencia"];
+        };
+        /** TopicProgress */
+        TopicProgress: {
+            /** Topico */
+            topico: string;
+            /** Instancias */
+            instancias: number;
+            /** Tentativas */
+            tentativas: number;
+            /** Resolvidas */
+            resolvidas: number;
         };
         /** UserInfo */
         UserInfo: {
@@ -2968,6 +3243,462 @@ export interface operations {
             };
             /** @description Too Many Requests */
             429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    listar_geradores_api_v1_edu_generators_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_List_GeneratorInfo__"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    listar_questoes_api_v1_edu_questions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_List_QuestionInfo__"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    criar_questao_api_v1_edu_questions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_QuestionInfo_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    nova_instancia_api_v1_edu_questions__questao_id__instances_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                questao_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_QuestionInstance_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    responder_api_v1_edu_instances__instancia_id__attempts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                instancia_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttemptRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_AttemptResult_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    progresso_api_v1_me_progress_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_Progress_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };

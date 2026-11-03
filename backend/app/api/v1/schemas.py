@@ -602,6 +602,82 @@ class HistoryPage(BaseModel):
     itens: List[HistoryItem]
 
 
+# --------------------------------------------------------------------------- educacional (Fase 7)
+class GeneratorInfo(BaseModel):
+    codigo: str
+    titulo: str
+    topicos: List[str]
+
+
+class QuestionCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    gerador: str = Field(..., max_length=40)
+    instituicao_id: Optional[str] = Field(None, description="vazio = questão pública (só administração geral)")
+    titulo: Optional[str] = Field(None, max_length=120)
+    enunciado: Optional[str] = Field(None, max_length=2000)
+    topicos: Optional[List[str]] = Field(None, max_length=10)
+    dificuldade: int = Field(2, ge=1, le=5)
+    max_tentativas: int = Field(3, ge=1, le=10)
+    publicada: bool = True
+
+
+class QuestionInfo(BaseModel):
+    id: str
+    titulo: str
+    enunciado: str
+    tipo: str
+    gerador: Optional[str] = None
+    topicos: List[str]
+    dificuldade: int
+    instituicao_id: Optional[str] = None
+    max_tentativas: int
+    publicada: bool
+
+
+class QuestionInstance(BaseModel):
+    id: str
+    questao_id: str
+    titulo: str
+    enunciado: str
+    parametros: Dict[str, Any]
+    unidade: str
+    max_tentativas: int
+    semente: int
+
+
+class AttemptRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    resposta: NumeroBR = Field(..., allow_inf_nan=False)
+    tempo_ms: Optional[int] = Field(None, ge=0, le=3_600_000)
+
+
+class Gabarito(BaseModel):
+    valor: float
+    unidade: str
+    resolucao: List[str]
+
+
+class AttemptResult(BaseModel):
+    correta: bool
+    tentativa: int
+    restantes: int
+    tipo_erro: Optional[str] = None
+    gabarito: Optional[Gabarito] = Field(None, description="só quando acerta ou esgota as tentativas")
+
+
+class TopicProgress(BaseModel):
+    topico: str
+    instancias: int
+    tentativas: int
+    resolvidas: int
+
+
+class Progress(BaseModel):
+    topicos: List[TopicProgress]
+    resolvidas: int
+    instancias: int
+
+
 # --------------------------------------------------------------------------- plataforma
 class ServicoCapacidade(BaseModel):
     disponivel: bool

@@ -15,8 +15,14 @@ from app.core.config import Settings
 from app.security.tokens import CABECALHO_CSRF, COOKIE_SESSAO
 from app.services.autenticacao import Autenticado, ServicoAutenticacao
 from app.services.calculo import ServicoCalculo
+from app.services.educacao import ServicoEducacao
 from app.services.erros import NaoAutenticado
-from app.services.provedor import montar_servico_autenticacao, montar_servico_calculo, unidade_de_trabalho
+from app.services.provedor import (
+    montar_servico_autenticacao,
+    montar_servico_calculo,
+    montar_servico_educacao,
+    unidade_de_trabalho,
+)
 
 METODOS_ESCRITA = frozenset({"POST", "PUT", "PATCH", "DELETE"})
 
@@ -36,6 +42,10 @@ def get_servico(request: Request, sessao=Depends(get_sessao_db)) -> ServicoCalcu
 
 def get_servico_auth(request: Request, sessao=Depends(get_sessao_db)) -> ServicoAutenticacao:
     return montar_servico_autenticacao(sessao, request.app.state.limitador_login)
+
+
+def get_servico_educacao(sessao=Depends(get_sessao_db)) -> ServicoEducacao:
+    return montar_servico_educacao(sessao)
 
 
 def get_autenticado_opcional(request: Request, sessao=Depends(get_sessao_db)) -> Optional[Autenticado]:
