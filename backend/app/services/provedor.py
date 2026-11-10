@@ -1,7 +1,8 @@
 """Monta o ``ServicoCalculo`` com a fonte de dados certa para o ambiente.
 
 Sem banco: seed JSON (desenvolvimento). Com banco: uma sessão por unidade de trabalho e um
-retrato dos dados vigentes (``RepositorioSQL``); commit ao final, rollback em erro.
+retrato dos dados vigentes (``RepositorioSQL``, em cache por versão: ``repositories/cache_dados``);
+commit ao final, rollback em erro.
 """
 
 from __future__ import annotations
@@ -13,12 +14,14 @@ from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings
+from app.repositories.elementos import repositorio_elementos_padrao, retrato_elementos
 from app.repositories.materiais_json import repositorio_padrao
-from app.repositories.materiais_sql import RepositorioSQL
+from app.repositories.materiais_sql import retrato_materiais
 
 from .autenticacao import LimitadorLogin, ServicoAutenticacao
 from .calculo import ServicoCalculo
 from .educacao import ServicoEducacao
+from .elementos import ServicoElementos
 from .erros import CapacidadeIndisponivel
 
 
@@ -47,7 +50,7 @@ def montar_servico_calculo(settings: Settings, sessao: Optional[Session]) -> Ser
     if sessao is None:
         repo = repositorio_padrao()
         return ServicoCalculo(repo, repo, settings.politica_dados())
-    repo_sql = RepositorioSQL(sessao)
+    repo_sql = retrato_materiais(sessao)
     return ServicoCalculo(repo_sql, repo_sql, settings.politica_dados(), sessao)
 
 
@@ -79,4 +82,9 @@ def banco_responde(motor_banco: Optional[Engine]) -> Optional[bool]:
 def montar_servico_educacao(sessao: Optional[Session]) -> ServicoEducacao:
     if sessao is None:
         raise CapacidadeIndisponivel("Questões e progresso exigem banco de dados (DATABASE_URL).")
-    return ServicoEducacao(sessao, RepositorioSQL(sessao))
+    return ServicoEducacao(sessao, retrato_materiais(sessao))
+
+
+def montar_servico_elementos(sessao: Optional[Session]) -> ServicoElementos:
+    """Com banco: lê o banco; sem banco: o seed JSON embutido (mesmo formato de saída)."""
+    return ServicoElementos(retrato_elementos(sessao) if sessao is not None else repositorio_elementos_padrao())

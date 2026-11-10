@@ -1,0 +1,6878 @@
+{
+ "versao_dados": "2026.11.3-tp",
+ "descricao": "Tabela periódica completa (118 elementos): identidade, classificação e propriedades atômicas. Estado inicial aguardando_validacao: fontes de referência citadas, sem revisão humana registrada (ADR-014).",
+ "convencoes": {
+  "grupos": "IUPAC, 18 colunas (2022). Lantanídeos 57–71 e actinídeos 89–103 no bloco f, sem número de grupo.",
+  "peso_atomico_padrao": "Valor abreviado da CIAAW (±incerteza); intervalo do valor padrão quando houver.",
+  "nomes": "pt-BR: Wikipédia em português, com a grafia normalizada para o Brasil (mapa PT_BR do importador)."
+ },
+ "fontes": {
+  "ciaaw_2024": {
+   "tipo": "base_dados",
+   "citacao": "IUPAC Commission on Isotopic Abundances and Atomic Weights (CIAAW). Standard Atomic Weights e Abridged Standard Atomic Weights (Atomic Weights 2021, com as revisões de 2024 de Gd, Lu e Zr). Base: Prohaska, T. et al. Standard atomic weights of the elements 2021 (IUPAC Technical Report). Pure Appl. Chem. 94(5), 573–600 (2022).",
+   "doi": "10.1515/pac-2019-0603",
+   "url": "https://www.ciaaw.org/atomic-weights.htm",
+   "versao_fonte": "Atomic Weights 2021 + revisões 2024",
+   "licenca": "Dados de referência públicos da IUPAC; citar a fonte",
+   "acessado_em": "2026-11-03"
+  },
+  "pubchem_tabela_periodica": {
+   "tipo": "base_dados",
+   "citacao": "Kim, S. et al. PubChem 2025 update. Nucleic Acids Res. 53(D1), D1516–D1525 (2025). PubChem Periodic Table (National Center for Biotechnology Information), que agrega CIAAW, NIST Physical Measurement Laboratory, Los Alamos National Laboratory e Jefferson Lab.",
+   "doi": "10.1093/nar/gkae1059",
+   "url": "https://pubchem.ncbi.nlm.nih.gov/periodic-table/",
+   "versao_fonte": "PUG REST periodictable/JSON",
+   "licenca": "Dados do NCBI/NIH de domínio público (EUA); citar a fonte",
+   "acessado_em": "2026-11-03"
+  },
+  "wikipedia_pt_elementos": {
+   "tipo": "base_dados",
+   "citacao": "Wikipédia em português. Lista de elementos químicos (nomes em português).",
+   "url": "https://pt.wikipedia.org/wiki/Lista_de_elementos_qu%C3%ADmicos",
+   "versao_fonte": "texto bruto (action=raw)",
+   "licenca": "CC BY-SA 4.0",
+   "acessado_em": "2026-11-03"
+  }
+ },
+ "fontes_brutas": {
+  "pubchem.json": {
+   "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON",
+   "sha256": "ff0f75976583b8a6493b18d0b42e83e1b68bd6e112b45d33578d98494ed5d321",
+   "bytes": 44488
+  },
+  "ciaaw_padrao.htm": {
+   "url": "https://www.ciaaw.org/atomic-weights.htm",
+   "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+   "bytes": 21501
+  },
+  "ciaaw_abreviado.htm": {
+   "url": "https://www.ciaaw.org/abridged-atomic-weights.htm",
+   "sha256": "f9e9554471749c55a624aec55151922470a7f4104c62811eb194fed9731b907d",
+   "bytes": 18489
+  },
+  "wikipedia_pt.txt": {
+   "url": "https://pt.wikipedia.org/w/index.php?title=Lista_de_elementos_qu%C3%ADmicos&action=raw",
+   "sha256": "ad5a8cd9d4757e7a1fb1c1662d099c3df4cc3023e866d12287b5f5a20c4696ed",
+   "bytes": 33234
+  }
+ },
+ "conferencias": [
+  "Ts: grupo 17 (regra) × 15 (Wikipédia)"
+ ],
+ "elementos": [
+  {
+   "numero_atomico": 1,
+   "simbolo": "H",
+   "nome": "Hidrogênio",
+   "nome_en": "hydrogen",
+   "periodo": 1,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "não metal",
+   "configuracao_eletronica": "1s1",
+   "estados_oxidacao": "+1, -1",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1766,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "1.0080",
+     "incerteza": "0.0002",
+     "intervalo_min": "1.00784",
+     "intervalo_max": "1.00811",
+     "nota": "Valor abreviado CIAAW; valor padrão: [1.007 84, 1.008 11]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "120",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "13.598",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.754",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "13.81",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "20.28",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.00008988",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 2,
+   "simbolo": "He",
+   "nome": "Hélio",
+   "nome_en": "helium",
+   "periodo": 1,
+   "grupo": 18,
+   "bloco": "s",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "1s2",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1868,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "4.0026",
+     "incerteza": "0.0001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 4.002 602(2)"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "140",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "24.587",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "0.95",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4.22",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.0001785",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 3,
+   "simbolo": "Li",
+   "nome": "Lítio",
+   "nome_en": "lithium",
+   "periodo": 2,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[He]2s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1817,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "6.94",
+     "incerteza": "0.06",
+     "intervalo_min": "6.938",
+     "intervalo_max": "6.997",
+     "nota": "Valor abreviado CIAAW; valor padrão: [6.938, 6.997]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.98",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "182",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.392",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.618",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "453.65",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1615",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.534",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 4,
+   "simbolo": "Be",
+   "nome": "Berílio",
+   "nome_en": "beryllium",
+   "periodo": 2,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[He]2s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1798,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "9.0122",
+     "incerteza": "0.0001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 9.012 1831(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.57",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "153",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.323",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1560",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2744",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.85",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 5,
+   "simbolo": "B",
+   "nome": "Boro",
+   "nome_en": "boron",
+   "periodo": 2,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[He]2s2 2p1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1808,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "10.81",
+     "incerteza": "0.02",
+     "intervalo_min": "10.806",
+     "intervalo_max": "10.821",
+     "nota": "Valor abreviado CIAAW; valor padrão: [10.806, 10.821]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.04",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "192",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.298",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.277",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2348",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4273",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.37",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 6,
+   "simbolo": "C",
+   "nome": "Carbono",
+   "nome_en": "carbon",
+   "periodo": 2,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[He]2s2 2p2",
+   "estados_oxidacao": "+4, +2, -4",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "12.011",
+     "incerteza": "0.002",
+     "intervalo_min": "12.0096",
+     "intervalo_max": "12.0116",
+     "nota": "Valor abreviado CIAAW; valor padrão: [12.0096, 12.0116]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.55",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "170",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "11.260",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.263",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "3823",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4098",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.2670",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 7,
+   "simbolo": "N",
+   "nome": "Nitrogênio",
+   "nome_en": "nitrogen",
+   "periodo": 2,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[He] 2s2 2p3",
+   "estados_oxidacao": "+5, +4, +3, +2, +1, -1, -2, -3",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1772,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "14.007",
+     "incerteza": "0.001",
+     "intervalo_min": "14.00643",
+     "intervalo_max": "14.00728",
+     "nota": "Valor abreviado CIAAW; valor padrão: [14.006 43, 14.007 28]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "3.04",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "155",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "14.534",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "63.15",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "77.36",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.0012506",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 8,
+   "simbolo": "O",
+   "nome": "Oxigênio",
+   "nome_en": "oxygen",
+   "periodo": 2,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[He]2s2 2p4",
+   "estados_oxidacao": "-2",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1774,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "15.999",
+     "incerteza": "0.001",
+     "intervalo_min": "15.99903",
+     "intervalo_max": "15.99977",
+     "nota": "Valor abreviado CIAAW; valor padrão: [15.999 03, 15.999 77]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "3.44",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "152",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "13.618",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.461",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "54.36",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "90.2",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.001429",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 9,
+   "simbolo": "F",
+   "nome": "Flúor",
+   "nome_en": "fluorine",
+   "periodo": 2,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[He]2s2 2p5",
+   "estados_oxidacao": "-1",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1670,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "18.998",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 18.998 403 162(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "3.98",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "135",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "17.423",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "3.339",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "53.53",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "85.03",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.001696",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 10,
+   "simbolo": "Ne",
+   "nome": "Neônio",
+   "nome_en": "neon",
+   "periodo": 2,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[He]2s2 2p6",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1898,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "20.180",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 20.1797(6)"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "154",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "21.565",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "24.56",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "27.07",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.0008999",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 11,
+   "simbolo": "Na",
+   "nome": "Sódio",
+   "nome_en": "sodium",
+   "periodo": 3,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[Ne]3s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1807,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "22.990",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 22.989 769 28(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.93",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "227",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.139",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.548",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "370.95",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1156",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.97",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 12,
+   "simbolo": "Mg",
+   "nome": "Magnésio",
+   "nome_en": "magnesium",
+   "periodo": 3,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[Ne]3s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1808,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "24.305",
+     "incerteza": "0.002",
+     "intervalo_min": "24.304",
+     "intervalo_max": "24.307",
+     "nota": "Valor abreviado CIAAW; valor padrão: [24.304, 24.307]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.31",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "173",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.646",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "923",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1363",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.74",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 13,
+   "simbolo": "Al",
+   "nome": "Alumínio",
+   "nome_en": "aluminium",
+   "periodo": 3,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Ne]3s2 3p1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "26.982",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 26.981 5384(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.61",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "184",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.986",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.441",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "933.437",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2792",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.70",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 14,
+   "simbolo": "Si",
+   "nome": "Silício",
+   "nome_en": "silicon",
+   "periodo": 3,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Ne]3s2 3p2",
+   "estados_oxidacao": "+4, +2, -4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1854,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "28.085",
+     "incerteza": "0.001",
+     "intervalo_min": "28.084",
+     "intervalo_max": "28.086",
+     "nota": "Valor abreviado CIAAW; valor padrão: [28.084, 28.086]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.9",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "210",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.152",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.385",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1687",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3538",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.3296",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 15,
+   "simbolo": "P",
+   "nome": "Fósforo",
+   "nome_en": "phosphorus",
+   "periodo": 3,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[Ne]3s2 3p3",
+   "estados_oxidacao": "+5, +3, -3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1669,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "30.974",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 30.973 761 998(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.19",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "180",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "10.487",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.746",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "317.3",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "553.65",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.82",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 16,
+   "simbolo": "S",
+   "nome": "Enxofre",
+   "nome_en": "sulfur",
+   "periodo": 3,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[Ne]3s2 3p4",
+   "estados_oxidacao": "+6, +4, -2",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "32.06",
+     "incerteza": "0.02",
+     "intervalo_min": "32.059",
+     "intervalo_max": "32.076",
+     "nota": "Valor abreviado CIAAW; valor padrão: [32.059, 32.076]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.58",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "180",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "10.360",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "2.077",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "388.36",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "717.75",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.067",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 17,
+   "simbolo": "Cl",
+   "nome": "Cloro",
+   "nome_en": "chlorine",
+   "periodo": 3,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[Ne]3s2 3p5",
+   "estados_oxidacao": "+7, +5, +1, -1",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1774,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "35.45",
+     "incerteza": "0.01",
+     "intervalo_min": "35.446",
+     "intervalo_max": "35.457",
+     "nota": "Valor abreviado CIAAW; valor padrão: [35.446, 35.457]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "3.16",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "175",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "12.968",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "3.617",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "171.65",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "239.11",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.003214",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 18,
+   "simbolo": "Ar",
+   "nome": "Argônio",
+   "nome_en": "argon",
+   "periodo": 3,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[Ne]3s2 3p6",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1894,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "39.95",
+     "incerteza": "0.16",
+     "intervalo_min": "39.792",
+     "intervalo_max": "39.963",
+     "nota": "Valor abreviado CIAAW; valor padrão: [39.792, 39.963]"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "188",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "15.760",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "83.8",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "87.3",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.0017837",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 19,
+   "simbolo": "K",
+   "nome": "Potássio",
+   "nome_en": "potassium",
+   "periodo": 4,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[Ar]4s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1807,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "39.098",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 39.0983(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.82",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "275",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "4.341",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.501",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "336.53",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1032",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.89",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 20,
+   "simbolo": "Ca",
+   "nome": "Cálcio",
+   "nome_en": "calcium",
+   "periodo": 4,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[Ar]4s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "40.078",
+     "incerteza": "0.004",
+     "nota": "Valor abreviado CIAAW; valor padrão: 40.078(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "231",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.113",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1115",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1757",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.54",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 21,
+   "simbolo": "Sc",
+   "nome": "Escândio",
+   "nome_en": "scandium",
+   "periodo": 4,
+   "grupo": 3,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1879,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "44.956",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 44.955 907(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.36",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "211",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.561",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.188",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1814",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3109",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.99",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 22,
+   "simbolo": "Ti",
+   "nome": "Titânio",
+   "nome_en": "titanium",
+   "periodo": 4,
+   "grupo": 4,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d2",
+   "estados_oxidacao": "+4, +3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1791,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "47.867",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 47.867(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.54",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "187",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.828",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.079",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1941",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3560",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "4.5",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 23,
+   "simbolo": "V",
+   "nome": "Vanádio",
+   "nome_en": "vanadium",
+   "periodo": 4,
+   "grupo": 5,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d3",
+   "estados_oxidacao": "+5, +4, +3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1801,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "50.942",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 50.9415(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.63",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "179",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.746",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.525",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2183",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3680",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.0",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 24,
+   "simbolo": "Cr",
+   "nome": "Cromo",
+   "nome_en": "chromium",
+   "periodo": 4,
+   "grupo": 6,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]3d5 4s1",
+   "estados_oxidacao": "+6, +3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1797,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "51.996",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 51.9961(6)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.66",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "189",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.767",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.666",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2180",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2944",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.15",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 25,
+   "simbolo": "Mn",
+   "nome": "Manganês",
+   "nome_en": "manganese",
+   "periodo": 4,
+   "grupo": 7,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d5",
+   "estados_oxidacao": "+7, +4, +3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1774,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "54.938",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 54.938 043(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.55",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "197",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.434",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1519",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2334",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.3",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 26,
+   "simbolo": "Fe",
+   "nome": "Ferro",
+   "nome_en": "iron",
+   "periodo": 4,
+   "grupo": 8,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d6",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "55.845",
+     "incerteza": "0.002",
+     "nota": "Valor abreviado CIAAW; valor padrão: 55.845(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.83",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "194",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.902",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.163",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1811",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3134",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.874",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 27,
+   "simbolo": "Co",
+   "nome": "Cobalto",
+   "nome_en": "cobalt",
+   "periodo": 4,
+   "grupo": 9,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d7",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1735,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "58.933",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 58.933 194(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.88",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "192",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.881",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.661",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1768",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3200",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.86",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 28,
+   "simbolo": "Ni",
+   "nome": "Níquel",
+   "nome_en": "nickel",
+   "periodo": 4,
+   "grupo": 10,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d8",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1751,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "58.693",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 58.6934(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.91",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "163",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.640",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.156",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1728",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3186",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.912",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 29,
+   "simbolo": "Cu",
+   "nome": "Cobre",
+   "nome_en": "copper",
+   "periodo": 4,
+   "grupo": 11,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s1 3d10",
+   "estados_oxidacao": "+2, +1",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "63.546",
+     "incerteza": "0.003",
+     "nota": "Valor abreviado CIAAW; valor padrão: 63.546(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.9",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "140",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.726",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.228",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1357.77",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2835",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.933",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 30,
+   "simbolo": "Zn",
+   "nome": "Zinco",
+   "nome_en": "zinc",
+   "periodo": 4,
+   "grupo": 12,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Ar]4s2 3d10",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1746,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "65.38",
+     "incerteza": "0.02",
+     "nota": "Valor abreviado CIAAW; valor padrão: 65.38(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.65",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "139",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.394",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "692.68",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1180",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.134",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 31,
+   "simbolo": "Ga",
+   "nome": "Gálio",
+   "nome_en": "gallium",
+   "periodo": 4,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1875,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "69.723",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 69.723(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.81",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "187",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.999",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.3",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "302.91",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2477",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "5.91",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 32,
+   "simbolo": "Ge",
+   "nome": "Germânio",
+   "nome_en": "germanium",
+   "periodo": 4,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p2",
+   "estados_oxidacao": "+4, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1886,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "72.630",
+     "incerteza": "0.008",
+     "nota": "Valor abreviado CIAAW; valor padrão: 72.630(8)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.01",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "211",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.900",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.35",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1211.4",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3106",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "5.323",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 33,
+   "simbolo": "As",
+   "nome": "Arsênio",
+   "nome_en": "arsenic",
+   "periodo": 4,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p3",
+   "estados_oxidacao": "+5, +3, -3",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "74.922",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 74.921 595(6)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.18",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "185",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.815",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.81",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1090",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "887",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "5.776",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 34,
+   "simbolo": "Se",
+   "nome": "Selênio",
+   "nome_en": "selenium",
+   "periodo": 4,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "não metal",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p4",
+   "estados_oxidacao": "+6, +4, -2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1817,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "78.971",
+     "incerteza": "0.008",
+     "nota": "Valor abreviado CIAAW; valor padrão: 78.971(8)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.55",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "190",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.752",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "2.021",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "493.65",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "958",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "4.809",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 35,
+   "simbolo": "Br",
+   "nome": "Bromo",
+   "nome_en": "bromine",
+   "periodo": 4,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p5",
+   "estados_oxidacao": "+5, +1, -1",
+   "estado_padrao": "liquido",
+   "ano_descoberta": 1826,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "79.904",
+     "incerteza": "0.003",
+     "intervalo_min": "79.901",
+     "intervalo_max": "79.907",
+     "nota": "Valor abreviado CIAAW; valor padrão: [79.901, 79.907]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.96",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "183",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "11.814",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "3.365",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "265.95",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "331.95",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "3.11",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 36,
+   "simbolo": "Kr",
+   "nome": "Criptônio",
+   "nome_en": "krypton",
+   "periodo": 4,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[Ar]4s2 3d10 4p6",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1898,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "83.798",
+     "incerteza": "0.002",
+     "nota": "Valor abreviado CIAAW; valor padrão: 83.798(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "202",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "14.000",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "115.79",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "119.93",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.003733",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 37,
+   "simbolo": "Rb",
+   "nome": "Rubídio",
+   "nome_en": "rubidium",
+   "periodo": 5,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[Kr]5s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1861,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "85.468",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 85.4678(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.82",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "303",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "4.177",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.468",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "312.46",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "961",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.53",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 38,
+   "simbolo": "Sr",
+   "nome": "Estrôncio",
+   "nome_en": "strontium",
+   "periodo": 5,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[Kr]5s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1790,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "87.62",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 87.62(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.95",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "249",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.695",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1050",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1655",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "2.64",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 39,
+   "simbolo": "Y",
+   "nome": "Ítrio",
+   "nome_en": "yttrium",
+   "periodo": 5,
+   "grupo": 3,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s2 4d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1794,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "88.906",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 88.905 838(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.22",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "219",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.217",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.307",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1795",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3618",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "4.47",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 40,
+   "simbolo": "Zr",
+   "nome": "Zircônio",
+   "nome_en": "zirconium",
+   "periodo": 5,
+   "grupo": 4,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s2 4d2",
+   "estados_oxidacao": "+4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1789,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "91.222",
+     "incerteza": "0.003",
+     "nota": "Valor abreviado CIAAW; valor padrão: 91.222(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.33",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "186",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.634",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.426",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2128",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4682",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.52",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 41,
+   "simbolo": "Nb",
+   "nome": "Nióbio",
+   "nome_en": "niobium",
+   "periodo": 5,
+   "grupo": 5,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s1 4d4",
+   "estados_oxidacao": "+5, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1801,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "92.906",
+     "incerteza": "0.001",
+     "nota": "Valor abreviado CIAAW; valor padrão: 92.906 37(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.6",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "207",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.759",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.893",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2750",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5017",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.57",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 42,
+   "simbolo": "Mo",
+   "nome": "Molibdênio",
+   "nome_en": "molybdenum",
+   "periodo": 5,
+   "grupo": 6,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s1 4d5",
+   "estados_oxidacao": "+6",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1778,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "95.95",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 95.95(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.16",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "209",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.092",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.746",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2896",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4912",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "10.2",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 43,
+   "simbolo": "Tc",
+   "nome": "Tecnécio",
+   "nome_en": "technetium",
+   "periodo": 5,
+   "grupo": 7,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s2 4d5",
+   "estados_oxidacao": "+7, +6, +4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1937,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "96.90636",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.9",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "209",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.28",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.55",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2430",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4538",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "11",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 44,
+   "simbolo": "Ru",
+   "nome": "Rutênio",
+   "nome_en": "ruthenium",
+   "periodo": 5,
+   "grupo": 8,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s1 4d7",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1827,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "101.07",
+     "incerteza": "0.02",
+     "nota": "Valor abreviado CIAAW; valor padrão: 101.07(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "207",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.361",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.05",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2607",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4423",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "12.1",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 45,
+   "simbolo": "Rh",
+   "nome": "Ródio",
+   "nome_en": "rhodium",
+   "periodo": 5,
+   "grupo": 9,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s1 4d8",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1803,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "102.91",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 102.905 49(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.28",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "195",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.459",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.137",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2237",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3968",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "12.4",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 46,
+   "simbolo": "Pd",
+   "nome": "Paládio",
+   "nome_en": "palladium",
+   "periodo": 5,
+   "grupo": 10,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]4d10",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1803,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "106.42",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 106.42(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "202",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.337",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.557",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1828.05",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3236",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "12.0",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 47,
+   "simbolo": "Ag",
+   "nome": "Prata",
+   "nome_en": "silver",
+   "periodo": 5,
+   "grupo": 11,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s1 4d10",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "107.87",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 107.8682(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.93",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "172",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.576",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.302",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1234.93",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2435",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "10.501",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 48,
+   "simbolo": "Cd",
+   "nome": "Cádmio",
+   "nome_en": "cadmium",
+   "periodo": 5,
+   "grupo": 12,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Kr]5s2 4d10",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1817,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "112.41",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 112.414(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.69",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "158",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.994",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "594.22",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1040",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.69",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 49,
+   "simbolo": "In",
+   "nome": "Índio",
+   "nome_en": "indium",
+   "periodo": 5,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1863,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "114.82",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 114.818(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.78",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "193",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.786",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.3",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "429.75",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2345",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.31",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 50,
+   "simbolo": "Sn",
+   "nome": "Estanho",
+   "nome_en": "tin",
+   "periodo": 5,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p2",
+   "estados_oxidacao": "+4, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "118.71",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 118.710(7)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.96",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "217",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.344",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.2",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "505.08",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2875",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.287",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 51,
+   "simbolo": "Sb",
+   "nome": "Antimônio",
+   "nome_en": "antimony",
+   "periodo": 5,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p3",
+   "estados_oxidacao": "+5, +3, -3",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "121.76",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 121.760(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.05",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "206",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.64",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.07",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "903.78",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1860",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.685",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 52,
+   "simbolo": "Te",
+   "nome": "Telúrio",
+   "nome_en": "tellurium",
+   "periodo": 5,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p4",
+   "estados_oxidacao": "+6, +4, -2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1782,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "127.60",
+     "incerteza": "0.03",
+     "nota": "Valor abreviado CIAAW; valor padrão: 127.60(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.1",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "206",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.010",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.971",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "722.66",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1261",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.232",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 53,
+   "simbolo": "I",
+   "nome": "Iodo",
+   "nome_en": "iodine",
+   "periodo": 5,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p5",
+   "estados_oxidacao": "+7, +5, +1, -1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1811,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "126.90",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 126.904 47(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.66",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "198",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "10.451",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "3.059",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "386.85",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "457.55",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "4.93",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 54,
+   "simbolo": "Xe",
+   "nome": "Xenônio",
+   "nome_en": "xenon",
+   "periodo": 5,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[Kr]5s2 4d10 5p6",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1898,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "131.29",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 131.293(6)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.6",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "216",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "12.130",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "161.36",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "165.03",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.005887",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 55,
+   "simbolo": "Cs",
+   "nome": "Césio",
+   "nome_en": "caesium",
+   "periodo": 6,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[Xe]6s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1860,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "132.91",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 132.905 451 96(6)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.79",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "343",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "3.894",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.472",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "301.59",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "944",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "1.93",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 56,
+   "simbolo": "Ba",
+   "nome": "Bário",
+   "nome_en": "barium",
+   "periodo": 6,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[Xe]6s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1808,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "137.33",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 137.327(7)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.89",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "268",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.212",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1000",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2170",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "3.62",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 57,
+   "simbolo": "La",
+   "nome": "Lantânio",
+   "nome_en": "lanthanum",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 5d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1839,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "138.91",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 138.905 47(7)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.1",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "240",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.577",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.5",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1191",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3737",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.15",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 58,
+   "simbolo": "Ce",
+   "nome": "Cério",
+   "nome_en": "cerium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f1 5d1",
+   "estados_oxidacao": "+4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1803,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "140.12",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 140.116(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.12",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "235",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.539",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.5",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1071",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3697",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.770",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 59,
+   "simbolo": "Pr",
+   "nome": "Praseodímio",
+   "nome_en": "praseodymium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f3",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1885,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "140.91",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 140.907 66(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.13",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "239",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.464",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1204",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3793",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.77",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 60,
+   "simbolo": "Nd",
+   "nome": "Neodímio",
+   "nome_en": "neodymium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f4",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1885,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "144.24",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 144.242(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.14",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "229",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.525",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1294",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3347",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.01",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 61,
+   "simbolo": "Pm",
+   "nome": "Promécio",
+   "nome_en": "promethium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f5",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1945,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "144.91276",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "236",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.55",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1315",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3273",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.26",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 62,
+   "simbolo": "Sm",
+   "nome": "Samário",
+   "nome_en": "samarium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f6",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1879,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "150.36",
+     "incerteza": "0.02",
+     "nota": "Valor abreviado CIAAW; valor padrão: 150.36(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.17",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "229",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.644",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1347",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2067",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.52",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 63,
+   "simbolo": "Eu",
+   "nome": "Európio",
+   "nome_en": "europium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f7",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1901,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "151.96",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 151.964(1)"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "233",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.670",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1095",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1802",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "5.24",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 64,
+   "simbolo": "Gd",
+   "nome": "Gadolínio",
+   "nome_en": "gadolinium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f7 5d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1880,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "157.25",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 157.249(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "237",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.150",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1586",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3546",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7.90",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 65,
+   "simbolo": "Tb",
+   "nome": "Térbio",
+   "nome_en": "terbium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f9",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1843,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "158.93",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 158.925 354(7)"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "221",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.864",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1629",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3503",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.23",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 66,
+   "simbolo": "Dy",
+   "nome": "Disprósio",
+   "nome_en": "dysprosium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f10",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1886,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "162.50",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 162.500(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.22",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "229",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.939",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1685",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2840",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.55",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 67,
+   "simbolo": "Ho",
+   "nome": "Hólmio",
+   "nome_en": "holmium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f11",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1878,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "164.93",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 164.930 329(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.23",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "216",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.022",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1747",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2973",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "8.80",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 68,
+   "simbolo": "Er",
+   "nome": "Érbio",
+   "nome_en": "erbium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f12",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1843,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "167.26",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 167.259(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.24",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "235",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.108",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1802",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3141",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "9.07",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 69,
+   "simbolo": "Tm",
+   "nome": "Túlio",
+   "nome_en": "thulium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f13",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1879,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "168.93",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 168.934 219(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.25",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "227",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.184",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1818",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2223",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "9.32",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 70,
+   "simbolo": "Yb",
+   "nome": "Itérbio",
+   "nome_en": "ytterbium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f14",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1878,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "173.05",
+     "incerteza": "0.02",
+     "nota": "Valor abreviado CIAAW; valor padrão: 173.045(10)"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "242",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.254",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1092",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1469",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "6.90",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 71,
+   "simbolo": "Lu",
+   "nome": "Lutécio",
+   "nome_en": "lutetium",
+   "periodo": 6,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "lantanídeo",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1907,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "174.97",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 174.966 69(5)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.27",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "221",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.426",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1936",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3675",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "9.84",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 72,
+   "simbolo": "Hf",
+   "nome": "Háfnio",
+   "nome_en": "hafnium",
+   "periodo": 6,
+   "grupo": 4,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d2",
+   "estados_oxidacao": "+4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1923,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "178.49",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 178.486(6)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "212",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.825",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2506",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4876",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "13.3",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 73,
+   "simbolo": "Ta",
+   "nome": "Tântalo",
+   "nome_en": "tantalum",
+   "periodo": 6,
+   "grupo": 5,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d3",
+   "estados_oxidacao": "+5",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1802,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "180.95",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 180.947 88(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.5",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "217",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.89",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.322",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "3290",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5731",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "16.4",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 74,
+   "simbolo": "W",
+   "nome": "Tungstênio",
+   "nome_en": "tungsten",
+   "periodo": 6,
+   "grupo": 6,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d4",
+   "estados_oxidacao": "+6",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1783,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "183.84",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 183.84(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.36",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "210",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.98",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.815",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "3695",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5828",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "19.3",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 75,
+   "simbolo": "Re",
+   "nome": "Rênio",
+   "nome_en": "rhenium",
+   "periodo": 6,
+   "grupo": 7,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d5",
+   "estados_oxidacao": "+7, +6, +4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1925,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "186.21",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 186.207(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.9",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "217",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.88",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.15",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "3459",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5869",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "20.8",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 76,
+   "simbolo": "Os",
+   "nome": "Ósmio",
+   "nome_en": "osmium",
+   "periodo": 6,
+   "grupo": 8,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d6",
+   "estados_oxidacao": "+4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1803,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "190.23",
+     "incerteza": "0.03",
+     "nota": "Valor abreviado CIAAW; valor padrão: 190.23(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "216",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.7",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.1",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "3306",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5285",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "22.57",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 77,
+   "simbolo": "Ir",
+   "nome": "Irídio",
+   "nome_en": "iridium",
+   "periodo": 6,
+   "grupo": 9,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d7",
+   "estados_oxidacao": "+4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1803,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "192.22",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 192.217(2)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "202",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.1",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.565",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2719",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4701",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "22.42",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 78,
+   "simbolo": "Pt",
+   "nome": "Platina",
+   "nome_en": "platinum",
+   "periodo": 6,
+   "grupo": 10,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s1 4f14 5d9",
+   "estados_oxidacao": "+4, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1735,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "195.08",
+     "incerteza": "0.02",
+     "nota": "Valor abreviado CIAAW; valor padrão: 195.084(9)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.28",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "209",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "2.128",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2041.55",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4098",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "21.46",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 79,
+   "simbolo": "Au",
+   "nome": "Ouro",
+   "nome_en": "gold",
+   "periodo": 6,
+   "grupo": 11,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s1 4f14 5d10",
+   "estados_oxidacao": "+3, +1",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "196.97",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 196.966 570(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.54",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "166",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.226",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "2.309",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1337.33",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3129",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "19.282",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 80,
+   "simbolo": "Hg",
+   "nome": "Mercúrio",
+   "nome_en": "mercury",
+   "periodo": 6,
+   "grupo": 12,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10",
+   "estados_oxidacao": "+2, +1",
+   "estado_padrao": "liquido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "200.59",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 200.592(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "209",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "10.438",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "234.32",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "629.88",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "13.5336",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 81,
+   "simbolo": "Tl",
+   "nome": "Tálio",
+   "nome_en": "thallium",
+   "periodo": 6,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p1",
+   "estados_oxidacao": "+3, +1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1861,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "204.38",
+     "incerteza": "0.01",
+     "intervalo_min": "204.382",
+     "intervalo_max": "204.385",
+     "nota": "Valor abreviado CIAAW; valor padrão: [204.382, 204.385]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.62",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "196",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.108",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.2",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "577",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1746",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "11.8",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 82,
+   "simbolo": "Pb",
+   "nome": "Chumbo",
+   "nome_en": "lead",
+   "periodo": 6,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p2",
+   "estados_oxidacao": "+4, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": null,
+   "conhecido_antiguidade": true,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "207.2",
+     "incerteza": "1.1",
+     "intervalo_min": "206.14",
+     "intervalo_max": "207.94",
+     "nota": "Valor abreviado CIAAW; valor padrão: [206.14, 207.94]"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.33",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "202",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.417",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.36",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "600.61",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2022",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "11.342",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 83,
+   "simbolo": "Bi",
+   "nome": "Bismuto",
+   "nome_en": "bismuth",
+   "periodo": 6,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p3",
+   "estados_oxidacao": "+5, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1753,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "208.98",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 208.980 40(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.02",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "207",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "7.289",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.946",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "544.55",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1837",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "9.807",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 84,
+   "simbolo": "Po",
+   "nome": "Polônio",
+   "nome_en": "polonium",
+   "periodo": 6,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "semimetal",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p4",
+   "estados_oxidacao": "+4, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1898,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "208.98243",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "197",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "8.417",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "1.9",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "527",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1235",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "9.32",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 85,
+   "simbolo": "At",
+   "nome": "Ástato",
+   "nome_en": "astatine",
+   "periodo": 6,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p5",
+   "estados_oxidacao": "7, 5, 3, 1, -1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1940,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "209.98715",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "2.2",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "202",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "9.5",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "2.8",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "575",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "7",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 86,
+   "simbolo": "Rn",
+   "nome": "Rádon",
+   "nome_en": "radon",
+   "periodo": 6,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[Xe]6s2 4f14 5d10 6p6",
+   "estados_oxidacao": "0",
+   "estado_padrao": "gas",
+   "ano_descoberta": 1900,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "222.01758",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "220",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "10.745",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "202",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "211.45",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "0.00973",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 87,
+   "simbolo": "Fr",
+   "nome": "Frâncio",
+   "nome_en": "francium",
+   "periodo": 7,
+   "grupo": 1,
+   "bloco": "s",
+   "categoria": "metal alcalino",
+   "configuracao_eletronica": "[Rn]7s1",
+   "estados_oxidacao": "+1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1939,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "223.01973",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.7",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "348",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "3.9",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "afinidade_eletronica",
+     "valor": "0.47",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "300",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 88,
+   "simbolo": "Ra",
+   "nome": "Rádio",
+   "nome_en": "radium",
+   "periodo": 7,
+   "grupo": 2,
+   "bloco": "s",
+   "categoria": "metal alcalinoterroso",
+   "configuracao_eletronica": "[Rn]7s2",
+   "estados_oxidacao": "+2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1898,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "226.02541",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "0.9",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "283",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.279",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "973",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "1413",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "5",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 89,
+   "simbolo": "Ac",
+   "nome": "Actínio",
+   "nome_en": "actinium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 6d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1899,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "227.02775",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.1",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "260",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.17",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1324",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3471",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "10.07",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 90,
+   "simbolo": "Th",
+   "nome": "Tório",
+   "nome_en": "thorium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 6d2",
+   "estados_oxidacao": "+4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1828,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "232.04",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 232.0377(4)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "237",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.08",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "2023",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "5061",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "11.72",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 91,
+   "simbolo": "Pa",
+   "nome": "Protactínio",
+   "nome_en": "protactinium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f2 6d1",
+   "estados_oxidacao": "+5, +4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1913,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "231.04",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 231.035 88(1)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.5",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "243",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.89",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1845",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "15.37",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 92,
+   "simbolo": "U",
+   "nome": "Urânio",
+   "nome_en": "uranium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f3 6d1",
+   "estados_oxidacao": "+6, +5, +4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1789,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "peso_atomico_padrao",
+     "unidade": "adimensional",
+     "fonte": "ciaaw_2024",
+     "valor": "238.03",
+     "incerteza": "0.01",
+     "nota": "Valor abreviado CIAAW; valor padrão: 238.028 91(3)"
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.38",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "240",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.194",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1408",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4404",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "18.95",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 93,
+   "simbolo": "Np",
+   "nome": "Netúnio",
+   "nome_en": "neptunium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f4 6d1",
+   "estados_oxidacao": "+6, +5, +4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1940,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "237.048172",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.36",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "221",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.266",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "917",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "4175",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "20.25",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 94,
+   "simbolo": "Pu",
+   "nome": "Plutônio",
+   "nome_en": "plutonium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f6",
+   "estados_oxidacao": "+6, +5, +4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1940,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "244.06420",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.28",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "243",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.06",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "913",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3501",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "19.84",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 95,
+   "simbolo": "Am",
+   "nome": "Amerício",
+   "nome_en": "americium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f7",
+   "estados_oxidacao": "+6, +5, +4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1944,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "243.061380",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "244",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "5.993",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1449",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "2284",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "13.69",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 96,
+   "simbolo": "Cm",
+   "nome": "Cúrio",
+   "nome_en": "curium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f7 6d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1944,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "247.07035",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "245",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.02",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1618",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_ebulicao",
+     "valor": "3400",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "13.51",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 97,
+   "simbolo": "Bk",
+   "nome": "Berquélio",
+   "nome_en": "berkelium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f9",
+   "estados_oxidacao": "+4, +3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1949,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "247.07031",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "244",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.23",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1323",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "densidade",
+     "valor": "14",
+     "unidade": "g/cm³",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 98,
+   "simbolo": "Cf",
+   "nome": "Califórnio",
+   "nome_en": "californium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f10",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1950,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "251.07959",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "245",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.30",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1173",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 99,
+   "simbolo": "Es",
+   "nome": "Einstênio",
+   "nome_en": "einsteinium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f11",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1952,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "252.0830",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "raio_van_der_waals",
+     "valor": "245",
+     "unidade": "pm",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.42",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1133",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 100,
+   "simbolo": "Fm",
+   "nome": "Férmio",
+   "nome_en": "fermium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn] 5f12 7s2",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1952,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "257.09511",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.50",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1800",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 101,
+   "simbolo": "Md",
+   "nome": "Mendelévio",
+   "nome_en": "mendelevium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f13",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1955,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "258.09843",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.58",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1100",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 102,
+   "simbolo": "No",
+   "nome": "Nobélio",
+   "nome_en": "nobelium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f14",
+   "estados_oxidacao": "+3, +2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1957,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "259.10100",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "energia_ionizacao_1",
+     "valor": "6.65",
+     "unidade": "eV",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1100",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 103,
+   "simbolo": "Lr",
+   "nome": "Laurêncio",
+   "nome_en": "lawrencium",
+   "periodo": 7,
+   "grupo": null,
+   "bloco": "f",
+   "categoria": "actinídeo",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d1",
+   "estados_oxidacao": "+3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1961,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "266.120",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    },
+    {
+     "codigo": "eletronegatividade",
+     "valor": "1.3",
+     "unidade": "Pauling",
+     "fonte": "pubchem_tabela_periodica"
+    },
+    {
+     "codigo": "temperatura_fusao",
+     "valor": "1900",
+     "unidade": "K",
+     "fonte": "pubchem_tabela_periodica"
+    }
+   ]
+  },
+  {
+   "numero_atomico": 104,
+   "simbolo": "Rf",
+   "nome": "Rutherfórdio",
+   "nome_en": "rutherfordium",
+   "periodo": 7,
+   "grupo": 4,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d2",
+   "estados_oxidacao": "+4",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1964,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "267.122",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 105,
+   "simbolo": "Db",
+   "nome": "Dúbnio",
+   "nome_en": "dubnium",
+   "periodo": 7,
+   "grupo": 5,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d3",
+   "estados_oxidacao": "5, 4, 3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1967,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "268.126",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 106,
+   "simbolo": "Sg",
+   "nome": "Seabórgio",
+   "nome_en": "seaborgium",
+   "periodo": 7,
+   "grupo": 6,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d4",
+   "estados_oxidacao": "6, 5, 4, 3, 0",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1974,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "269.128",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 107,
+   "simbolo": "Bh",
+   "nome": "Bóhrio",
+   "nome_en": "bohrium",
+   "periodo": 7,
+   "grupo": 7,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d5",
+   "estados_oxidacao": "7, 5, 4, 3",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1976,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "270.133",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 108,
+   "simbolo": "Hs",
+   "nome": "Hássio",
+   "nome_en": "hassium",
+   "periodo": 7,
+   "grupo": 8,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d6",
+   "estados_oxidacao": "8, 6, 5, 4, 3, 2",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1984,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "269.1336",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 109,
+   "simbolo": "Mt",
+   "nome": "Meitnério",
+   "nome_en": "meitnerium",
+   "periodo": 7,
+   "grupo": 9,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d7 (calculated)",
+   "estados_oxidacao": "9, 8, 6, 4, 3, 1",
+   "estado_padrao": "solido",
+   "ano_descoberta": 1982,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "277.154",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 110,
+   "simbolo": "Ds",
+   "nome": "Darmstácio",
+   "nome_en": "darmstadtium",
+   "periodo": 7,
+   "grupo": 10,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d8 (predicted)",
+   "estados_oxidacao": "8, 6, 4, 2, 0",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 1994,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "282.166",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 111,
+   "simbolo": "Rg",
+   "nome": "Roentgênio",
+   "nome_en": "roentgenium",
+   "periodo": 7,
+   "grupo": 11,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d9 (predicted)",
+   "estados_oxidacao": "5, 3, 1, -1",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 1994,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "282.169",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 112,
+   "simbolo": "Cn",
+   "nome": "Copernício",
+   "nome_en": "copernicium",
+   "periodo": 7,
+   "grupo": 12,
+   "bloco": "d",
+   "categoria": "metal de transição",
+   "configuracao_eletronica": "[Rn]7s2 5f14 6d10 (predicted)",
+   "estados_oxidacao": "2, 1, 0",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 1996,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "286.179",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 113,
+   "simbolo": "Nh",
+   "nome": "Nipônio",
+   "nome_en": "nihonium",
+   "periodo": 7,
+   "grupo": 13,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Rn]5f14 6d10 7s2 7p1 (predicted)",
+   "estados_oxidacao": null,
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 2004,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "286.182",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 114,
+   "simbolo": "Fl",
+   "nome": "Fleróvio",
+   "nome_en": "flerovium",
+   "periodo": 7,
+   "grupo": 14,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Rn]7s2 7p2 5f14 6d10 (predicted)",
+   "estados_oxidacao": "6, 4,2, 1, 0",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 1998,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "290.192",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 115,
+   "simbolo": "Mc",
+   "nome": "Moscóvio",
+   "nome_en": "moscovium",
+   "periodo": 7,
+   "grupo": 15,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Rn]7s2 7p3 5f14 6d10 (predicted)",
+   "estados_oxidacao": "3, 1",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 2003,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "290.196",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 116,
+   "simbolo": "Lv",
+   "nome": "Livermório",
+   "nome_en": "livermorium",
+   "periodo": 7,
+   "grupo": 16,
+   "bloco": "p",
+   "categoria": "metal pós-transição",
+   "configuracao_eletronica": "[Rn]7s2 7p4 5f14 6d10 (predicted)",
+   "estados_oxidacao": "+4, +2, -2",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 2000,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "293.205",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 117,
+   "simbolo": "Ts",
+   "nome": "Tenesso",
+   "nome_en": "tennessine",
+   "periodo": 7,
+   "grupo": 17,
+   "bloco": "p",
+   "categoria": "halogênio",
+   "configuracao_eletronica": "[Rn]7s2 7p5 5f14 6d10 (predicted)",
+   "estados_oxidacao": "+5, +3, +1, -1",
+   "estado_padrao": "solido_previsto",
+   "ano_descoberta": 2010,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "294.211",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  },
+  {
+   "numero_atomico": 118,
+   "simbolo": "Og",
+   "nome": "Oganessônio",
+   "nome_en": "oganesson",
+   "periodo": 7,
+   "grupo": 18,
+   "bloco": "p",
+   "categoria": "gás nobre",
+   "configuracao_eletronica": "[Rn]7s2 7p6 5f14 6d10 (predicted)",
+   "estados_oxidacao": "+6, +4, +2, +1, 0, -1",
+   "estado_padrao": "gas_previsto",
+   "ano_descoberta": 2006,
+   "conhecido_antiguidade": false,
+   "propriedades": [
+    {
+     "codigo": "massa_isotopica_referencia",
+     "valor": "295.216",
+     "unidade": "u",
+     "fonte": "pubchem_tabela_periodica",
+     "nota": "Sem peso atômico padrão na CIAAW (sem composição isotópica terrestre característica). Massa atômica informada pela PubChem; não é peso atômico padrão."
+    }
+   ]
+  }
+ ]
+}

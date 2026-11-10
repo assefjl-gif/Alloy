@@ -4,7 +4,7 @@ Registro de decisões de arquitetura. Formato: contexto → decisão → alterna
 Status possíveis: **Proposta** (aguarda gate), **Aceita**, **Substituída por ADR-n**, **Rejeitada**.
 Todas estão como **Proposta** até a decisão do Gate 1 (Agente 05).
 
-Índice: [001 Monorepo](#adr-001) · [002 Backend](#adr-002) · [003 Persistência](#adr-003) · [004 Motor único](#adr-004) · [005 Parâmetro de rede](#adr-005) · [006 Convenções da API](#adr-006) · [007 Contratos TS](#adr-007) · [008 Sessão e CSRF](#adr-008) · [009 RBAC](#adr-009) · [010 Frontend](#adr-010) · [011 Entrega](#adr-011) · [012 Assíncrono](#adr-012) · [013 HEA](#adr-013) · [014 Dados científicos](#adr-014) · [015 Arquivos](#adr-015) · [016 Demonstração](#adr-016) · [017 Portabilidade](#adr-017)
+Índice: [001 Monorepo](#adr-001) · [002 Backend](#adr-002) · [003 Persistência](#adr-003) · [004 Motor único](#adr-004) · [005 Parâmetro de rede](#adr-005) · [006 Convenções da API](#adr-006) · [007 Contratos TS](#adr-007) · [008 Sessão e CSRF](#adr-008) · [009 RBAC](#adr-009) · [010 Frontend](#adr-010) · [011 Entrega](#adr-011) · [012 Assíncrono](#adr-012) · [013 HEA](#adr-013) · [014 Dados científicos](#adr-014) · [015 Arquivos](#adr-015) · [016 Demonstração](#adr-016) · [017 Portabilidade](#adr-017) · [018 Tabela periódica](#adr-018)
 
 ---
 
@@ -148,3 +148,16 @@ Todas estão como **Proposta** até a decisão do Gate 1 (Agente 05).
 - **Contexto:** BUG-01 e BUG-02 (lint e testes do C falham no Windows); a equipe desenvolve em Windows.
 - **Decisão:** o CI roda backend e frontend em `ubuntu-latest` e `windows-latest`. Proibido `URL.pathname` para caminhos (usar `fileURLToPath`) e `python3` fixo (usar a variável `PYTHON` com padrão por plataforma).
 - **Consequências:** o "build reproduzível" do §13.5 vale nos dois sistemas.
+
+<a id="adr-018"></a>
+## ADR-018 — Tabela periódica completa como dado de referência, separada das entradas dos motores
+
+- **Contexto:** o banco tinha só os elementos usados pelos motores (15 metais + C, N, H), com propriedades vindas do Callister (v1.4). O projeto precisa dos 118 elementos com procedência profissional, sem alterar os resultados dos motores já aprovados.
+- **Decisão:**
+  - `elementos` ganha identidade e classificação (nome em inglês, período, grupo IUPAC de 18 colunas, bloco, categoria, configuração eletrônica, estados de oxidação, estado padrão, descoberta), com `CHECK` no banco (Z 1–118, período 1–7, grupo 1–18, bloco f sem grupo, estado padrão controlado, ano × antiguidade).
+  - Propriedades atômicas ficam numa tabela própria, `propriedades_elemento`, com as mesmas regras do ADR-014 (fonte obrigatória, unidade, classe, estado, incerteza, intervalo, `vigente`/`substitui_id`, um vigente por elemento e propriedade). Os motores continuam lendo `valores_propriedade`; nada muda nos cálculos.
+  - Peso atômico padrão só da CIAAW (valor abreviado ± incerteza e intervalo). Elementos sem peso padrão recebem `massa_isotopica_referencia`, marcada como tal. Demais propriedades do PubChem; nomes pt-BR da Wikipédia (CC BY-SA), normalizados.
+  - Importação reprodutível (`scripts/importar_tabela_periodica.py`): fontes brutas em cache com `sha256` gravado no seed; conferência cruzada registrada (`conferencias`).
+  - Todos os valores entram como `importado`/`aguardando_validacao`; a API `GET /api/v1/elements[/{ref}]` devolve procedência e aviso em todo ambiente.
+  - Retratos de dados lidos do banco ficam em cache por processo, chaveados pela versão dos conjuntos e invalidados por commit científico ou TTL de 60 s (auditoria de latência).
+- **Consequências:** divergências entre as fontes novas e o seed v1.4 (Cr, eletronegatividades, massas de Zn e Mo) ficam visíveis e testadas, à espera do validador (Q-03), em vez de corrigidas em silêncio. Migração 0003 reversível e aplicável sobre instalação existente.

@@ -1,0 +1,101 @@
+================================================================================
+ALLOY VIRTUAL LAB — TABELA PERIÓDICA COMPLETA
+RESUMO DAS FONTES BIBLIOGRÁFICAS E DE DADOS (versão dos dados 2026.11.3-tp)
+================================================================================
+Data de acesso de todas as fontes: 03/11/2026
+Arquivo de dados: database/seeds/tabela_periodica/elementos.json
+Importador reprodutível: scripts/importar_tabela_periodica.py (--offline usa o
+cache em var/fontes_tabela_periodica; o sha256 de cada arquivo bruto está no seed)
+
+--------------------------------------------------------------------------------
+1. FONTES PRIMÁRIAS USADAS NO BANCO
+--------------------------------------------------------------------------------
+
+[1] CIAAW — pesos atômicos padrão (chave no banco: ciaaw_2024)
+    IUPAC Commission on Isotopic Abundances and Atomic Weights (CIAAW).
+    Standard Atomic Weights e Abridged Standard Atomic Weights. Atomic Weights
+    2021, com as revisões de 2024 (Gd, Lu e Zr).
+    Base: PROHASKA, T. et al. Standard atomic weights of the elements 2021
+    (IUPAC Technical Report). Pure and Applied Chemistry, v. 94, n. 5,
+    p. 573–600, 2022. DOI: 10.1515/pac-2019-0603.
+    URLs: https://www.ciaaw.org/atomic-weights.htm
+          https://www.ciaaw.org/abridged-atomic-weights.htm
+    Licença/uso: dados de referência públicos da IUPAC; citação obrigatória.
+    Uso no banco: peso_atomico_padrao (84 elementos) — valor abreviado,
+    incerteza e, quando a CIAAW publica, o intervalo [mín; máx] do valor padrão.
+
+[2] PubChem Periodic Table (chave no banco: pubchem_tabela_periodica)
+    KIM, S. et al. PubChem 2025 update. Nucleic Acids Research, v. 53, n. D1,
+    p. D1516–D1525, 2025. DOI: 10.1093/nar/gkae1059.
+    National Center for Biotechnology Information (NCBI/NIH).
+    URL: https://pubchem.ncbi.nlm.nih.gov/periodic-table/
+    Serviço: PUG REST https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON
+    Licença/uso: dados do governo dos EUA, domínio público; citação recomendada.
+    Uso no banco: configuração eletrônica, estados de oxidação, estado padrão,
+    ano de descoberta, eletronegatividade (Pauling), raio de van der Waals (pm),
+    1ª energia de ionização (eV), afinidade eletrônica (eV), temperaturas de
+    fusão e ebulição (K), densidade (g/cm³) e massa isotópica de referência (u)
+    dos 34 elementos sem peso atômico padrão.
+    Fontes agregadas pelo PubChem (citadas por ele):
+      - CIAAW/IUPAC (massas);
+      - NIST Physical Measurement Laboratory (energias de ionização,
+        configurações eletrônicas);
+      - Los Alamos National Laboratory — Periodic Table of Elements;
+      - Thomas Jefferson National Accelerator Facility (Jefferson Lab);
+      - IAEA Atomic Mass Data Center (massas de radionuclídeos);
+      - IUPAC Periodic Table of the Elements and Isotopes (IPTEI).
+    Unidades conferidas no registro do ferro (pug_view, elemento 26):
+    densidade 7,874 g/cm³; fusão 1811 K; raio vdW 194 pm; EI 7,902 eV;
+    eletronegatividade 1,83.
+
+[3] Wikipédia em português — nomes dos elementos (chave: wikipedia_pt_elementos)
+    WIKIPÉDIA. Lista de elementos químicos. Texto bruto (action=raw).
+    URL: https://pt.wikipedia.org/wiki/Lista_de_elementos_qu%C3%ADmicos
+    Licença: Creative Commons Atribuição-CompartilhaIgual 4.0 (CC BY-SA 4.0).
+    Uso no banco: SOMENTE os nomes em português, normalizados para o pt-BR
+    (Arsénio -> Arsênio, Selénio -> Selênio, Molibdénio -> Molibdênio,
+    Einsténio -> Einstênio, Roentgénio -> Roentgênio, Neptúnio -> Netúnio,
+    Oganésson -> Oganessônio) e conferência cruzada de período e grupo.
+
+--------------------------------------------------------------------------------
+2. REFERÊNCIAS DE CONVENÇÃO
+--------------------------------------------------------------------------------
+[4] IUPAC. Periodic Table of the Elements (versão de 04/05/2022) — tabela de
+    18 colunas; lantanídeos (57–71) e actinídeos (89–103) no bloco f sem
+    número de grupo. https://iupac.org/what-we-do/periodic-table-of-elements/
+[5] CIAAW. Revisões de 2024 dos pesos atômicos padrão de gadolínio, lutécio
+    e zircônio (Zr 91,224 -> 91,222), publicadas na tabela da CIAAW.
+    https://www.ciaaw.org/atomic-weights.htm
+
+--------------------------------------------------------------------------------
+3. FONTE DA VERSÃO ANTERIOR (MANTIDA, NÃO ALTERADA)
+--------------------------------------------------------------------------------
+[6] CALLISTER, W. D.; RETHWISCH, D. G. Ciência e Engenharia de Materiais: uma
+    introdução. — base dos seeds de cristalografia e das propriedades v1.4,
+    usados pelos motores de cálculo. Esses valores NÃO foram substituídos.
+
+--------------------------------------------------------------------------------
+4. CONFERÊNCIAS E DIVERGÊNCIAS REGISTRADAS
+--------------------------------------------------------------------------------
+* Tenesso (Ts): a Wikipédia lista o grupo 15; o banco usa 17 (regra da tabela
+  de 18 colunas, IUPAC). Erro da fonte, registrado em "conferencias" no seed.
+* Entre as fontes novas e o seed antigo (Callister/v1.4), aguardando o
+  validador científico (Q-03), sem correção silenciosa:
+  - Cromo, temperatura de fusão: v1.4 1857 °C × PubChem 2180 K (1906,85 °C);
+  - Eletronegatividade (diferença > 0,1): Al, Au, Mg, Mo, Pb, W e Ni —
+    tabelas de Pauling de edições diferentes;
+  - Massas desatualizadas no seed antigo: Zn 65,41 × 65,38 (CIAAW);
+    Mo 95,94 × 95,95 (CIAAW);
+  - Densidades: concordam dentro de 1,3%.
+* Arsênio: sublima a 1 atm; a fonte dá o ponto triplo acima da sublimação
+  (fusão > "ebulição"); mantido como publicado, exceção documentada no teste.
+
+--------------------------------------------------------------------------------
+5. ESTADO DE VALIDAÇÃO
+--------------------------------------------------------------------------------
+Todos os 763 valores entram como classe "importado" e estado
+"aguardando_validacao" (ADR-014). A API devolve um aviso de procedência em
+todas as respostas até que um revisor humano registre a validação. Os motores
+de cálculo continuam lendo só os valores validados do repositório de
+materiais; a tabela periódica é dado de REFERÊNCIA (ADR-018).
+================================================================================

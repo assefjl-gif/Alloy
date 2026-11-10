@@ -40,6 +40,9 @@ erDiagram
     fontes ||--o{ valores_propriedade : sustenta
     fontes ||--o{ materiais_estruturas : sustenta
     fontes ||--o{ entalpias_pares : sustenta
+    fontes ||--o{ propriedades_elemento : sustenta
+    elementos ||--o{ propriedades_elemento : tem
+    propriedades ||--o{ propriedades_elemento : define
     elementos ||--o{ composicao_itens : compoe
     materiais ||--o{ composicoes : tem
     composicoes ||--o{ composicao_itens : lista
@@ -119,7 +122,49 @@ erDiagram
 | conferida_por | uuid | sim | validador humano (Q-03) |
 | conferida_em | timestamptz | sim | |
 
-**elementos**: `simbolo` PK (`^[A-Z][a-z]?$`), `nome`, `numero_atomico` UNIQUE. As propriedades (raio, massa, eletronegatividade, valência, T_f, α) **não** são colunas: ficam em `valores_propriedade` do material "elemento puro", com fonte.
+Desde a migração 0003 (ADR-018), `fontes` também tem `acessado_em` (date) e `versao_fonte` (text), obrigatórios na prática para bases de dados on-line.
+
+**elementos** (118 linhas; migração 0003, ADR-018)
+
+| Coluna | Tipo | Nulo | Regra |
+|---|---|---|---|
+| simbolo | text | não | PK |
+| nome | text | não | nome em pt-BR |
+| nome_en | text | sim | nome IUPAC em inglês |
+| numero_atomico | smallint | sim | UNIQUE, `CHECK 1..118` |
+| periodo | smallint | sim | `CHECK 1..7` |
+| grupo | smallint | sim | `CHECK 1..18`; **nulo se e somente se** `bloco = 'f'` (57–71, 89–103) |
+| bloco | text | sim | `s`, `p`, `d`, `f` |
+| categoria | text | sim | ex.: `metal de transição`, `gás nobre`, `lantanídeo` |
+| configuracao_eletronica | text | sim | ex.: `[Ar]4s2 3d6` |
+| estados_oxidacao | text | sim | ex.: `+2, +3` |
+| estado_padrao | text | sim | `solido`, `liquido`, `gas`, `solido_previsto`, `gas_previsto` |
+| ano_descoberta | smallint | sim | nulo quando `conhecido_antiguidade` |
+| conhecido_antiguidade | boolean | não | padrão `false` |
+
+As propriedades usadas pelos MOTORES (raio, massa, densidade, T_f, α…) continuam em `valores_propriedade` do material "elemento puro". As propriedades atômicas de REFERÊNCIA ficam em `propriedades_elemento`.
+
+**propriedades_elemento** (763 linhas na versão `2026.11.3-tp`)
+
+| Coluna | Tipo | Nulo | Regra |
+|---|---|---|---|
+| id | uuid | não | PK |
+| elemento_simbolo | text | não | FK `elementos` (RESTRICT) |
+| propriedade_codigo | text | não | FK `propriedades` (RESTRICT) |
+| valor | numeric | não | |
+| incerteza | numeric | sim | `>= 0` |
+| intervalo_min, intervalo_max | numeric | sim | `min <= max` (intervalo do peso atômico padrão) |
+| unidade | text | não | sempre explícita |
+| classe | text | não | `medido`, `calculado`, `estimado`, `importado`, `demonstrativo` |
+| fonte_id | text | **não** | FK `fontes` — sem fonte, sem dado |
+| estado | text | não | estados do ADR-014; padrão `aguardando_validacao` |
+| conjunto_versao | text | não | versão do seed que trouxe o valor |
+| vigente | boolean | não | índice único parcial `(elemento_simbolo, propriedade_codigo) WHERE vigente` |
+| substitui_id | uuid | sim | FK para a linha corrigida (append-only) |
+| nota | text | sim | ex.: "massa do isótopo mais estável; não é peso atômico padrão" |
+| criado_em | timestamptz | não | |
+
+Propriedades do catálogo usadas: `peso_atomico_padrao` (adimensional, CIAAW), `massa_isotopica_referencia` (u), `eletronegatividade` (Pauling), `raio_van_der_waals` (pm), `energia_ionizacao_1` (eV), `afinidade_eletronica` (eV), `temperatura_fusao` (K), `temperatura_ebulicao` (K), `densidade` (g/cm³). Fontes e divergências: `database/seeds/tabela_periodica/FONTES.txt`.
 
 **materiais**
 
@@ -236,6 +281,9 @@ erDiagram
 | `tentativas (instancia_id, n)` UNIQUE | Idempotência e relatório da questão |
 | `entregas (atribuicao_id, status)` | Painel do professor |
 | `sessoes (token_sha256)` UNIQUE | Autenticação a cada requisição |
+| `propriedades_elemento (elemento_simbolo, propriedade_codigo) WHERE vigente` UNIQUE | Detalhe do elemento e garantia de um só valor vigente |
+
+Leituras de dados científicos usam um retrato em cache por processo, conferido pela versão dos dados (1 consulta por requisição em vez de 5–6; `docs/AUDITORIA_LATENCIA_BANCO.txt`).
 
 Cada índice é medido com `EXPLAIN ANALYZE` sobre um seed de carga na Fase 9. Índice sem consulta que o use é removido.
 
@@ -259,7 +307,7 @@ Cada índice é medido com `EXPLAIN ANALYZE` sobre um seed de carga na Fase 9. �
 
 ## 7. Backup, retenção e LGPD
 
-- **Backup:** `pg_dump` diário com retenção de 30 dias, mais a cópia do diretório de arquivos. **Restauração testada** no ambiente de teste a cada release (RQ-DAD-07).
+- **Backup:** `python -m app.cli backup ARQ` — SQLite: cópia online pela API de backup + `integrity_check` (testada com restauração); PostgreSQL: informa o comando `pg_dump` equivalente. `pg_dump` diário com retenção de 30 dias, mais a cópia do diretório de arquivos. **Restauração testada** no ambiente de teste a cada release (RQ-DAD-07).
 - **Retenção:** sessões revogadas ou expiradas são removidas após 90 dias; IP após 90 dias; contas inativas há 2 anos são elegíveis a anonimização (política a confirmar com a instituição — Q-02).
 - **Direitos do titular:** `GET /api/v1/users/me/export` e `POST /api/v1/users/me/anonymize`. A anonimização mantém tentativas e notas com `usuario_id` substituído por um pseudônimo, para estatística da turma.
 - **Princípio do menor privilégio:** um usuário de banco para migração (DDL) e outro para a aplicação (só DML, sem DELETE em `auditoria`).

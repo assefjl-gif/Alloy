@@ -1,0 +1,131 @@
+================================================================================
+ALLOY VIRTUAL LAB — AUDITORIA DE LATÊNCIA (INPUT LAG) API <-> BANCO DE DADOS
+================================================================================
+Data: 09/11/2026            Versão dos dados: 2026.11.3-tp (tabela periódica)
+Responsáveis: Agente 07 (Tester crítico) e Agente 02 (Banco de Dados), com Agente 01 (API)
+Ferramenta: scripts/auditoria_latencia_banco.py   Resultados brutos: var/latencia_*.json
+
+--------------------------------------------------------------------------------
+1. OBJETIVO
+--------------------------------------------------------------------------------
+Medir quanto do tempo de resposta da API vem da comunicação com o banco de dados,
+achar o gargalo e reduzi-lo sem mudar nenhum resultado científico.
+
+--------------------------------------------------------------------------------
+2. MÉTODO
+--------------------------------------------------------------------------------
+* Banco: SQLite em arquivo, migrado até 0003 e com todos os seeds (cristalografia,
+  propriedades v1.4, HEA e os 118 elementos). PostgreSQL não está instalado nesta
+  máquina: os números servem para COMPARAR antes x depois, não como meta de produção.
+* Máquina: Windows 10, Intel 64 Family 6 Model 69, Python 3.15.1.
+* Rotas medidas (8): metais, célula unitária (Fe), solução sólida (Cu-Ni),
+  temperatura (Fe 600 °C), análise HEA (CoCrFeNi), lista da tabela periódica,
+  detalhe do elemento (Fe) e /health/ready.
+* Para cada rota: 30 requisições de aquecimento e 300 medidas; percentis p50,
+  p95 e p99.
+* Três visões:
+  a) dentro do processo (TestClient): roteamento + validação + serviço + banco
+     + serialização;
+  b) HTTP real (uvicorn em 127.0.0.1, conexão mantida): soma a pilha de rede;
+  c) custo isolado de montar os retratos de dados.
+* Número de comandos SQL por requisição contado pelo evento
+  before_cursor_execute do SQLAlchemy.
+* A/B INTERCALADO (medição de referência): no MESMO processo, cada requisição
+  alterna entre a versão anterior (A, sem cache) e a nova (B, com cache).
+  Motivo: entre execuções separadas a máquina variou até 2x (o modo sem banco,
+  que não foi alterado e serve de controle, oscilou de 12 ms para 23 ms de p50
+  entre duas execuções). Só a medição intercalada isola o efeito da mudança.
+
+--------------------------------------------------------------------------------
+3. DIAGNÓSTICO (VERSÃO ANTERIOR)
+--------------------------------------------------------------------------------
+* Toda requisição com banco remontava do zero o "retrato" dos dados científicos:
+  - cálculos (cristalografia, ligas, temperatura, HEA): 5 consultas SQL + leitura
+    do arquivo interpretacoes.json do disco + montagem de ~60 objetos;
+    custo isolado ~12 ms (p50);
+  - tabela periódica: 6 consultas (versão, nomes das propriedades, 763 valores,
+    118 elementos, fontes) e conversão de 763 linhas; custo isolado ~32 ms (p50).
+* Esse retrato só muda quando um seed é recarregado ou quando um revisor valida
+  ou corrige um valor (ADR-014) — eventos raros. Remontar a cada requisição era
+  o gargalo dominante.
+* Não foram encontrados: consultas N+1, varreduras sem índice relevantes, nem
+  bloqueios de transação. O teto restante (~11 ms dentro do processo) é do
+  próprio framework/serialização, igual com ou sem banco.
+
+--------------------------------------------------------------------------------
+4. CORREÇÃO APLICADA
+--------------------------------------------------------------------------------
+Arquivo novo: backend/app/repositories/cache_dados.py
+
+* Cache por processo dos retratos (materiais e tabela periódica), imutáveis
+  depois de montados e compartilháveis entre threads.
+* Chave = banco + tipo de retrato + versões de TODOS os conjuntos em
+  versoes_dados. Cada requisição faz 1 consulta curta para conferir a versão.
+* Invalidação:
+  - commit, neste processo, que grave linha científica (valores, elementos,
+    materiais, estruturas, fontes, propriedades atômicas, versões) — ex.:
+    validação de um valor por revisor; rollback NÃO invalida;
+  - troca de versão de qualquer conjunto (seed recarregado, mesmo por outro
+    processo);
+  - TTL de 60 s: limite máximo de defasagem para mudanças feitas por OUTRO
+    worker sem trocar a versão.
+* Nenhum resultado muda: a suíte inteira passa sem alteração de expectativa,
+  e 4 testes novos (tests/integration/test_cache_retratos.py) provam reuso,
+  invalidação por commit, não invalidação por rollback, troca de versão e TTL.
+
+--------------------------------------------------------------------------------
+5. RESULTADOS — A/B INTERCALADO (dentro do processo, SQLite, N=300 por variante)
+--------------------------------------------------------------------------------
+Rota                                   p50 A -> B (ms)   p95 A -> B (ms)   SQL/req
+GET  /crystallography/metals            24,16 -> 12,64    28,41 -> 14,48    5 -> 1
+POST /crystallography/cells             25,78 -> 13,97    31,59 -> 16,20    5 -> 1
+POST /crystallography/solid-solutions   26,40 -> 14,70    30,26 -> 16,60    5 -> 1
+POST /thermodynamics/thermal            25,56 -> 14,02    29,19 -> 16,28    5 -> 1
+POST /hea/analyses                      25,25 -> 13,84    29,64 -> 16,06    5 -> 1
+GET  /elements                          50,19 -> 15,54    71,58 -> 18,39    6 -> 1
+GET  /elements/Fe                       48,33 -> 13,05    62,81 -> 16,01    6 -> 1
+GET  /health/ready                      22,15 -> 11,54    26,21 -> 13,73    6 -> 2
+
+Resumo:
+* Rotas de cálculo: latência mediana cai ~45% (cerca de 1,8x mais rápidas).
+* Tabela periódica: cai ~70% (3,2x a 3,7x mais rápida).
+* Consultas SQL por requisição: de 5–6 para 1 (2 no /health/ready, que também
+  testa a conexão com SELECT 1).
+* Com cache, o modo com banco fica no mesmo patamar do modo sem banco
+  (seed JSON em memória): o banco deixou de ser o gargalo.
+
+--------------------------------------------------------------------------------
+6. RESULTADOS — HTTP REAL (uvicorn, 127.0.0.1) — INDICATIVO
+--------------------------------------------------------------------------------
+Execuções separadas (sujeitas à variação da máquina descrita no item 2):
+Rota                                   p50 antes (ms)   p50 depois (ms)
+GET  /crystallography/metals                16,84             5,52
+POST /crystallography/cells                 18,82             8,24
+POST /hea/analyses                          18,54             7,38
+GET  /elements                              45,52            10,87
+GET  /elements/Fe                           41,73             5,77
+GET  /health/ready                          15,77             5,22
+O ganho absoluto por HTTP é coerente com o A/B, mas parte dele é variação da
+máquina (o controle sem banco também caiu). Use a tabela do item 5 como número
+oficial.
+
+--------------------------------------------------------------------------------
+7. LIMITAÇÕES E PRÓXIMOS PASSOS
+--------------------------------------------------------------------------------
+1. Repetir em PostgreSQL (staging), onde cada consulta tem custo de rede: o ganho
+   esperado é MAIOR que no SQLite, porque saem 4–5 idas e voltas por requisição.
+2. Em produção com vários workers, uma validação feita num worker aparece nos
+   outros em até 60 s (TTL). Se for preciso imediato, trocar o TTL por
+   LISTEN/NOTIFY do PostgreSQL ou por um contador de geração em tabela.
+3. Expor acertos/faltas do cache (cache_retratos.acertos/faltas) na rota de
+   métricas quando a observabilidade (Fase 9) for ligada.
+4. O teto restante (~11 ms) é do framework/serialização e do TestClient; não é
+   do banco.
+
+--------------------------------------------------------------------------------
+8. COMO REPRODUZIR
+--------------------------------------------------------------------------------
+  .venv/Scripts/python scripts/auditoria_latencia_banco.py --rotulo antes --sem-cache
+  .venv/Scripts/python scripts/auditoria_latencia_banco.py --rotulo depois
+  (a segunda execução já inclui o A/B intercalado em "ab_intercalado_sqlite")
+================================================================================

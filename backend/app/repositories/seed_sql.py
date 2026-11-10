@@ -4,7 +4,9 @@ Estados de partida (ADR-014, Q-03):
 * seed do B (metais.json): ``aguardando_validacao`` — citação do Callister sem edição/página (CR-10)
   e rede do α-Ti de relatório interno ("conferir na fonte primária");
 * seed da v1.4 (propriedades_v14.json): ``rascunho`` — sem fonte nenhuma (CIE-03);
-* seed HEA (../hea/vec.json): ``aguardando_validacao`` — convenção citada (Guo 2011), sem revisão.
+* seed HEA (../hea/vec.json): ``aguardando_validacao`` — convenção citada (Guo 2011), sem revisão;
+* tabela periódica (../tabela_periodica/elementos.json): 118 elementos e propriedades ATÔMICAS em
+  ``propriedades_elemento`` (ADR-018), ``aguardando_validacao``, cada valor com fonte (CIAAW, PubChem).
 Nada entra como ``validado``: isso exige revisão humana registrada em ``revisoes_validacao``.
 """
 
@@ -12,7 +14,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -31,6 +33,7 @@ from app.models import (
     MaterialEstrutura,
     Motor,
     Propriedade,
+    PropriedadeElemento,
     ValorPropriedade,
     VersaoDados,
 )
@@ -49,7 +52,19 @@ CATALOGO_PROPRIEDADES = {
     "temperatura_fusao": ("Temperatura de fusão", "termica", "K", "°C"),
     "coef_dilatacao_linear": ("Coeficiente de dilatação linear", "termica", "1/K", "1e-6/K"),
     "vec": ("Concentração de elétrons de valência", "quimica", "adimensional", "e/átomo"),
+    # propriedades atômicas (tabela periódica, ADR-018)
+    "peso_atomico_padrao": ("Peso atômico padrão (CIAAW)", "quimica", "adimensional", "Ar"),
+    "massa_isotopica_referencia": ("Massa atômica de referência (sem peso padrão)", "quimica", "kg", "u"),
+    "raio_van_der_waals": ("Raio de van der Waals", "cristalografica", "m", "pm"),
+    "energia_ionizacao_1": ("Primeira energia de ionização", "quimica", "J", "eV"),
+    "afinidade_eletronica": ("Afinidade eletrônica", "quimica", "J", "eV"),
+    "temperatura_ebulicao": ("Temperatura de ebulição", "termica", "K", "°C"),
 }
+
+#: colunas de ``elementos`` que vêm do seed da tabela periódica
+CAMPOS_ELEMENTO = ("nome", "numero_atomico", "nome_en", "periodo", "grupo", "bloco", "categoria",
+                   "configuracao_eletronica", "estados_oxidacao", "estado_padrao", "ano_descoberta",
+                   "conhecido_antiguidade")
 
 
 class SeedJaCarregadoComOutraVersao(RuntimeError):
@@ -194,4 +209,48 @@ def carregar_seeds(sessao: Session, pasta: Path = PASTA_SEEDS) -> Dict[str, int]
                 contagem["valores"] += 1
             sessao.add(VersaoDados(conjunto="hea", versao=versao_hea, carregado_em=agora))
             sessao.flush()
+
+    caminho_tp = pasta.parent / "tabela_periodica" / "elementos.json"
+    if caminho_tp.exists():
+        _carregar_tabela_periodica(sessao, json.loads(caminho_tp.read_text(encoding="utf-8")), agora, contagem)
     return contagem
+
+
+def _carregar_tabela_periodica(sessao: Session, tp: Dict[str, Any], agora: datetime, contagem: Dict[str, int]) -> None:
+    """Completa ``elementos`` (atualiza os 18 que já existiam, insere os demais) e grava as propriedades atômicas.
+
+    Idempotente por versão. Os nomes dos elementos já usados pelos materiais passam a ser os do seed (pt-BR).
+    """
+    versao = str(tp["versao_dados"])
+    carregada = _versao_carregada(sessao, "tabela_periodica")
+    if carregada not in (None, versao):
+        raise SeedJaCarregadoComOutraVersao(f"tabela_periodica: banco {carregada}, seed {versao}.")
+    if carregada is not None:
+        return
+    for chave, fonte in tp["fontes"].items():
+        dados = dict(fonte)
+        acessado = dados.pop("acessado_em", None)
+        existente = sessao.get(Fonte, chave)
+        if existente is None:
+            sessao.add(Fonte(id=chave, acessado_em=date.fromisoformat(acessado) if acessado else None, **dados))
+            contagem["fontes"] += 1
+    sessao.flush()
+    for e in tp["elementos"]:
+        elemento = sessao.get(Elemento, e["simbolo"])
+        if elemento is None:
+            elemento = Elemento(simbolo=e["simbolo"])
+            sessao.add(elemento)
+            contagem["elementos"] += 1
+        for campo in CAMPOS_ELEMENTO:
+            setattr(elemento, campo, e[campo])
+    sessao.flush()
+    for e in tp["elementos"]:
+        for p in e["propriedades"]:
+            sessao.add(PropriedadeElemento(
+                elemento_simbolo=e["simbolo"], propriedade_codigo=p["codigo"], valor=_d(p["valor"]),
+                incerteza=_d(p.get("incerteza")), intervalo_min=_d(p.get("intervalo_min")),
+                intervalo_max=_d(p.get("intervalo_max")), unidade=p["unidade"], classe="importado",
+                fonte_id=p["fonte"], estado="aguardando_validacao", conjunto_versao=versao, nota=p.get("nota")))
+            contagem["valores"] += 1
+    sessao.add(VersaoDados(conjunto="tabela_periodica", versao=versao, carregado_em=agora))
+    sessao.flush()

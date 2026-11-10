@@ -14,6 +14,7 @@ from .ciencia import (
     Motor,
     Processamento,
     Propriedade,
+    PropriedadeElemento,
     RevisaoValidacao,
     ValorPropriedade,
     VersaoDados,
@@ -48,7 +49,8 @@ __all__ = [
     "Arquivo", "Atividade", "AtividadeQuestao", "Atribuicao", "Auditoria", "Base", "CadernoNota", "Composicao",
     "ComposicaoItem", "Consentimento", "Curso", "Elemento", "EntalpiaPar", "Entrega", "Estrutura",
     "ExecucaoCalculo", "Fonte", "InstanciaQuestao", "Instituicao", "Material", "MaterialEstrutura", "Matricula",
-    "Motor", "Nota", "PreferenciasUsuario", "Processamento", "Propriedade", "Questao", "RevisaoValidacao",
+    "Motor", "Nota", "PreferenciasUsuario", "Processamento", "Propriedade", "PropriedadeElemento", "Questao",
+    "RevisaoValidacao",
     "Sessao", "Tentativa", "TokenUsoUnico", "Turma", "Usuario", "ValorPropriedade", "VersaoDados",
     "VinculoInstitucional",
 ]

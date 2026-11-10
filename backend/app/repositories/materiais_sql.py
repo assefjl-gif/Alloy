@@ -122,3 +122,10 @@ class RepositorioSQL:
 
     def transicoes(self, simbolo: str) -> Sequence[TransicaoAlotropica]:
         return tuple(self._transicoes.get(simbolo, ()))
+
+
+def retrato_materiais(sessao: Session) -> RepositorioSQL:
+    """``RepositorioSQL`` em cache (só leitura depois de montado), conferido pela versão dos dados."""
+    from .cache_dados import cache_retratos, chave_retrato
+
+    return cache_retratos.obter(chave_retrato(sessao, "materiais"), lambda: RepositorioSQL(sessao))

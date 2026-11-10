@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Optional
 
@@ -14,9 +14,11 @@ from sqlalchemy import (
     Index,
     LargeBinary,
     Numeric,
+    SmallInteger,
     String,
     Text,
     UniqueConstraint,
+    false,
     text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -28,6 +30,9 @@ CLASSES_VALOR = ("medido", "calculado", "estimado", "importado", "demonstrativo"
 CLASSES_RESULTADO = ("analitico", "estimativa_modelo", "experimental", "simulacao_ilustrativa", "demonstrativo")
 TIPOS_MATERIAL = ("elemento_puro", "liga", "hea", "composto", "intersticial")
 TIPOS_FONTE = ("livro", "artigo", "norma", "base_dados", "relatorio", "outro")
+#: Estado padrão a 298,15 K e 1 bar; "_previsto" = elemento sintético sem amostra macroscópica (PubChem).
+ESTADOS_PADRAO = ("solido", "liquido", "gas", "solido_previsto", "gas_previsto")
+BLOCOS = ("s", "p", "d", "f")
 STATUS_EXECUCAO = ("pendente", "em_execucao", "concluido", "falhou")
 
 
@@ -41,16 +46,85 @@ class Fonte(Base):
     edicao_pagina: Mapped[Optional[str]] = mapped_column(String(120))
     licenca: Mapped[Optional[str]] = mapped_column(String(120))
     observacao: Mapped[Optional[str]] = mapped_column(Text)
+    #: data em que a fonte foi consultada e versão/edição da base (ex.: "CIAAW 2021 + revisões 2024")
+    acessado_em: Mapped[Optional[date]]
+    versao_fonte: Mapped[Optional[str]] = mapped_column(String(60))
     conferida_por: Mapped[Optional[uuid.UUID]] = mapped_column(ForeignKey("usuarios.id", ondelete="RESTRICT"))
     conferida_em: Mapped[Optional[datetime]]
     __table_args__ = (CheckConstraint(f"tipo IN ({lista_sql(TIPOS_FONTE)})", name="tipo"),)
 
 
 class Elemento(Base):
+    """Elemento químico (identidade e classificação). Propriedades atômicas: ``PropriedadeElemento``.
+
+    Convenção de grupos (IUPAC, tabela periódica de 2022): lantanídeos (57–71) e actinídeos (89–103)
+    formam o bloco f e ficam sem número de grupo (``grupo`` nulo).
+    """
+
     __tablename__ = "elementos"
     simbolo: Mapped[str] = mapped_column(String(3), primary_key=True)
+    #: nome em português do Brasil
     nome: Mapped[str] = mapped_column(String(60))
     numero_atomico: Mapped[Optional[int]] = mapped_column(unique=True)
+    #: nome IUPAC em inglês (grafia da CIAAW)
+    nome_en: Mapped[Optional[str]] = mapped_column(String(40))
+    periodo: Mapped[Optional[int]] = mapped_column(SmallInteger)
+    grupo: Mapped[Optional[int]] = mapped_column(SmallInteger)
+    bloco: Mapped[Optional[str]] = mapped_column(String(1))
+    categoria: Mapped[Optional[str]] = mapped_column(String(40))
+    configuracao_eletronica: Mapped[Optional[str]] = mapped_column(String(60))
+    estados_oxidacao: Mapped[Optional[str]] = mapped_column(String(80))
+    estado_padrao: Mapped[Optional[str]] = mapped_column(String(20))
+    #: ano da descoberta; nulo quando conhecido desde a Antiguidade (ver ``conhecido_antiguidade``)
+    ano_descoberta: Mapped[Optional[int]] = mapped_column(SmallInteger)
+    conhecido_antiguidade: Mapped[bool] = mapped_column(default=False, server_default=false())
+    __table_args__ = (
+        CheckConstraint("numero_atomico IS NULL OR numero_atomico BETWEEN 1 AND 118", name="numero_atomico"),
+        CheckConstraint("periodo IS NULL OR periodo BETWEEN 1 AND 7", name="periodo"),
+        CheckConstraint("grupo IS NULL OR grupo BETWEEN 1 AND 18", name="grupo"),
+        CheckConstraint(f"bloco IS NULL OR bloco IN ({lista_sql(BLOCOS)})", name="bloco"),
+        CheckConstraint(f"estado_padrao IS NULL OR estado_padrao IN ({lista_sql(ESTADOS_PADRAO)})",
+                        name="estado_padrao"),
+        # bloco f ⇔ sem grupo (só depois de classificado)
+        CheckConstraint("bloco IS NULL OR (bloco = 'f' AND grupo IS NULL) OR (bloco <> 'f' AND grupo IS NOT NULL)",
+                        name="bloco_f_sem_grupo"),
+        CheckConstraint("NOT (conhecido_antiguidade AND ano_descoberta IS NOT NULL)", name="descoberta"),
+    )
+
+
+class PropriedadeElemento(ComId, ComCriacao, Base):
+    """Propriedade ATÔMICA de um elemento (não depende do material). Imutável como ``ValorPropriedade``:
+    corrigir = nova linha com ``substitui_id`` e a antiga deixa de ser vigente (ADR-014, ADR-018).
+
+    Toda linha tem fonte (``fonte_id`` obrigatório) e o conjunto de dados que a trouxe.
+    """
+
+    __tablename__ = "propriedades_elemento"
+    elemento_simbolo: Mapped[str] = mapped_column(ForeignKey("elementos.simbolo", ondelete="RESTRICT"))
+    propriedade_codigo: Mapped[str] = mapped_column(ForeignKey("propriedades.codigo", ondelete="RESTRICT"))
+    valor: Mapped[Decimal] = mapped_column(Numeric)
+    incerteza: Mapped[Optional[Decimal]] = mapped_column(Numeric)
+    #: intervalo de variação natural (ex.: peso atômico do H = [1,007 84; 1,008 11])
+    intervalo_min: Mapped[Optional[Decimal]] = mapped_column(Numeric)
+    intervalo_max: Mapped[Optional[Decimal]] = mapped_column(Numeric)
+    unidade: Mapped[str] = mapped_column(String(30))
+    classe: Mapped[str] = mapped_column(String(15))
+    fonte_id: Mapped[str] = mapped_column(ForeignKey("fontes.id", ondelete="RESTRICT"))
+    estado: Mapped[str] = mapped_column(String(25), default="aguardando_validacao")
+    conjunto_versao: Mapped[str] = mapped_column(String(40))
+    vigente: Mapped[bool] = mapped_column(default=True)
+    substitui_id: Mapped[Optional[uuid.UUID]] = mapped_column(ForeignKey("propriedades_elemento.id",
+                                                                         ondelete="RESTRICT"))
+    nota: Mapped[Optional[str]] = mapped_column(Text)
+    __table_args__ = (
+        CheckConstraint(f"classe IN ({lista_sql(CLASSES_VALOR)})", name="classe"),
+        CheckConstraint(f"estado IN ({lista_sql(ESTADOS)})", name="estado"),
+        CheckConstraint("incerteza IS NULL OR incerteza >= 0", name="incerteza"),
+        CheckConstraint("intervalo_min IS NULL OR intervalo_max IS NULL OR intervalo_min <= intervalo_max",
+                        name="intervalo"),
+        Index("uq_propriedades_elemento_vigentes", "elemento_simbolo", "propriedade_codigo", unique=True,
+              postgresql_where=text("vigente"), sqlite_where=text("vigente")),
+    )
 
 
 class Estrutura(Base):

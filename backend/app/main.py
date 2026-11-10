@@ -14,7 +14,7 @@ from sqlalchemy import Engine
 
 from . import __version__
 from .api.erros import register_exception_handlers
-from .api.v1 import auth, educacao, rotas
+from .api.v1 import auth, educacao, elementos, rotas
 from .api.v1.schemas import HealthResponse
 from .core.config import Settings
 from .core.request_id import RequestIdMiddleware
@@ -61,6 +61,7 @@ def create_app(settings: Optional[Settings] = None, motor_banco: Optional[Engine
     app.include_router(rotas.router)
     app.include_router(auth.router)
     app.include_router(educacao.router)
+    app.include_router(elementos.router)
     app.include_router(rotas.alias)
 
     @app.get("/health", response_model=HealthResponse, tags=["plataforma"], summary="Saúde (compatível com o B e o C)")

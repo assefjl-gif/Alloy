@@ -16,11 +16,13 @@ from app.security.tokens import CABECALHO_CSRF, COOKIE_SESSAO
 from app.services.autenticacao import Autenticado, ServicoAutenticacao
 from app.services.calculo import ServicoCalculo
 from app.services.educacao import ServicoEducacao
+from app.services.elementos import ServicoElementos
 from app.services.erros import NaoAutenticado
 from app.services.provedor import (
     montar_servico_autenticacao,
     montar_servico_calculo,
     montar_servico_educacao,
+    montar_servico_elementos,
     unidade_de_trabalho,
 )
 
@@ -46,6 +48,10 @@ def get_servico_auth(request: Request, sessao=Depends(get_sessao_db)) -> Servico
 
 def get_servico_educacao(sessao=Depends(get_sessao_db)) -> ServicoEducacao:
     return montar_servico_educacao(sessao)
+
+
+def get_servico_elementos(sessao=Depends(get_sessao_db)) -> ServicoElementos:
+    return montar_servico_elementos(sessao)
 
 
 def get_autenticado_opcional(request: Request, sessao=Depends(get_sessao_db)) -> Optional[Autenticado]:
