@@ -29,7 +29,12 @@ test('E1 · 360 px: nenhum módulo tem rolagem horizontal; ações essenciais vi
     expect(sw, `#/${r}: scrollWidth ${sw} > ${cw}`).toBeLessThanOrEqual(cw);
   }
   await page.goto('/#/crystalab');
-  await expect(page.getByTestId('render-button')).toBeInViewport();
+  // palco em área total: as ferramentas ficam na gaveta, aberta pelo botão sempre visível (R1-FE-01)
+  await expect(page.getByTestId('sidebar-toggle')).toBeInViewport();
+  await expect(page.getByTestId('viewer-stage')).toBeInViewport();
+  await page.getByTestId('sidebar-toggle').click();
+  await page.getByTestId('sub-structure-editor').click();
+  await expect(page.getByTestId('render-button')).toBeVisible();
   await expect(page.getByTestId('palette-button')).toBeVisible();
 });
 
@@ -39,12 +44,11 @@ test('E2 · toque: cena 3D começa travada (um dedo rola a página) e pode ser d
   const mode = () => page.evaluate(() => (window as unknown as { __alloy: { viewer: { touchMode: () => string } } }).__alloy.viewer.touchMode());
   expect(await mode()).toBe('locked');
   await expect(page.getByTestId('viewer-stage')).toHaveClass(/is-touch-locked/);
-  const before = await page.evaluate(() => window.scrollY);
   const box = (await page.getByTestId('viewer-stage').boundingBox())!;
   await page.touchscreen.tap(box.x + 10, box.y + 10);
-  await page.mouse.wheel(0, 400);
-  await page.waitForTimeout(300);
-  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(before);
+  // o palco ocupa a área útil inteira (R1-FE-01): não há página para rolar por trás da cena
+  expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
+  expect(await mode()).toBe('locked');
   await page.getByRole('button', { name: /Destravar a cena/ }).click();
   await expect.poll(mode).toBe('unlocked');
 });

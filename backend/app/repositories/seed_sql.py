@@ -22,16 +22,13 @@ from typing import Any, Dict, Optional
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.engines.crystallography import ESTRUTURAS, VERSAO_MOTOR
-from app.engines.hea.analitico import VERSAO_MOTOR as VERSAO_HEA
-from app.engines.thermodynamics.termico import VERSAO_MOTOR as VERSAO_TERMICO
+from app.engines.crystallography import ESTRUTURAS
 from app.models import (
     Elemento,
     Estrutura,
     Fonte,
     Material,
     MaterialEstrutura,
-    Motor,
     Propriedade,
     PropriedadeElemento,
     ValorPropriedade,
@@ -39,6 +36,7 @@ from app.models import (
 )
 
 from .materiais_json import PASTA_SEEDS
+from .motores import garantir_motor, motores_do_catalogo
 
 TIPO_FONTE = {"callister": "livro", "auditoria_cr01": "relatorio", "guo2011": "artigo"}
 
@@ -104,9 +102,8 @@ def carregar_seeds(sessao: Session, pasta: Path = PASTA_SEEDS) -> Dict[str, int]
     base = json.loads((pasta / "metais.json").read_text(encoding="utf-8"))
     v14 = json.loads((pasta / "propriedades_v14.json").read_text(encoding="utf-8"))
 
-    for codigo, versao in (("crystallography", VERSAO_MOTOR), ("thermodynamics", VERSAO_TERMICO), ("hea", VERSAO_HEA)):
-        if sessao.get(Motor, (codigo, versao)) is None:
-            sessao.add(Motor(codigo=codigo, versao=versao))
+    for codigo, versao in motores_do_catalogo():
+        garantir_motor(sessao, codigo, versao)
     for sigla, info in ESTRUTURAS.items():
         if sessao.get(Estrutura, sigla) is None:
             ge = info["grupo_espacial"]

@@ -83,3 +83,54 @@ test('LatestRunner: chamada nova cancela a anterior e a resposta antiga é obsol
   assert.equal(b.stale, false);
   assert.equal(b.value, 'novo');
 });
+
+
+/**
+ * Política de demonstração do SERVIDOR (`demo_permitido` de GET /api/v1/meta/capabilities).
+ * Em produção a demonstração é PROIBIDA (princípio 3 do projeto): com o serviço indisponível, o
+ * modo efetivo tem de ser `disabled`, NUNCA `demo`, mesmo que a preferência local peça demonstração.
+ */
+test('demo_permitido: servidor proibindo demonstração ⇒ HEA indisponível fica "disabled", nunca "demo"', async () => {
+  const { serviceMode, serverDemoAllowed, effectivePolicy } = await import('../../src/stores/capabilities.ts');
+  const caps = (demoAllowed: boolean | null, available: boolean) => ({
+    crystalab: null,
+    hea: { available, checkedAt: '2026-11-15T00:00:00Z', error: available ? null : 'sem serviço', demoAllowed },
+    online: true,
+    ready: true,
+    set: () => undefined,
+  });
+
+  // produção: o servidor proíbe a demonstração e o serviço não está disponível
+  assert.equal(serviceMode('hea', caps(false, false), 'on'), 'disabled');
+  assert.equal(serviceMode('hea', caps(false, false), 'auto'), 'disabled');
+  assert.equal(serviceMode('hea', caps(false, true), 'on'), 'live', 'com serviço real, usa o serviço real');
+  assert.equal(serverDemoAllowed('hea', caps(false, true)), false);
+  assert.equal(effectivePolicy('hea', caps(false, true), 'on'), 'off');
+
+  // ambiente não produtivo: o servidor permite, a política local decide (demonstração rotulada)
+  assert.equal(serviceMode('hea', caps(true, false), 'on'), 'demo');
+  assert.equal(serviceMode('hea', caps(true, false), 'auto'), 'demo');
+  assert.equal(serviceMode('hea', caps(true, false), 'off'), 'disabled');
+
+  // servidor não respondeu: não há decisão dele a respeitar, vale a política local
+  assert.equal(serverDemoAllowed('hea', caps(null, false)), null);
+  assert.equal(serviceMode('hea', caps(null, false), 'auto'), 'demo');
+  assert.equal(serviceMode('hea', caps(null, false), 'off'), 'disabled');
+});
+
+test('demo_permitido: o campo é lido do servidor REAL e guardado nas capacidades', async () => {
+  const { config } = await import('../../src/config.ts');
+  config.apiBase = `http://127.0.0.1:${PORT}`;
+  const hea = await import('../../src/services/api/hea.ts');
+  const allowed = await hea.detectDemoPolicy();
+  assert.equal(typeof allowed, 'boolean', 'o servidor informa a política por serviço');
+  const { caps } = await hea.detectHea();
+  assert.equal(caps.demoAllowed, allowed, 'a detecção guarda a política do servidor');
+
+  // servidor fora do ar: política desconhecida (null), nunca "permitido" por omissão
+  config.apiBase = 'http://127.0.0.1:1';
+  assert.equal(await hea.detectDemoPolicy(), null);
+  const off = await hea.detectHea();
+  assert.equal(off.caps.available, false);
+  assert.equal(off.caps.demoAllowed, null);
+});

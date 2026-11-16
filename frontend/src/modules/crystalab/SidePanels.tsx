@@ -8,6 +8,7 @@ import { useCrystalab } from '../../stores/crystalab.ts';
 import { commit } from '../../stores/history.ts';
 import { atomKey, OVERLAY_PALETTE, useOverlays, type OverlayItem } from '../../stores/overlays.ts';
 import { useViewer } from '../../stores/viewer.ts';
+import { useCrystalUi } from '../../stores/crystalUi.ts';
 import { prefersReducedMotion, usePreferences } from '../../stores/preferences.ts';
 import { Button, IconButton, ToggleButton } from '../../design-system/primitives/Button.tsx';
 import { Select, TextInput, Segmented, Slider } from '../../design-system/primitives/Field.tsx';
@@ -16,6 +17,9 @@ import { Icon } from '../../design-system/Icon.tsx';
 import { parseUserNumber } from '../../utils/format.ts';
 import { spokenNotation } from '../../utils/text.ts';
 import { buildAtoms } from '../../features/viewer3d/geometry.ts';
+import { filterActive, useSceneFilter } from '../../stores/sceneFilter.ts';
+import { toVisibilityFilter } from '../../features/viewer3d/sceneFilterState.ts';
+import { isVisible } from '../../features/viewer3d/visibility.ts';
 import { millerDetail } from '../../commands/handlers.ts';
 import { alphaGammaData, loadAlphaGamma } from '../../features/viewer3d/alphaGamma.ts';
 import type { StructureResult } from '../../services/api/contracts.ts';
@@ -31,7 +35,7 @@ function Equivalent({ op }: { op: Operation | null }) {
       <span className="ds-label">{t('guided.equivalent')}</span>
       {cmd ? <code data-testid="equivalent-command">{cmd}</code> : <span className="ds-muted">{t('guided.noEquivalent')}</span>}
       {cmd ? (
-        <button type="button" className="ds-link-btn" onClick={() => { const el = document.getElementById('term-input-crystalab') as HTMLInputElement | null; if (el) { el.focus(); const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set; setter?.call(el, cmd); el.dispatchEvent(new Event('input', { bubbles: true })); } }}>
+        <button type="button" className="ds-link-btn" onClick={() => { useCrystalUi.getState().reveal('analysis.terminal', true); const el = document.getElementById('term-input-crystalab') as HTMLInputElement | null; if (el) window.setTimeout(() => { el.focus(); const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set; setter?.call(el, cmd); el.dispatchEvent(new Event('input', { bubbles: true })); }, 0); }}>
           {t('guided.toTerminal')}
         </button>
       ) : null}
@@ -44,11 +48,10 @@ function num(text: string): number | undefined {
   return v === null || Number.isNaN(v) ? undefined : v;
 }
 
-/** Modo guiado (4.7): as operações principais sem digitar comandos. */
-export function GuidedMode() {
+/** Modo guiado (4.7), passo 1: escolher o material e os parâmetros sem digitar comandos. */
+export function GuidedMaterial() {
   const { t } = useI18n();
   const metals = useCrystalab((s) => s.metals);
-  const structure = useCrystalab((s) => s.structure);
   const [kind, setKind] = useState<'metal' | 'generic'>('metal');
   const [metal, setMetal] = useState('Cu');
   const [override, setOverride] = useState<'' | StructureCode>('');
@@ -56,8 +59,6 @@ export function GuidedMode() {
   const [r, setR] = useState('');
   const [a, setA] = useState('');
   const [ca, setCa] = useState('');
-  const [tipo, setTipo] = useState<'plano' | 'direcao'>('plano');
-  const [idx, setIdx] = useState(['1', '1', '1', '']);
 
   const loadOp = useMemo<Operation>(() => {
     const req: StructureRequest = kind === 'metal' ? { nome: metal } : { nome: code };
@@ -69,14 +70,10 @@ export function GuidedMode() {
     return { type: 'material.load', request: req };
   }, [kind, metal, override, code, r, a, ca]);
 
-  const indices = idx.filter((v, i) => i < 3 || v.trim() !== '').map((v) => Number(v.trim()));
-  const millerValid = indices.length >= 3 && indices.every((v) => Number.isInteger(v));
-  const millerOp: Operation | null = millerValid ? { type: 'miller.draw', tipo, indices } : null;
-
   return (
-    <div className="guided" data-testid="guided-mode">
+    <div className="guided" data-testid="guided-material">
       <CategoryBox category="param" as="section" className="guided__card" aria-labelledby="g-material">
-        <h3 id="g-material"><span className="guided__num">1</span>{t('guided.chooseMaterial')}</h3>
+        <h4 id="g-material">{t('guided.chooseMaterial')}</h4>
         <Segmented label={t('guided.source')} name="g-kind" value={kind} onChange={setKind} options={[{ value: 'metal', label: t('guided.metal') }, { value: 'generic', label: t('guided.genericCell') }]} size="sm" />
         {kind === 'metal' ? (
           <>
@@ -97,27 +94,36 @@ export function GuidedMode() {
         <Button variant="primary" icon="cube" data-testid="guided-load" onClick={() => void dispatch(loadOp, 'form')}>{t('guided.load')}</Button>
       </CategoryBox>
 
-      <CategoryBox category="result" as="section" className="guided__card" aria-labelledby="g-review">
-        <h3 id="g-review"><span className="guided__num">2</span>{t('guided.review')}</h3>
-        {structure ? (
-          <dl className="guided__dl">
-            <dt>{t('metrics.structure')}</dt><dd lang="pt-BR">{`${structure.estrutura_nome} (${structure.estrutura})`}</dd>
-            <dt>{t('guided.material')}</dt><dd lang="pt-BR">{structure.rotulo}</dd>
-            <dt>n · NC</dt><dd>{`${structure.n} · ${structure.nc}`}</dd>
-            <dt>R</dt><dd>{structure.raio_nm !== null ? `${structure.raio_nm} nm` : t('guided.inUnitsOfR')}</dd>
-          </dl>
-        ) : <p className="ds-muted">{t('guided.noStructureYet')}</p>}
-      </CategoryBox>
+    </div>
+  );
+}
 
-      <CategoryBox category="result" as="section" className="guided__card" aria-labelledby="g-density">
-        <h3 id="g-density"><span className="guided__num">3</span>{t('guided.density')}</h3>
+/** Modo guiado, densidade: pede ao motor o cálculo passo a passo (o resultado abre em Propriedades). */
+export function GuidedDensity() {
+  const { t } = useI18n();
+  const structure = useCrystalab((s) => s.structure);
+  return (
+      <CategoryBox category="result" as="section" className="guided__card" aria-labelledby="g-density" data-testid="guided-density-card">
+        <h4 id="g-density">{t('guided.density')}</h4>
         <p className="ds-muted">{t('guided.densityHelp')}</p>
         <Equivalent op={{ type: 'density.show' }} />
         <Button icon="calc" data-testid="guided-density" disabled={!structure} onClick={() => void dispatch({ type: 'density.show' }, 'form')}>{t('density.show')}</Button>
       </CategoryBox>
+  );
+}
 
-      <CategoryBox category="param" as="section" className="guided__card" aria-labelledby="g-miller">
-        <h3 id="g-miller"><span className="guided__num">4</span>{t('guided.miller')}</h3>
+/** Modo guiado, Miller: índices em campos separados (h k l ou h k i l em HC), com o comando equivalente. */
+export function GuidedMiller() {
+  const { t } = useI18n();
+  const structure = useCrystalab((s) => s.structure);
+  const [tipo, setTipo] = useState<'plano' | 'direcao'>('plano');
+  const [idx, setIdx] = useState(['1', '1', '1', '']);
+  const indices = idx.filter((v, i) => i < 3 || v.trim() !== '').map((v) => Number(v.trim()));
+  const millerValid = indices.length >= 3 && indices.every((v) => Number.isInteger(v));
+  const millerOp: Operation | null = millerValid ? { type: 'miller.draw', tipo, indices } : null;
+  return (
+      <CategoryBox category="param" as="section" className="guided__card" aria-labelledby="g-miller" data-testid="guided-miller-card">
+        <h4 id="g-miller">{t('guided.miller')}</h4>
         <Segmented label={t('miller.kind')} name="g-tipo" value={tipo} onChange={setTipo} size="sm" options={[{ value: 'plano', label: t('miller.planeHkl') }, { value: 'direcao', label: t('miller.directionUvw') }]} />
         <div className="guided__indices" role="group" aria-label={t('miller.indices')}>
           {(structure?.estrutura === 'HC' ? [0, 1, 2, 3] : [0, 1, 2]).map((i) => (
@@ -135,7 +141,6 @@ export function GuidedMode() {
         <Equivalent op={millerOp} />
         <Button icon="plane" data-testid="guided-miller" disabled={!structure || !millerOp} onClick={() => { if (millerOp) void dispatch(millerOp, 'form'); }}>{tipo === 'plano' ? t('guided.drawPlane') : t('guided.drawDirection')}</Button>
       </CategoryBox>
-    </div>
   );
 }
 
@@ -207,7 +212,17 @@ export function AtomInspector() {
   const r = useCrystalab((s) => s.structure);
   const supercell = useViewer((s) => s.supercell);
   const selection = useViewer((s) => s.selection);
-  const atoms = useMemo(() => (r ? buildAtoms(r, supercell) : []), [r, supercell]);
+  // a lista mostra só o que está DESENHADO: átomo escondido pelo filtro/corte (T-23) não é
+  // selecionável na cena, então também não é alcançável pelo teclado
+  const filterState = useSceneFilter();
+  const selectedPos = selection && r ? buildAtoms(r, supercell).find((a) => a.key === atomKey(selection))?.pos ?? null : null;
+  const atoms = useMemo(() => {
+    if (!r) return [];
+    const filter = toVisibilityFilter(filterState, selectedPos);
+    const element = r.simbolo ?? r.estrutura;
+    return buildAtoms(r, supercell).filter((a) => isVisible({ pos: a.pos, element, occupancy: null, site: a.tipo }, filter));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [r, supercell, filterState, selectedPos?.join(',')]);
   if (!r) return <p className="ds-muted">{t('viewer.empty')}</p>;
   const atom = selection ? r.atomos[selection.index] : null;
   const isReplica = selection ? selection.cell.some((c) => c !== 0) : false;
@@ -234,6 +249,7 @@ export function AtomInspector() {
         </CategoryBox>
       ) : <p className="ds-muted">{t('atom.none')}</p>}
       <h3 className="atom-list__title" id="atom-list-title">{t('atom.listTitle', { count: atoms.length })}</h3>
+      {filterActive(filterState) ? <p className="ds-field__hint" data-testid="atom-list-filtered">{t('filter.active')} · {t('alloyAtom.listHint')}</p> : null}
       <ul className="atom-list" role="listbox" aria-labelledby="atom-list-title" tabIndex={0} aria-activedescendant={selection ? `atom-opt-${atomKey(selection).replace(/[@,]/g, '_')}` : undefined}
         onKeyDown={(e) => {
           if (!atoms.length) return;
@@ -338,7 +354,7 @@ function AnimationExplainer({ name, variant, step }: { name: string; variant: st
     const seq = variant === 'abab' ? 'ABABAB' : 'ABCABC';
     return (
       <CategoryBox category="demo" as="section" className="anim-explainer" aria-live="polite">
-        <DemoSeal text={t('common.illustrative')} detail={t('anim.illustrativeDetail')} />
+        <DemoSeal variant="illustrative" text={t('common.illustrative')} detail={t('anim.illustrativeDetail')} />
         <p><strong>{t('anim.layers', { shown: seq.slice(0, step + 1).split('').join(' · '), total: seq.length })}</strong></p>
         <dl>
           <dt>{t('anim.changes')}</dt><dd>{t('anim.stacking.changes')}</dd>
@@ -352,7 +368,7 @@ function AnimationExplainer({ name, variant, step }: { name: string; variant: st
   if (name === 'alpha-gamma') return <AlphaGammaExplainer step={step} />;
   return (
     <CategoryBox category="demo" as="section" className="anim-explainer">
-      <DemoSeal text={t('common.illustrative')} detail={t('anim.thermal.detail')} />
+      <DemoSeal variant="illustrative" text={t('common.illustrative')} detail={t('anim.thermal.detail')} />
       <dl>
         <dt>{t('anim.changes')}</dt><dd>{t('anim.thermal.changes')}</dd>
         <dt>{t('anim.stays')}</dt><dd>{t('anim.thermal.stays')}</dd>
@@ -376,7 +392,14 @@ function AlphaGammaExplainer({ step }: { step: number }) {
   ) : null;
   return (
     <CategoryBox category="result" as="section" className="anim-explainer" aria-live="polite">
-      <p><strong>{step === 0 ? t('anim.ag.alpha') : step >= 10 ? t('anim.ag.gamma') : t('anim.ag.mixing', { pct: step * 10 })}</strong></p>
+      {/* D-R2-4 / R2-FE-04: a TABELA é resultado real do motor (α-Fe e γ-Fe), por isso a caixa é
+          `result`. Mas o passo intermediário ("misturando 40%") descreve a INTERPOLAÇÃO VISUAL
+          entre os dois resultados, que não é estado físico nem previsão: esse trecho recebe selo
+          ilustrativo próprio, como a cena já tem. */}
+      <p>
+        <strong>{step === 0 ? t('anim.ag.alpha') : step >= 10 ? t('anim.ag.gamma') : t('anim.ag.mixing', { pct: step * 10 })}</strong>
+        {step > 0 && step < 10 ? <DemoSeal variant="illustrative" text={t('anim.ag.sealText')} detail={t('anim.ag.sealDetail')} /> : null}
+      </p>
       <div className="ds-table-wrap">
         <table className="ds-table">
           <caption className="sr-only">{t('anim.ag.caption')}</caption>

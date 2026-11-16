@@ -27,6 +27,22 @@ export function demoPolicy(): typeof config.demo {
   return pref === 'config' ? config.demo : pref;
 }
 
+/**
+ * Política de demonstração do SERVIDOR (`demo_permitido` de GET /api/v1/meta/capabilities).
+ * Em produção a demonstração é PROIBIDA (princípio 3 do projeto) e o servidor devolve `false`;
+ * a interface obedece, ainda que a preferência local ou `public/config.js` peçam demonstração.
+ * `null` (servidor não respondeu) não é tratado como autorização nem como proibição: a política
+ * local continua valendo, porque não há decisão do servidor a respeitar.
+ */
+export function serverDemoAllowed(name: ServiceName, s: CapabilitiesState = useCapabilities.getState()): boolean | null {
+  return name === 'hea' ? (s.hea?.demoAllowed ?? null) : null;
+}
+
+/** Política efetiva: a proibição do servidor desliga a demonstração (nunca o contrário). */
+export function effectivePolicy(name: ServiceName, s: CapabilitiesState, policy: typeof config.demo): typeof config.demo {
+  return serverDemoAllowed(name, s) === false ? 'off' : policy;
+}
+
 export type ServiceName = 'crystalab' | 'hea' | 'classroom' | 'ai' | 'exportCif' | 'workspaceServer';
 
 /** Modo efetivo de cada serviço, considerando disponibilidade e política de demonstração. */
@@ -37,7 +53,8 @@ export function serviceMode(name: ServiceName, s: CapabilitiesState = useCapabil
     case 'exportCif':
       return resolveMode('off', (s.crystalab?.exportFormats.length ?? 0) > 0, false);
     case 'hea':
-      return resolveMode(policy, Boolean(s.hea?.available), true);
+      // servidor proibindo demonstração ⇒ 'off': sem dado o serviço fica `disabled`, nunca `demo`
+      return resolveMode(effectivePolicy('hea', s, policy), Boolean(s.hea?.available), true);
     case 'classroom':
       return resolveMode(policy, false, true);
     case 'ai':

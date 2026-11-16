@@ -7,8 +7,8 @@
 import { config } from '../../config.ts';
 import { ApiError, requestJson } from './http.ts';
 import {
-  ExportFile, MetalTable, MillerResult, StructureResult, StructureTable,
-  type MillerRequest, type StructureRequest,
+  AlloyResult, ExportFile, MetalTable, MillerResult, StructureResult, StructureTable, ThermalResult,
+  type AlloyRequest, type MillerRequest, type StructureRequest, type ThermalRequest,
 } from './contracts.ts';
 import { z } from 'zod';
 
@@ -75,5 +75,14 @@ export const crystalabApi = {
   async exportFile(format: 'cif' | 'xyz', req: StructureRequest, signal?: AbortSignal): Promise<ExportFile> {
     ensure();
     return requestJson(api(`/exports/${format}`), { body: clean(req), signal, schema: ExportFile });
+  },
+  async alloy(req: AlloyRequest, signal?: AbortSignal): Promise<AlloyResult> {
+    ensure();
+    return requestJson(api('/crystallography/solid-solutions'), { body: clean(req), signal, schema: AlloyResult });
+  },
+  async thermal(req: ThermalRequest, signal?: AbortSignal): Promise<ThermalResult> {
+    ensure();
+    const body = 'liga' in req ? { liga: clean(req.liga), temperatura_c: req.temperatura_c } : req;
+    return requestJson(api('/thermodynamics/thermal'), { body, signal, schema: ThermalResult });
   },
 };

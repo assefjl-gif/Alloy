@@ -423,7 +423,8 @@
     "tags": [
      "termodinamica"
     ],
-    "summary": "Dilatação, vibração (Lindemann) e alotropia",
+    "summary": "Dilatação (α isotrópico), deslocamento quadrático médio (Lindemann) e alotropia",
+    "description": "Estimativas de modelo, com o domínio de validade explícito.\n\nAcima da T_f do modelo a rede, a densidade e a dilatação voltam ``null`` com o motivo em\n``indisponiveis`` (não há cristal). A curva de Lindemann vale de 100 K à T_f. Com mistura, a T_f é a da\nregra das misturas em fração atômica — não é solidus nem liquidus — e o estado líquido não é afirmado.\nA faixa de alotropia só é afirmada quando o dado passa pela política de dados do ambiente; senão,\n``alotropia`` é ``null`` com o motivo.",
     "operationId": "calcular_termico_api_v1_thermodynamics_thermal_post",
     "requestBody": {
      "content": {
@@ -606,7 +607,7 @@
     "tags": [
      "hea"
     ],
-    "summary": "Elementos, ligas de exemplo e limiares dos critérios",
+    "summary": "Elementos aceitos, ligas de exemplo, critérios com fonte, definições e avisos",
     "operationId": "hea_bootstrap_api_v1_hea_bootstrap_get",
     "responses": {
      "200": {
@@ -657,8 +658,8 @@
     "tags": [
      "hea"
     ],
-    "summary": "ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)",
-    "description": "Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.",
+    "summary": "Descritores de triagem de uma liga: ΔS_mix, δ, T_m, VEC e curva −T·ΔS_mix (ΔH_mix e Ω só com a matriz de entalpias por par)",
+    "description": "Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.\n\nComposição em base atômica (padrão) ou mássica. Símbolo que não é elemento, repetido ou malformado → 400\ncom o subtipo em ``details[].type``. Elemento real sem dados → 200 com cálculo parcial.",
     "operationId": "hea_analisar_api_v1_hea_analyses_post",
     "requestBody": {
      "content": {
@@ -1876,6 +1877,202 @@
     }
    }
   },
+  "/api/v1/elements": {
+   "get": {
+    "tags": [
+     "tabela periódica"
+    ],
+    "summary": "Os 118 elementos (com filtros)",
+    "operationId": "listar_elementos_api_v1_elements_get",
+    "parameters": [
+     {
+      "name": "periodo",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 7,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Periodo"
+      }
+     },
+     {
+      "name": "grupo",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer",
+         "maximum": 18,
+         "minimum": 1
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Grupo"
+      }
+     },
+     {
+      "name": "bloco",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "enum": [
+          "s",
+          "p",
+          "d",
+          "f"
+         ],
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Bloco"
+      }
+     },
+     {
+      "name": "categoria",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "maxLength": 40
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Categoria"
+      }
+     },
+     {
+      "name": "estado_padrao",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "enum": [
+          "solido",
+          "liquido",
+          "gas",
+          "solido_previsto",
+          "gas_previsto"
+         ],
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Estado Padrao"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ElementList_"
+        }
+       }
+      }
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Not Found"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     }
+    }
+   }
+  },
+  "/api/v1/elements/{ref}": {
+   "get": {
+    "tags": [
+     "tabela periódica"
+    ],
+    "summary": "Um elemento por símbolo (Fe) ou número atômico (26), com propriedades e fontes",
+    "operationId": "obter_elemento_api_v1_elements__ref__get",
+    "parameters": [
+     {
+      "name": "ref",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 3,
+       "pattern": "^[A-Za-z]{1,3}$|^\\d{1,3}$",
+       "title": "Ref"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OkEnvelope_ElementDetail_"
+        }
+       }
+      }
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Not Found"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErroEnvelope"
+        }
+       }
+      },
+      "description": "Unprocessable Content"
+     }
+    }
+   }
+  },
   "/v1/crystals/metals": {
    "get": {
     "tags": [
@@ -2449,14 +2646,16 @@
        "type": "number"
       },
       "type": "array",
-      "title": "Pos"
+      "title": "Pos",
+      "description": "Cartesiana, em unidades de a da liga"
      },
      "frac": {
       "items": {
        "type": "number"
       },
       "type": "array",
-      "title": "Frac"
+      "title": "Frac",
+      "description": "Fracionária na célula replicada (0 a n)"
      },
      "tipo": {
       "type": "string",
@@ -2472,7 +2671,97 @@
      },
      "raio_rel": {
       "type": "number",
-      "title": "Raio Rel"
+      "title": "Raio Rel",
+      "description": "Raio de DESENHO (raio tabelado / a), não raio do átomo em solução"
+     },
+     "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Identificador estável: depende só de estrutura, n e sítio",
+      "default": ""
+     },
+     "imagem": {
+      "type": "boolean",
+      "title": "Imagem",
+      "description": "true = imagem periódica de fronteira; não entra em contagem",
+      "default": false
+     },
+     "imagem_de": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Imagem De",
+      "description": "id do átomo único de origem"
+     },
+     "pos_nm": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Pos Nm",
+      "description": "pos × a_nm (herda a natureza de a_nm)"
+     },
+     "celula": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Celula",
+      "description": "(i, j, k); numa imagem a coordenada transladada vale n"
+     },
+     "frac_celula": {
+      "items": {
+       "type": "number"
+      },
+      "type": "array",
+      "title": "Frac Celula",
+      "description": "Fracionária em [0, 1)"
+     },
+     "ocupacao": {
+      "type": "string",
+      "enum": [
+       "solvente",
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Ocupacao",
+      "default": "solvente"
+     },
+     "sitio": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/SitioAtomo"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "fase": {
+      "type": "string",
+      "title": "Fase",
+      "description": "id da fase em 'fases'",
+      "default": "matriz"
+     },
+     "pos_ideal": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pos Ideal",
+      "description": "Posição de rede antes da distorção ilustrativa"
      }
     },
     "type": "object",
@@ -2635,6 +2924,342 @@
      "autenticacao"
     ],
     "title": "Capabilities"
+   },
+   "ComponenteRepresentado": {
+    "properties": {
+     "elemento": {
+      "type": "string",
+      "title": "Elemento"
+     },
+     "papel": {
+      "type": "string",
+      "enum": [
+       "solvente",
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Papel"
+     },
+     "at_pct": {
+      "type": "number",
+      "title": "At Pct",
+      "description": "% atômica sobre todos os átomos (intersticiais incluídos)"
+     },
+     "massa_pct": {
+      "type": "number",
+      "title": "Massa Pct"
+     },
+     "n_atomos": {
+      "type": "integer",
+      "title": "N Atomos",
+      "description": "Átomos ÚNICOS (pode ser 0)"
+     }
+    },
+    "type": "object",
+    "required": [
+     "elemento",
+     "papel",
+     "at_pct",
+     "massa_pct",
+     "n_atomos"
+    ],
+    "title": "ComponenteRepresentado"
+   },
+   "ComponenteSolicitado": {
+    "properties": {
+     "elemento": {
+      "type": "string",
+      "title": "Elemento"
+     },
+     "papel": {
+      "type": "string",
+      "enum": [
+       "solvente",
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Papel"
+     },
+     "at_pct": {
+      "type": "number",
+      "title": "At Pct",
+      "description": "% atômica sobre todos os átomos (intersticiais incluídos)"
+     },
+     "massa_pct": {
+      "type": "number",
+      "title": "Massa Pct"
+     }
+    },
+    "type": "object",
+    "required": [
+     "elemento",
+     "papel",
+     "at_pct",
+     "massa_pct"
+    ],
+    "title": "ComponenteSolicitado"
+   },
+   "ComposicaoLiga": {
+    "properties": {
+     "base_entrada": {
+      "type": "string",
+      "enum": [
+       "atomica",
+       "massica"
+      ],
+      "title": "Base Entrada",
+      "default": "atomica"
+     },
+     "solicitada": {
+      "items": {
+       "$ref": "#/components/schemas/ComponenteSolicitado"
+      },
+      "type": "array",
+      "title": "Solicitada"
+     },
+     "representada": {
+      "items": {
+       "$ref": "#/components/schemas/ComponenteRepresentado"
+      },
+      "type": "array",
+      "title": "Representada"
+     },
+     "n_sitios_rede": {
+      "type": "integer",
+      "title": "N Sitios Rede",
+      "description": "Z·n³",
+      "default": 0
+     },
+     "n_intersticiais": {
+      "type": "integer",
+      "title": "N Intersticiais",
+      "default": 0
+     },
+     "n_atomos_unicos": {
+      "type": "integer",
+      "title": "N Atomos Unicos",
+      "default": 0
+     },
+     "n_desenhados": {
+      "type": "integer",
+      "title": "N Desenhados",
+      "description": "Esferas em 'atomos' (únicos + imagens)",
+      "default": 0
+     },
+     "resolucao_at_pct": {
+      "type": "number",
+      "title": "Resolucao At Pct",
+      "description": "100 / n_atomos_unicos",
+      "default": 0.0
+     },
+     "desvio_maximo_at_pct": {
+      "type": "number",
+      "title": "Desvio Maximo At Pct",
+      "default": 0.0
+     }
+    },
+    "type": "object",
+    "title": "ComposicaoLiga",
+    "description": "Composição SOLICITADA × REPRESENTADA na supercélula periódica (parecer R1-CRI-01 §3.2)."
+   },
+   "CriterioAvaliado": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "grandeza": {
+      "type": "string",
+      "title": "Grandeza",
+      "description": "Nome do campo da resposta: delta, omega, VEC, dS_R"
+     },
+     "operador": {
+      "type": "string",
+      "enum": [
+       "<=",
+       ">=",
+       "<",
+       ">"
+      ],
+      "title": "Operador"
+     },
+     "limiar": {
+      "type": "number",
+      "title": "Limiar"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "natureza": {
+      "type": "string",
+      "enum": [
+       "empirico",
+       "definicao"
+      ],
+      "title": "Natureza"
+     },
+     "fonte": {
+      "type": "string",
+      "title": "Fonte"
+     },
+     "verificada": {
+      "type": "boolean",
+      "title": "Verificada",
+      "description": "Fonte conferida pelo auditor bibliográfico (falso em R1)"
+     },
+     "valor": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Valor"
+     },
+     "atende": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Atende",
+      "description": "Nulo quando o valor é nulo ou o critério não se aplica"
+     },
+     "aplicavel": {
+      "type": "boolean",
+      "title": "Aplicavel"
+     },
+     "proximo_do_limiar": {
+      "type": "boolean",
+      "title": "Proximo Do Limiar"
+     },
+     "motivo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Motivo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "grandeza",
+     "operador",
+     "limiar",
+     "unidade",
+     "natureza",
+     "fonte",
+     "verificada",
+     "aplicavel",
+     "proximo_do_limiar"
+    ],
+    "title": "CriterioAvaliado"
+   },
+   "CriterioDef": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "grandeza": {
+      "type": "string",
+      "title": "Grandeza",
+      "description": "Nome do campo da resposta: delta, omega, VEC, dS_R"
+     },
+     "operador": {
+      "type": "string",
+      "enum": [
+       "<=",
+       ">=",
+       "<",
+       ">"
+      ],
+      "title": "Operador"
+     },
+     "limiar": {
+      "type": "number",
+      "title": "Limiar"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "natureza": {
+      "type": "string",
+      "enum": [
+       "empirico",
+       "definicao"
+      ],
+      "title": "Natureza"
+     },
+     "fonte": {
+      "type": "string",
+      "title": "Fonte"
+     },
+     "verificada": {
+      "type": "boolean",
+      "title": "Verificada",
+      "description": "Fonte conferida pelo auditor bibliográfico (falso em R1)"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "grandeza",
+     "operador",
+     "limiar",
+     "unidade",
+     "natureza",
+     "fonte",
+     "verificada"
+    ],
+    "title": "CriterioDef"
+   },
+   "DadoFaltante": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo",
+      "description": "Elemento (\"Mn\") ou par (\"Co-Mn\")"
+     },
+     "codigo": {
+      "type": "string",
+      "enum": [
+       "raio_atomico",
+       "temperatura_fusao",
+       "vec",
+       "massa_atomica",
+       "entalpia_mistura_par"
+      ],
+      "title": "Codigo"
+     },
+     "situacao": {
+      "type": "string",
+      "enum": [
+       "ausente",
+       "nao_validado"
+      ],
+      "title": "Situacao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "codigo",
+     "situacao"
+    ],
+    "title": "DadoFaltante"
    },
    "DadoUsado": {
     "properties": {
@@ -2922,6 +3547,17 @@
       },
       "type": "array",
       "title": "Avisos"
+     },
+     "procedencia": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Procedencia"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Rastreabilidade do cálculo: dados do repositório usados, estado e fonte (QA-R2-02)"
      }
     },
     "type": "object",
@@ -2990,6 +3626,583 @@
      "descricao"
     ],
     "title": "Distorcao"
+   },
+   "DominioCurva": {
+    "properties": {
+     "de_c": {
+      "type": "number",
+      "title": "De C",
+      "description": "Limite inferior do domínio do modelo (100 K)"
+     },
+     "ate_c": {
+      "type": "number",
+      "title": "Ate C",
+      "description": "Limite superior: a T_f do modelo"
+     },
+     "limite_inferior": {
+      "type": "string",
+      "title": "Limite Inferior"
+     },
+     "limite_superior": {
+      "type": "string",
+      "title": "Limite Superior"
+     }
+    },
+    "type": "object",
+    "required": [
+     "de_c",
+     "ate_c",
+     "limite_inferior",
+     "limite_superior"
+    ],
+    "title": "DominioCurva"
+   },
+   "ElementDetail": {
+    "properties": {
+     "numero_atomico": {
+      "type": "integer",
+      "title": "Numero Atomico"
+     },
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "nome_en": {
+      "type": "string",
+      "title": "Nome En"
+     },
+     "periodo": {
+      "type": "integer",
+      "title": "Periodo"
+     },
+     "grupo": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Grupo"
+     },
+     "bloco": {
+      "type": "string",
+      "enum": [
+       "s",
+       "p",
+       "d",
+       "f"
+      ],
+      "title": "Bloco"
+     },
+     "categoria": {
+      "type": "string",
+      "title": "Categoria"
+     },
+     "configuracao_eletronica": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Configuracao Eletronica"
+     },
+     "estados_oxidacao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estados Oxidacao"
+     },
+     "estado_padrao": {
+      "type": "string",
+      "title": "Estado Padrao"
+     },
+     "ano_descoberta": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ano Descoberta"
+     },
+     "conhecido_antiguidade": {
+      "type": "boolean",
+      "title": "Conhecido Antiguidade"
+     },
+     "propriedades": {
+      "items": {
+       "$ref": "#/components/schemas/ElementProperty"
+      },
+      "type": "array",
+      "title": "Propriedades"
+     },
+     "procedencia": {
+      "$ref": "#/components/schemas/ElementProvenance"
+     }
+    },
+    "type": "object",
+    "required": [
+     "numero_atomico",
+     "simbolo",
+     "nome",
+     "nome_en",
+     "periodo",
+     "bloco",
+     "categoria",
+     "estado_padrao",
+     "conhecido_antiguidade",
+     "propriedades",
+     "procedencia"
+    ],
+    "title": "ElementDetail"
+   },
+   "ElementList": {
+    "properties": {
+     "total": {
+      "type": "integer",
+      "title": "Total"
+     },
+     "itens": {
+      "items": {
+       "$ref": "#/components/schemas/ElementSummary"
+      },
+      "type": "array",
+      "title": "Itens"
+     },
+     "procedencia": {
+      "$ref": "#/components/schemas/ElementProvenance"
+     }
+    },
+    "type": "object",
+    "required": [
+     "total",
+     "itens",
+     "procedencia"
+    ],
+    "title": "ElementList"
+   },
+   "ElementMass": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "enum": [
+       "peso_atomico_padrao",
+       "massa_isotopica_referencia"
+      ],
+      "title": "Codigo"
+     },
+     "valor": {
+      "type": "number",
+      "title": "Valor"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "valor",
+     "unidade"
+    ],
+    "title": "ElementMass"
+   },
+   "ElementProperty": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "valor": {
+      "type": "number",
+      "title": "Valor"
+     },
+     "incerteza": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Incerteza"
+     },
+     "intervalo": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "number"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Intervalo",
+      "description": "[mín, máx] da variação natural (CIAAW)"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "fonte": {
+      "type": "string",
+      "title": "Fonte"
+     },
+     "estado": {
+      "type": "string",
+      "title": "Estado"
+     },
+     "nota": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nota"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "nome",
+     "valor",
+     "unidade",
+     "fonte",
+     "estado"
+    ],
+    "title": "ElementProperty"
+   },
+   "ElementProvenance": {
+    "properties": {
+     "conjunto": {
+      "type": "string",
+      "title": "Conjunto"
+     },
+     "versao_dados": {
+      "type": "string",
+      "title": "Versao Dados"
+     },
+     "fontes": {
+      "additionalProperties": {
+       "$ref": "#/components/schemas/ElementSource"
+      },
+      "type": "object",
+      "title": "Fontes"
+     },
+     "avisos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos"
+     }
+    },
+    "type": "object",
+    "required": [
+     "conjunto",
+     "versao_dados",
+     "fontes",
+     "avisos"
+    ],
+    "title": "ElementProvenance"
+   },
+   "ElementSource": {
+    "properties": {
+     "tipo": {
+      "type": "string",
+      "title": "Tipo"
+     },
+     "citacao": {
+      "type": "string",
+      "title": "Citacao"
+     },
+     "doi": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Doi"
+     },
+     "url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Url"
+     },
+     "licenca": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Licenca"
+     },
+     "versao_fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Versao Fonte"
+     },
+     "acessado_em": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Acessado Em"
+     }
+    },
+    "type": "object",
+    "required": [
+     "tipo",
+     "citacao"
+    ],
+    "title": "ElementSource"
+   },
+   "ElementSummary": {
+    "properties": {
+     "numero_atomico": {
+      "type": "integer",
+      "title": "Numero Atomico"
+     },
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "nome_en": {
+      "type": "string",
+      "title": "Nome En"
+     },
+     "periodo": {
+      "type": "integer",
+      "title": "Periodo"
+     },
+     "grupo": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Grupo",
+      "description": "nulo no bloco f (lantanídeos e actinídeos)"
+     },
+     "bloco": {
+      "type": "string",
+      "enum": [
+       "s",
+       "p",
+       "d",
+       "f"
+      ],
+      "title": "Bloco"
+     },
+     "categoria": {
+      "type": "string",
+      "title": "Categoria"
+     },
+     "estado_padrao": {
+      "type": "string",
+      "title": "Estado Padrao"
+     },
+     "massa": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/ElementMass"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "type": "object",
+    "required": [
+     "numero_atomico",
+     "simbolo",
+     "nome",
+     "nome_en",
+     "periodo",
+     "bloco",
+     "categoria",
+     "estado_padrao"
+    ],
+    "title": "ElementSummary"
+   },
+   "ElementoAceito": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "numero_atomico": {
+      "type": "integer",
+      "title": "Numero Atomico"
+     },
+     "categoria": {
+      "type": "string",
+      "title": "Categoria"
+     },
+     "tem_raio": {
+      "type": "boolean",
+      "title": "Tem Raio"
+     },
+     "tem_fusao": {
+      "type": "boolean",
+      "title": "Tem Fusao"
+     },
+     "tem_vec": {
+      "type": "boolean",
+      "title": "Tem Vec"
+     },
+     "tem_massa": {
+      "type": "boolean",
+      "title": "Tem Massa"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "nome",
+     "numero_atomico",
+     "categoria",
+     "tem_raio",
+     "tem_fusao",
+     "tem_vec",
+     "tem_massa"
+    ],
+    "title": "ElementoAceito",
+    "description": "Símbolo aceito na entrada e o que este ambiente consegue usar dele. Sem valores de propriedade."
+   },
+   "ElementoPuro": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "papel": {
+      "type": "string",
+      "enum": [
+       "solvente",
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Papel"
+     },
+     "raio_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio Nm"
+     },
+     "massa_g_mol": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Massa G Mol"
+     },
+     "estrutura_elemento_puro": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura Elemento Puro"
+     },
+     "estado_do_dado": {
+      "type": "string",
+      "title": "Estado Do Dado",
+      "default": ""
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "papel"
+    ],
+    "title": "ElementoPuro",
+    "description": "Propriedade TABELADA do elemento puro — não é propriedade do átomo na liga (parecer §3.5)."
    },
    "ErroEnvelope": {
     "properties": {
@@ -3206,6 +4419,70 @@
     ],
     "title": "ExportResponse"
    },
+   "FaixaAlotropica": {
+    "properties": {
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "fase": {
+      "type": "string",
+      "title": "Fase"
+     },
+     "estrutura": {
+      "type": "string",
+      "title": "Estrutura"
+     },
+     "de_c": {
+      "type": "number",
+      "title": "De C"
+     },
+     "ate_c": {
+      "type": "number",
+      "title": "Ate C"
+     },
+     "estado": {
+      "type": "string",
+      "enum": [
+       "rascunho",
+       "aguardando_validacao",
+       "validado",
+       "rejeitado",
+       "arquivado"
+      ],
+      "title": "Estado"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "pressao": {
+      "type": "string",
+      "const": "nao_modelada",
+      "title": "Pressao",
+      "description": "A pressão não entra no modelo; as faixas são de pressão ambiente",
+      "default": "nao_modelada"
+     }
+    },
+    "type": "object",
+    "required": [
+     "simbolo",
+     "fase",
+     "estrutura",
+     "de_c",
+     "ate_c",
+     "estado"
+    ],
+    "title": "FaixaAlotropica",
+    "description": "Faixa de estabilidade cadastrada, só quando o dado passa pela política (achados T-8 e T-9)."
+   },
    "FamiliaPlano": {
     "properties": {
      "m": {
@@ -3238,6 +4515,63 @@
      "centro"
     ],
     "title": "FamiliaPlano"
+   },
+   "FaseLiga": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "title": "Id",
+      "default": "matriz"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome",
+      "default": ""
+     },
+     "estrutura": {
+      "type": "string",
+      "enum": [
+       "CS",
+       "CCC",
+       "CFC",
+       "HC"
+      ],
+      "title": "Estrutura",
+      "default": "CFC"
+     },
+     "origem": {
+      "type": "string",
+      "const": "imposta_pelo_modelo",
+      "title": "Origem",
+      "default": "imposta_pelo_modelo"
+     },
+     "composicao": {
+      "items": {
+       "$ref": "#/components/schemas/ComponenteRepresentado"
+      },
+      "type": "array",
+      "title": "Composicao"
+     },
+     "fracao": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fracao",
+      "description": "Sempre nulo em R1: o motor não calcula equilíbrio de fases"
+     },
+     "fracao_motivo": {
+      "type": "string",
+      "title": "Fracao Motivo",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "title": "FaseLiga"
    },
    "Gabarito": {
     "properties": {
@@ -3311,6 +4645,72 @@
     ],
     "title": "GrupoEspacial"
    },
+   "GrupoVizinhos": {
+    "properties": {
+     "grupo": {
+      "type": "string",
+      "enum": [
+       "basal",
+       "entre_planos"
+      ],
+      "title": "Grupo"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "d_rel": {
+      "type": "number",
+      "title": "D Rel",
+      "description": "Distância em unidades de a"
+     },
+     "d_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "D Nm",
+      "description": "Distância em nm; nulo quando a_nm é nulo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "grupo",
+     "n",
+     "d_rel"
+    ],
+    "title": "GrupoVizinhos",
+    "description": "Grupo de primeiros vizinhos (contrato R1 §3). No HC fora do c/a ideal os 12 vizinhos são 6 + 6."
+   },
+   "GuiaEntropia": {
+    "properties": {
+     "n": {
+      "type": "integer",
+      "title": "N"
+     },
+     "dS": {
+      "type": "number",
+      "title": "Ds",
+      "description": "R·ln n, J/(mol·K)"
+     },
+     "dS_R": {
+      "type": "number",
+      "title": "Ds R",
+      "description": "ln n"
+     }
+    },
+    "type": "object",
+    "required": [
+     "n",
+     "dS",
+     "dS_R"
+    ],
+    "title": "GuiaEntropia"
+   },
    "HeaAlloy": {
     "properties": {
      "nome": {
@@ -3354,7 +4754,9 @@
       "title": "Alloys"
      },
      "reference": {
-      "$ref": "#/components/schemas/HeaReference"
+      "$ref": "#/components/schemas/HeaReference",
+      "description": "OBSOLETO: limiares dos critérios (não é liga de referência). Use criterios.",
+      "deprecated": true
      },
      "samples": {
       "items": {
@@ -3366,6 +4768,44 @@
      "versao_motor": {
       "type": "string",
       "title": "Versao Motor"
+     },
+     "elementos_aceitos": {
+      "items": {
+       "$ref": "#/components/schemas/ElementoAceito"
+      },
+      "type": "array",
+      "title": "Elementos Aceitos"
+     },
+     "criterios": {
+      "items": {
+       "$ref": "#/components/schemas/CriterioDef"
+      },
+      "type": "array",
+      "title": "Criterios"
+     },
+     "entalpias": {
+      "$ref": "#/components/schemas/HeaEntalpias"
+     },
+     "guias_entropia": {
+      "items": {
+       "$ref": "#/components/schemas/GuiaEntropia"
+      },
+      "type": "array",
+      "title": "Guias Entropia"
+     },
+     "definicoes": {
+      "items": {
+       "$ref": "#/components/schemas/HeaDefinicao"
+      },
+      "type": "array",
+      "title": "Definicoes"
+     },
+     "avisos_fixos": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Avisos Fixos"
      }
     },
     "type": "object",
@@ -3374,9 +4814,74 @@
      "alloys",
      "reference",
      "samples",
-     "versao_motor"
+     "versao_motor",
+     "elementos_aceitos",
+     "criterios",
+     "entalpias",
+     "guias_entropia",
+     "definicoes",
+     "avisos_fixos"
     ],
     "title": "HeaBootstrap"
+   },
+   "HeaDefinicao": {
+    "properties": {
+     "codigo": {
+      "type": "string",
+      "title": "Codigo"
+     },
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "simbolo": {
+      "type": "string",
+      "title": "Simbolo"
+     },
+     "unidade": {
+      "type": "string",
+      "title": "Unidade"
+     },
+     "referencia": {
+      "type": "string",
+      "title": "Referencia"
+     },
+     "condicoes": {
+      "type": "string",
+      "title": "Condicoes"
+     },
+     "significado": {
+      "type": "string",
+      "title": "Significado"
+     },
+     "nao_e": {
+      "type": "string",
+      "title": "Nao E"
+     },
+     "natureza": {
+      "type": "string",
+      "title": "Natureza"
+     },
+     "disponivel": {
+      "type": "boolean",
+      "title": "Disponivel",
+      "description": "O sistema calcula esta grandeza?"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo",
+     "nome",
+     "simbolo",
+     "unidade",
+     "referencia",
+     "condicoes",
+     "significado",
+     "nao_e",
+     "natureza",
+     "disponivel"
+    ],
+    "title": "HeaDefinicao"
    },
    "HeaElement": {
     "properties": {
@@ -3399,6 +4904,11 @@
      "tem_vec": {
       "type": "boolean",
       "title": "Tem Vec"
+     },
+     "tem_massa": {
+      "type": "boolean",
+      "title": "Tem Massa",
+      "description": "Há massa utilizável no repositório de materiais neste ambiente"
      }
     },
     "type": "object",
@@ -3407,9 +4917,51 @@
      "nome",
      "raio_nm",
      "tem_fusao",
-     "tem_vec"
+     "tem_vec",
+     "tem_massa"
     ],
     "title": "HeaElement"
+   },
+   "HeaEntalpias": {
+    "properties": {
+     "disponivel": {
+      "type": "boolean",
+      "title": "Disponivel"
+     },
+     "n_pares": {
+      "type": "integer",
+      "minimum": 0.0,
+      "title": "N Pares"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte"
+     },
+     "estado": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estado"
+     }
+    },
+    "type": "object",
+    "required": [
+     "disponivel",
+     "n_pares"
+    ],
+    "title": "HeaEntalpias"
    },
    "HeaReference": {
     "properties": {
@@ -3480,9 +5032,18 @@
       },
       "type": "object",
       "maxProperties": 12,
-      "minProperties": 2,
       "title": "Composicao",
-      "description": "{elemento: quantidade}; normalizada para frações molares"
+      "description": "{símbolo: quantidade}; 1 a 12 CHAVES (inclui as de quantidade 0). Quantidades são partes proporcionais (soma livre), 0 ≤ q ≤ 1e6, conferidas no domínio. Pelo menos 2 elementos com quantidade maior que zero. Símbolo de 1 ou 2 letras, normalizado (fe → Fe) e conferido contra a tabela periódica."
+     },
+     "base": {
+      "type": "string",
+      "enum": [
+       "atomica",
+       "massica"
+      ],
+      "title": "Base",
+      "description": "Base em que as quantidades foram informadas",
+      "default": "atomica"
      }
     },
     "additionalProperties": false,
@@ -3511,6 +5072,16 @@
        "Ni": 1
       },
       "nome": "Al0.5CoCrCuFeNi"
+     },
+     {
+      "base": "massica",
+      "composicao": {
+       "Co": 26.1,
+       "Cr": 23.1,
+       "Fe": 24.8,
+       "Ni": 26.0
+      },
+      "nome": "CoCrFeNi (massa)"
      }
     ]
    },
@@ -3522,7 +5093,8 @@
      },
      "veredito": {
       "type": "string",
-      "title": "Veredito"
+      "title": "Veredito",
+      "description": "Repete triagem.texto (compatibilidade); o estado é triagem.estado"
      },
      "fase": {
       "type": "string",
@@ -3543,7 +5115,8 @@
         "type": "null"
        }
       ],
-      "title": "Estrutura Sugerida"
+      "title": "Estrutura Sugerida",
+      "description": "Sempre presente; nulo quando não há sugestão única (motivo em indisponiveis)"
      },
      "ductilidade": {
       "anyOf": [
@@ -3593,7 +5166,7 @@
        }
       ],
       "title": "Dh",
-      "description": "ΔH_mix, kJ/mol — indisponível até Q-01"
+      "description": "ΔH_mix, kJ/mol — só com todos os pares na matriz de entalpias"
      },
      "delta": {
       "anyOf": [
@@ -3646,14 +5219,16 @@
        "type": "number"
       },
       "type": "object",
-      "title": "Comp Percent"
+      "title": "Comp Percent",
+      "description": "% ATÔMICA, 4 casas; símbolos na forma canônica"
      },
      "fracoes": {
       "additionalProperties": {
        "type": "number"
       },
       "type": "object",
-      "title": "Fracoes"
+      "title": "Fracoes",
+      "description": "Fração atômica, sem arredondar"
      },
      "interpretacao": {
       "items": {
@@ -3681,7 +5256,9 @@
        "type": "object"
       },
       "type": "array",
-      "title": "Gibbs"
+      "title": "Gibbs",
+      "description": "OBSOLETO: [{T (K), G (J/mol)}]. Use curva_T (kJ/mol).",
+      "deprecated": true
      },
      "indisponiveis": {
       "additionalProperties": {
@@ -3689,10 +5266,171 @@
       },
       "type": "object",
       "title": "Indisponiveis",
-      "description": "grandeza → motivo de não ter sido calculada"
+      "description": "campo → motivo de não ter sido calculado"
      },
      "procedencia": {
       "$ref": "#/components/schemas/Procedencia"
+     },
+     "base_entrada": {
+      "type": "string",
+      "enum": [
+       "atomica",
+       "massica"
+      ],
+      "title": "Base Entrada"
+     },
+     "soma_informada": {
+      "type": "number",
+      "title": "Soma Informada",
+      "description": "Soma das quantidades recebidas (> 0), na unidade da entrada"
+     },
+     "fracoes_massa": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "type": "number"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fracoes Massa",
+      "description": "Fração mássica, sem arredondar"
+     },
+     "comp_massa_pct": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "type": "number"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comp Massa Pct",
+      "description": "% em massa, 4 casas"
+     },
+     "massa_molar_media": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Massa Molar Media",
+      "description": "M̄ = Σ xᵢMᵢ, g/mol"
+     },
+     "dS_R": {
+      "type": "number",
+      "title": "Ds R",
+      "description": "ΔS_mix/R, adimensional"
+     },
+     "classe_entropia": {
+      "type": "string",
+      "enum": [
+       "baixa",
+       "media",
+       "alta"
+      ],
+      "title": "Classe Entropia"
+     },
+     "raio_medio_nm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio Medio Nm",
+      "description": "r̄ = Σ xᵢrᵢ, nm"
+     },
+     "pares_faltantes": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Pares Faltantes",
+      "description": "Pares \"A-B\" sem entalpia de mistura utilizável"
+     },
+     "dados_faltantes": {
+      "items": {
+       "$ref": "#/components/schemas/DadoFaltante"
+      },
+      "type": "array",
+      "title": "Dados Faltantes"
+     },
+     "curva_T": {
+      "items": {
+       "$ref": "#/components/schemas/PontoCurvaT"
+      },
+      "type": "array",
+      "title": "Curva T",
+      "description": "De 300 K a T_sup_k, passo 50 K"
+     },
+     "T_sup_k": {
+      "type": "number",
+      "title": "T Sup K",
+      "description": "Limite superior da curva, K"
+     },
+     "dG_Tm": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dg Tm",
+      "description": "ΔG_mix do modelo em T_m, kJ/mol"
+     },
+     "T_cruzamento_k": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "T Cruzamento K",
+      "description": "T* = 1000·ΔH_mix/ΔS_mix, K; só com ΔH_mix > 0"
+     },
+     "energia_formacao": {
+      "type": "null",
+      "title": "Energia Formacao",
+      "description": "Sempre nulo: o sistema não calcula energia de formação"
+     },
+     "criterios": {
+      "items": {
+       "$ref": "#/components/schemas/CriterioAvaliado"
+      },
+      "type": "array",
+      "title": "Criterios"
+     },
+     "triagem": {
+      "$ref": "#/components/schemas/Triagem"
+     },
+     "vec_aplicavel": {
+      "type": "boolean",
+      "title": "Vec Aplicavel",
+      "description": "Critério de VEC dentro do domínio (regra conservadora, sem fonte)"
+     },
+     "classes": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Classes",
+      "description": "Natureza de cada grandeza (valores de procedencia.classe)"
      }
     },
     "type": "object",
@@ -3706,7 +5444,19 @@
      "interpretacao",
      "gibbs",
      "indisponiveis",
-     "procedencia"
+     "procedencia",
+     "base_entrada",
+     "soma_informada",
+     "dS_R",
+     "classe_entropia",
+     "pares_faltantes",
+     "dados_faltantes",
+     "curva_T",
+     "T_sup_k",
+     "criterios",
+     "triagem",
+     "vec_aplicavel",
+     "classes"
     ],
     "title": "HeaResponse"
    },
@@ -4347,6 +6097,82 @@
     ],
     "title": "MillerResponse"
    },
+   "ModeloLiga": {
+    "properties": {
+     "tipo_solucao": {
+      "type": "string",
+      "enum": [
+       "substitucional",
+       "intersticial",
+       "mista"
+      ],
+      "title": "Tipo Solucao",
+      "default": "substitucional"
+     },
+     "ordenacao": {
+      "type": "string",
+      "enum": [
+       "desordenada",
+       "ordenada_prototipo"
+      ],
+      "title": "Ordenacao",
+      "default": "desordenada"
+     },
+     "fases": {
+      "type": "string",
+      "const": "monofasica_imposta",
+      "title": "Fases",
+      "default": "monofasica_imposta"
+     },
+     "geometria": {
+      "type": "string",
+      "const": "idealizada",
+      "title": "Geometria",
+      "default": "idealizada"
+     },
+     "parametro_rede": {
+      "type": "string",
+      "const": "estimativa_vegard_sobre_raios",
+      "title": "Parametro Rede",
+      "default": "estimativa_vegard_sobre_raios"
+     },
+     "parametro_rede_solvente": {
+      "type": "string",
+      "enum": [
+       "derivado_de_R",
+       "medido"
+      ],
+      "title": "Parametro Rede Solvente",
+      "default": "derivado_de_R"
+     },
+     "c_a": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "ideal",
+         "tabelado",
+         "derivado_de_a_c_medidos",
+         "informado"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A"
+     },
+     "hipoteses": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Hipoteses"
+     }
+    },
+    "type": "object",
+    "title": "ModeloLiga"
+   },
    "NotaTermica": {
     "properties": {
      "tipo": {
@@ -4360,6 +6186,18 @@
      "texto": {
       "type": "string",
       "title": "Texto"
+     },
+     "fonte": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fonte",
+      "description": "Fonte da afirmação ou o motivo de ela não ter fonte verificada (achado T-7). Nulo quando a nota é uma consequência direta do modelo já citado em procedência."
      }
     },
     "type": "object",
@@ -4440,6 +6278,40 @@
      "result"
     ],
     "title": "OkEnvelope[Dict[str, MetalInfo]]"
+   },
+   "OkEnvelope_ElementDetail_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/ElementDetail"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[ElementDetail]"
+   },
+   "OkEnvelope_ElementList_": {
+    "properties": {
+     "ok": {
+      "type": "boolean",
+      "title": "Ok",
+      "default": true
+     },
+     "result": {
+      "$ref": "#/components/schemas/ElementList"
+     }
+    },
+    "type": "object",
+    "required": [
+     "result"
+    ],
+    "title": "OkEnvelope[ElementList]"
    },
    "OkEnvelope_ExportResponse_": {
     "properties": {
@@ -4859,6 +6731,38 @@
     ],
     "title": "PlanarInfo"
    },
+   "PontoCurvaT": {
+    "properties": {
+     "T": {
+      "type": "number",
+      "title": "T",
+      "description": "K"
+     },
+     "menos_TdS": {
+      "type": "number",
+      "title": "Menos Tds",
+      "description": "−T·ΔS_mix (analítico), kJ/mol"
+     },
+     "dG": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dg",
+      "description": "ΔH_mix − T·ΔS_mix, kJ/mol; nulo quando ΔH_mix é nulo"
+     }
+    },
+    "type": "object",
+    "required": [
+     "T",
+     "menos_TdS"
+    ],
+    "title": "PontoCurvaT"
+   },
    "Procedencia": {
     "properties": {
      "classe": {
@@ -4964,6 +6868,47 @@
      "instancias"
     ],
     "title": "Progress"
+   },
+   "Prototipo": {
+    "properties": {
+     "strukturbericht": {
+      "type": "string",
+      "title": "Strukturbericht"
+     },
+     "prototipo": {
+      "type": "string",
+      "title": "Prototipo"
+     },
+     "composicao_ideal_at_pct": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "type": "object",
+      "title": "Composicao Ideal At Pct"
+     },
+     "rede_ordenada": {
+      "type": "string",
+      "title": "Rede Ordenada"
+     },
+     "observacao": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Observacao"
+     }
+    },
+    "type": "object",
+    "required": [
+     "strukturbericht",
+     "prototipo",
+     "rede_ordenada"
+    ],
+    "title": "Prototipo"
    },
    "QuestionCreate": {
     "properties": {
@@ -5172,6 +7117,42 @@
     ],
     "title": "QuestionInstance"
    },
+   "Realizacao": {
+    "properties": {
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "estatistica",
+       "ordenada_prototipo",
+       "sem_soluto"
+      ],
+      "title": "Tipo",
+      "default": "estatistica"
+     },
+     "semente": {
+      "type": "integer",
+      "title": "Semente",
+      "default": 1
+     },
+     "algoritmo": {
+      "type": "string",
+      "title": "Algoritmo",
+      "default": "mt19937-chaves-v1"
+     },
+     "n": {
+      "type": "integer",
+      "title": "N",
+      "default": 1
+     },
+     "aviso": {
+      "type": "string",
+      "title": "Aviso",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "title": "Realizacao"
+   },
    "RegisterRequest": {
     "properties": {
      "nome": {
@@ -5255,6 +7236,40 @@
     ],
     "title": "RegraSolubilidade"
    },
+   "RegrasSoluto": {
+    "properties": {
+     "soluto": {
+      "type": "string",
+      "title": "Soluto"
+     },
+     "modo": {
+      "type": "string",
+      "enum": [
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Modo"
+     },
+     "regras": {
+      "items": {
+       "$ref": "#/components/schemas/RegraSolubilidade"
+      },
+      "type": "array",
+      "title": "Regras"
+     },
+     "conclusao": {
+      "type": "string",
+      "title": "Conclusao",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "required": [
+     "soluto",
+     "modo"
+    ],
+    "title": "RegrasSoluto"
+   },
    "ServicoCapacidade": {
     "properties": {
      "disponivel": {
@@ -5318,6 +7333,41 @@
     ],
     "title": "SessionInfo"
    },
+   "SitioAtomo": {
+    "properties": {
+     "nome": {
+      "type": "string",
+      "title": "Nome"
+     },
+     "wyckoff": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Wyckoff"
+     },
+     "nc": {
+      "type": "integer",
+      "title": "Nc"
+     },
+     "nc_txt": {
+      "type": "string",
+      "title": "Nc Txt",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "required": [
+     "nome",
+     "nc"
+    ],
+    "title": "SitioAtomo",
+    "description": "Sítio cristalográfico do átomo. ``wyckoff`` é nulo até a conferência bibliográfica (decisão D-e)."
+   },
    "SitioBase": {
     "properties": {
      "frac": {
@@ -5350,15 +7400,76 @@
      },
      "fator": {
       "type": "number",
-      "title": "Fator"
+      "title": "Fator",
+      "description": "r_livre/R"
      },
      "raio_nm": {
       "type": "number",
-      "title": "Raio Nm"
+      "title": "Raio Nm",
+      "description": "Raio livre do sítio em nm"
      },
      "nc": {
       "type": "integer",
-      "title": "Nc"
+      "title": "Nc",
+      "description": "Total de vizinhos (inteiro)"
+     },
+     "elemento": {
+      "type": "string",
+      "title": "Elemento",
+      "description": "Intersticial que usa o sítio",
+      "default": ""
+     },
+     "tipo": {
+      "type": "string",
+      "enum": [
+       "octaedrico",
+       "tetraedrico",
+       "cubico"
+      ],
+      "title": "Tipo",
+      "default": "octaedrico"
+     },
+     "nc_txt": {
+      "type": "string",
+      "title": "Nc Txt",
+      "description": "Ex.: \"2 + 4\" no octaédrico da CCC",
+      "default": ""
+     },
+     "sitios_por_celula": {
+      "type": "integer",
+      "title": "Sitios Por Celula",
+      "default": 0
+     },
+     "wyckoff": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Wyckoff"
+     },
+     "escolha": {
+      "type": "string",
+      "enum": [
+       "padrao",
+       "informado"
+      ],
+      "title": "Escolha",
+      "default": "padrao"
+     },
+     "justificativa": {
+      "type": "string",
+      "title": "Justificativa",
+      "default": ""
+     },
+     "padrao_verificado": {
+      "type": "boolean",
+      "title": "Padrao Verificado",
+      "description": "false enquanto o sítio padrão não tiver parecer com fonte",
+      "default": false
      }
     },
     "type": "object",
@@ -5379,10 +7490,34 @@
       "description": "Metal solvente"
      },
      "soluto": {
-      "type": "string",
-      "maxLength": 32,
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 32
+       },
+       {
+        "type": "null"
+       }
+      ],
       "title": "Soluto",
-      "description": "Metal (substitucional) ou C, N, H (intersticial)"
+      "description": "Forma binária legada: metal (substitucional) ou C, N, H (intersticial). Informe exatamente um entre 'soluto' e 'solutos'"
+     },
+     "solutos": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/SolutoPedido"
+        },
+        "type": "array",
+        "maxItems": 6,
+        "minItems": 1
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Solutos",
+      "description": "Lista de 1 a 6 solutos, substitucionais e/ou intersticiais; a ordem do pedido não altera o resultado"
      },
      "x": {
       "anyOf": [
@@ -5396,8 +7531,35 @@
        }
       ],
       "title": "X",
-      "description": "% atômica do soluto",
-      "default": 10.0
+      "description": "% do soluto legado (padrão 10); não use junto com 'solutos'"
+     },
+     "base_composicao": {
+      "type": "string",
+      "enum": [
+       "atomica",
+       "massica"
+      ],
+      "title": "Base Composicao",
+      "description": "Base em que todos os x do pedido foram informados",
+      "default": "atomica"
+     },
+     "estrutura_matriz": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "CS",
+         "CCC",
+         "CFC",
+         "HC"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estrutura Matriz",
+      "description": "Estrutura imposta à matriz; padrão: a do solvente no repositório"
      },
      "n": {
       "type": "integer",
@@ -5425,14 +7587,14 @@
       "maximum": 2147483647.0,
       "minimum": 0.0,
       "title": "Semente",
+      "description": "0 é semente válida e respeitada",
       "default": 1
      }
     },
     "additionalProperties": false,
     "type": "object",
     "required": [
-     "base",
-     "soluto"
+     "base"
     ],
     "title": "SolidSolutionRequest",
     "examples": [
@@ -5453,6 +7615,27 @@
       "n": 2,
       "soluto": "Au",
       "x": 25
+     },
+     {
+      "base": "Fe",
+      "n": 3,
+      "semente": 7,
+      "solutos": [
+       {
+        "elemento": "Cr",
+        "x": 12
+       },
+       {
+        "elemento": "Ni",
+        "x": 8
+       },
+       {
+        "elemento": "C",
+        "modo": "intersticial",
+        "sitio": "octaedrico",
+        "x": 1
+       }
+      ]
      }
     ]
    },
@@ -5468,7 +7651,8 @@
      },
      "soluto": {
       "type": "string",
-      "title": "Soluto"
+      "title": "Soluto",
+      "description": "Com vários solutos: o primeiro da ordem canônica (campo legado)"
      },
      "intersticial": {
       "type": "boolean",
@@ -5546,11 +7730,13 @@
      },
      "n_soluto": {
       "type": "integer",
-      "title": "N Soluto"
+      "title": "N Soluto",
+      "description": "Átomos ÚNICOS de soluto (soma de todos os solutos)"
      },
      "n_solvente": {
       "type": "integer",
-      "title": "N Solvente"
+      "title": "N Solvente",
+      "description": "Átomos ÚNICOS de solvente"
      },
      "fase_ordenada": {
       "anyOf": [
@@ -5632,6 +7818,82 @@
       "type": "array",
       "title": "Arestas"
      },
+     "composicao": {
+      "$ref": "#/components/schemas/ComposicaoLiga"
+     },
+     "realizacao": {
+      "$ref": "#/components/schemas/Realizacao"
+     },
+     "modelo": {
+      "$ref": "#/components/schemas/ModeloLiga"
+     },
+     "prototipo": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/Prototipo"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "fases": {
+      "items": {
+       "$ref": "#/components/schemas/FaseLiga"
+      },
+      "type": "array",
+      "title": "Fases"
+     },
+     "verificacoes": {
+      "$ref": "#/components/schemas/Verificacoes"
+     },
+     "regras_por_soluto": {
+      "items": {
+       "$ref": "#/components/schemas/RegrasSoluto"
+      },
+      "type": "array",
+      "title": "Regras Por Soluto"
+     },
+     "conclusao_global": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Conclusao Global",
+      "description": "Nulo com mais de um soluto: as regras são binárias (motivo em 'indisponiveis')"
+     },
+     "sitios": {
+      "items": {
+       "$ref": "#/components/schemas/SitioIntersticial"
+      },
+      "type": "array",
+      "title": "Sitios"
+     },
+     "elementos": {
+      "items": {
+       "$ref": "#/components/schemas/ElementoPuro"
+      },
+      "type": "array",
+      "title": "Elementos"
+     },
+     "convencoes": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Convencoes"
+     },
+     "indisponiveis": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Indisponiveis"
+     },
      "procedencia": {
       "$ref": "#/components/schemas/Procedencia"
      }
@@ -5664,6 +7926,61 @@
      "procedencia"
     ],
     "title": "SolidSolutionResponse"
+   },
+   "SolutoPedido": {
+    "properties": {
+     "elemento": {
+      "type": "string",
+      "maxLength": 32,
+      "title": "Elemento",
+      "description": "Símbolo, nome ou alias resolvido pelo repositório"
+     },
+     "x": {
+      "anyOf": [
+       {
+        "type": "number",
+        "maximum": 100.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "X",
+      "description": "% do soluto na base de 'base_composicao'"
+     },
+     "modo": {
+      "type": "string",
+      "enum": [
+       "auto",
+       "substitucional",
+       "intersticial"
+      ],
+      "title": "Modo",
+      "description": "'auto': intersticial se o símbolo é C, H ou N; senão substitucional",
+      "default": "auto"
+     },
+     "sitio": {
+      "type": "string",
+      "enum": [
+       "auto",
+       "octaedrico",
+       "tetraedrico",
+       "cubico"
+      ],
+      "title": "Sitio",
+      "description": "Só para intersticial. 'auto': octaédrico em CCC, CFC e HC; cúbico em CS",
+      "default": "auto"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "elemento",
+     "x"
+    ],
+    "title": "SolutoPedido",
+    "description": "Um soluto do pedido multicomponente (contrato R1 §2.1)."
    },
    "StructureInfo": {
     "properties": {
@@ -5872,6 +8189,12 @@
       "type": "integer",
       "title": "Nc"
      },
+     "nc_txt": {
+      "type": "string",
+      "title": "Nc Txt",
+      "description": "\"6 + 6\" no HC com c/a ≠ ideal; senão o próprio nc como texto",
+      "default": ""
+     },
      "fea": {
       "type": "number",
       "title": "Fea"
@@ -5879,6 +8202,87 @@
      "vazios": {
       "type": "number",
       "title": "Vazios"
+     },
+     "fea_modelo": {
+      "type": "string",
+      "const": "esferas_rigidas",
+      "title": "Fea Modelo",
+      "description": "O FEA é propriedade do modelo de esferas rígidas, não empacotamento medido",
+      "default": "esferas_rigidas"
+     },
+     "raio_contato_rel": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Raio Contato Rel",
+      "description": "R_c/a = ½·mín(1, d_entre_planos/a); só HC (nulo nas cúbicas)"
+     },
+     "contato_tipo": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "basal",
+         "entre_planos",
+         "ambos"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Contato Tipo",
+      "description": "Onde ocorre o primeiro contato das esferas; só HC"
+     },
+     "c_a_ideal": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A Ideal",
+      "description": "√(8/3); só HC"
+     },
+     "c_a_natureza": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "ideal",
+         "tabelado",
+         "derivado_de_a_c_medidos",
+         "informado"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "C A Natureza",
+      "description": "Origem do c/a usado; só HC"
+     },
+     "vizinhos": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/GrupoVizinhos"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vizinhos",
+      "description": "Grupos de primeiros vizinhos; só HC em R1 (nulo nas cúbicas)"
      },
      "a_em_R": {
       "type": "number",
@@ -6344,20 +8748,44 @@
       "title": "Alfa 1E6 K"
      },
      "fator": {
-      "type": "number",
-      "title": "Fator"
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fator",
+      "description": "Nulo acima da T_f do modelo (achado T-1)"
      },
      "a_ref_nm": {
       "type": "number",
       "title": "A Ref Nm"
      },
      "a_nm": {
-      "type": "number",
-      "title": "A Nm"
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "A Nm",
+      "description": "Nulo acima da T_f do modelo (achado T-1)"
      },
      "delta_a_pct": {
-      "type": "number",
-      "title": "Delta A Pct"
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Delta A Pct",
+      "description": "Nulo acima da T_f do modelo (achado T-1)"
      },
      "densidade": {
       "anyOf": [
@@ -6371,12 +8799,21 @@
       "title": "Densidade"
      },
      "delta_v_pct": {
-      "type": "number",
-      "title": "Delta V Pct"
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Delta V Pct",
+      "description": "Nulo acima da T_f do modelo (achado T-1)"
      },
      "u_nm": {
       "type": "number",
-      "title": "U Nm"
+      "title": "U Nm",
+      "description": "Deslocamento quadrático médio estimado (ver u_rotulo), não amplitude"
      },
      "razao_lindemann": {
       "type": "number",
@@ -6392,7 +8829,8 @@
      },
      "fundido": {
       "type": "boolean",
-      "title": "Fundido"
+      "title": "Fundido",
+      "description": "Estado líquido afirmado: só para elemento puro acima da T_f tabelada. Em mistura é sempre falso, porque a T_f da regra das misturas não é solidus nem liquidus (achado T-6); use acima_da_tf_nominal para a comparação numérica."
      },
      "curva": {
       "items": {
@@ -6403,7 +8841,7 @@
       },
       "type": "array",
       "title": "Curva",
-      "description": "[T (°C), u/d] de 0 K até T_f + 200 °C"
+      "description": "[T (°C), u/d] no domínio do modelo: de 100 K até a T_f do modelo (achados T-1 e T-4). Vazia quando não há domínio válido, com o motivo em indisponiveis.curva"
      },
      "notas": {
       "items": {
@@ -6411,6 +8849,93 @@
       },
       "type": "array",
       "title": "Notas"
+     },
+     "acima_da_tf_nominal": {
+      "type": "boolean",
+      "title": "Acima Da Tf Nominal",
+      "description": "T ≥ T_f do modelo (nominal, se houver mistura)"
+     },
+     "tf_natureza": {
+      "type": "string",
+      "enum": [
+       "tabelada_do_elemento",
+       "nominal_regra_das_misturas"
+      ],
+      "title": "Tf Natureza"
+     },
+     "tf_rotulo": {
+      "type": "string",
+      "title": "Tf Rotulo"
+     },
+     "mistura_base": {
+      "anyOf": [
+       {
+        "type": "string",
+        "const": "atomica"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mistura Base",
+      "description": "Base da regra das misturas de α e T_f; nulo quando não há mistura"
+     },
+     "dilatacao_isotropica": {
+      "type": "boolean",
+      "title": "Dilatacao Isotropica",
+      "description": "Hipótese imposta pelo modelo (achado T-2)"
+     },
+     "u_natureza": {
+      "type": "string",
+      "const": "deslocamento_quadratico_medio_estimado",
+      "title": "U Natureza"
+     },
+     "u_rotulo": {
+      "type": "string",
+      "title": "U Rotulo"
+     },
+     "lindemann_natureza": {
+      "type": "string",
+      "const": "limite_inferior_da_faixa_0_10_a_0_15",
+      "title": "Lindemann Natureza"
+     },
+     "curva_dominio": {
+      "$ref": "#/components/schemas/DominioCurva"
+     },
+     "alotropia": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/FaixaAlotropica"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Nulo com motivo em indisponiveis.alotropia quando o dado não passa pela política"
+     },
+     "hipoteses": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Hipoteses",
+      "description": "Hipóteses do modelo declaradas no resultado"
+     },
+     "indisponiveis": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Indisponiveis",
+      "description": "campo → motivo, para cada campo nulo por falta de dado ou de modelo"
+     },
+     "extrapolacao": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Extrapolacao",
+      "description": "campo → motivo, para valor devolvido fora do domínio do modelo"
      },
      "procedencia": {
       "$ref": "#/components/schemas/Procedencia"
@@ -6423,11 +8948,7 @@
      "fusao_c",
      "homologa",
      "alfa_1e6_k",
-     "fator",
      "a_ref_nm",
-     "a_nm",
-     "delta_a_pct",
-     "delta_v_pct",
      "u_nm",
      "razao_lindemann",
      "amplitude_rel",
@@ -6435,6 +8956,15 @@
      "fundido",
      "curva",
      "notas",
+     "acima_da_tf_nominal",
+     "tf_natureza",
+     "tf_rotulo",
+     "dilatacao_isotropica",
+     "u_natureza",
+     "u_rotulo",
+     "lindemann_natureza",
+     "curva_dominio",
+     "hipoteses",
      "procedencia"
     ],
     "title": "ThermalResponse"
@@ -6466,6 +8996,29 @@
      "resolvidas"
     ],
     "title": "TopicProgress"
+   },
+   "Triagem": {
+    "properties": {
+     "estado": {
+      "type": "string",
+      "enum": [
+       "favoravel",
+       "desfavoravel",
+       "inconclusiva"
+      ],
+      "title": "Estado"
+     },
+     "texto": {
+      "type": "string",
+      "title": "Texto"
+     }
+    },
+    "type": "object",
+    "required": [
+     "estado",
+     "texto"
+    ],
+    "title": "Triagem"
    },
    "UserInfo": {
     "properties": {
@@ -6499,6 +9052,71 @@
      "email_verificado"
     ],
     "title": "UserInfo"
+   },
+   "VerificacaoFases": {
+    "properties": {
+     "previstas": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Previstas"
+     },
+     "motivo": {
+      "type": "string",
+      "title": "Motivo",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "title": "VerificacaoFases"
+   },
+   "VerificacaoLimite": {
+    "properties": {
+     "verificado": {
+      "type": "boolean",
+      "title": "Verificado",
+      "default": false
+     },
+     "valor": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Valor"
+     },
+     "motivo": {
+      "type": "string",
+      "title": "Motivo",
+      "default": ""
+     }
+    },
+    "type": "object",
+    "title": "VerificacaoLimite"
+   },
+   "Verificacoes": {
+    "properties": {
+     "limite_solubilidade": {
+      "$ref": "#/components/schemas/VerificacaoLimite"
+     },
+     "fases_secundarias": {
+      "$ref": "#/components/schemas/VerificacaoFases"
+     }
+    },
+    "type": "object",
+    "title": "Verificacoes",
+    "description": "O que o motor NÃO verifica (parecer R1-CRI-01 §3.7)."
    },
    "VersionInfo": {
     "properties": {

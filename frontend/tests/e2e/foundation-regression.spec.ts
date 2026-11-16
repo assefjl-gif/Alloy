@@ -4,7 +4,7 @@
  * pela API unificada (/api/v1/exports).
  */
 import { readFileSync } from 'node:fs';
-import { test, expect, openCrystalab, terminal } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, reveal } from './fixtures.ts';
 
 test('navegação entre módulos sem recarregar a página', async ({ app: page }) => {
   await openCrystalab(page);
@@ -18,6 +18,9 @@ test('navegação entre módulos sem recarregar a página', async ({ app: page }
 
 test('data-testid do CrystaLab v1.0 preservados e funcionais', async ({ app: page }) => {
   await openCrystalab(page);
+  // editor e terminal ficam em subseções recolhidas da barra lateral (R1-FE-01)
+  await reveal(page, 'structure.editor');
+  await reveal(page, 'analysis.terminal');
   for (const id of ['block-list', 'terminal-log', 'parameter-editor', 'render-button', 'result-root', 'viewer-stage']) await expect(page.getByTestId(id)).toBeVisible();
   // editor de parâmetros + Renderizar, como no v1.0
   await page.getByTestId('parameter-editor').fill('elemento = (genérico)\nestrutura = CFC\nraio = 0.128\npeso = 63.55');

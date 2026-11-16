@@ -21,7 +21,7 @@ export default function AboutModule() {
   return (
     <Workbench center={
       <main id="main-content" tabIndex={-1} className="module-main about" data-testid="about">
-        <header className="module-head"><h1>{t('about.title')}</h1><p className="module-head__lead">{t('about.lead')}</p></header>
+        <header className="module-head ds-on-dark"><h1>{t('about.title')}</h1><p className="module-head__lead">{t('about.lead')}</p></header>
         <section aria-labelledby="about-engines" className="ds-stack">
           <h2 id="about-engines">{t('about.engines')}</h2>
           <div className="ds-table-wrap"><table className="ds-table">

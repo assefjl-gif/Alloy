@@ -12,8 +12,23 @@
     --color-line: #bbbbbb;
     --viewer-bg: #ffffff;
     --viewer-glow: #ffffff;
+    --viewer-grid: transparent;
     color-scheme: light;
   }
+  /* Faixas de título em carvão viram texto preto sobre branco no papel. */
+  .ds-on-dark {
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-ink: #000000;
+    --color-ink-soft: #1a1a1a;
+    --color-muted: #444444;
+    --color-line: #bbbbbb;
+    --brand-sand: #000000;
+    --lab-bg: #ffffff;
+    --topbar-bg: #ffffff;
+    color-scheme: light;
+  }
+  .module-head, .breadcrumb { box-shadow: none !important; clip-path: none !important; background: #ffffff !important; }
   @page { margin: 14mm; }
   body { background: #ffffff !important; color: #000000; }
   .ds-app__header, .ds-workbench__lab, .ds-workbench__side, .ds-skip-link,
@@ -26,9 +41,21 @@
   .viewer-stage { height: 90mm !important; border: 1px solid #bbbbbb; }
   .metrics-grid { grid-template-columns: repeat(3, 1fr) !important; }
   .lower-grid, .status-band { grid-template-columns: 1fr 1fr !important; }
+  /* CrystaLab em palco (R1-FE-01): sai a cena e, abaixo dela, a seção Propriedades inteira */
+  .ds-app:has(.ds-stage-layout) { height: auto !important; }
+  .ds-app:has(.ds-stage-layout) > .ds-app__body { overflow: visible !important; }
+  .ds-stage-layout { display: flex !important; flex-direction: column-reverse; height: auto !important; overflow: visible !important; }
+  .ds-stage-layout__stage { height: 92mm !important; overflow: visible !important; }
+  .ds-stage-layout__bar, .ds-stage-layout__bar[hidden] { display: block !important; position: static !important; width: auto !important; overflow: visible !important; border: 0 !important; box-shadow: none !important; }
+  .cl-bar, .cl-bar__body { display: block !important; overflow: visible !important; }
+  .cl-bar__head, .cl-well, .cl-hud__actions, .cl-camera, .cl-hud__notices .ds-btn, .ds-stage-layout__backdrop, .cl-section { display: none !important; }
+  .cl-section:has(> #cl-sec-properties) { display: block !important; border: 0; }
+  #cl-sec-properties, #cl-sec-properties .ds-disclosure__body[hidden] { display: block !important; }
+  .cl-hud__lead, .cl-legend { border: 0 !important; background: transparent !important; }
   a { color: inherit; text-decoration: none; }
   .ds-demo-seal, .ds-cat-box--demo { border: 2px dashed #8a5a00 !important; }
   html.print-report .module-main::after,
+  html.print-report .cl-bar__body::after,
   html.print-report .result-scroll::after {
     content: "Alloy Virtual Lab — valores calculados pelo motor; dados demonstrativos aparecem com selo próprio.";
     display: block; margin-top: 12px; padding-top: 6px; border-top: 1px solid #bbbbbb; color: #444444; font-size: 10px;

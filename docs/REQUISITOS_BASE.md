@@ -142,7 +142,7 @@ Valem para todas as fases. Violar qualquer um é falha **P0**.
 | RQ-FE-03 | Viewer 3D fiel aos dados do motor: instancing, seleção, planos, supercélulas, medições, liberação de WebGL | Geometria vem da API; teste de vazamento de memória ao trocar de cena | 03/06 | 5 | ✔ C (supercélula desenhada pelo cliente — mover para motor, D-10) |
 | RQ-FE-04 | Responsivo (desktop, notebook, tablet, smartphone) e WCAG 2.2 AA | axe-core sem violação séria; 360 px sem rolagem horizontal; teste com leitor de tela | 03/07 | 5/9 | ◐ C (auditoria própria; axe/Lighthouse e dispositivo real pendentes — D-19/D-20) |
 | RQ-FE-05 | Estados de carregamento, vazio, erro, offline e operação longa | Matriz de estados por tela | 03 | 5 | ✔ C (PWA, conectividade) |
-| RQ-FE-06 | Funcionalidades da v1.4 que o C não tem: ligas, temperatura, prática de Miller, densidade planar, cores por elemento, tutoriais | Cada uma portada consumindo a API (sem fórmula no cliente) | 03/06 | 5–6 | ✘ C · ✔ A |
+| RQ-FE-06 | Funcionalidades da v1.4 que o C não tem: ligas, temperatura, prática de Miller, densidade planar, cores por elemento, tutoriais | Cada uma portada consumindo a API (sem fórmula no cliente) | 03/06 | 5–6 | ◐ ligas e temperatura portadas (T-13); faltam cores por elemento e tutoriais |
 | RQ-FE-07 | i18n pt-BR/en/es | Nenhuma chave sem uso; teste de catálogo | 03 | 5 | ✔ C (959 mensagens) |
 
 ### 3.8 Sistema educacional e IA (EDU) — §11

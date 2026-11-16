@@ -6,7 +6,7 @@
  * e tests/unit/commands.test.ts.)
  */
 import { readFileSync } from 'node:fs';
-import { test, expect, openCrystalab, terminal } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, reveal } from './fixtures.ts';
 import type { Page } from 'playwright/test';
 
 type Item = { kind: string; label: string; visible: boolean; color: string; data: unknown };
@@ -21,7 +21,8 @@ test('Fluxo B sem digitar: bloco HC → formulário Miller-Bravais → compartil
   await openCrystalab(page);
   await page.getByTestId('block-list').getByRole('button', { name: /Mg · Magnésio/ }).click();
   await expect(page.getByTestId('metric-structure')).toContainText('HC');
-  const guided = page.getByTestId('guided-mode');
+  await reveal(page, 'analysis.miller');
+  const guided = page.getByTestId('guided-miller-card');
   for (const [label, v] of [['h', '1'], ['k', '0'], ['i', '-1'], ['l', '1']] as const) await guided.getByLabel(label, { exact: true }).fill(v);
   await expect(guided.getByTestId('equivalent-command').last()).toHaveText('plano 1 0 -1 1');
   await guided.getByTestId('guided-miller').click();
@@ -49,6 +50,7 @@ test('4.2 · ambiguidade "a=" exige escolha; a escolha executa o comando corrigi
 
 test('4.4/4.5 · autocompletar, erros com dica de correção e estado de execução', async ({ app: page }) => {
   await openCrystalab(page);
+  await reveal(page, 'analysis.terminal');
   const input = page.locator('#term-input-crystalab');
   await input.fill('pla');
   await expect(page.getByRole('listbox', { name: 'Sugestões' })).toContainText('plano');
@@ -68,7 +70,7 @@ test('4.9 · OverlayManager: ocultar, cor acessível, seleção e remoção indi
   await terminal(page, 'plano 1 1 0');
   await terminal(page, 'direcao 1 1 1');
   await expect.poll(async () => (await overlays(page)).length).toBe(2);
-  await page.getByRole('tab', { name: /Camadas/ }).click();
+  await reveal(page, 'analysis.overlays');
   const mgr = page.getByTestId('overlay-manager');
   await mgr.getByRole('button', { name: /Ocultar Plano/ }).click();
   await expect.poll(async () => (await overlays(page))[0]!.visible).toBe(false);
@@ -95,6 +97,7 @@ test('4.11 · troca rápida de material: a resposta antiga é descartada e não 
 
 test('4.12 · densidade com KaTeX: fórmula simbólica, variáveis, substituição e resultado do motor', async ({ app: page }) => {
   await openCrystalab(page);
+  await reveal(page, 'properties.density');
   await page.getByRole('button', { name: 'Calcular densidade' }).first().click();
   const panel = page.getByTestId('density-panel');
   await expect(panel.locator('.katex').first()).toBeVisible();
@@ -112,7 +115,7 @@ test('4.14 · workspaces locais: salvar, reabrir, exportar e importar JSON', asy
   await expect(page.getByTestId('terminal-log')).toContainText('Workspace “aula-3” salvo neste navegador');
   await terminal(page, 'usar Fe');
   await expect(page.locator('#resultTitle')).toContainText('Ferro');
-  await page.getByRole('tab', { name: 'Workspaces' }).click();
+  await reveal(page, 'analysis.workspaces');
   const ws = page.getByTestId('workspaces');
   await expect(ws).toContainText('neste navegador');
   const [download] = await Promise.all([page.waitForEvent('download'), ws.getByRole('button', { name: 'Exportar todos' }).click()]);

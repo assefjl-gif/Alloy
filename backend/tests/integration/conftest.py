@@ -12,8 +12,10 @@ from pathlib import Path
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, event, text
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
+
+from app.services.provedor import ativar_chaves_estrangeiras
 
 RAIZ_BACKEND = Path(__file__).resolve().parents[2]
 
@@ -45,9 +47,8 @@ def motor_banco(request, tmp_path, monkeypatch):
         limpar.dispose()
     _migrar(url, monkeypatch)
     motor = create_engine(url)
-    if motor.dialect.name == "sqlite":
-        # SQLite só impõe chaves estrangeiras com este PRAGMA (o PostgreSQL impõe sempre).
-        event.listen(motor, "connect", lambda conexao, _registro: conexao.execute("PRAGMA foreign_keys=ON"))
+    # Mesmo mecanismo da aplicação (R2-BE-03): SQLite só impõe chaves estrangeiras com PRAGMA.
+    ativar_chaves_estrangeiras(motor)
     yield motor
     motor.dispose()
 

@@ -104,8 +104,11 @@ class ColetorDados:
                             if u["estado"] != "validado" or u["fonte"] is None})
         if not pendentes:
             return []
-        return [f"Dados ainda sem validação usados neste cálculo (ambiente de desenvolvimento): "
-                f"{', '.join(pendentes)}. Não use o resultado como referência."]
+        # O texto não afirma o ambiente: desde R2-BE-02 a rota de célula também registra dados do
+        # repositório base (que aguardam validação) e é servida em produção — dizer "ambiente de
+        # desenvolvimento" ali seria falso.
+        return [f"Dados ainda sem validação usados neste cálculo: {', '.join(pendentes)}. "
+                f"Não use o resultado como referência."]
 
 
 def sha256_parametros(parametros: Mapping[str, Any]) -> str:

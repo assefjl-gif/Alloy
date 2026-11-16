@@ -12,6 +12,9 @@ import type { StructureResult, Vec3 } from '../../services/api/contracts.ts';
 import type { AtomRef, OverlayItem } from '../../stores/overlays.ts';
 import type { CameraState, DisplaySettings } from '../../stores/viewer.ts';
 import { bounds, buildAtoms, buildEdges, contactBonds, isLatticePoint, stackingLayers, type DisplayAtom } from './geometry.ts';
+import { ALLOY_RADIUS_SCALE, displacement, displayAmplitude, type ThermalScene } from './alloyScene.ts';
+import { DEFAULT_APPEARANCE, resolveAtomColor, type AppearanceSettings } from './appearance.ts';
+import { EMPTY_FILTER, isVisible, type VisibilityFilter } from './visibility.ts';
 
 export interface ThemeTokens {
   edge: string;
@@ -73,9 +76,18 @@ interface OverlayEntry {
   signature: string;
 }
 
+/**
+ * Alvo de um clique na cena. A célula do motor devolve `AtomRef`; a cena de liga devolve o `id`
+ * estável do átomo que o motor entregou (T-24) — são identidades diferentes, por isso a união.
+ */
+export type PickTarget = { kind: 'cell'; ref: AtomRef } | { kind: 'alloy'; id: string };
+
 export interface ControllerCallbacks {
   onCamera?: (cam: CameraState) => void;
+  /** clique na célula do metal puro (compatibilidade: assinatura original) */
   onPick?: (ref: AtomRef | null) => void;
+  /** clique em qualquer cena, já identificado (liga ou célula) */
+  onPickTarget?: (target: PickTarget | null) => void;
 }
 
 const MODE_SCALE: Record<DisplaySettings['atoms'], number> = { reduced: 0.32, rigid: 1, ballstick: 0.22, points: 0.09 };
@@ -93,6 +105,32 @@ function disposeObject(obj: THREE.Object3D, shared: Set<THREE.BufferGeometry>): 
       }
     }
   });
+}
+
+/**
+ * Opções de desenho da cena de liga/vibração. Além do movimento, carregam a APARÊNCIA (T-22) já
+ * escolhida: tamanho, transparência e cores de aresta/vértice. A cor de cada átomo já vem
+ * resolvida em `SceneAtom.color`.
+ */
+export interface ThermalOptions {
+  playing: boolean;
+  exaggeration: number;
+  atomScale?: number;
+  opacity?: number;
+  edgeColor?: string | null;
+  vertexColor?: string | null;
+  vertices?: boolean;
+}
+
+interface ThermalRuntime {
+  meshes: Array<{ mesh: THREE.InstancedMesh; base: THREE.Vector3[]; radius: number[]; index: number[]; ids: string[] }>;
+  amplitude: number;
+  /** transformação de exibição aplicada às posições do motor (centro e escala), para marcadores */
+  center: THREE.Vector3;
+  scale: number;
+  /** raio de desenho por id, para dimensionar o marcador de seleção */
+  radiusById: Map<string, number>;
+  posById: Map<string, THREE.Vector3>;
 }
 
 function clearGroup(group: THREE.Group, shared: Set<THREE.BufferGeometry>): void {
@@ -116,8 +154,16 @@ export class SceneController {
   private readonly latticeGroup = new THREE.Group();
   private readonly overlaysGroup = new THREE.Group();
   private readonly axesGroup = new THREE.Group();
+  /** marcadores geométricos dos VÉRTICES da célula/supercélula (T-22): não são átomos */
+  private readonly verticesGroup = new THREE.Group();
   private readonly markersGroup = new THREE.Group();
   private readonly animGroup = new THREE.Group();
+  /** liga / vibração térmica (T-13): desenhada à parte, com os átomos e a amplitude da API */
+  private readonly thermalGroup = new THREE.Group();
+  private thermalRuntime: ThermalRuntime | null = null;
+  private thermalPlaying = false;
+  private alloyActive = false;
+  private animKind: AnimationFrame['kind'] | null = null;
   private readonly raycaster = new THREE.Raycaster();
   private readonly shared = new Set<THREE.BufferGeometry>();
   private readonly geometries: Record<ShapeName, THREE.BufferGeometry>;
@@ -133,8 +179,16 @@ export class SceneController {
   private overlayItems: OverlayItem[] = [];
   private selectedOverlay: string | null = null;
   private selection: AtomRef | null = null;
+  private alloySelection: string | null = null;
   private picks: AtomRef[] = [];
+  /** último filtro de EXIBIÇÃO recebido (reaplicado quando a célula é reconstruída) */
+  private lastFilter: VisibilityFilter = EMPTY_FILTER;
+  /** chaves (`DisplayAtom.key`) escondidas pelo filtro de EXIBIÇÃO na célula do metal puro */
+  private hidden = new Set<string>();
+  private readonly alloyMarkers = new THREE.Group();
   private coloring: ElementColoring | null = null;
+  /** preferências de APARÊNCIA (T-22): só exibição, nunca valor científico */
+  private appearance: AppearanceSettings = DEFAULT_APPEARANCE;
   private clipPlanes: THREE.Plane[] = [];
   private edgeMaterial: THREE.LineBasicMaterial | null = null;
   private rafId = 0;
@@ -175,8 +229,10 @@ export class SceneController {
     this.scene.add(key, fill);
 
     this.crystal.rotation.x = -Math.PI / 2; // eixo c/z do motor para cima (como no legado)
-    this.frame.add(this.edgesGroup, this.bondsGroup, this.latticeGroup, this.atomsGroup, this.overlaysGroup, this.axesGroup, this.markersGroup);
-    this.crystal.add(this.frame, this.animGroup);
+    this.frame.add(this.edgesGroup, this.bondsGroup, this.latticeGroup, this.atomsGroup, this.overlaysGroup, this.axesGroup, this.verticesGroup, this.markersGroup);
+    this.thermalGroup.visible = false;
+    this.thermalGroup.add(this.alloyMarkers);
+    this.crystal.add(this.frame, this.animGroup, this.thermalGroup);
     this.scene.add(this.crystal);
 
     this.geometries = {
@@ -194,7 +250,8 @@ export class SceneController {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
-    this.controls.enablePan = false;
+    this.controls.enablePan = true; // botão direito (ou Ctrl+arraste) e dois dedos deslocam a cena
+    this.controls.screenSpacePanning = true;
     this.controls.autoRotateSpeed = 1.6;
     this.controls.addEventListener('change', this.onControlsChange);
     this.setTouchLocked(false);
@@ -218,6 +275,7 @@ export class SceneController {
     if (this.disposed) return;
     const t0 = performance.now();
     const moving = this.controls.update();
+    if (this.thermalRuntime && this.thermalPlaying) this.updateThermal(performance.now());
     this.renderer.render(this.scene, this.camera);
     this.stats.renders += 1;
     this.stats.lastRenderMs = performance.now() - t0;
@@ -226,7 +284,7 @@ export class SceneController {
       this.stats.lastSelectToFrameMs = performance.now() - this.pendingPick.t0;
       this.pendingPick = null;
     }
-    if (moving || this.autoRotate || this.continuous > 0 || this.animating) this.requestRender();
+    if (moving || this.autoRotate || this.continuous > 0 || this.animating || this.thermalPlaying) this.requestRender();
   };
 
   private readonly onVisibility = (): void => {
@@ -260,11 +318,14 @@ export class SceneController {
     if (!changed) return;
     this.atoms = buildAtoms(result, supercell);
     this.coloring = null;
+    // o filtro vale para os átomos NOVOS: as chaves antigas não existem mais
+    this.hidden = new Set(this.atoms.filter((a) => !isVisible({ pos: a.pos, element: this.elementOf(), occupancy: null, site: a.tipo }, this.lastFilter)).map((a) => a.key));
     this.rebuildAtoms();
     this.rebuildEdges();
     this.rebuildBonds();
     this.rebuildLattice();
     this.rebuildAxes();
+    this.rebuildVertices();
     const b = bounds(this.atoms.map((a) => a.pos));
     this.frame.position.set(-b.center[0], -b.center[1], -b.center[2]);
     this.boundRadius = b.radius;
@@ -279,9 +340,17 @@ export class SceneController {
     return this.atoms;
   }
 
+  /**
+   * Cor de exibição do átomo da célula (T-22). Precedência: escolha para o ÁTOMO > para o GRUPO
+   * (aqui o tipo de sítio que o motor devolve) > para o ELEMENTO > padrão da cena (coloração
+   * ilustrativa do HEA, quando ligada, ou a cor do sítio). Só aparência: nenhum valor muda.
+   */
   private atomColor(a: DisplayAtom, i: number): string {
-    if (this.coloring) return this.coloring.colors[this.coloring.elements[i] ?? ''] ?? this.tokens.ink;
-    return this.tokens.site[a.tipo] ?? '#1aa7d9';
+    const base = this.coloring
+      ? (this.coloring.colors[this.coloring.elements[i] ?? ''] ?? this.tokens.ink)
+      : (this.tokens.site[a.tipo] ?? '#1aa7d9');
+    const element = this.coloring ? (this.coloring.elements[i] ?? this.elementOf()) : this.elementOf();
+    return resolveAtomColor({ id: a.key, element, occupancy: null, site: a.tipo }, base, this.appearance.overrides).color;
   }
 
   private rebuildAtoms(): void {
@@ -289,12 +358,15 @@ export class SceneController {
     this.batches = [];
     const groups = new Map<string, { atoms: DisplayAtom[]; idx: number[]; shape: ShapeName; color: string; replica: boolean }>();
     this.atoms.forEach((a, i) => {
+      if (this.hidden.has(a.key)) return; // escondido por filtro/corte: fora da malha, logo não selecionável
       const cls = this.coloring ? `el:${this.coloring.elements[i]}` : `site:${a.tipo}`;
-      const key = `${cls}|${a.replica ? 'r' : 'o'}`;
+      const color = this.atomColor(a, i);
+      // a cor entra na chave do lote: cor escolhida para UM átomo vira um lote próprio
+      const key = `${cls}|${color}|${a.replica ? 'r' : 'o'}`;
       let g = groups.get(key);
       if (!g) {
         const shape: ShapeName = this.coloring ? (this.coloring.shapes[this.coloring.elements[i] ?? ''] ?? 'sphere') : 'sphere';
-        g = { atoms: [], idx: [], shape, color: this.atomColor(a, i), replica: a.replica };
+        g = { atoms: [], idx: [], shape, color, replica: a.replica };
         groups.set(key, g);
       }
       g.atoms.push(a);
@@ -305,8 +377,8 @@ export class SceneController {
         color: 0xffffff,
         roughness: 0.34,
         metalness: 0.18,
-        transparent: g.replica,
-        opacity: g.replica ? this.tokens.replicaOpacity : 1,
+        transparent: g.replica || this.appearance.opacity < 1,
+        opacity: (g.replica ? this.tokens.replicaOpacity : 1) * this.appearance.opacity,
         clippingPlanes: this.clipPlanes,
       });
       const geometry = g.shape === 'sphere' && this.atoms.length > 60 ? this.sphereLow : this.geometries[g.shape];
@@ -315,14 +387,14 @@ export class SceneController {
       this.atomsGroup.add(mesh);
       this.batches.push({ mesh, color: new THREE.Color(g.color), atoms: g.atoms, globalIndex: g.idx });
     }
-    this.stats.instances = this.atoms.length;
+    this.stats.instances = this.atoms.length - this.hidden.size;
     this.updateAtomScale();
     this.updateHighlights();
   }
 
   private updateAtomScale(): void {
     if (!this.structure || !this.display) return;
-    const radius = this.structure.raio_relativo * MODE_SCALE[this.display.atoms];
+    const radius = this.structure.raio_relativo * MODE_SCALE[this.display.atoms] * this.appearance.atomScale;
     const m = new THREE.Matrix4();
     const s = new THREE.Vector3(radius, radius, radius);
     const q = new THREE.Quaternion();
@@ -346,7 +418,7 @@ export class SceneController {
     segs.forEach(([p, q], i) => positions.set([...p, ...q], i * 6));
     const geom = new THREE.BufferGeometry();
     geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    this.edgeMaterial = new THREE.LineBasicMaterial({ color: new THREE.Color(this.tokens.edge), clippingPlanes: this.clipPlanes });
+    this.edgeMaterial = new THREE.LineBasicMaterial({ color: new THREE.Color(this.edgeColor()), clippingPlanes: this.clipPlanes });
     this.edgesGroup.add(new THREE.LineSegments(geom, this.edgeMaterial));
     this.edgesGroup.visible = this.display?.edges ?? true;
   }
@@ -354,7 +426,8 @@ export class SceneController {
   private rebuildBonds(): void {
     clearGroup(this.bondsGroup, this.shared);
     if (!this.structure) return;
-    const pairs = this.atoms.length <= 900 ? contactBonds(this.atoms, this.structure.raio_relativo) : [];
+    const drawn = this.atoms.filter((a) => !this.hidden.has(a.key));
+    const pairs = drawn.length <= 900 ? contactBonds(drawn, this.structure.raio_relativo) : [];
     if (!pairs.length) return;
     const geom = new THREE.CylinderGeometry(1, 1, 1, 10);
     const material = new THREE.MeshStandardMaterial({ color: new THREE.Color(this.tokens.edge), roughness: 0.6, clippingPlanes: this.clipPlanes });
@@ -363,8 +436,8 @@ export class SceneController {
     const m = new THREE.Matrix4();
     const radius = this.structure.raio_relativo * 0.07;
     pairs.forEach(([i, j], k) => {
-      const a = new THREE.Vector3(...(this.atoms[i] as DisplayAtom).pos);
-      const b = new THREE.Vector3(...(this.atoms[j] as DisplayAtom).pos);
+      const a = new THREE.Vector3(...(drawn[i] as DisplayAtom).pos);
+      const b = new THREE.Vector3(...(drawn[j] as DisplayAtom).pos);
       const dir = b.clone().sub(a);
       const len = dir.length();
       const q = new THREE.Quaternion().setFromUnitVectors(up, dir.normalize());
@@ -379,8 +452,9 @@ export class SceneController {
   private rebuildLattice(): void {
     clearGroup(this.latticeGroup, this.shared);
     if (!this.structure) return;
-    const pts = this.atoms.filter((a) => isLatticePoint(this.structure!.estrutura, a.tipo));
-    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(this.tokens.ink) });
+    const pts = this.atoms.filter((a) => !this.hidden.has(a.key) && isLatticePoint(this.structure!.estrutura, a.tipo));
+    // marcador geométrico: octaedro em ARAME, sem iluminação — nunca se parece com um átomo
+    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(this.tokens.ink), wireframe: true });
     const mesh = new THREE.InstancedMesh(this.geometries.octahedron, material, pts.length);
     const m = new THREE.Matrix4();
     const s = 0.035;
@@ -410,6 +484,45 @@ export class SceneController {
     this.axesGroup.visible = this.display?.axes ?? true;
   }
 
+  /** Cor das ARESTAS: a escolhida na Aparência (T-22) ou a do tema. */
+  private edgeColor(): string {
+    return this.appearance.edgeColor ?? this.tokens.edge;
+  }
+
+  /** Cor dos MARCADORES DE VÉRTICE: a escolhida na Aparência ou a do tema. */
+  private vertexColor(): string {
+    return this.appearance.vertexColor ?? this.tokens.ink;
+  }
+
+  /**
+   * Marcadores dos VÉRTICES da célula/supercélula (T-22). São MARCADORES GEOMÉTRICOS, não átomos:
+   * caixa em ARAME, sem iluminação, tamanho fixo pequeno e cor própria (nunca a cor de elemento).
+   * Os cantos saem dos próprios segmentos de aresta que o motor devolveu — nada é inventado.
+   */
+  private rebuildVertices(): void {
+    clearGroup(this.verticesGroup, this.shared);
+    this.verticesGroup.visible = this.appearance.vertices;
+    if (!this.structure || !this.appearance.vertices) return;
+    const segs = buildEdges(this.structure, this.supercell);
+    const seen = new Set<string>();
+    const pts: Vec3[] = [];
+    for (const [p, q] of segs) for (const v of [p, q]) {
+      const key = v.map((c) => c.toFixed(4)).join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      pts.push(v);
+    }
+    if (!pts.length) return;
+    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(this.vertexColor()), wireframe: true });
+    const mesh = new THREE.InstancedMesh(this.geometries.cube, material, pts.length);
+    const m = new THREE.Matrix4();
+    const s = 0.055;
+    pts.forEach((p, i) => { m.compose(new THREE.Vector3(...p), new THREE.Quaternion(), new THREE.Vector3(s, s, s)); mesh.setMatrixAt(i, m); });
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.userData.marker = 'vertices';
+    this.verticesGroup.add(mesh);
+  }
+
   // ------------------------------------------------------------------ exibição
   setDisplay(display: DisplaySettings): void {
     const prev = this.display;
@@ -429,6 +542,20 @@ export class SceneController {
     if (on) this.requestRender();
   }
 
+  /**
+   * APARÊNCIA (T-22): cores por elemento/grupo/átomo, cor de vértice e aresta, tamanho e
+   * transparência. Nada aqui altera valor, contagem ou composição — só o desenho. A cena de liga
+   * é reconstruída pelo Viewer3D (que resolve a cor de cada átomo em `sceneFromAlloy`).
+   */
+  setAppearance(appearance: AppearanceSettings): void {
+    this.appearance = appearance;
+    this.rebuildAtoms();
+    this.rebuildEdges();
+    this.rebuildVertices();
+    this.updateMarkers();
+    this.requestRender();
+  }
+
   setElementColoring(coloring: ElementColoring | null): void {
     this.coloring = coloring;
     this.rebuildAtoms();
@@ -437,10 +564,11 @@ export class SceneController {
 
   setTheme(): void {
     this.tokens = readTokens();
-    if (this.edgeMaterial) this.edgeMaterial.color.set(this.tokens.edge);
+    if (this.edgeMaterial) this.edgeMaterial.color.set(this.edgeColor());
     this.rebuildAtoms();
     this.rebuildLattice();
     this.rebuildAxes();
+    this.rebuildVertices();
     this.rebuildOverlays(true);
     this.updateMarkers();
     this.requestRender();
@@ -585,10 +713,10 @@ export class SceneController {
   private updateMarkers(): void {
     clearGroup(this.markersGroup, this.shared);
     if (!this.structure || !this.display) return;
-    const radius = this.structure.raio_relativo * MODE_SCALE[this.display.atoms];
+    const radius = this.structure.raio_relativo * MODE_SCALE[this.display.atoms] * this.appearance.atomScale;
     const add = (ref: AtomRef, color: string, scale: number, opacity: number) => {
       const a = this.findAtom(ref);
-      if (!a) return;
+      if (!a || this.hidden.has(a.key)) return;
       const mesh = new THREE.Mesh(this.geometries.sphere, new THREE.MeshBasicMaterial({ color: new THREE.Color(color), transparent: true, opacity, depthWrite: false, wireframe: true }));
       mesh.position.set(...a.pos);
       mesh.scale.setScalar(Math.max(radius * scale, 0.05));
@@ -598,9 +726,78 @@ export class SceneController {
     this.picks.forEach((p) => add(p, '#D55E00', 1.5, 0.8));
   }
 
+  // ------------------------------------------------------------------ filtros e cortes (T-23)
+  /**
+   * Filtro de EXIBIÇÃO da célula do metal puro. O átomo escondido sai da malha instanciada, logo
+   * o raycasting deixa de alcançá-lo por construção (requisito: escondido não é selecionável,
+   * revelado é). A cena de liga aplica o mesmo filtro em `sceneFromAlloy`, antes de desenhar.
+   * Nenhum valor científico muda: só a visibilidade.
+   */
+  setFilter(filter: VisibilityFilter): void {
+    this.lastFilter = filter;
+    const before = this.hidden.size;
+    this.hidden = new Set(this.atoms.filter((a) => !isVisible({ pos: a.pos, element: this.elementOf(), occupancy: null, site: a.tipo }, filter)).map((a) => a.key));
+    if (before === this.hidden.size && before === 0) { this.requestRender(); return; }
+    this.rebuildAtoms();
+    this.rebuildBonds();
+    this.rebuildLattice();
+    this.updateMarkers();
+    this.requestRender();
+  }
+
+  /** Elemento da célula carregada (o metal puro tem um só); usado pelo filtro por elemento. */
+  private elementOf(): string {
+    return this.structure?.simbolo ?? this.structure?.estrutura ?? '';
+  }
+
+  /** Chaves escondidas agora (telemetria para testes e para a contagem de exibição). */
+  hiddenKeys(): string[] {
+    return [...this.hidden];
+  }
+
+  // ------------------------------------------------------------------ seleção na cena de liga (T-24)
+  /** Destaca o átomo da liga com o `id` do motor (ou limpa, com `null`). */
+  setAlloySelection(id: string | null): void {
+    this.alloySelection = id;
+    this.updateAlloyMarkers();
+    this.requestRender();
+  }
+
+  private updateAlloyMarkers(): void {
+    clearGroup(this.alloyMarkers, this.shared);
+    const rt = this.thermalRuntime;
+    if (!rt || !this.alloySelection) return;
+    const pos = rt.posById.get(this.alloySelection);
+    if (!pos) return;
+    const radius = rt.radiusById.get(this.alloySelection) ?? 0.05;
+    const mesh = new THREE.Mesh(this.geometries.sphere, new THREE.MeshBasicMaterial({ color: new THREE.Color(this.tokens.selection), transparent: true, opacity: 0.6, depthWrite: false, wireframe: true }));
+    mesh.position.copy(pos);
+    mesh.scale.setScalar(Math.max(radius * 1.45, 0.04));
+    this.alloyMarkers.add(mesh);
+  }
+
+  /** Posição na tela de um átomo da liga (testes automatizados e anúncios). */
+  alloyScreenPosition(id: string): { x: number; y: number } | null {
+    const pos = this.thermalRuntime?.posById.get(id);
+    if (!pos) return null;
+    this.crystal.updateMatrixWorld(true);
+    const v = pos.clone().applyMatrix4(this.thermalGroup.matrixWorld).project(this.camera);
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    return { x: rect.left + ((v.x + 1) / 2) * rect.width, y: rect.top + ((1 - v.y) / 2) * rect.height };
+  }
+
+  /** Ids desenhados agora na cena de liga (contagem de EXIBIÇÃO, não contagem científica). */
+  alloyDrawnIds(): string[] {
+    const rt = this.thermalRuntime;
+    return rt ? rt.meshes.flatMap((m) => m.ids) : [];
+  }
+
   // ------------------------------------------------------------------ câmera
   resetView(): void {
-    const distance = Math.max(2.4, this.boundRadius * 3.3);
+    // 4.0 deixa folga para as esferas e para os controles flutuantes nas bordas do palco em área total;
+    // em palco mais alto que largo (retrato) o campo horizontal é menor, então a câmera recua na proporção
+    const portrait = this.camera.aspect < 1 ? 1 / this.camera.aspect : 1;
+    const distance = Math.max(2.4, this.boundRadius * 4.0 * portrait);
     const dir = new THREE.Vector3(1, 0.62, -0.48).normalize();
     this.camera.position.copy(dir.multiplyScalar(distance));
     this.controls.target.set(0, 0, 0);
@@ -646,6 +843,60 @@ export class SceneController {
     this.onControlsChange();
   }
 
+  /** Desloca câmera e alvo no plano da tela; dx/dy em frações da altura visível no alvo (+x direita, +y cima). */
+  pan(dx: number, dy: number): void {
+    const distance = this.camera.position.distanceTo(this.controls.target);
+    const height = 2 * distance * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2);
+    this.camera.updateMatrix();
+    const right = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 0);
+    const up = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 1);
+    const delta = right.multiplyScalar(dx * height).add(up.multiplyScalar(dy * height));
+    this.camera.position.add(delta);
+    this.controls.target.add(delta);
+    this.onControlsChange();
+  }
+
+  /** Grupo que está de fato desenhado: liga/vibração, quadro de animação ou a célula. */
+  private visibleContent(): THREE.Object3D[] {
+    if (this.thermalGroup.visible && this.thermalGroup.children.length) return [this.thermalGroup];
+    if (!this.frame.visible && this.animGroup.children.length) return [this.animGroup];
+    // átomos e arestas definem o conteúdo; eixos e rótulos não deslocam o centro
+    return [this.atomsGroup, this.edgesGroup];
+  }
+
+  /**
+   * Centralizar: aponta para o centro do conteúdo desenhado e ajusta a distância para ele caber,
+   * mantendo a orientação atual da câmera (diferente de resetView, que volta à vista padrão).
+   */
+  frameContent(): void {
+    this.crystal.updateMatrixWorld(true);
+    const box = new THREE.Box3();
+    for (const group of this.visibleContent()) box.expandByObject(group);
+    const sphere = box.isEmpty() ? new THREE.Sphere(new THREE.Vector3(), 0) : box.getBoundingSphere(new THREE.Sphere());
+    const valid = Number.isFinite(sphere.radius) && sphere.radius > 0;
+    const center = valid ? sphere.center : new THREE.Vector3(0, 0, 0);
+    const radius = valid ? sphere.radius : this.boundRadius;
+    const vFov = THREE.MathUtils.degToRad(this.camera.fov);
+    const hFov = 2 * Math.atan(Math.tan(vFov / 2) * this.camera.aspect);
+    const distance = Math.max(2.4, (radius / Math.sin(Math.min(vFov, hFov) / 2)) * 1.12);
+    const dir = this.camera.position.clone().sub(this.controls.target);
+    if (dir.lengthSq() < 1e-12) dir.set(1, 0.62, -0.48);
+    dir.normalize();
+    this.controls.minDistance = Math.min(this.controls.minDistance, distance * 0.3);
+    this.controls.maxDistance = Math.max(this.controls.maxDistance, distance * 3.5);
+    this.controls.target.copy(center);
+    this.camera.position.copy(center).add(dir.multiplyScalar(distance));
+    this.camera.lookAt(center);
+    this.controls.update();
+    this.onControlsChange();
+  }
+
+  /** Tamanho atual do desenho, em px CSS (testes de redimensionamento). */
+  viewportSize(): { width: number; height: number } {
+    const size = this.renderer.getSize(new THREE.Vector2());
+    return { width: size.x, height: size.y };
+  }
+
   /** Toque (7.9): travada → um dedo rola a página; dois dedos giram/aproximam. Destravada → um dedo gira. */
   setTouchLocked(locked: boolean): void {
     this.touchLocked = locked;
@@ -666,12 +917,45 @@ export class SceneController {
     this.downAt = null;
     if (moved > 5) return; // foi arraste de câmera, não clique
     const t0 = performance.now();
-    const ref = this.pickAt(e.clientX, e.clientY);
-    this.callbacks.onPick?.(ref);
+    const target = this.pickTargetAt(e.clientX, e.clientY);
+    this.callbacks.onPickTarget?.(target);
+    if (!this.alloyActive) this.callbacks.onPick?.(target && target.kind === 'cell' ? target.ref : null);
     this.stats.lastPickMs = performance.now() - t0;
     this.pendingPick = { t0, work: this.stats.lastPickMs };
     this.requestRender();
   };
+
+  /**
+   * Clique → átomo, em qualquer cena. Na cena de liga percorre as malhas do `thermalGroup` e
+   * devolve o `id` do motor; na célula do metal puro devolve o `AtomRef`. Só malhas desenhadas
+   * entram no raycast, então o filtro e o corte de exibição já estão respeitados (T-23.4).
+   */
+  pickTargetAt(clientX: number, clientY: number): PickTarget | null {
+    if (this.alloyActive) {
+      const id = this.pickAlloyAt(clientX, clientY);
+      return id === null ? null : { kind: 'alloy', id };
+    }
+    const ref = this.pickAt(clientX, clientY);
+    return ref === null ? null : { kind: 'cell', ref };
+  }
+
+  private ndcAt(clientX: number, clientY: number): THREE.Vector2 {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    return new THREE.Vector2(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
+  }
+
+  /** Raycast na cena de liga: devolve o `id` estável do átomo, como o motor o entregou. */
+  pickAlloyAt(clientX: number, clientY: number): string | null {
+    const rt = this.thermalRuntime;
+    if (!rt || !this.thermalGroup.visible) return null;
+    this.crystal.updateMatrixWorld(true);
+    this.raycaster.setFromCamera(this.ndcAt(clientX, clientY), this.camera);
+    const hits = this.raycaster.intersectObjects(rt.meshes.map((m) => m.mesh), false);
+    const hit = hits.find((h) => h.instanceId !== undefined);
+    if (!hit || hit.instanceId === undefined) return null;
+    const entry = rt.meshes[(hit.object as THREE.InstancedMesh).userData.thermalMesh as number];
+    return entry?.ids[hit.instanceId] ?? null;
+  }
 
   pickAt(clientX: number, clientY: number): AtomRef | null {
     if (this.animGroup.visible && this.animGroup.children.length) return null;
@@ -705,8 +989,9 @@ export class SceneController {
     clearGroup(this.animGroup, this.shared);
     this.animating = false;
     const active = Boolean(frame);
-    this.frame.visible = !active || frame?.kind === 'thermal';
-    this.animGroup.visible = active;
+    this.animKind = frame?.kind ?? null;
+    this.frame.visible = !this.alloyActive && (!active || frame?.kind === 'thermal');
+    this.animGroup.visible = active && !this.alloyActive;
     if (!frame) { this.frame.scale.setScalar(1); this.requestRender(); return; }
     if (frame.kind === 'thermal') {
       this.frame.scale.setScalar(frame.scale ?? 1);
@@ -759,6 +1044,185 @@ export class SceneController {
       draw(frame.to, mix, this.tokens.site.face ?? '#19a56b');
     }
     this.requestRender();
+  }
+
+  // ------------------------------------------------------------------ liga e vibração térmica (T-13)
+  /**
+   * Mostra (ou remove, com `null`) a cena de liga/vibração no lugar da estrutura. `exaggeration`
+   * multiplica a amplitude do motor só para enxergar o movimento; 1 = amplitude real.
+   */
+  setThermalScene(scene: ThermalScene | null, opts: ThermalOptions = { playing: false, exaggeration: 1 }): void {
+    // aparência (T-22) vem JUNTO da cena: quem a montou resolveu a cor de cada átomo com as
+    // mesmas preferências, então desenho e legenda não podem divergir por ordem de atualização
+    const atomScale = opts.atomScale ?? 1;
+    const opacity = opts.opacity ?? 1;
+    clearGroup(this.alloyMarkers, this.shared);
+    this.thermalGroup.remove(this.alloyMarkers);
+    clearGroup(this.thermalGroup, this.shared);
+    this.thermalGroup.add(this.alloyMarkers);
+    this.thermalRuntime = null;
+    this.thermalPlaying = false;
+    this.alloyActive = Boolean(scene);
+    this.thermalGroup.visible = this.alloyActive;
+    this.frame.visible = !this.alloyActive && (!this.animKind || this.animKind === 'thermal');
+    this.animGroup.visible = Boolean(this.animKind) && !this.alloyActive;
+    if (!scene) { this.requestRender(); return; }
+
+    // o enquadramento usa TODOS os átomos da cena (visíveis ou não): esconder parte da cena não
+    // deve mudar a escala nem o centro do que continua na tela
+    const b = bounds(scene.atoms.map((a) => a.pos));
+    const scale = this.boundRadius / Math.max(0.5, b.radius);
+    const center = new THREE.Vector3(...b.center);
+    const groups = new Map<string, { atoms: Array<{ pos: Vec3; radius: number; index: number; id: string }>; element: string; kind: string; color: string }>();
+    scene.atoms.forEach((a, index) => {
+      if (a.visible === false) return; // filtro/corte de exibição (T-23): fora da malha → não selecionável
+      // a cor resolvida entra na chave: cor por grupo ou por átomo vira lote próprio
+      const key = `${a.element}|${a.kind}|${a.color}`;
+      const g = groups.get(key) ?? { atoms: [], element: a.element, kind: a.kind, color: a.color };
+      g.atoms.push({ pos: a.pos, radius: a.radius, index, id: a.id });
+      groups.set(key, g);
+    });
+    const meshes: ThermalRuntime['meshes'] = [];
+    const posById = new Map<string, THREE.Vector3>();
+    const radiusById = new Map<string, number>();
+    for (const g of groups.values()) {
+      const color = g.color || scene.colors[g.element] || this.tokens.ink;
+      const material = new THREE.MeshStandardMaterial({ color: new THREE.Color(color), roughness: 0.34, metalness: 0.18, transparent: opacity < 1, opacity });
+      const geometry = scene.atoms.length > 60 ? this.sphereLow : this.geometries.sphere;
+      const mesh = new THREE.InstancedMesh(geometry, material, g.atoms.length);
+      mesh.userData.element = g.element;
+      mesh.userData.color = color;
+      mesh.userData.kind = g.kind;
+      mesh.userData.thermalMesh = meshes.length;
+      this.thermalGroup.add(mesh);
+      const base = g.atoms.map((a) => new THREE.Vector3(...a.pos).sub(center).multiplyScalar(scale));
+      const radius = g.atoms.map((a) => a.radius * ALLOY_RADIUS_SCALE * atomScale * scale);
+      g.atoms.forEach((a, i) => { posById.set(a.id, base[i] as THREE.Vector3); radiusById.set(a.id, radius[i] as number); });
+      meshes.push({
+        mesh,
+        base,
+        radius,
+        index: g.atoms.map((a) => a.index),
+        ids: g.atoms.map((a) => a.id),
+      });
+    }
+    this.thermalRuntime = { meshes, amplitude: displayAmplitude(scene.amplitude, opts.exaggeration) * scale, center, scale, posById, radiusById };
+
+    const segs = scene.edges;
+    const pos = new Float32Array(segs.length * 6);
+    segs.forEach(([p, q], i) => {
+      const a = new THREE.Vector3(...(p as Vec3)).sub(center).multiplyScalar(scale);
+      const c = new THREE.Vector3(...(q as Vec3)).sub(center).multiplyScalar(scale);
+      pos.set([a.x, a.y, a.z, c.x, c.y, c.z], i * 6);
+    });
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    this.thermalGroup.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: new THREE.Color(opts.edgeColor ?? this.tokens.edge) })));
+    if (opts.vertices) this.addThermalVertices(segs, center, scale, opts.vertexColor ?? this.tokens.ink);
+
+    this.thermalPlaying = opts.playing && this.thermalRuntime.amplitude > 0;
+    this.updateThermal(0); // quadro inicial: com movimento reduzido, fica um instantâneo (não anima sozinho)
+    this.updateAlloyMarkers();
+    this.stats.instances = meshes.reduce((n, m) => n + m.mesh.count, 0);
+    this.requestRender();
+  }
+
+  /** Marcadores de vértice da caixa da supercélula da liga: caixa em ARAME (não é átomo). */
+  private addThermalVertices(segs: Vec3[][], center: THREE.Vector3, scale: number, color: string): void {
+    const seen = new Set<string>();
+    const pts: THREE.Vector3[] = [];
+    for (const seg of segs) for (const v of seg) {
+      const key = (v as Vec3).map((c) => c.toFixed(4)).join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      pts.push(new THREE.Vector3(...(v as Vec3)).sub(center).multiplyScalar(scale));
+    }
+    if (!pts.length) return;
+    const mesh = new THREE.InstancedMesh(this.geometries.cube, new THREE.MeshBasicMaterial({ color: new THREE.Color(color), wireframe: true }), pts.length);
+    const m = new THREE.Matrix4();
+    const q = new THREE.Quaternion();
+    const sv = new THREE.Vector3(0.05, 0.05, 0.05);
+    pts.forEach((p, i) => { m.compose(p, q, sv); mesh.setMatrixAt(i, m); });
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.userData.marker = 'vertices';
+    this.thermalGroup.add(mesh);
+  }
+
+  private updateThermal(tMs: number): void {
+    const rt = this.thermalRuntime;
+    if (!rt) return;
+    const m = new THREE.Matrix4();
+    const q = new THREE.Quaternion();
+    const s = new THREE.Vector3();
+    const p = new THREE.Vector3();
+    for (const entry of rt.meshes) {
+      entry.base.forEach((base, i) => {
+        const d = displacement(entry.index[i] as number, tMs, rt.amplitude);
+        const r = entry.radius[i] as number;
+        p.set(base.x + d[0], base.y + d[1], base.z + d[2]);
+        m.compose(p, q, s.set(r, r, r));
+        entry.mesh.setMatrixAt(i, m);
+      });
+      entry.mesh.instanceMatrix.needsUpdate = true;
+    }
+  }
+
+  /**
+   * Telemetria de APARÊNCIA para os testes: o que está DESENHADO agora (cores, transparência,
+   * tamanho e marcadores geométricos). Não é dado científico; serve para provar que a escolha
+   * chegou à cena.
+   */
+  appearanceSummary(): {
+    cell: Array<{ color: string; opacity: number; count: number }>;
+    alloy: Array<{ element: string; kind: string; color: string; opacity: number; count: number }>;
+    edgeColor: string;
+    vertexColor: string;
+    vertices: number;
+    atomScale: number;
+    markerLooks: Record<string, string>;
+  } {
+    const hex = (c: THREE.Color) => `#${c.getHexString()}`;
+    const cell = this.batches.map((b) => {
+      const m = b.mesh.material as THREE.MeshStandardMaterial;
+      return { color: hex(b.color), opacity: m.opacity, count: b.mesh.count };
+    });
+    const alloy = (this.thermalRuntime?.meshes ?? []).map((e) => {
+      const m = e.mesh.material as THREE.MeshStandardMaterial;
+      return { element: String(e.mesh.userData.element), kind: String(e.mesh.userData.kind ?? ''), color: hex(m.color), opacity: m.opacity, count: e.mesh.count };
+    });
+    let vertices = 0;
+    for (const g of [this.verticesGroup, this.thermalGroup]) {
+      if (!g.visible) continue;
+      for (const child of g.children) if ((child as THREE.Mesh).userData?.marker === 'vertices') vertices += (child as THREE.InstancedMesh).count ?? 0;
+    }
+    // acabamento de cada marcador geométrico, como ele está desenhado (nunca esfera sólida)
+    const markerLooks: Record<string, string> = {
+      atoms: 'solid-sphere',
+      latticePoints: this.markerLook(this.latticeGroup),
+      vertices: this.markerLook(this.verticesGroup) || this.markerLook(this.thermalGroup, 'vertices'),
+      selection: this.markerLook(this.markersGroup) || this.markerLook(this.alloyMarkers),
+      axes: 'arrow',
+    };
+    return { cell, alloy, edgeColor: hex(new THREE.Color(this.edgeColor())), vertexColor: hex(new THREE.Color(this.vertexColor())), vertices, atomScale: this.appearance.atomScale, markerLooks };
+  }
+
+  /** 'wireframe' quando o grupo desenha marcadores em arame; '' quando o grupo está vazio. */
+  private markerLook(group: THREE.Group, marker?: string): string {
+    for (const child of group.children) {
+      const mesh = child as THREE.Mesh;
+      if (marker && mesh.userData?.marker !== marker) continue;
+      const mat = mesh.material as THREE.MeshBasicMaterial | undefined;
+      if (mat && 'wireframe' in mat) return mat.wireframe ? 'wireframe' : 'solid';
+    }
+    return '';
+  }
+
+  /** Elementos e quantidades desenhados (telemetria para testes e leitores de tela). */
+  thermalSummary(): Record<string, number> | null {
+    if (!this.thermalRuntime) return null;
+    const out: Record<string, number> = {};
+    for (const e of this.thermalRuntime.meshes) out[String(e.mesh.userData.element)] = (out[String(e.mesh.userData.element)] ?? 0) + e.mesh.count;
+    return out;
   }
 
   // ------------------------------------------------------------------ utilidades gráficas
@@ -846,7 +1310,7 @@ export class SceneController {
     this.resizeObserver?.disconnect();
     this.controls.removeEventListener('change', this.onControlsChange);
     this.controls.dispose();
-    for (const g of [this.atomsGroup, this.edgesGroup, this.bondsGroup, this.latticeGroup, this.overlaysGroup, this.axesGroup, this.markersGroup, this.animGroup]) clearGroup(g, this.shared);
+    for (const g of [this.atomsGroup, this.edgesGroup, this.bondsGroup, this.latticeGroup, this.overlaysGroup, this.axesGroup, this.verticesGroup, this.markersGroup, this.animGroup, this.thermalGroup]) clearGroup(g, this.shared);
     Object.values(this.geometries).forEach((g) => g.dispose());
     this.renderer.dispose();
     this.renderer.forceContextLoss();

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select, update
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings
@@ -14,7 +14,7 @@ from app.main import create_app
 from app.models import ExecucaoCalculo, Sessao
 from app.security.tokens import COOKIE_SESSAO
 
-from .banco import preparar_banco
+from .banco import motor_de_teste, preparar_banco
 
 SENHA = "cristal-cubico-2026"
 
@@ -23,7 +23,7 @@ SENHA = "cristal-cubico-2026"
 def motor(tmp_path_factory):
     url = f"sqlite:///{tmp_path_factory.mktemp('auth') / 'alloy.db'}"
     preparar_banco(url)
-    return create_engine(url)
+    return motor_de_teste(url)
 
 
 @pytest.fixture

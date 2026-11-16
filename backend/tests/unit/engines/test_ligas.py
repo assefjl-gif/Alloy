@@ -77,7 +77,10 @@ def test_ordenacao_l12_coloca_soluto_nos_vertices():
     n = 2
     r = liga(base="Cu", soluto="Au", x=25, arranjo="ordenado", n=n)
     assert r["fase_ordenada"].startswith("L1₂")
-    assert r["n_soluto"] == (n + 1) ** 3
+    # V-8: a contagem passa a ser de átomos ÚNICOS (vértices da supercélula periódica = n³),
+    # não de esferas desenhadas ((n+1)³, que incluía imagens de fronteira) — parecer §3.8.
+    assert r["n_soluto"] == n ** 3
+    assert r["composicao"]["representada"][1]["at_pct"] == pytest.approx(25.0, abs=1e-9)
 
 
 def test_ordenacao_b2_na_ccc_e_so_geometrica():
@@ -101,7 +104,11 @@ def test_aleatorio_e_reprodutivel_pela_semente():
     c = liga(base="Cu", soluto="Ni", x=30, semente=8)
     assert [t["elemento"] for t in a["atomos"]] == [t["elemento"] for t in b["atomos"]]
     assert [t["elemento"] for t in a["atomos"]] != [t["elemento"] for t in c["atomos"]]
-    assert a["n_soluto"] == round(0.30 * len(a["atomos"]))
+    # V-8: a quantidade de soluto é calculada sobre os átomos ÚNICOS (Z·n³), não sobre as esferas.
+    n_rede = a["composicao"]["n_sitios_rede"]
+    assert n_rede == 4 * 3 ** 3 and len(a["atomos"]) == a["composicao"]["n_desenhados"]
+    assert a["n_soluto"] == math.floor(0.30 * n_rede + 0.5)
+    assert a["n_soluto"] + a["n_solvente"] == n_rede
 
 
 def test_intersticial_fe_c_raio_do_sitio_octaedrico():

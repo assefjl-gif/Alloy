@@ -1,4 +1,5 @@
 import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import { IconButton } from './Button.tsx';
 
 interface FieldShell {
   label: ReactNode;
@@ -93,6 +94,52 @@ export function Slider({ label, value, min, max, step = 1, onChange, valueText, 
     <div className="ds-field ds-slider">
       <label htmlFor={ids.id} className="ds-field__label">{label} <output htmlFor={ids.id}>{valueText ?? value}</output></label>
       <input id={ids.id} type="range" min={min} max={max} step={step} value={value} aria-valuetext={valueText} onChange={(e) => onChange(Number(e.target.value))} />
+    </div>
+  );
+}
+
+/**
+ * Seletor de cor (T-22). Acessibilidade: a escolha NUNCA é comunicada só pela cor — há rótulo em
+ * texto, o valor hexadecimal aparece escrito, e o estado "personalizada" é dito por palavra.
+ * `value = null` significa "cor padrão da cena"; nesse caso o seletor mostra `defaultValue`.
+ */
+export function ColorInput({ label, value, defaultValue, onChange, onReset, hint, id, customText, resetLabel, disabled, testId }: {
+  label: ReactNode;
+  value: string | null;
+  defaultValue: string;
+  onChange: (color: string) => void;
+  onReset: () => void;
+  hint?: ReactNode;
+  id?: string;
+  /** palavra que diz que a cor foi escolhida pela pessoa (não é só a cor que informa isso) */
+  customText: string;
+  resetLabel: string;
+  disabled?: boolean;
+  testId?: string;
+}) {
+  const ids = useFieldIds(id);
+  const shown = (value ?? defaultValue).toUpperCase();
+  return (
+    <div className="ds-field ds-color">
+      <label htmlFor={ids.id} className="ds-field__label">{label}</label>
+      <div className="ds-color__row">
+        <input
+          id={ids.id}
+          type="color"
+          className="ds-color__input"
+          value={value ?? defaultValue}
+          disabled={disabled}
+          data-testid={testId}
+          aria-describedby={described(ids, hint, undefined)}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <span className="ds-color__hex ds-mono" data-testid={testId ? `${testId}-hex` : undefined}>{shown}</span>
+        {value !== null ? <span className="ds-color__tag">{customText}</span> : null}
+        {value !== null ? (
+          <IconButton size="sm" variant="ghost" icon="restart" label={resetLabel} data-testid={testId ? `${testId}-reset` : undefined} onClick={onReset} />
+        ) : null}
+      </div>
+      {hint ? <span id={ids.hint} className="ds-field__hint">{hint}</span> : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@
  * Fluxo A — Densidade do cobre: cálculo guiado completo SEM digitar comandos (Etapas 3, 4 e 6).
  * Todos os números esperados vêm de uma chamada direta ao motor real, nunca de cálculo no teste.
  */
-import { test, expect, openCrystalab } from './fixtures.ts';
+import { test, expect, openCrystalab, reveal } from './fixtures.ts';
 
 async function engineCu(request: import('playwright/test').APIRequestContext) {
   const res = await request.post('http://127.0.0.1:8010/api/v1/crystallography/cells', { data: { nome: 'Cu' } });
@@ -14,13 +14,15 @@ const pt = (v: number, d: number) => v.toFixed(d).replace('.', ',');
 test('A1 · laboratório: modo guiado carrega Cu e mostra a densidade do motor, com comando equivalente', async ({ app: page, request }) => {
   const cu = await engineCu(request);
   await openCrystalab(page);
-  const guided = page.getByTestId('guided-mode');
+  await reveal(page, 'structure.guided');
+  const guided = page.getByTestId('guided-material');
   await guided.getByRole('combobox', { name: 'Metal do catálogo' }).selectOption('Cu');
   await expect(guided.getByTestId('equivalent-command').first()).toHaveText('usar Cu');
   await guided.getByTestId('guided-load').click();
   await expect(page.getByTestId('metric-structure')).toContainText('CFC');
   await expect(page.locator('#resultTitle')).toContainText('Cobre');
-  await guided.getByTestId('guided-density').click();
+  await reveal(page, 'properties.density');
+  await page.getByTestId('guided-density').click();
   const panel = page.getByTestId('density-panel');
   await expect(panel).toBeVisible();
   await expect(panel).toContainText(`ρ = ${pt(cu.densidade, 3)} g/cm³`);

@@ -98,7 +98,7 @@ export default function InstructorModule() {
       className="instructor"
       center={
         <main id="main-content" tabIndex={-1} className="module-main" data-testid="instructor">
-          <header className="module-head">
+          <header className="module-head ds-on-dark">
             <h1>{t('instructor.title')}</h1>
             <p className="module-head__lead">{t('instructor.lead')}</p>
             <Segmented name="instructor-source" label={t('instructor.source')} value={source} onChange={setSource} options={[{ value: 'demo', label: t('instructor.sourceDemo') }, { value: 'local', label: t('instructor.sourceLocal') }]} />

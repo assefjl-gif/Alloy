@@ -6,7 +6,7 @@ import uuid
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings
@@ -15,7 +15,7 @@ from app.main import create_app
 from app.models import InstanciaQuestao, Instituicao, Usuario, VinculoInstitucional
 from app.repositories.materiais_json import repositorio_padrao
 
-from .banco import preparar_banco
+from .banco import motor_de_teste, preparar_banco
 
 SENHA = "cristal-cubico-2026"
 
@@ -24,7 +24,7 @@ SENHA = "cristal-cubico-2026"
 def motor(tmp_path_factory):
     url = f"sqlite:///{tmp_path_factory.mktemp('edu') / 'alloy.db'}"
     preparar_banco(url)
-    return create_engine(url)
+    return motor_de_teste(url)
 
 
 @pytest.fixture(scope="module")

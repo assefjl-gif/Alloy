@@ -4,19 +4,18 @@ from __future__ import annotations
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
 
 from app.core.config import Settings
 from app.main import create_app
 
-from .banco import preparar_banco
+from .banco import motor_de_teste, preparar_banco
 
 
 @pytest.fixture(scope="module")
 def motor(tmp_path_factory):
     url = f"sqlite:///{tmp_path_factory.mktemp('tp') / 'alloy.db'}"
     preparar_banco(url)
-    return create_engine(url)
+    return motor_de_teste(url)
 
 
 @pytest.fixture(scope="module", params=["json", "banco"])

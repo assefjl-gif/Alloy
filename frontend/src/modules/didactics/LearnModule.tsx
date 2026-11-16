@@ -101,7 +101,7 @@ function ActivityList() {
   const list = ACTIVITIES.filter((a) => (topic === 'all' || a.topic === topic) && (level === 'all' || a.level === level) && (format === 'all' || a.format === format));
   return (
     <>
-      <header className="module-head">
+      <header className="module-head ds-on-dark">
         <h1>{t('learn.title')}</h1>
         <p className="module-head__lead">{t('learn.lead')}</p>
       </header>
@@ -139,8 +139,8 @@ function ActivityView({ activity }: { activity: Activity }) {
   const engineMissing = activity.module === 'crystalab' && engine?.api === 'none';
   return (
     <>
-      <nav aria-label={t('learn.breadcrumb')} className="breadcrumb"><a href={hrefFor('aprender')}>{t('learn.title')}</a> <Icon name="chevronRight" size={14} /> <span aria-current="page">{pick(activity.title, locale)}</span></nav>
-      <header className="module-head">
+      <nav aria-label={t('learn.breadcrumb')} className="breadcrumb ds-on-dark"><a href={hrefFor('aprender')}>{t('learn.title')}</a> <Icon name="chevronRight" size={14} /> <span aria-current="page">{pick(activity.title, locale)}</span></nav>
+      <header className="module-head ds-on-dark">
         <h1>{pick(activity.title, locale)}</h1>
         <p className="module-head__lead">{pick(activity.instructions, locale)}</p>
         <div className="ds-row">

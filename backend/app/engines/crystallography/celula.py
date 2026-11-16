@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from typing import Any, Dict, List, Mapping, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple
 
 from .constantes import (
     FAIXA_A_NM,
@@ -20,9 +20,65 @@ from .entradas import numero_opcional
 from .erros import EntradaInvalida, MaterialDesconhecido
 from .estruturas import ESTRUTURAS, ROTULOS_TIPO, c_a_ideal, fracao, normalizar_estrutura
 from .formatacao import sci, sinal, txt
-from .geometria import arredondar, base_cristalografica, fator_empacotamento, geometria_celula
+from .geometria import (
+    arredondar,
+    base_cristalografica,
+    contato_tipo_hc,
+    distancia_entre_planos_hc,
+    fator_empacotamento,
+    geometria_celula,
+    raio_contato_rel_hc,
+    vizinhos_hc,
+)
 from .passos import passos_fea, passos_parametro
 from .referencia import Metal, RepositorioMateriais
+
+if TYPE_CHECKING:  # pragma: no cover - só para tipagem
+    from ..procedencia import ColetorDados
+
+#: Texto do usuário ecoado em mensagem de erro é truncado (contrato R1 §4; QA-R2-06).
+#: Mesmo limite de ``ligas_entrada.MAX_ECO`` e ``hea.erros.MAX_ECO``; duplicado aqui para não criar
+#: dependência entre motores (consolidar num módulo comum é recomendação para o api-architect).
+MAX_ECO = 16
+
+
+def eco(texto: Any) -> str:
+    """Texto do usuário seguro para mensagem: no máximo ``MAX_ECO`` caracteres."""
+    bruto = str(texto)
+    return bruto if len(bruto) <= MAX_ECO else bruto[:MAX_ECO] + "…"
+
+
+#: Onde o primeiro contato ocorre no HC (texto livre do campo ``contato``; parecer R1-CRI-01 §1.4).
+TEXTO_CONTATO_HC = {
+    "basal": "aresta do hexágono basal",
+    "entre_planos": "entre planos basais vizinhos (c/a abaixo do ideal)",
+    "ambos": "aresta do hexágono basal e entre planos basais (c/a ideal)",
+}
+
+
+def info_nc_texto(estrutura: str) -> int:
+    return int(ESTRUTURAS[estrutura]["nc"])
+
+
+def _interpretacao_hc(c_a: float, contato: Optional[str], d_entre_planos: float,
+                      raio_contato: float, fea: float) -> List[str]:
+    """Leitura do HC com o c/a em uso (V-16): 12 vizinhos no ideal, 6 + 6 fora dele."""
+    ideal = c_a_ideal()
+    frases: List[str] = []
+    if contato == "ambos":
+        frases.append(f"c/a usado = {txt(c_a, 4)} (ideal √(8/3) ≈ {txt(ideal, 4)}): os 12 vizinhos ficam todos "
+                      f"à mesma distância a e as esferas se tocam na aresta do hexágono basal.")
+    else:
+        onde = ("entre planos basais vizinhos" if contato == "entre_planos" else "na aresta do hexágono basal")
+        frases.append(
+            f"c/a usado = {txt(c_a, 4)} (ideal √(8/3) ≈ {txt(ideal, 4)}): os 12 vizinhos deixam de ser "
+            f"equidistantes — 6 no plano basal a d = a e 6 entre planos a d = {txt(d_entre_planos, 4)}·a "
+            f"(NC = 12, descrito como 6 + 6). O primeiro contato ocorre {onde}.")
+    frases.append(
+        f"FEA = {txt(fea, 4)} no modelo de esferas rígidas sem sobreposição, com raio de contato "
+        f"R_c = {txt(raio_contato, 4)}·a (metade da menor distância entre vizinhos). É propriedade do modelo "
+        f"aplicado a esta geometria, não empacotamento medido, e nunca passa de π/(3√2) ≈ 0,7405.")
+    return frases
 
 
 def _mudou(novo: float, atual: Optional[float]) -> bool:
@@ -50,7 +106,7 @@ def resolver_alvo(texto: str, repo: RepositorioMateriais) -> Tuple[Optional[Meta
     if metal:
         return metal, None
     raise MaterialDesconhecido(
-        f"'{alvo}' não é um metal cadastrado nem uma estrutura conhecida (CS, CCC, CFC, HC).")
+        f"'{eco(alvo)}' não é um metal cadastrado nem uma estrutura conhecida (CS, CCC, CFC, HC).")
 
 
 def _passos_densidade(estrutura: str, raio: Optional[float], peso: Optional[float],
@@ -125,8 +181,48 @@ def _passos_densidade(estrutura: str, raio: Optional[float], peso: Optional[floa
     return passos
 
 
+#: Estado do seed base (metais.json v1.1.0): citação do Callister sem edição e página (CR-10).
+#: Mesmo estado usado pelo motor HEA para ``raio_atomico`` e ``massa_atomica`` do mesmo repositório.
+ESTADO_SEED_BASE = "aguardando_validacao"
+
+
+def _registrar_dados_do_metal(coletor: ColetorDados, metal: Metal, *, raio: Optional[float],
+                              peso: Optional[float], c_a: Optional[float], c_a_natureza: Optional[str],
+                              a_fonte: str, a_nm: Optional[float], c_nm: Optional[float],
+                              densidade_exp: Optional[float]) -> None:
+    """Registra na procedência cada dado do repositório que entrou no resultado (QA-R2-02).
+
+    Só entra o valor que veio do ``Metal``: dado editado pelo usuário (ou derivado da entrada) não é
+    atribuído ao repositório. Nenhum valor é alterado — isto é só rastreabilidade.
+    O import é tardio porque ``app.engines.procedencia`` importa este pacote (evita ciclo).
+    """
+    from ..procedencia import ValorReferencia
+
+    fonte_rede = metal.fonte_rede or metal.fonte
+
+    def registrar(codigo: str, valor: Optional[float], unidade: str, fonte: Optional[str]) -> None:
+        if valor is None:
+            return
+        coletor.registrar(ValorReferencia(simbolo=metal.simbolo, codigo=codigo, valor=float(valor),
+                                          unidade=unidade, estado=ESTADO_SEED_BASE, fonte=fonte))
+
+    if raio is not None and not _mudou(raio, metal.raio_nm):
+        registrar("raio_atomico", raio, "nm", metal.fonte)
+    if peso is not None and not _mudou(peso, metal.peso_g_mol):
+        registrar("massa_atomica", peso, "g/mol", metal.fonte)
+    if a_fonte == "medido":
+        registrar("parametro_rede_a", a_nm, "nm", fonte_rede)
+        if c_nm is not None and metal.c_nm is not None and not _mudou(c_nm, metal.c_nm):
+            registrar("parametro_rede_c", c_nm, "nm", fonte_rede)
+    if c_a_natureza == "tabelado" and c_a is not None and not _mudou(c_a, metal.c_a):
+        registrar("razao_c_a", c_a, "adimensional", fonte_rede)
+    if densidade_exp is not None and not _mudou(densidade_exp, metal.densidade_exp_g_cm3):
+        registrar("densidade", densidade_exp, "g/cm³", metal.fonte)
+
+
 def calcular_estrutura(payload: Mapping[str, Any],
-                       repo: RepositorioMateriais) -> Dict[str, Any]:
+                       repo: RepositorioMateriais,
+                       coletor: Optional[ColetorDados] = None) -> Dict[str, Any]:
     """Calcula a célula unitária completa (contrato de saída compatível com a v1.0)."""
     metal, estrutura = resolver_alvo(str(payload.get("nome") or ""), repo)
     avisos: List[str] = []
@@ -134,6 +230,7 @@ def calcular_estrutura(payload: Mapping[str, Any],
     raio: Optional[float] = None
     peso: Optional[float] = None
     c_a: Optional[float] = None
+    c_a_natureza: Optional[str] = None
     densidade_exp: Optional[float] = None
     a_medido: Optional[float] = None
     c_medido: Optional[float] = None
@@ -143,6 +240,9 @@ def calcular_estrutura(payload: Mapping[str, Any],
         raio = metal.raio_nm
         peso = metal.peso_g_mol
         c_a = metal.c_a_efetivo
+        if c_a is not None:
+            c_a_natureza = ("derivado_de_a_c_medidos"
+                            if (metal.a_nm is not None and metal.c_nm is not None) else "tabelado")
         densidade_exp = metal.densidade_exp_g_cm3
         if metal.tem_rede_medida:
             a_medido, c_medido = metal.a_nm, metal.c_nm
@@ -152,7 +252,7 @@ def calcular_estrutura(payload: Mapping[str, Any],
     if estrutura_pedida not in (None, ""):
         nova = normalizar_estrutura(str(estrutura_pedida))
         if not nova:
-            raise EntradaInvalida(f"Estrutura desconhecida: {estrutura_pedida}. Use CS, CCC, CFC ou HC.")
+            raise EntradaInvalida(f"Estrutura desconhecida: {eco(estrutura_pedida)}. Use CS, CCC, CFC ou HC.")
         if metal and nova != estrutura:
             editado = True
             original = ESTRUTURAS[metal.estrutura]
@@ -164,6 +264,7 @@ def calcular_estrutura(payload: Mapping[str, Any],
             if metal.estrutura == "HC":
                 avisos.append(f"O c/a do {metal.simbolo} foi descartado: estruturas cúbicas não usam c/a.")
             c_a = None
+            c_a_natureza = None
             a_medido = c_medido = None
         estrutura = nova
     if not estrutura:
@@ -209,16 +310,20 @@ def calcular_estrutura(payload: Mapping[str, Any],
                 editado = True
                 c_medido = None
                 c_a = novo_c_a
+                c_a_natureza = "informado"
             elif c_a is None:
                 c_a = novo_c_a
+                c_a_natureza = "informado"
         if c_a is None:
             c_a = c_a_ideal()
+            c_a_natureza = "ideal"
             if metal and metal.estrutura != "HC":
                 avisos.append("Sem c/a tabelado para esta combinação: usado o c/a ideal 1,633.")
     else:
         if novo_c_a is not None:
             avisos.append("O c/a informado foi ignorado: estruturas cúbicas não usam c/a.")
         c_a = None
+        c_a_natureza = None
     if editado:
         densidade_exp = None
 
@@ -238,6 +343,8 @@ def calcular_estrutura(payload: Mapping[str, Any],
             else:
                 c_nm, c_fonte = a_nm * float(c_a), "c_a"
             c_a = c_nm / a_nm
+            if c_fonte == "medido":
+                c_a_natureza = "derivado_de_a_c_medidos"
     elif raio is not None:
         a_fonte = "informado" if a_informado else "derivado_de_R"
         a_nm = float(novo_a) if a_informado else a_em_r * raio
@@ -248,6 +355,14 @@ def calcular_estrutura(payload: Mapping[str, Any],
         a_nm = None
 
     fea = fator_empacotamento(estrutura, c_a)
+    # Contexto do FEA (contrato R1 §3; parecer R1-CRI-01 §1.4). Fora do HC os campos "não se aplicam" (nulos).
+    hc = estrutura == "HC"
+    razao_c_a = float(c_a) if (hc and c_a is not None) else None
+    contato_tipo = contato_tipo_hc(razao_c_a) if razao_c_a is not None else None
+    raio_contato = raio_contato_rel_hc(razao_c_a) if razao_c_a is not None else None
+    d_entre_planos = distancia_entre_planos_hc(razao_c_a) if razao_c_a is not None else None
+    nc_txt = "6 + 6" if (contato_tipo is not None and contato_tipo != "ambos") else str(info_nc_texto(estrutura))
+    contato_txt = TEXTO_CONTATO_HC.get(contato_tipo) if contato_tipo else None
     if a_nm is not None:
         volume_nm3 = (3.0 * SQRT3 / 2.0) * a_nm ** 2 * float(c_nm) if estrutura == "HC" else a_nm ** 3
         volume_cm3: Optional[float] = volume_nm3 * NM_PARA_CM ** 3
@@ -287,8 +402,9 @@ def calcular_estrutura(payload: Mapping[str, Any],
         rotulo = f"Célula genérica {estrutura}" + (f" · R = {txt(raio, 4)} nm" if raio is not None else "")
 
     interpretacao = repo.interpretacoes(estrutura)
-    if estrutura == "HC":
-        interpretacao.append(f"c/a usado = {txt(float(c_a), 3)} (ideal 1,633) → FEA = {txt(fea, 4)}.")
+    if razao_c_a is not None:
+        interpretacao.extend(_interpretacao_hc(razao_c_a, contato_tipo, float(d_entre_planos),
+                                               float(raio_contato), fea))
     if a_fonte == "medido" and metal and raio is not None:
         interpretacao.append(
             f"Para o {metal.simbolo} o cálculo usa os parâmetros de rede medidos (a = {txt(a_nm, 4)} nm"
@@ -305,14 +421,23 @@ def calcular_estrutura(payload: Mapping[str, Any],
         interpretacao.append("Sem raio e peso atômico a célula é exibida em unidades de R "
                              "e a densidade não pode ser calculada.")
 
+    if coletor is not None and metal is not None:
+        _registrar_dados_do_metal(coletor, metal, raio=raio, peso=peso, c_a=c_a, c_a_natureza=c_a_natureza,
+                                  a_fonte=a_fonte, a_nm=a_nm, c_nm=c_nm, densidade_exp=densidade_exp)
+
     fonte = repo.fonte(metal.fonte) if metal else None
     grupo_espacial = info["grupo_espacial"]
     resultado = {
         "rotulo": rotulo, "simbolo": simbolo, "nome_metal": metal.nome if metal else None,
         "editado": editado, "generica": metal is None,
         "estrutura": estrutura, "estrutura_nome": info["nome"],
-        "relacao_a": info["relacao"], "contato": info["contato"],
-        "n": n, "nc": info["nc"], "fea": fea, "vazios": 1.0 - fea,
+        "relacao_a": info["relacao"], "contato": contato_txt or info["contato"],
+        "n": n, "nc": info["nc"], "nc_txt": nc_txt, "fea": fea, "vazios": 1.0 - fea,
+        "fea_modelo": "esferas_rigidas",
+        "raio_contato_rel": raio_contato, "contato_tipo": contato_tipo,
+        "c_a_ideal": c_a_ideal() if hc else None, "c_a_natureza": c_a_natureza,
+        "vizinhos": ([{**grupo, "d_nm": (grupo["d_rel"] * a_nm) if a_nm is not None else None}
+                      for grupo in vizinhos_hc(razao_c_a)] if razao_c_a is not None else None),
         "a_em_R": a_em_r, "c_a": c_a,
         "raio_nm": raio, "peso": peso, "a_nm": a_nm, "c_nm": c_nm, "a_fonte": a_fonte,
         "volume_nm3": volume_nm3, "volume_cm3": volume_cm3,
@@ -334,10 +459,14 @@ def calcular_estrutura(payload: Mapping[str, Any],
 
 
 def calcular_densidade(payload: Mapping[str, Any],
-                       repo: RepositorioMateriais) -> Dict[str, Any]:
-    resultado = calcular_estrutura(payload, repo)
+                       repo: RepositorioMateriais,
+                       coletor: Optional[ColetorDados] = None) -> Dict[str, Any]:
+    resultado = calcular_estrutura(payload, repo, coletor)
     chaves = ("rotulo", "estrutura", "n", "nc", "fea", "vazios", "densidade", "densidade_exp",
-              "erro_percent", "volume_cm3", "raio_nm", "peso", "a_nm", "c_nm", "a_fonte", "avisos")
+              "erro_percent", "volume_cm3", "raio_nm", "peso", "a_nm", "c_nm", "a_fonte", "avisos",
+              # ``simbolo`` e ``editado`` servem ao serviço (mesmo aviso de seed que ``/cells``);
+              # não fazem parte de ``DensityResponse``, que os filtra.
+              "simbolo", "editado")
     saida = {chave: resultado[chave] for chave in chaves}
     saida["passos"] = resultado["passos_densidade"]
     return saida

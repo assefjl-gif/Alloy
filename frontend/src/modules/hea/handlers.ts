@@ -13,6 +13,7 @@ import { commit } from '../../stores/history.ts';
 import { log, useTerminal } from '../../stores/terminal.ts';
 import { useViewer } from '../../stores/viewer.ts';
 import { compositionToText, parseComposition, useHea } from './store.ts';
+import { triageText, triageTone } from './display.ts';
 import { createTransfer, matchStructure } from './transfer.ts';
 import { persistTransfer } from './transferUrl.ts';
 
@@ -38,9 +39,12 @@ async function analyzeCurrent(signal: AbortSignal, opId: string, running: () => 
     const name = h.name || tr('hea.userAlloy');
     const result = mode === 'live' ? await analyzeHea(name, composition, signal) : analyzeDemo(name, composition);
     useHea.getState().set({ result, resultOrigin: mode === 'live' ? 'engine' : 'demo', status: 'ready' });
-    const stable = result.veredito.toUpperCase().startsWith('ESTÁVEL');
-    log(stable ? 'ok' : 'error', `${tr('hea.analysisDone')}: ${result.veredito}${mode === 'demo' ? ` [${tr('common.demo')}]` : ''}`, { opId });
-    announce(tr('hea.analysisAnnounce', { name: result.nome, verdict: result.veredito }));
+    // Estado da triagem lido de `triagem.estado` (R1 §1.2) — nunca do texto: o motor HEA 2.0.0
+    // não emite mais a palavra "ESTÁVEL", e texto não é prova de estabilidade.
+    const tone = triageTone(result);
+    const texto = triageText(result);
+    log(tone === 'favoravel' ? 'ok' : tone === 'desfavoravel' ? 'error' : 'warn', `${tr('hea.analysisDone')}: ${texto}${mode === 'demo' ? ` [${tr('common.demo')}]` : ''}`, { opId });
+    announce(tr('hea.analysisAnnounce', { name: result.nome, verdict: texto }));
   } catch (err) {
     useHea.getState().set({ status: 'error', error: err instanceof Error ? err.message : String(err) });
     throw err;

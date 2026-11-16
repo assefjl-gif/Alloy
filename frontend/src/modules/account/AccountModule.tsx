@@ -46,7 +46,7 @@ function ServerQuestions() {
   }
 
   return (
-    <Panel title={t('edu.title')} aside={t('edu.serverGraded')} headingLevel={2} testId="server-questions">
+    <Panel title={t('edu.title')} aside={t('edu.serverGraded')} headingLevel={2} testId="server-questions" className="ds-panel--padded">
       {!questions ? (error ? <p role="alert">{error}</p> : <Spinner size={18} label={t('common.loading')} />) : questions.length === 0 ? <p className="empty-state">{t('edu.none')}</p> : (
         <ul className="ds-stack">{questions.map((q) => <li key={q.id}><Button size="sm" onClick={() => void start(q.id)}>{q.titulo}</Button> {q.topicos.map((tp) => <Badge key={tp}>{tp}</Badge>)}</li>)}</ul>
       )}
@@ -95,7 +95,7 @@ function SignIn() {
   }
 
   return (
-    <Panel title={mode === 'login' ? t('account.signIn') : t('account.createAccount')} headingLevel={2} testId="account-form">
+    <Panel title={mode === 'login' ? t('account.signIn') : t('account.createAccount')} headingLevel={2} testId="account-form" className="ds-panel--padded account-form">
       <Segmented name="account-mode" label={t('account.mode')} hideLabel value={mode} onChange={(v) => { setMode(v); setError(null); }}
         options={[{ value: 'login', label: t('account.signIn') }, { value: 'register', label: t('account.createAccount') }]} />
       <form className="ds-stack" onSubmit={(e) => void submit(e)} noValidate={false}>
@@ -121,7 +121,7 @@ function History() {
     return () => ctrl.abort();
   }, []);
   return (
-    <Panel title={t('account.history')} aside={page ? t('account.historyTotal', { n: page.total }) : undefined} headingLevel={2} testId="account-history">
+    <Panel title={t('account.history')} aside={page ? t('account.historyTotal', { n: page.total }) : undefined} headingLevel={2} testId="account-history" className="ds-panel--padded">
       {error ? <p role="alert">{error}</p> : !page ? <Spinner size={18} label={t('common.loading')} /> : page.itens.length === 0 ? <p className="empty-state">{t('account.historyEmpty')}</p> : (
         <div className="ds-table-wrap"><table className="ds-table">
           <thead><tr><th scope="col">{t('account.when')}</th><th scope="col">{t('account.operation')}</th><th scope="col">{t('account.parameters')}</th><th scope="col">{t('account.provenance')}</th></tr></thead>
@@ -152,13 +152,13 @@ export default function AccountModule() {
   return (
     <Workbench center={
       <main id="main-content" tabIndex={-1} className="module-main" data-testid="account">
-        <header className="module-head"><h1>{t('nav.account')}</h1><p className="module-head__lead">{t('account.lead')}</p></header>
+        <header className="module-head ds-on-dark"><h1>{t('nav.account')}</h1><p className="module-head__lead">{t('account.lead')}</p></header>
         {status === 'unknown' ? <Spinner size={20} label={t('common.loading')} /> : null}
         {status === 'unavailable' ? <p className="empty-state" data-testid="account-unavailable">{t('account.unavailable')}</p> : null}
         {status === 'anonymous' ? <SignIn /> : null}
         {status === 'signed-in' && user ? (
           <>
-            <Panel title={user.nome} aside={user.email} headingLevel={2} testId="account-user">
+            <Panel title={user.nome} aside={user.email} headingLevel={2} testId="account-user" className="ds-panel--padded">
               <div className="ds-row">
                 <Button onClick={() => void signOut(false)} data-testid="account-logout">{t('account.signOut')}</Button>
                 <Button variant="ghost" onClick={() => void signOut(true)}>{t('account.signOutAll')}</Button>

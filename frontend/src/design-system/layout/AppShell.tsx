@@ -8,7 +8,7 @@ export function AppShell({ brand, nav, actions, children, skipLabel, overlays }:
   return (
     <div className="ds-app">
       <a href="#main-content" className="ds-skip-link">{skipLabel}</a>
-      <header className="ds-app__header">
+      <header className="ds-app__header ds-on-dark">
         <div className="ds-app__brand">{brand}</div>
         <div className="ds-app__nav">{nav}</div>
         <div className="ds-app__actions">{actions}</div>

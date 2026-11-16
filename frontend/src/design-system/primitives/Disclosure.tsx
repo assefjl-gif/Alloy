@@ -2,7 +2,7 @@ import { useId, useState, type ReactNode } from 'react';
 import { Icon } from '../Icon.tsx';
 
 /** Seção recolhível (7.7): botão com aria-expanded controla a região. */
-export function Disclosure({ title, defaultOpen = true, children, aside, headingLevel = 2, className = '', id, open: controlled, onOpenChange }: { title: ReactNode; defaultOpen?: boolean; children: ReactNode; aside?: ReactNode; headingLevel?: 2 | 3; className?: string; id?: string; open?: boolean; onOpenChange?: (open: boolean) => void }) {
+export function Disclosure({ title, defaultOpen = true, children, aside, headingLevel = 2, className = '', id, open: controlled, onOpenChange, testId }: { title: ReactNode; defaultOpen?: boolean; children: ReactNode; aside?: ReactNode; headingLevel?: 2 | 3; className?: string; id?: string; open?: boolean; onOpenChange?: (open: boolean) => void; /** data-testid do botão que abre/fecha */ testId?: string }) {
   const [inner, setInner] = useState(defaultOpen);
   const open = controlled ?? inner;
   const auto = useId();
@@ -12,7 +12,7 @@ export function Disclosure({ title, defaultOpen = true, children, aside, heading
   return (
     <section className={`ds-disclosure ${open ? 'is-open' : ''} ${className}`}>
       <H className="ds-disclosure__heading">
-        <button type="button" aria-expanded={open} aria-controls={regionId} onClick={toggle} className="ds-disclosure__btn">
+        <button type="button" aria-expanded={open} aria-controls={regionId} onClick={toggle} className="ds-disclosure__btn" data-testid={testId}>
           <Icon name={open ? 'chevronDown' : 'chevronRight'} size={16} />
           <span>{title}</span>
         </button>

@@ -111,9 +111,17 @@ def calcular_solucao_solida(payload: SolidSolutionRequest, servico: ServicoCalcu
 
 
 @router.post("/thermodynamics/thermal", response_model=OkEnvelope[ThermalResponse], tags=["termodinamica"],
-             summary="Dilatação, vibração (Lindemann) e alotropia")
+             summary="Dilatação (α isotrópico), deslocamento quadrático médio (Lindemann) e alotropia")
 def calcular_termico(payload: ThermalRequest, servico: ServicoCalculo = Depends(get_servico),
                      autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
+    """Estimativas de modelo, com o domínio de validade explícito.
+
+    Acima da T_f do modelo a rede, a densidade e a dilatação voltam ``null`` com o motivo em
+    ``indisponiveis`` (não há cristal). A curva de Lindemann vale de 100 K à T_f. Com mistura, a T_f é a da
+    regra das misturas em fração atômica — não é solidus nem liquidus — e o estado líquido não é afirmado.
+    A faixa de alotropia só é afirmada quando o dado passa pela política de dados do ambiente; senão,
+    ``alotropia`` é ``null`` com o motivo.
+    """
     return _ok(servico.termico(_payload(payload), usuario_id(autenticado)))
 
 
@@ -132,17 +140,22 @@ def exportar_xyz(payload: ExportRequest, servico: ServicoCalculo = Depends(get_s
 
 # --------------------------------------------------------------------------- HEA (Fase 6)
 @router.get("/hea/bootstrap", response_model=OkEnvelope[HeaBootstrap], tags=["hea"],
-            summary="Elementos, ligas de exemplo e limiares dos critérios")
+            summary="Elementos aceitos, ligas de exemplo, critérios com fonte, definições e avisos")
 def hea_bootstrap(response: Response, servico: ServicoCalculo = Depends(get_servico)):
     response.headers["Cache-Control"] = _CACHE_TABELAS
     return _ok(servico.hea_catalogo())
 
 
 @router.post("/hea/analyses", response_model=OkEnvelope[HeaResponse], tags=["hea"],
-             summary="ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)")
+             summary="Descritores de triagem de uma liga: ΔS_mix, δ, T_m, VEC e curva −T·ΔS_mix "
+                     "(ΔH_mix e Ω só com a matriz de entalpias por par)")
 def hea_analisar(payload: HeaRequest, servico: ServicoCalculo = Depends(get_servico),
                  autenticado: Optional[Autenticado] = Depends(get_autenticado_opcional)):
-    """Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo."""
+    """Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.
+
+    Composição em base atômica (padrão) ou mássica. Símbolo que não é elemento, repetido ou malformado → 400
+    com o subtipo em ``details[].type``. Elemento real sem dados → 200 com cálculo parcial.
+    """
     return _ok(servico.hea(_payload(payload), usuario_id(autenticado)))
 
 
@@ -160,12 +173,16 @@ def capacidades(request: Request, settings: Settings = Depends(get_settings)):
                                              versao=motores["crystallography"], motivo=nao_validados),
         "thermodynamics": ServicoCapacidade(
             disponivel=not settings.producao, demo_permitido=False, versao=motores["thermodynamics"],
-            motivo=("α, T_f e alotropia ainda sem validação (Q-03)." if settings.producao else nao_validados)),
+            motivo=("α, T_f e alotropia ainda sem validação (Q-03): o cálculo térmico é recusado em produção. "
+                    "Mesmo com α e T_f validados, a faixa de alotropia só é afirmada quando ela própria tiver "
+                    "fonte validada." if settings.producao else nao_validados)),
         "hea": ServicoCapacidade(
             disponivel=True, demo_permitido=demo, versao=motores["hea"],
-            motivo=("Parcial: ΔS_mix sempre; δ, T_m e VEC só com dados validados; ΔH_mix e Ω indisponíveis (Q-01)."
+            motivo=("Parcial: ΔS_mix e a curva −T·ΔS_mix sempre; δ, T_m, VEC e composição em massa só com dados "
+                    "validados; ΔH_mix e Ω indisponíveis (matriz de entalpias por par ainda não cadastrada)."
                     if settings.producao else
-                    "Parcial: ΔH_mix e Ω indisponíveis (Q-01). " + (nao_validados or ""))),
+                    "Parcial: ΔH_mix e Ω indisponíveis (matriz de entalpias por par ainda não cadastrada). "
+                    + (nao_validados or ""))),
         "ia": ServicoCapacidade(disponivel=settings.ia_enabled, demo_permitido=False,
                                 motivo=None if settings.ia_enabled else "Desligada até decisão (RQ-EDU-05)."),
         "autenticacao": ServicoCapacidade(

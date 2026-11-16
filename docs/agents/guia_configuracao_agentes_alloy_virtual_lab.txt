@@ -1,0 +1,400 @@
+GUIA OPERACIONAL — CONFIGURAÇÃO DOS AGENTES DO ALLOY VIRTUAL LAB
+Instruções para uma IA executora (preferencialmente Claude Code)
+=================================================================
+
+OBJETIVO
+--------
+Organizar os documentos dos agentes do Alloy Virtual Lab e convertê-los em
+subagentes reconhecidos pelo Claude Code. Execute as etapas diretamente no
+repositório aberto, preservando os documentos originais e sem alterar o código
+da aplicação nesta tarefa.
+
+CONTEXTO
+--------
+O Alloy Virtual Lab é um projeto educacional e científico de Engenharia de
+Materiais, com recursos relacionados a ligas de alta entropia (HEA), cristalografia,
+banco de dados, aprendizagem de máquina, interface, avaliação pedagógica e pesquisa.
+
+Há 15 documentos que especificam agentes especializados, além de um documento
+sobre hierarquia/workflow e um README. Os documentos originais são especificações:
+estar em docs/agents/ não faz o Claude Code reconhecê-los automaticamente.
+As configurações executáveis dos subagentes devem ficar em .claude/agents/.
+
+REGRAS GERAIS E LIMITES
+-----------------------
+1. Trabalhe apenas dentro da raiz confirmada do repositório Alloy Virtual Lab.
+2. Não presuma que o diretório atual seja a raiz. Confirme o repositório por sua
+   estrutura e por arquivos existentes.
+3. Não apague, mova ou sobrescreva os documentos originais.
+4. Não altere código-fonte, banco de dados, fórmulas, testes, infraestrutura ou
+   configurações já existentes da aplicação.
+5. Não instale dependências, plugins, extensões ou pacotes sem autorização.
+6. Não invente recursos, nomes de ferramentas, permissões ou sintaxe do Claude Code.
+   Consulte a documentação compatível com a versão instalada.
+7. Use o princípio do menor privilégio: cada agente deve receber somente as
+   ferramentas e permissões necessárias.
+8. Nunca exponha senhas, tokens, chaves de API ou outros segredos.
+9. Diferencie arquivo criado, configuração validada, agente invocado e delegação
+   realmente testada. Não declare uma etapa como concluída sem evidência.
+10. Se faltar um arquivo, registre o nome exato. Não invente seu conteúdo.
+11. Se houver conflito ou contradição entre especificações, registre-o no relatório.
+12. Não faça commits, deploy, migrações nem operações destrutivas.
+
+ETAPA 1 — IDENTIFICAR A RAIZ DO PROJETO
+--------------------------------------
+1. Examine o diretório de trabalho.
+2. Identifique a pasta raiz do Alloy Virtual Lab.
+3. Confirme a identificação por elementos reais do repositório, como README,
+   pyproject.toml, package.json, requirements.txt, src, backend ou frontend.
+4. Registre o caminho absoluto da raiz.
+5. Se houver mais de um candidato, não escolha arbitrariamente: informe os caminhos
+   encontrados e solicite que o usuário indique o repositório correto.
+6. Use a raiz confirmada como base de todos os caminhos seguintes.
+
+ETAPA 2 — CRIAR E PREENCHER docs/agents/
+----------------------------------------
+1. Verifique se a pasta docs/agents/ já existe.
+2. Se não existir, crie-a na raiz do projeto.
+3. Localize os documentos originais dos agentes. Eles podem estar em uma pasta
+   extraída, em Downloads ou em um ZIP fornecido pelo usuário.
+4. Se houver ZIP, liste seu conteúdo antes de extrair.
+5. Copie ou extraia para docs/agents/ apenas os documentos relevantes.
+6. Não sobrescreva arquivos de mesmo nome. Compare os conteúdos; em caso de
+   diferença, preserve as duas versões ou solicite orientação.
+7. Confirme a presença destes arquivos esperados:
+
+   01_agente_supervisor_arquiteto_chefe.md
+   02_agente_arquiteto_de_api.md
+   03_agente_engenheiro_backend.md
+   04_agente_engenheiro_banco_de_dados.md
+   05_agente_engenheiro_frontend.md
+   06_agente_engenheiro_de_integracao.md
+   07_agente_especialista_ciencia_dos_materiais.md
+   08_agente_especialista_hea.md
+   09_agente_engenheiro_cristalografia.md
+   10_agente_engenheiro_machine_learning.md
+   11_agente_engenheiro_pedagogico.md
+   12_agente_avaliacao_learning_analytics.md
+   13_agente_tester_qa_adversarial.md
+   14_agente_devsecops_infraestrutura.md
+   15_agente_pesquisa_academica_e_auditoria_bibliografica.md
+   16_hierarquia_dos_agentes_e_workflow.md
+   README.md
+
+8. Se os nomes forem diferentes, identifique os documentos pelo conteúdo e registre
+   os nomes encontrados. Não invente documentos ausentes.
+
+ETAPA 3 — LER E MAPEAR AS ESPECIFICAÇÕES
+---------------------------------------
+Leia integralmente os 15 documentos de agentes, o documento de hierarquia/workflow
+e o README. Para cada agente, extraia:
+
+- nome e identificador;
+- missão e especialidade;
+- descrição breve que ajude o supervisor a selecionar o agente;
+- responsabilidades e limites;
+- tarefas permitidas e tarefas proibidas;
+- entradas necessárias;
+- entregáveis;
+- critérios de qualidade e validação;
+- dependências e relações com outros agentes;
+- necessidade de acesso a arquivos, terminal, pesquisa ou outras ferramentas.
+
+Não transforme uma atribuição descrita no documento em permissão irrestrita. A
+capacidade técnica de realizar uma tarefa não significa autorização para executá-la.
+Registre sobreposições ou responsabilidades ambíguas para revisão.
+
+ETAPA 4 — CRIAR A ESTRUTURA DE DIRETÓRIOS
+---------------------------------------
+Na raiz do projeto, crie somente as pastas que ainda não existirem:
+
+   .claude/
+   .claude/agents/
+   docs/
+   docs/agents/
+   docs/agent_reports/
+   docs/architecture/
+   docs/research/
+
+Preserve todas as pastas e configurações existentes. Antes de tocar em qualquer
+arquivo de .claude/, faça um inventário do conteúdo atual.
+
+FINALIDADE DAS PASTAS
+---------------------
+docs/agents/
+    Documentos originais e especificações dos agentes.
+
+.claude/agents/
+    Arquivos de configuração dos subagentes reconhecidos pelo Claude Code.
+
+docs/agent_reports/
+    Relatórios de auditoria, diagnósticos e entregas dos agentes.
+
+docs/architecture/
+    Documentação de arquitetura e decisões técnicas.
+
+docs/research/
+    Matrizes bibliográficas e relatórios de pesquisa.
+
+CLAUDE.md
+    Regras gerais de trabalho do Claude Code para este repositório, na raiz.
+
+ETAPA 5 — CONVERTER OS 15 AGENTES
+---------------------------------
+1. Crie um arquivo de configuração para cada agente em .claude/agents/.
+2. Use nomes curtos, estáveis, em minúsculas e separados por hífen. Sugestões:
+
+   supervisor.md
+   api-architect.md
+   backend-engineer.md
+   database-engineer.md
+   frontend-engineer.md
+   integration-engineer.md
+   materials-science-specialist.md
+   hea-specialist.md
+   crystallography-engineer.md
+   machine-learning-engineer.md
+   pedagogical-engineer.md
+   learning-analytics.md
+   adversarial-qa-tester.md
+   devsecops-engineer.md
+   academic-research-auditor.md
+
+3. Cada arquivo deve conter o frontmatter YAML exigido pela versão atual do Claude
+   Code e um corpo de instruções completo.
+4. Consulte a documentação oficial correspondente à versão instalada antes de
+   escolher campos de frontmatter, nomes de ferramentas, permissões ou modelos.
+5. Inclua, no mínimo, os campos de identificação e descrição que forem suportados.
+   A descrição deve explicar quando o agente deve ser acionado.
+6. Configure modelo, ferramentas e permissões apenas quando a sintaxe e os valores
+   forem confirmados como válidos na versão instalada.
+7. No corpo do arquivo, inclua:
+   - identidade e especialidade;
+   - missão;
+   - escopo e responsabilidades;
+   - procedimento de trabalho;
+   - critérios de qualidade;
+   - limites e proibições;
+   - entregáveis esperados;
+   - formato de relatório;
+   - regras de escalonamento ao supervisor;
+   - caminho do documento original correspondente em docs/agents/.
+8. Preserve o conteúdo técnico e os critérios dos documentos originais. Não reduza
+   os agentes a descrições genéricas.
+9. Não conceda permissões amplas por conveniência.
+10. Se alguma capacidade solicitada não for suportada pela versão instalada, registre
+    a limitação e proponha uma alternativa compatível. Não simule recursos.
+
+ETAPA 6 — CONFIGURAR O SUPERVISOR
+--------------------------------
+O agente supervisor/arquiteto-chefe coordena o trabalho geral e aplica a hierarquia
+definida nos documentos originais.
+
+O supervisor deve:
+1. Receber a solicitação do usuário e formular um plano de execução.
+2. Identificar quais especialistas são necessários.
+3. Delegar tarefas delimitadas aos agentes apropriados, se a delegação estiver
+   efetivamente disponível.
+4. Informar a cada especialista o objetivo, contexto, arquivos, restrições e formato
+   de entrega.
+5. Consolidar resultados e verificar coerência entre as áreas.
+6. Pedir revisão quando houver divergências, riscos ou dependências.
+7. Rejeitar entregas sem evidências ou que não atendam aos critérios de qualidade.
+8. Escalar ao usuário decisões que dependam de autorização ou preferência.
+9. Documentar decisões técnicas relevantes.
+10. Informar com transparência quais agentes foram realmente invocados.
+
+O supervisor não pode autorizar alterações destrutivas sem consentimento, aceitar
+hipóteses como fatos, permitir que agentes atuem fora do escopo delegado ou afirmar
+que houve trabalho paralelo/comunicação entre agentes quando isso não ocorreu.
+
+ATENÇÃO: subagentes convencionais e Agent Teams são mecanismos diferentes. A
+criação de arquivos em .claude/agents/ não ativa automaticamente Agent Teams e
+não garante que todos os agentes conversem autonomamente. Configure apenas o
+mecanismo documentado e disponível na versão instalada. Confirme como o agente
+principal invoca subagentes e quais ferramentas de delegação são suportadas.
+
+ETAPA 7 — CRIAR OU ATUALIZAR CLAUDE.md
+-------------------------------------
+Crie CLAUDE.md na raiz se não existir. Se existir, leia-o e complemente apenas o
+necessário, preservando instruções válidas e evitando duplicações.
+
+O arquivo deve conter:
+1. propósito e contexto do Alloy Virtual Lab;
+2. estrutura do repositório realmente encontrada;
+3. função de docs/agents/ e .claude/agents/;
+4. hierarquia dos agentes e papel do supervisor;
+5. fluxo de planejamento, delegação, execução, revisão e consolidação;
+6. obrigação de compreender a arquitetura antes de propor alterações;
+7. exigência de testes relevantes após alterações autorizadas;
+8. registro de decisões, alterações, evidências, riscos e limitações;
+9. proteção de credenciais e dados sensíveis;
+10. regra de não modificar código, banco ou infraestrutura sem autorização explícita.
+
+Não copie a especificação integral dos 15 agentes para CLAUDE.md. As instruções
+específicas devem permanecer nos arquivos individuais em .claude/agents/.
+
+ETAPA 8 — PADRONIZAR RELATÓRIOS
+-------------------------------
+Adote o seguinte formato, salvo quando uma especificação original exigir outro:
+
+TÍTULO DA TAREFA
+Agente responsável:
+Data:
+Objetivo:
+Escopo analisado:
+Arquivos consultados:
+Método utilizado:
+Constatações:
+Evidências:
+Problemas encontrados:
+Riscos e impactos:
+Dependências:
+Recomendações:
+Ações executadas:
+Arquivos alterados:
+Testes realizados:
+Resultado dos testes:
+Limitações e incertezas:
+Pendências para o supervisor:
+
+Os agentes devem distinguir fato observado, inferência, hipótese, recomendação e
+ação efetivamente executada. Quando não houver evidência suficiente, devem declarar
+a incerteza.
+
+ETAPA 9 — VALIDAR A CONFIGURAÇÃO ESTATICAMENTE
+------------------------------------------------
+Após criar os arquivos:
+1. Liste o conteúdo de .claude/agents/.
+2. Confirme que há 15 configurações, uma para cada especificação.
+3. Valide os delimitadores e a sintaxe do frontmatter YAML.
+4. Verifique nomes e identificadores duplicados.
+5. Verifique se as descrições diferenciam claramente os agentes.
+6. Confirme que cada configuração aponta para o documento original correto.
+7. Verifique se os caminhos citados existem.
+8. Verifique se CLAUDE.md não contradiz as especificações.
+9. Confirme que ferramentas, permissões e campos são válidos na versão instalada.
+10. Registre o resultado de cada verificação.
+
+A validação estática dos arquivos não prova, por si só, que a delegação funciona.
+
+ETAPA 10 — TESTAR SEM ALTERAR A APLICAÇÃO
+----------------------------------------
+Faça uma primeira rodada somente de leitura e diagnóstico. Não autorize modificações
+em código, banco de dados, fórmulas, testes ou infraestrutura.
+
+Execute, se possível, os testes a seguir:
+
+1. SUPERVISOR
+   Solicite um resumo da arquitetura encontrada e um plano para uma futura melhoria.
+   Verifique se identifica corretamente os especialistas necessários.
+
+2. ENGENHEIRO DE BANCO DE DADOS
+   Solicite o mapeamento do banco existente e riscos observados. Não permita mudanças
+   em tabelas, registros ou migrações.
+
+3. ESPECIALISTA HEA
+   Solicite a identificação dos locais onde estão implementados cálculos, modelos
+   e propriedades de ligas de alta entropia. Não permita alteração de fórmulas.
+
+4. ENGENHEIRO DE CRISTALOGRAFIA
+   Solicite o mapeamento dos módulos de cristalografia e suas dependências, sem
+   modificar arquivos.
+
+5. AUDITOR DE PESQUISA ACADÊMICA
+   Solicite o inventário das referências bibliográficas existentes e a indicação
+   das que precisam de verificação. Não invente DOI ou metadados.
+
+6. TESTER QA ADVERSARIAL
+   Solicite análise dos testes existentes e propostas de casos de teste. Não execute
+   operações destrutivas.
+
+Registre os agentes realmente invocados, as tarefas enviadas, os resultados e os
+erros. Se a versão instalada não permitir algum teste, declare isso explicitamente.
+
+ETAPA 11 — GERAR RELATÓRIO FINAL
+--------------------------------
+Salve o relatório em:
+
+   docs/agent_reports/relatorio_configuracao_dos_agentes.md
+
+O relatório deve informar:
+1. caminho absoluto da raiz do projeto;
+2. estrutura encontrada antes da execução;
+3. pastas criadas ou complementadas;
+4. documentos originais encontrados, ausentes ou duplicados;
+5. lista dos 15 subagentes e seus arquivos de configuração;
+6. resumo das regras incluídas em CLAUDE.md;
+7. mecanismo de delegação disponível na versão instalada;
+8. validações realizadas e resultados;
+9. testes executados e evidências;
+10. problemas, incompatibilidades e limitações;
+11. arquivos criados ou alterados;
+12. confirmação explícita de que o código-fonte da aplicação não foi alterado.
+
+ETAPA 12 — RESPONDER AO USUÁRIO
+-------------------------------
+Ao concluir, apresente:
+- caminho absoluto da raiz do projeto;
+- localização dos documentos originais;
+- localização das configurações reconhecidas pelo Claude Code;
+- quantidade de agentes configurados;
+- se houve apenas validação estática ou também invocação/delegação real;
+- caminho do relatório final;
+- arquivos ausentes, limitações e pendências.
+
+Não declare sucesso completo se qualquer etapa falhar. Diferencie claramente:
+"arquivos criados", "configuração validada", "agente invocado" e "delegação testada".
+
+ESTRUTURA FINAL DE REFERÊNCIA
+-----------------------------
+Adapte a estrutura abaixo ao repositório real. Preserve pastas que já existam.
+
+alloy-virtual-lab/
+|
+|-- .claude/
+|   |-- agents/
+|       |-- supervisor.md
+|       |-- api-architect.md
+|       |-- backend-engineer.md
+|       |-- database-engineer.md
+|       |-- frontend-engineer.md
+|       |-- integration-engineer.md
+|       |-- materials-science-specialist.md
+|       |-- hea-specialist.md
+|       |-- crystallography-engineer.md
+|       |-- machine-learning-engineer.md
+|       |-- pedagogical-engineer.md
+|       |-- learning-analytics.md
+|       |-- adversarial-qa-tester.md
+|       |-- devsecops-engineer.md
+|       |-- academic-research-auditor.md
+|
+|-- docs/
+|   |-- agents/
+|   |   |-- 01_agente_supervisor_arquiteto_chefe.md
+|   |   |-- 02_agente_arquiteto_de_api.md
+|   |   |-- ...
+|   |   |-- 16_hierarquia_dos_agentes_e_workflow.md
+|   |   |-- README.md
+|   |
+|   |-- agent_reports/
+|   |   |-- relatorio_configuracao_dos_agentes.md
+|   |-- architecture/
+|   |-- research/
+|
+|-- CLAUDE.md
+|-- (demais arquivos originais do projeto)
+
+CRITÉRIO DE CONCLUSÃO
+--------------------
+Considere a tarefa concluída somente quando:
+- os documentos originais estiverem preservados em docs/agents/;
+- houver uma configuração para cada um dos 15 agentes em .claude/agents/;
+- CLAUDE.md estiver coerente com o projeto e com a hierarquia;
+- os arquivos tiverem sido validados segundo a versão instalada do Claude Code;
+- o relatório final tiver sido produzido;
+- limitações e etapas não testadas estiverem explicitadas.
+
+PRIORIDADE: produzir uma configuração correta, verificável, segura e compatível
+com o repositório real. Não sacrificar a integridade dos arquivos em nome da rapidez.

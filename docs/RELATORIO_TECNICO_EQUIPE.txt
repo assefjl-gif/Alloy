@@ -1,0 +1,460 @@
+================================================================================
+ALLOY VIRTUAL LAB - RELATORIO TECNICO PARA A EQUIPE
+Consolidacao, estado atual, lacunas e proposta de evolucao
+================================================================================
+
+Data de emissao ....: 03/11/2026
+Versao da API ......: 0.9.0 (motor de cristalografia 2.0.0, termico 1.0.0, HEA 1.0.0)
+Repositorio ........: https://github.com/assefjl-gif/Alloy
+                      branch publicada: consolidacao-alloy-virtual-lab (commit b47d6c3)
+                      (a branch main do repositorio NAO foi alterada: tem historico proprio)
+Commit local mais novo: 18c910e (guia de apresentacao), ainda NAO enviado ao GitHub
+Responsavel ........: Jorge Filho (assefjl@alu.ufc.br)
+Documento ..........: docs/RELATORIO_TECNICO_EQUIPE.txt
+
+Este relatorio reune, em um unico lugar: (1) o que foi pedido ao projeto,
+(2) o que foi entregue e o que NAO foi, (3) o trabalho em andamento sem commit,
+(4) as lacunas frente a versao anterior (CrystaLab v1.4) e (5) dez sugestoes de
+construcao e arquitetura para a proxima etapa. Foi escrito para ser lido sem
+acesso a conversa que originou o trabalho.
+
+Regra de leitura: quando algo foi verificado nesta maquina, o texto diz
+"verificado". Quando foi apenas escrito, mas nao executado, diz "nao executado".
+
+
+--------------------------------------------------------------------------------
+1. RESUMO EXECUTIVO
+--------------------------------------------------------------------------------
+
+1.1 O que mudou
+    Quatro bases de codigo (CrystaLab v1.0, v1.1.0, v1.4 e o frontend
+    alloy-frontend) foram consolidadas em um monorepo com um unico motor
+    cientifico, banco de dados, API versionada, contas seguras, correcao de
+    questoes no servidor, frontend React/TypeScript, infraestrutura Docker e CI.
+
+1.2 O que ainda nao esta pronto (resposta direta a pergunta "foi tudo atendido?")
+    NAO. Faltam: cores configuraveis por elemento na 3D, aba Tutoriais,
+    barra lateral unica com 3D maior, login restrito a @ufc.br, alem de
+    ΔH_mix/Omega do HEA (depende de dados com fonte) e de itens de
+    infraestrutura que nao puderam ser executados nesta maquina.
+    As telas de Ligas e Temperatura foram implementadas em 03/11/2026
+    (secao 6), mas AINDA NAO ESTAO COMMITADAS.
+
+1.3 Numeros verificados (Windows 10, Python 3.15.1, Node 24)
+    - Backend (pytest) ................. 311 aprovados, 23 pulados, 0 falhas
+        (22 variantes PostgreSQL sem servidor aqui; 1 teste CIF/Gemmi sem pacote)
+    - Contrato API x frontend (real) ... 46/46 (38/38 antes das abas Liga/Temp.)
+    - Frontend typecheck / lint ........ 0 erros / ok (115 arquivos, 9 regras)
+    - Frontend unitarios ............... 83/83 (incluem testes contra o backend real)
+    - E2E Playwright (Chromium) ........ ultima rodada completa: 60 aprovados,
+        1 falha intermitente (ver secao 6.4)
+    - Carregamento inicial do front .... 212,8 kB gzip (meta: menos de 300 kB)
+
+1.4 Nao verificado nesta maquina
+    PostgreSQL, Docker (imagens, compose, Caddy) e a execucao do CI no GitHub.
+    O CI foi publicado junto com o codigo, mas o resultado NAO foi conferido.
+
+
+--------------------------------------------------------------------------------
+2. ARQUITETURA ATUAL
+--------------------------------------------------------------------------------
+
+2.1 Estrutura do monorepo
+    backend/          FastAPI, motores puros, servicos, API /api/v1, seguranca, CLI
+    frontend/         React 19 + TypeScript estrito, Zustand, Three.js r160, KaTeX, zod
+    database/         migracoes Alembic, DDL PostgreSQL de referencia, seeds versionados
+    infrastructure/   Dockerfiles, Caddyfile, observabilidade
+    scripts/          exportacao do OpenAPI, teste de contrato, geracao de seed
+    docs/             documentacao (15 documentos exigidos + requisitos, gates, relatorios)
+    _origem/          as quatro bases recebidas, intactas (somente leitura)
+    _auditoria/       scripts reproduziveis da auditoria da Fase 1
+
+2.2 Camadas do backend (regras verificadas por teste de arquitetura)
+    engines (puro) -> services -> api ; repositories e models por baixo.
+    engines e educational NAO importam banco, HTTP nem servicos.
+    api NAO importa models, repositories, sqlalchemy nem funcoes de calculo.
+    Uma sessao de banco por requisicao (unidade de trabalho): calculo, historico
+    e renovacao de sessao entram no mesmo commit; erro faz rollback.
+
+2.3 Principios inegociaveis do projeto
+    P1. Nenhum dado cientifico inventado. Todo resultado traz o bloco
+        "procedencia" (classe, motor, versao, dados usados, estado de validacao).
+    P2. Um motor, um lugar. Ciencia roda so no backend; o front exibe.
+    P3. Producao e estrita: dado nao validado e recusado, demonstracao proibida,
+        segredos obrigatorios, cookie Secure obrigatorio.
+
+2.4 Dados e validacao
+    Estados: rascunho -> aguardando_validacao -> validado | rejeitado | arquivado.
+    HOJE NENHUM DADO ESTA "validado" (pendencia Q-03). Em producao isso significa:
+    o HEA devolve apenas ΔS_mix; temperatura e ligas ficam bloqueadas.
+
+2.5 Seguranca implementada
+    Argon2id; politica de senha (min. 10, recusa comuns); sessao opaca em cookie
+    HttpOnly/Secure/SameSite=Lax com so o SHA-256 no banco; expiracao por
+    inatividade (7 dias) e absoluta (30 dias); CSRF por cabecalho X-Alloy-CSRF;
+    bloqueio progressivo de login; mesma resposta para conta inexistente e senha
+    errada; RBAC com escopo (404 fora da instituicao; IDOR testado); gabarito
+    de questoes so no servidor; limite de corpo, rate limit, CSP, HSTS.
+
+2.6 Infraestrutura (escrita, NAO executada aqui)
+    Dockerfile da API (usuario sem privilegios, healthcheck), borda Caddy
+    (mesmo dominio, TLS automatico), docker-compose (db -> migrate -> api -> web),
+    .env.example, CI com jobs: backend-linux (com PostgreSQL), backend-windows,
+    frontend (Linux e Windows), e2e e imagens.
+
+
+--------------------------------------------------------------------------------
+3. DEMANDAS ORIGINAIS E SITUACAO
+--------------------------------------------------------------------------------
+
+Legenda: [OK] atendida  [PARCIAL]  [NAO]  [PENDENTE-USUARIO]
+
+  D1  Revisar a v1.3 (olhar de usuario e designer) e relatar ............. [OK]
+  D2  Aplicar as sugestoes dos professores + aba Tutoriais (gerou a v1.4) . [OK na v1.4]
+      Na nova versao: ver secao 4.
+  D3  Relatorio curto de mudancas, limitacoes, erros e sugestoes ......... [OK]
+  D4  Tres documentos tecnicos .txt (sugestoes 5, 6 e 7) ................. [OK]
+      Local: _origem/A_crystalab_v1.4/crystalab/docs/ (1_, 2_ e 3_*.txt)
+  D5  Salvar o codigo no Google Drive (pasta "crystalab") ................ [OK]
+  D6  E-mail ao supervisor com instrucoes de instalacao e execucao ....... [PENDENTE-USUARIO]
+      Segundo o registro do trabalho, o rascunho esta pronto, mas o .zip precisa
+      ser anexado manualmente (a ferramenta nao anexa arquivos). NAO foi enviado.
+  D7  Usar o Prompt Mestre como base e executar as 10 fases .............. [OK com ressalvas]
+      Fases 1 a 10 concluidas, commitadas e publicadas. Ressalvas: secoes 1.4 e 5.
+  D8  Publicar no GitHub ................................................. [OK]
+      Em branch nova, porque a main do repositorio tem historico diferente.
+  D9  Portar as telas de Ligas e Temperatura (T-13) ...................... [IMPLEMENTADA, SEM COMMIT]
+      Ver secao 6.
+
+
+--------------------------------------------------------------------------------
+4. SUGESTOES DOS PROFESSORES: ONDE ESTAMOS
+--------------------------------------------------------------------------------
+
+Fonte: arquivo "Sugestoes para o Projeto.md" (Prof. Mina e Profa. Gisele).
+Coluna v1.4 = versao anterior (atendia todas). Coluna nova = estado atual.
+
+  Sugestao                                              v1.4   Nova   Observacao
+  ----------------------------------------------------  -----  -----  -----------------------------
+  Mina 1 / Gisele 1: cor por elemento, configuravel     OK     PARC.  So ha coloracao ILUSTRATIVA
+      na visualizacao 3D                                               (semente) na ponte HEA, no modo
+                                                                       demonstrativo. Sem seletor de cor.
+  Mina 2: ver a formacao da liga e a posicao de cada    OK     OK*    *Aba Liga (secao 6). Falta
+      atomo                                                            selecionar atomo da liga com
+                                                                       propriedades individuais.
+  Mina 3: efeito da temperatura e vibracao dos atomos   OK     OK*    *Aba Temperatura (secao 6);
+                                                                       vibracao ilustrativa, amplitude
+                                                                       do motor, exagero rotulado.
+  Mina 4: aprendizado com desenho de planos             OK     OK     Exercicio "qual e o plano?" em
+                                                                       #/aprender + planos no viewer.
+  Mina 5: melhorar parametro de rede e FEA              OK     OK     a medido com prioridade e fonte,
+                                                                       N_A CODATA 2018, Ti corrigido.
+  Mina 6: impacto das ligas nos atomos                  OK     PARC.  Distorcao descrita em texto;
+                                                                       os atomos NAO sao deslocados.
+  Gisele 2: pacotes abertos para funcoes visuais        PARC.  PARC.  Bibliotecas abertas adotadas;
+                                                                       sem levantamento documentado.
+  Gisele 3: uma barra lateral e 3D maior                OK     NAO    Layout herdado tem painel
+                                                                       esquerdo e direito.
+  Gisele 4: tela inicial com login de e-mail da UFC     OK     PARC.  Conta real com senha e historico
+                                                                       no banco, mas sem restricao a
+                                                                       @ufc.br e sem tela inicial.
+  Aba Tutoriais (txt, mp4, pdf, planilhas, docs)        OK     NAO    Tabela de arquivos existe;
+                                                                       nao ha rota nem tela.
+
+  Resumo (considerando a implementacao sem commit): 4 atendidas, 4 parciais, 2 nao atendidas.
+  Se as abas Liga/Temperatura nao forem commitadas, Mina 2 e 3 voltam a "parcial".
+
+
+--------------------------------------------------------------------------------
+5. REQUISITOS DO PROMPT MESTRE (71 REQUISITOS)
+--------------------------------------------------------------------------------
+
+Legenda: OK atendido e testado | PARC. parcial | NAO nao atendido | ADIADO decisao registrada
+
+  Dominio                 OK  PARC.  NAO/ADIADO  Principais lacunas
+  ----------------------  --  -----  ----------  -------------------------------------------
+  Cristalografia (13)     13   0      -          em producao: bloqueadas ate validar dados (Q-03)
+  API (6)                  4   1      1 adiado   paginacao so no historico; cálculo longo adiado
+  Arquitetura (5)          3   2      -          sem modulo de administracao; ARQ-05 nao auditado
+  Banco (8)                3   4      1 nao      PostgreSQL nao executado; sem teste de backup/restauracao
+  Seguranca (7)            2   4      1 nao      sem LGPD (exportar/apagar), sem recuperacao de senha,
+                                                 sem administracao, sem pentest
+  Frontend (7)             5   2      -          axe/Lighthouse nao rodados; FE-06 parcial
+  HEA (6)                  1   3      2 nao      ΔH_mix, Omega, Gibbs dependem de Q-01
+  Educacional (6)          1   3      1 nao +1   tutoriais; IA desligada por decisao
+  Operacao (5)             2   3      -          Docker, health/logs e CI escritos, nao executados
+  Qualidade (5)            1   4      -          concorrencia, a11y automatizada, Gemmi local
+  Documentacao (3)         3   0      -          -
+  TOTAL                   38  26      5 + 2
+
+  Observacao: a contagem considera a entrega das abas Liga/Temperatura (CIE-11,
+  CIE-12 e FE-06 melhoram). Detalhe por requisito em docs/REQUISITOS_BASE.md.
+
+
+--------------------------------------------------------------------------------
+6. TRABALHO EM ANDAMENTO: ABAS LIGA E TEMPERATURA (T-13) - SEM COMMIT
+--------------------------------------------------------------------------------
+
+6.1 O que foi implementado
+    ABA LIGA (barra lateral do CrystaLab): base (padrao = metal carregado), soluto
+    (metal ou C, N, H), % atomica, supercelula n x n x n, arranjo aleatorio/ordenado
+    com semente, distorcao ilustrativa. Resultados abaixo do viewer: composicao,
+    parametro de rede, densidade, contagem de atomos, 4 regras de Hume-Rothery
+    (atende / nao atende / indisponivel, com o motivo), conclusao do motor, sitio
+    intersticial, passo a passo e procedencia. O viewer desenha UM ATOMO POR ATOMO
+    devolvido pelo motor, com legenda textual por papel.
+
+    ABA TEMPERATURA: controle de -200 a 2500 C (recalcula ao soltar, cancelando o
+    pedido anterior); alvo = metal carregado ou liga formada. Mostra T/T_f, α,
+    a(T), variacao de volume, densidade, amplitude de vibracao u, curva u/d x T com
+    a linha de Lindemann e as observacoes do motor (inclui aviso de fusao).
+    Botao "Vibrar atomos": cada atomo oscila em torno da posicao de rede com a
+    amplitude do motor.
+
+6.2 Garantias de integridade
+    - Nenhuma formula no cliente: tudo vem de POST /api/v1/crystallography/
+      solid-solutions e POST /api/v1/thermodynamics/thermal.
+    - A vibracao e ILUSTRATIVA (osciladores independentes, movimento
+      deterministico). O "exagero visual" so multiplica a amplitude para enxergar,
+      e esta rotulado; 1x = amplitude real do motor.
+    - Com movimento reduzido no sistema, a cena mostra um instante congelado.
+    - Carregar outro metal invalida liga e temperatura (a comparacao e por rotulo
+      e estrutura, nao por identidade de objeto: recarregar o MESMO metal nao apaga).
+    - Uma faixa avisa que os cartoes acima do viewer continuam descrevendo o
+      metal carregado quando ha liga na tela.
+
+6.3 Arquivos (todos sem commit)
+    Novos:     frontend/src/features/viewer3d/alloyScene.ts
+               frontend/src/stores/alloy.ts
+               frontend/src/modules/crystalab/AlloyPanels.tsx
+               frontend/src/i18n/source/06-alloy.tsv
+               frontend/tests/unit/alloy.test.ts
+               frontend/tests/e2e/alloy-thermal.spec.ts
+    Alterados: SceneController.ts, Viewer3D.tsx, CrystaLabModule.tsx, ViewerPanel.tsx,
+               contracts.ts, crystalab.ts, app.css, locales (gerados), package.json,
+               scripts/contrato_frontend.mts e 6 documentos em docs/.
+
+6.4 Estado dos testes e falhas intermitentes (HONESTIDADE TECNICA)
+    - Unitarios 83/83 e contrato real 46/46: verificados.
+    - E2E dos 6 fluxos novos: passaram na primeira execucao.
+    - Rodada completa (61 testes): 60 aprovados, 1 falha no teste "Entrada invalida"
+      da propria suite nova. Causa provavel e CORRIGIDA: a liga era apagada sempre que
+      o objeto da estrutura era recarregado (mesmo sendo o mesmo metal). Depois da
+      correcao, a suite nova rodou 4 vezes (24 execucoes): 23 passaram.
+    - A falha restante (1 em 24) foi no teste "Movimento reduzido" (esperava o painel
+      de resultados da temperatura). A reproducao com rastro foi INTERROMPIDA e a causa
+      NAO foi investigada. Tratar como risco aberto (T-21).
+    - A correcao acima ainda nao passou por uma nova rodada completa de 61 testes.
+
+6.5 Efeitos colaterais conhecidos
+    - Carregamento inicial subiu de 204,2 para 212,8 kB gzip (T-20: carregar
+      AlloyPanels sob demanda).
+    - Nao ha comando de terminal equivalente (as demais operacoes tem) nem
+      desfazer/refazer para liga e temperatura (T-19).
+
+6.6 Antes de commitar
+    1) investigar T-21 com rastro (npx playwright test -g "Movimento reduzido"
+       --repeat-each 10); 2) rodar a suite E2E completa; 3) commitar o pacote em um
+       unico commit; 4) enviar ao GitHub.
+
+
+--------------------------------------------------------------------------------
+7. LISTA UNIFICADA DE PENDENCIAS
+--------------------------------------------------------------------------------
+
+7.1 Decisoes e insumos humanos (nao se resolvem so com codigo)
+    Q-01  Entalpias binarias de mistura (Miedema / Takeuchi & Inoue) com fonte
+          -> libera ΔH_mix, Omega, veredito HEA, curva de Gibbs.
+    Q-02  Hospedagem. Q-03 Validador cientifico (nomear professor; conferir
+          Callister, a do Ti, dados da v1.4, tabela VEC de Guo 2011).
+    Q-04  Provedor de e-mail (verificacao de conta e recuperacao de senha).
+    Q-05  SSO institucional (opcional). Q-06 Licenca do projeto e dos dados.
+    Q-07  Executar o CI no GitHub e conferir o resultado.
+    D6    Anexar o .zip e enviar o e-mail ao supervisor.
+
+7.2 Limitacoes do ambiente de desenvolvimento
+    L-01  Sem PostgreSQL: 22 variantes de teste puladas.
+    L-02  Sem Docker: imagens, compose e Caddy nao executados.
+    T-01  Gemmi sem pacote para Python 3.15: 1 teste CIF pulado.
+
+7.3 Tecnicas
+    T-02  Gatilho de soma da composicao (composicao_itens), com PostgreSQL.
+    T-03  Parametro a medido com fonte para os outros 14 metais.
+    T-04  API de instituicoes, turmas e matriculas (hoje vinculos so no banco).  [ALTA]
+    T-05  Atividades, atribuicoes, entregas e notas (Fluxo C completo).          [ALTA]
+    T-06  Limitador de login compartilhado (banco ou Redis).
+    T-07  pip-audit e npm audit no CI.
+    T-08  Migrar atividades locais de #/aprender para geradores do servidor.
+    T-09  Diagrama de fases (/thermodynamics/phase-diagram).
+    T-10  Repositorio de materiais/ligas e upload de tutoriais.
+    T-11  Remover aliases /v1.
+    T-12  E2E 4.9 (gerenciador de camadas) intermitente (1 falha em rodada completa,
+          5/5 isolado).
+    T-13  Telas de Ligas e Temperatura ........ IMPLEMENTADA, FALTA COMMIT.
+    T-14  Seletor de cor por elemento (Mina 1 / Gisele 1).                       [ALTA]
+    T-15  Aba Tutoriais com upload seguro.                                       [ALTA]
+    T-16  Barra lateral unica e 3D maior (Gisele 3).
+    T-17  Login restrito a @ufc.br configuravel + tela inicial (Gisele 4).
+    T-18  Levantamento documentado de pacotes abertos (Gisele 2).
+    T-19  Comandos de terminal e desfazer/refazer para liga e temperatura.
+    T-20  Carregar AlloyPanels sob demanda.
+    T-21  E2E "Movimento reduzido" intermitente (1 em 24 execucoes) - nao investigado.
+
+7.4 Ordem sugerida para fechar as lacunas dos professores
+    1) Commitar T-13 (apos T-21). 2) T-14 cores por elemento. 3) T-15 Tutoriais.
+    4) T-16 barra unica. 5) T-17 login UFC. 6) T-18 levantamento de pacotes.
+    7) T-04 administracao (necessaria tambem para demonstracoes).
+
+
+--------------------------------------------------------------------------------
+8. DEZ SUGESTOES DE CONSTRUCAO E ARQUITETURA
+--------------------------------------------------------------------------------
+
+Cada sugestao traz: motivacao, acao, criterio de aceite, esforco relativo
+(P pequeno, M medio, G grande) e dependencias. Todas partem do estado real
+do repositorio.
+
+S1. Separar a logica de cena do Three.js
+    Motivacao: SceneController.ts tem cerca de 900 linhas e mistura construcao de
+      dados, desenho e interacao.
+    Acao: mover montagem de dados (atomos, arestas, legendas, movimento) para
+      modulos puros, como alloyScene.ts ja faz; deixar o controlador so com o
+      desenho.
+    Aceite: nova logica coberta por testes de Node sem WebGL; controlador menor.
+    Esforco: M. Dependencias: nenhuma.
+
+S2. Gerar os contratos zod a partir do OpenAPI
+    Motivacao: contracts.ts e escrito a mao e pode divergir de openapi.gen.ts; hoje
+      a protecao e o teste de contrato real e o openapi-compat.ts (so requisicoes).
+    Acao: gerar ou validar os esquemas de RESPOSTA a partir de docs/openapi.json.
+    Aceite: mudanca incompativel no backend falha no typecheck, nao so no teste de
+      contrato.
+    Esforco: M. Dependencias: ferramenta de geracao compativel com zod 3.
+
+S3. Cliente de API tipado de ponta a ponta
+    Motivacao: cada adaptador repete tipos de requisicao/resposta.
+    Acao: derivar funcoes do cliente dos caminhos do OpenAPI (tipos gerados).
+    Aceite: adicionar uma rota exige so declarar caminho e esquema.
+    Esforco: M. Dependencias: S2.
+
+S4. Registro declarativo de paineis laterais
+    Motivacao: a barra lateral do CrystaLab tem 9 abas e cada uma traz seus proprios
+      efeitos de troca automatica em CrystaLabModule.tsx.
+    Acao: lista declarativa {id, rotulo, componente, quando abrir}.
+    Aceite: nova aba sem editar a logica de orquestracao.
+    Esforco: P. Dependencias: nenhuma. Facilita T-16 (barra unica).
+
+S5. Dividir o ServicoCalculo por dominio
+    Motivacao: uma classe reune cristalografia, termodinamica e HEA.
+    Acao: um servico por dominio com a mesma unidade de trabalho e a mesma
+      assinatura de historico.
+    Aceite: testes de integracao existentes passam sem alteracao de comportamento.
+    Esforco: P. Dependencias: nenhuma.
+
+S6. Tornar a politica de validacao de dados auditavel
+    Motivacao: nenhum dado esta validado e a promocao de estados e o que libera a
+      producao.
+    Acao: tabela de transicoes permitidas (rascunho -> aguardando -> validado/
+      rejeitado), API de revisao com duas assinaturas, diff entre versoes de seed;
+      aproveitar a tabela revisoes_validacao que ja existe.
+    Aceite: toda transicao testada; promocao sem fonte e recusada.
+    Esforco: G. Dependencias: T-04 (papeis) e Q-03.
+
+S7. Limitador de login compartilhado
+    Motivacao: LimitadorLogin vale por processo; com varias replicas cada uma conta
+      separado.
+    Acao: guardar tentativas no banco ou em Redis atras da mesma interface.
+    Aceite: bloqueio vale entre processos (teste com duas instancias).
+    Esforco: P. Dependencias: decisao de infraestrutura (Q-02). Ver T-06.
+
+S8. Carga sob demanda das telas pesadas
+    Motivacao: o carregamento inicial subiu para 212,8 kB (meta 300).
+    Acao: React.lazy em AlloyPanels, painel de procedencia e modulos pouco usados.
+    Aceite: inicial volta a ~204 kB; testes E2E inalterados.
+    Esforco: P. Ver T-20.
+
+S9. Varredura de dependencias no CI
+    Motivacao: CVEs hoje nao sao detectadas.
+    Acao: pip-audit e npm audit --omit=dev como jobs; falha em severidade alta.
+    Aceite: job verde no GitHub; relatorio anexado. Esforco: P. Ver T-07.
+
+S10. Ambiente de demonstracao deterministico
+    Motivacao: sem questoes criadas, a lista de questoes aparece vazia (porque a
+      criacao de questao publica exige admin_geral e nao ha API de administracao).
+    Acao: comando "python -m app.cli demo" que cria instituicao, usuarios (admin,
+      professor, estudante), questoes e ligas de exemplo em um banco descartavel.
+    Aceite: apresentacao reproduzivel do zero em um comando.
+    Esforco: P. Dependencias: nenhuma (nao substitui T-04).
+
+Prioridade sugerida: S10, S8, S9 (rapidas); S4 e S5 (preparam T-16 e novas funcoes);
+S1 e S2/S3 (reduzem divergencia); S7 antes de escalar; S6 e o caminho para a
+producao cientifica.
+
+
+--------------------------------------------------------------------------------
+9. RISCOS
+--------------------------------------------------------------------------------
+
+R1  CI nunca executado: falhas de ambiente (Linux, PostgreSQL, Docker) so aparecem
+    depois do primeiro push. Mitigacao: conferir o resultado em Actions e corrigir.
+R2  Producao sem dados validados: o sistema sobe, mas entrega pouco (so ΔS_mix do
+    HEA; temperatura bloqueada). Mitigacao: Q-03 e S6.
+R3  Teste intermitente (T-12, T-21): pode mascarar regressao real em rodadas longas.
+    Mitigacao: investigar com rastro no CI antes de tornar a suite bloqueante.
+R4  Trabalho sem commit: as abas Liga/Temperatura existem so na maquina local.
+    Mitigacao: commitar e publicar assim que T-21 for resolvido.
+R5  Publicacao em repositorio publico com e-mail institucional nos commits e
+    licenca indefinida (Q-06). Mitigacao: decidir a licenca; avaliar visibilidade.
+R6  Divergencia futura entre contratos do front e da API (S2/S3).
+
+
+--------------------------------------------------------------------------------
+10. COMO REPRODUZIR (WINDOWS; EM LINUX TROQUE .venv/Scripts por .venv/bin)
+--------------------------------------------------------------------------------
+
+  python -m venv .venv
+  .venv/Scripts/pip install -e "backend[dev]"
+  cd frontend
+  npm install
+  npm run build
+  npm run engine -- --db ../var/dev.db      # API em http://127.0.0.1:8010
+  npm run serve                             # outro terminal: http://127.0.0.1:5173
+
+Testes:
+  cd backend  && ../.venv/Scripts/python -m pytest -rs
+  cd frontend && npm run typecheck && npm run lint && npm test
+  cd frontend && npx playwright install chromium && npm run e2e
+
+Regenerar contratos apos mudar a API:
+  .venv/Scripts/python scripts/exportar_openapi.py
+  cd frontend && npm run types:api
+
+Producao (nao executado nesta maquina):
+  cp .env.example .env   (preencher POSTGRES_PASSWORD, ALLOY_SESSION_SECRET,
+                          ALLOY_CSRF_SECRET, ALLOY_DOMINIO)
+  docker compose up -d --build
+
+Para demonstracoes de questoes e preciso, antes, marcar um usuario como admin_geral
+no banco e criar questoes (ver S10).
+
+
+--------------------------------------------------------------------------------
+11. DOCUMENTOS RELACIONADOS (em docs/)
+--------------------------------------------------------------------------------
+
+  GUIA_APRESENTACAO.md ........ roteiro e checklists de atendimento
+  RELATORIO_ENCERRAMENTO.md ... relatorio A-J exigido pelo Prompt Mestre
+  PENDENCIAS.md ............... lista viva de pendencias (T-xx, Q-xx, L-xx)
+  REQUISITOS_BASE.md .......... 71 requisitos e cobertura
+  ARQUITETURA_FINAL.md, DECISOES_TECNICAS.md (ADRs), BANCO_DE_DADOS.md, API.md,
+  BACKEND.md, FRONTEND.md, MOTOR_CIENTIFICO.md, MOTOR_HEA.md, SEGURANCA.md,
+  TESTES_E_QA.md, DEPLOY.md, DESIGN_SYSTEM.md, HISTORICO_DE_ALTERACOES.md,
+  REGISTRO_DE_GATES.md, RELATORIO_AUDITORIA_GERAL.md, openapi.json
+
+Nota sobre numeros: TESTES_E_QA.md e FRONTEND.md ainda trazem os numeros da
+rodada anterior (77 unitarios, 38 contratos). Os valores deste relatorio sao os
+mais recentes.
+
+================================================================================
+FIM DO RELATORIO
+================================================================================

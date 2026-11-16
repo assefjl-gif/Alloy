@@ -35,6 +35,12 @@ test('animações: empilhamento rotulado como ilustração; α→γ usa os dois 
   const panel = page.getByTestId('animations-panel');
   await expect(panel).toContainText('CCC');
   await expect(panel).toContainText('CFC');
+  // D-R2-4 (achado T-15): a α→γ também tem selo. Como usa dois resultados REAIS do motor, o rótulo
+  // é "interpolação visual" — distinguível do selo de demonstração (data-seal).
+  const seal = page.getByTestId('viewer-stage').getByTestId('demo-seal');
+  await expect(seal).toContainText('Interpolação visual');
+  await expect(seal).toHaveAttribute('data-seal', 'illustrative');
+  await expect(seal).toHaveAttribute('title', /dinâmica molecular/);
 });
 
 test('ABP Al × Cu: hipóteses, evidências dos três tipos e conclusão registrada no caderno', async ({ app: page }) => {

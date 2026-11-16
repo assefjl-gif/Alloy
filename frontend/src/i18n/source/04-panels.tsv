@@ -53,29 +53,22 @@ hea.analyzeAlloy	Analisar liga	Analyse alloy	Analizar aleación
 hea.analyze	Analisar	Analyse	Analizar
 hea.normalize	Normalizar	Normalise	Normalizar
 hea.analysisTitle	Análise da liga	Alloy analysis	Análisis de la aleación
-hea.subtitle	Parâmetros termodinâmicos a {T} e {P}	Thermodynamic parameters at {T} and {P}	Parámetros termodinámicos a {T} y {P}
+hea.subtitle	Critérios empíricos de triagem · motor HEA {version}	Empirical screening criteria · HEA engine {version}	Criterios empíricos de triaje · motor HEA {version}
 hea.empty	Defina uma composição e clique em Analisar.	Set a composition and click Analyse.	Defina una composición y pulse Analizar.
 hea.disabled	Preditor HEA indisponível e modo demonstrativo desligado.	HEA predictor unavailable and demo mode off.	Predictor HEA no disponible y modo demostrativo desactivado.
 hea.demoBanner	Modo demonstrativo: o motor HEA não está disponível (D-01). Os valores abaixo são fictícios, gerados com semente fixa, e não servem como resultado.	Demo mode: the HEA engine is not available (D-01). The values below are fictitious, generated with a fixed seed, and are not results.	Modo demostrativo: el motor HEA no está disponible (D-01). Los valores siguientes son ficticios, generados con semilla fija, y no sirven como resultado.
 hea.demoDetail	Valores fictícios com semente fixa (D-01)	Fictitious fixed-seed values (D-01)	Valores ficticios con semilla fija (D-01)
+hea.demoSealDetail	Valor fictício do modo demonstrativo: não é resultado do motor, não tem base física e não tem fonte.	Fictitious value from demo mode: not an engine result, with no physical basis and no source.	Valor ficticio del modo demostrativo: no es resultado del motor, no tiene base física ni fuente.
+hea.demoChartNote	Gráfico de valores FICTÍCIOS (modo demonstrativo): a forma da curva não representa nenhuma liga.	Chart of FICTITIOUS values (demo mode): the curve shape represents no alloy.	Gráfico de valores FICTICIOS (modo demostrativo): la forma de la curva no representa ninguna aleación.
+hea.demoTableNote	Tabela de valores FICTÍCIOS (modo demonstrativo): nenhum número desta tabela é resultado do motor.	Table of FICTITIOUS values (demo mode): no number in this table is an engine result.	Tabla de valores FICTICIOS (modo demostrativo): ningún número de esta tabla es resultado del motor.
+hea.demoAlloysNote	Ligas de demonstração: nomes e composições de exemplo, sem vínculo com liga real.	Demo alloys: example names and compositions, unrelated to any real alloy.	Aleaciones de demostración: nombres y composiciones de ejemplo, sin vínculo con aleación real.
+hea.demoTriageNote	Nenhuma triagem foi feita no modo demonstrativo: sem dado e sem motor não há critério a avaliar.	No screening is performed in demo mode: with no data and no engine there is no criterion to evaluate.	No se hizo ninguna triaje en modo demostrativo: sin dato ni motor no hay criterio que evaluar.
 hea.engine	preditor HEA	HEA predictor	predictor HEA
 hea.properties	Fase e propriedades	Phase and properties	Fase y propiedades
 hea.propertiesLine	Ductilidade {ductility} · dureza {hardness} (índice {index})	Ductility {ductility} · hardness {hardness} (index {index})	Ductilidad {ductility} · dureza {hardness} (índice {index})
 hea.dimensionless	adimensional	dimensionless	adimensional
 hea.electrons	elétrons	electrons	electrones
 hea.tm	Temperatura de fusão média	Mean melting temperature	Temperatura de fusión media
-hea.comparisonTitle	Comparação com a liga de referência	Comparison with the reference alloy	Comparación con la aleación de referencia
-hea.parameter	Parâmetro	Parameter	Parámetro
-hea.calculated	Calculado	Calculated	Calculado
-hea.reference	Referência	Reference	Referencia
-hea.difference	Diferença	Difference	Diferencia
-hea.differenceNote	Diferença = calculado − referência, com os valores devolvidos pelo preditor.	Difference = calculated − reference, using the values returned by the predictor.	Diferencia = calculado − referencia, con los valores devueltos por el predictor.
-hea.row.entropy	Entropia de mistura ΔS	Mixing entropy ΔS	Entropía de mezcla ΔS
-hea.row.omega	Parâmetro Ω	Ω parameter	Parámetro Ω
-hea.row.delta	Diferença de raios δ	Radius mismatch δ	Diferencia de radios δ
-hea.row.enthalpy	Entalpia de mistura ΔH	Mixing enthalpy ΔH	Entalpía de mezcla ΔH
-hea.normalizedComposition	Composição normalizada	Normalised composition	Composición normalizada
-hea.atomicPct	% atômica	atomic %	% atómico
 hea.alloy	Liga	Alloy	Aleación
 hea.phase	Fase prevista	Predicted phase	Fase prevista
 hea.verdict	Veredito	Verdict	Veredicto
@@ -91,15 +84,7 @@ hea.nothingToNormalize	Não há composição para normalizar.	There is no compos
 hea.editorCleared	Editor de composição limpo.	Composition editor cleared.	Editor de composición limpio.
 hea.analysisDone	Análise concluída	Analysis finished	Análisis terminado
 hea.analysisAnnounce	{name}: {verdict}	{name}: {verdict}	{name}: {verdict}
-hea.chart.stabilityCaption	Mapa de estabilidade δ × ΔH: a zona destacada (δ < 6,6 %, −15 < ΔH < 5 kJ/mol) favorece solução sólida.	δ × ΔH stability map: the highlighted zone (δ < 6.6 %, −15 < ΔH < 5 kJ/mol) favours a solid solution.	Mapa de estabilidad δ × ΔH: la zona destacada (δ < 6,6 %, −15 < ΔH < 5 kJ/mol) favorece la solución sólida.
-hea.chart.stabilityDesc	Mapa de estabilidade: {name} em δ = {delta} % e ΔH = {dh} kJ/mol.	Stability map: {name} at δ = {delta} % and ΔH = {dh} kJ/mol.	Mapa de estabilidad: {name} en δ = {delta} % y ΔH = {dh} kJ/mol.
-hea.chart.deltaAxis	δ (%)	δ (%)	δ (%)
-hea.chart.dhAxis	ΔH mistura (kJ/mol)	ΔH mixing (kJ/mol)	ΔH mezcla (kJ/mol)
-hea.chart.stableZone	solução sólida	solid solution	solución sólida
-hea.chart.gibbsCaption	Energia livre de mistura ΔG = ΔH − TΔS em função da temperatura, com os valores do preditor.	Free energy of mixing ΔG = ΔH − TΔS versus temperature, with the predictor's values.	Energía libre de mezcla ΔG = ΔH − TΔS en función de la temperatura, con los valores del predictor.
-hea.chart.gibbsDesc	ΔG de {name} em função de T; no fim da faixa, ΔG = {g} kJ/mol.	ΔG of {name} versus T; at the end of the range, ΔG = {g} kJ/mol.	ΔG de {name} en función de T; al final del rango, ΔG = {g} kJ/mol.
 hea.chart.tAxis	T (K)	T (K)	T (K)
-hea.chart.gAxis	ΔG (kJ/mol)	ΔG (kJ/mol)	ΔG (kJ/mol)
 hea.chart.data	Dados do gráfico	Chart data	Datos del gráfico
 terminal.title	Terminal	Terminal	Terminal
 terminal.logLabel	Registro do terminal	Terminal log	Registro del terminal

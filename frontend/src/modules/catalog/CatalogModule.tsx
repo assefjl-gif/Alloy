@@ -32,7 +32,7 @@ export default function CatalogModule() {
   return (
     <Workbench center={
       <main id="main-content" tabIndex={-1} className="module-main catalog" data-testid="catalog">
-        <header className="module-head"><h1>{t('catalog.title')}</h1><p className="module-head__lead">{t('catalog.lead')}</p></header>
+        <header className="module-head ds-on-dark"><h1>{t('catalog.title')}</h1><p className="module-head__lead">{t('catalog.lead')}</p></header>
 
         <section aria-labelledby="cat-tokens" className="ds-stack">
           <h2 id="cat-tokens">{t('catalog.tokens')}</h2>

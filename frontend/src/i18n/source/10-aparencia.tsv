@@ -1,0 +1,44 @@
+# Chaves da rodada R2 (R2-FE-04): menu de aparência da cena (T-22) — cor por elemento, grupo e átomo,
+# cor de vértices e arestas, tamanho, transparência, marcadores geométricos e restauração do padrão.
+appearance.intro	Cor, tamanho e transparência são escolhas de EXIBIÇÃO: não alteram valor, contagem nem composição. Quando a cor passa a codificar informação, a legenda diz o que ela significa.	Colour, size and transparency are DISPLAY choices: they change no value, count or composition. When colour encodes information, the legend states what it means.	Color, tamaño y transparencia son opciones de VISUALIZACIÓN: no alteran valor, recuento ni composición. Cuando el color codifica información, la leyenda dice qué significa.
+appearance.colors	Cores	Colours	Colores
+appearance.byElement	Cor por elemento	Colour by element	Color por elemento
+appearance.byGroup	Cor por grupo	Colour by group	Color por grupo
+appearance.byAtom	Cor do átomo selecionado	Colour of the selected atom	Color del átomo seleccionado
+appearance.groupNote	Grupo é a OCUPAÇÃO que o motor devolve para cada átomo (solvente, substitucional, intersticial) e, na célula do metal puro, o TIPO DE SÍTIO. São campos do próprio motor, os mesmos usados pelos filtros de exibição.	A group is the OCCUPANCY the engine returns for each atom (solvent, substitutional, interstitial) and, in the pure-metal cell, the SITE TYPE. Both are engine fields, the same ones used by the display filters.	El grupo es la OCUPACIÓN que el motor devuelve para cada átomo (solvente, sustitucional, intersticial) y, en la celda del metal puro, el TIPO DE SITIO. Son campos del propio motor, los mismos que usan los filtros.
+appearance.precedence	Precedência: a cor do átomo vence a do grupo, que vence a do elemento, que vence o padrão da cena.	Precedence: the atom colour beats the group colour, which beats the element colour, which beats the scene default.	Precedencia: el color del átomo vence al del grupo, que vence al del elemento, que vence al valor por omisión.
+appearance.reset	Restaurar padrão	Restore default	Restaurar valores por omisión
+appearance.resetOf	Restaurar a cor padrão de {name}	Restore the default colour of {name}	Restaurar el color por omisión de {name}
+appearance.resetSection	Restaurar esta seção	Restore this section	Restaurar esta sección
+appearance.resetAll	Restaurar toda a aparência	Restore the whole appearance	Restaurar toda la apariencia
+appearance.custom	Personalizada	Custom	Personalizado
+appearance.cell	Células: arestas e vértices	Cells: edges and vertices	Celdas: aristas y vértices
+appearance.edgeColor	Cor das arestas da célula	Colour of the cell edges	Color de las aristas de la celda
+appearance.vertexColor	Cor dos vértices da célula	Colour of the cell vertices	Color de los vértices de la celda
+appearance.vertices	Marcar os vértices da célula	Mark the cell vertices	Marcar los vértices de la celda
+appearance.verticesNote	O marcador de vértice é um cubo em arame: é marcador geométrico, não átomo.	The vertex marker is a wireframe cube: it is a geometric marker, not an atom.	El marcador de vértice es un cubo de alambre: es un marcador geométrico, no un átomo.
+appearance.verticesOff	Ligue "Marcar os vértices da célula" para ver a cor escolhida.	Turn on "Mark the cell vertices" to see the chosen colour.	Active "Marcar los vértices de la celda" para ver el color elegido.
+appearance.atomsTitle	Átomos: tamanho e transparência	Atoms: size and transparency	Átomos: tamaño y transparencia
+appearance.scale	Tamanho dos átomos	Atom size	Tamaño de los átomos
+appearance.scaleValue	{x}× do padrão	{x}× of the default	{x}× del valor por omisión
+appearance.scaleNote	Escala apenas de desenho: o raio que o motor devolveu não muda, e a representação escolhida continua valendo.	Drawing scale only: the radius returned by the engine does not change, and the chosen representation still applies.	Escala solo de dibujo: el radio devuelto por el motor no cambia y la representación elegida sigue vigente.
+appearance.opacity	Opacidade dos átomos	Atom opacity	Opacidad de los átomos
+appearance.opacityValue	{pct}% opaco	{pct}% opaque	{pct}% opaco
+appearance.noAtomSelected	Nenhum átomo selecionado. Clique em um átomo na cena (ou use a seção Seleção de átomos) para dar cor só a ele.	No atom selected. Click an atom in the scene (or use the Atom selection section) to colour just that one.	Ningún átomo seleccionado. Haga clic en un átomo de la escena (o use la sección Selección de átomos) para darle color solo a él.
+appearance.atomLabel	Átomo {id}	Atom {id}	Átomo {id}
+appearance.noElements	Carregue um metal ou forme uma liga para escolher cores por elemento.	Load a metal or form an alloy to choose colours per element.	Cargue un metal o forme una aleación para elegir colores por elemento.
+appearance.markers	Marcadores geométricos	Geometric markers	Marcadores geométricos
+appearance.markersNote	Eixos, pontos de rede, vértices, marcador de seleção e planos ou direções de Miller são marcadores geométricos: desenhados em seta, linha ou arame, nunca como a esfera sólida de um átomo, e nunca com a cor de um elemento.	Axes, lattice points, vertices, the selection marker and Miller planes or directions are geometric markers: drawn as arrows, lines or wireframes, never as the solid sphere of an atom, and never in an element colour.	Ejes, puntos de red, vértices, marcador de selección y planos o direcciones de Miller son marcadores geométricos: dibujados como flechas, líneas o alambre, nunca como la esfera sólida de un átomo ni con el color de un elemento.
+appearance.active	Aparência personalizada	Custom appearance	Apariencia personalizada
+appearance.customCount	{n} escolha(s) de cor ativa(s)	{n} active colour choice(s)	{n} opción(es) de color activa(s)
+appearance.atomColorsList	Cores escolhidas para átomos individuais	Colours chosen for individual atoms	Colores elegidos para átomos individuales
+appearance.removeAtomColor	Remover a cor do átomo {id}	Remove the colour of atom {id}	Quitar el color del átomo {id}
+legend.colorMeans	A cor codifica	Colour encodes	El color codifica
+legend.colorByElement	elemento	element	elemento
+legend.colorByGroup	grupo (ocupação ou sítio do motor)	group (engine occupancy or site)	grupo (ocupación o sitio del motor)
+legend.colorByAtom	átomo escolhido	chosen atom	átomo elegido
+legend.colorChoice	escolha de exibição: não altera dado	display choice: it changes no data	opción de visualización: no altera ningún dato
+legend.markers	Marcadores geométricos (não são átomos)	Geometric markers (not atoms)	Marcadores geométricos (no son átomos)
+legend.marker.vertices	Vértices da célula	Cell vertices	Vértices de la celda
+legend.marker.selection	Marcador de seleção	Selection marker	Marcador de selección
+legend.customColor	cor personalizada	custom colour	color personalizado

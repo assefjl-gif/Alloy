@@ -4,7 +4,7 @@
  * Resultado gravado em reports/a11y.json. NÃO é nota Lighthouse.
  */
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { test, expect, openCrystalab, terminal } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, reveal } from './fixtures.ts';
 import { runA11yAudit, type A11yReport } from '../helpers/a11yAudit.ts';
 
 const ROUTES = ['crystalab', 'hea', 'aprender', 'aprender/densidade-cobre', 'aprender/abp-al-cu', 'aprender/quiz-estruturas', 'diario', 'professor', 'sobre', 'catalogo'];
@@ -37,7 +37,7 @@ test('teclado: pular para o conteúdo, paleta Ctrl+K com retorno de foco, termin
   await page.keyboard.press('Enter');
   await expect(page.locator('#main-content')).toBeFocused();
 
-  await page.getByTestId('render-button').focus();
+  await page.getByTestId('sidebar-toggle').focus();
   await page.keyboard.press('Control+k');
   await expect(page.getByTestId('palette-input')).toBeFocused();
   await page.keyboard.type('supercélula 2');
@@ -67,7 +67,7 @@ test('viewer por teclado: foco na cena, setas giram, Tab percorre átomos na lis
   await page.keyboard.press('ArrowLeft');
   await page.waitForTimeout(150);
   expect(await cam()).not.toBe(c0);
-  await page.getByRole('tab', { name: 'Átomo' }).click();
+  await reveal(page, 'selection');
   const list = page.getByRole('listbox');
   await list.focus();
   await page.keyboard.press('ArrowDown');

@@ -54,6 +54,23 @@ def envelope_erro(mensagem: str, codigo: str, status_code: int, *,
     return JSONResponse(status_code=status_code, content=corpo, headers=headers)
 
 
+#: Campos com ``pattern`` no esquema: mensagem de usuário, SEM expor a expressão regular (QA-R2-03).
+_FORMATO_POR_CAMPO = {
+    "email": "informe um e-mail válido, no formato nome@dominio.com",
+    "ref": "use o símbolo do elemento (ex.: Fe) ou o número atômico (ex.: 26)",
+}
+#: Mensagem de formato quando o campo não está no mapa acima.
+_FORMATO_GENERICO = "não está no formato esperado para este campo"
+
+
+def _campo(erro: Dict[str, Any]) -> str:
+    """Último segmento textual de ``loc`` (nome do campo), ou ``""``."""
+    for parte in reversed(list(erro.get("loc") or ())):
+        if isinstance(parte, str) and parte not in ("body", "query", "path", "header", "cookie"):
+            return parte
+    return ""
+
+
 def _texto_erro(erro: Dict[str, Any]) -> str:
     tipo = erro.get("type", "")
     ctx = erro.get("ctx") or {}
@@ -71,15 +88,35 @@ def _texto_erro(erro: Dict[str, Any]) -> str:
         "json_invalid": "JSON inválido",
         "model_attributes_type": "o corpo deve ser um objeto JSON",
         "dict_type": "o corpo deve ser um objeto JSON",
+        "bool_parsing": "deve ser verdadeiro ou falso",
+        "bool_type": "deve ser verdadeiro ou falso",
+        "uuid_parsing": "deve ser um identificador (UUID) válido",
+        "uuid_type": "deve ser um identificador (UUID) válido",
+        "datetime_parsing": "deve ser uma data e hora no formato ISO 8601",
+        "datetime_type": "deve ser uma data e hora no formato ISO 8601",
+        "date_parsing": "deve ser uma data no formato AAAA-MM-DD",
+        "date_type": "deve ser uma data no formato AAAA-MM-DD",
     }
     if tipo in traducoes:
         return traducoes[tipo]
+    if tipo == "string_pattern_mismatch":
+        # NUNCA ecoar ``ctx['pattern']`` (expressão regular interna) ao usuário — QA-R2-03.
+        return _FORMATO_POR_CAMPO.get(_campo(erro), _FORMATO_GENERICO)
+    if tipo == "string_too_short":
+        minimo = ctx.get("min_length")
+        return (f"deve ter pelo menos {minimo} caracteres" if minimo != 1
+                else "não pode ficar em branco")
     if tipo == "greater_than_equal":
         return f"deve ser ≥ {ctx.get('ge')}"
     if tipo == "less_than_equal":
         return f"deve ser ≤ {ctx.get('le')}"
+    if tipo == "greater_than":
+        return f"deve ser > {ctx.get('gt')}"
+    if tipo == "less_than":
+        return f"deve ser < {ctx.get('lt')}"
     if tipo == "literal_error":
-        return f"deve ser um de: {ctx.get('expected')}"
+        # O validador escreve a lista em inglês ("'a', 'b' or 'c'"); a mensagem do contrato é só com vírgulas.
+        return f"deve ser um de: {str(ctx.get('expected')).replace(' or ', ', ')}"
     if tipo == "too_short":
         return f"deve ter pelo menos {ctx.get('min_length')} itens"
     if tipo == "too_long":
@@ -87,13 +124,55 @@ def _texto_erro(erro: Dict[str, Any]) -> str:
     if tipo == "string_too_long":
         return f"deve ter no máximo {ctx.get('max_length')} caracteres"
     mensagem = str(erro.get("msg", "valor inválido"))
+    padrao = ctx.get("pattern")
+    if padrao and str(padrao) in mensagem:
+        # Rede de proteção: nenhum tipo novo do validador pode vazar a expressão regular (QA-R2-03).
+        return _FORMATO_POR_CAMPO.get(_campo(erro), _FORMATO_GENERICO)
     return mensagem.removeprefix("Value error, ")
+
+
+def _loc(partes: Sequence[Any]) -> List[Any]:
+    """Contrato R1 §4.2: índice de lista é inteiro (``["solutos", 0, "x"]``); nome de campo é texto."""
+    return [p if isinstance(p, int) else str(p) for p in partes if p != "body"]
+
+
+#: Campos do contrato que são LISTA: o segmento seguinte em ``loc`` é índice, portanto inteiro (§4.2).
+_LISTAS_DO_CONTRATO = ("solutos",)
+
+
+def _loc_dominio(partes: Sequence[Any]) -> List[Any]:
+    """Normaliza o ``loc`` dos erros de domínio: índice de lista como inteiro, chave de objeto como texto.
+
+    Só converte o segmento que vem depois de um campo-lista conhecido do contrato, para não transformar
+    em número a chave de um objeto (ex.: ``["composicao", "0"]``, onde "0" é a chave enviada pelo usuário).
+    """
+    saida: List[Any] = []
+    anterior: Any = None
+    for parte in partes:
+        if isinstance(parte, str) and parte.isdigit() and anterior in _LISTAS_DO_CONTRATO:
+            saida.append(int(parte))
+        else:
+            saida.append(parte if isinstance(parte, int) else str(parte))
+        anterior = parte
+    return saida
+
+
+def _detalhes_dominio(detalhes: Any) -> Optional[List[Dict[str, Any]]]:
+    if not (isinstance(detalhes, (list, tuple)) and detalhes):
+        return None
+    saida: List[Dict[str, Any]] = []
+    for item in detalhes:
+        if isinstance(item, dict) and "loc" in item:
+            saida.append({**item, "loc": _loc_dominio(item.get("loc") or ())})
+        else:
+            saida.append(item)
+    return saida
 
 
 def resumo_validacao(erros: Sequence[Dict[str, Any]]) -> tuple[str, List[Dict[str, Any]]]:
     """Mensagem curta (1º erro) + lista serializável (sem objetos de exceção em ``ctx``)."""
     detalhes = [
-        {"loc": [str(p) for p in e.get("loc", ()) if p != "body"], "msg": _texto_erro(e), "type": e.get("type")}
+        {"loc": _loc(e.get("loc", ())), "msg": _texto_erro(e), "type": e.get("type")}
         for e in erros
     ]
     if not detalhes:
@@ -101,15 +180,18 @@ def resumo_validacao(erros: Sequence[Dict[str, Any]]) -> tuple[str, List[Dict[st
     primeiro = detalhes[0]
     if primeiro["type"] == "json_invalid":
         return "JSON inválido no corpo da requisição.", detalhes
-    local = ".".join(primeiro["loc"]) or "payload"
+    local = ".".join(str(p) for p in primeiro["loc"]) or "payload"
     return f"Validação falhou em '{local}': {primeiro['msg']}", detalhes
 
 
 def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(ErroDominio)
     async def _dominio(request: Request, exc: ErroDominio) -> JSONResponse:
+        # Contrato R1 §4: o erro de domínio que carrega ``detalhes`` (subtipo estável em ``type``) os repassa
+        # em ``details``, no mesmo formato do 422 de esquema. Erros sem a lista continuam como antes.
+        detalhes = _detalhes_dominio(getattr(exc, "detalhes", None))
         return envelope_erro(str(exc), exc.codigo, STATUS_POR_CODIGO.get(exc.codigo, status.HTTP_400_BAD_REQUEST),
-                             request_id=request_id_de(request))
+                             request_id=request_id_de(request), details=detalhes)
 
     @app.exception_handler(RequestValidationError)
     async def _validacao(request: Request, exc: RequestValidationError) -> JSONResponse:

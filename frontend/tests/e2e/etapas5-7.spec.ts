@@ -4,7 +4,7 @@
  * recomendações de revisão e selos, captura de cena no caderno, rascunhos do professor e
  * movimento reduzido.
  */
-import { test, expect, openCrystalab, terminal } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, reveal } from './fixtures.ts';
 import type { Page } from 'playwright/test';
 
 const transferJson = (page: Page) => page.evaluate(() => JSON.stringify((window as unknown as { __alloy: { stores: { crystalab: { getState: () => { heaTransfer: unknown } } } } }).__alloy.stores.crystalab.getState().heaTransfer));
@@ -35,7 +35,7 @@ test('5.4/5.5 · cores e formas por elemento: só ilustração, com semente repr
   await page.goto('/?demo=1#/hea');   // coloração aleatória por elemento só existe no modo demonstrativo
   await page.getByTestId('analyze-button').click();
   await page.getByTestId('open-in-crystalab').click();
-  await page.getByRole('tab', { name: 'Procedência' }).click();
+  await reveal(page, 'properties.provenance');
   await page.getByTestId('toggle-coloring').click();
   await expect(page.getByTestId('coloring-seed')).toContainText('Semente');
   const legend = page.getByRole('list', { name: /Legenda de elementos/ });

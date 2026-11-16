@@ -1,0 +1,152 @@
+# Chaves da rodada R2 (R2-FE-01): campos novos do contrato R1 - HEA, ligas e celulas.
+nature.analitico	analítico (fórmula fechada)	analytical (closed formula)	analítico (fórmula cerrada)
+nature.estimativa_modelo	estimativa de modelo	model estimate	estimación de modelo
+nature.experimental	dado experimental	experimental datum	dato experimental
+nature.simulacao_ilustrativa	simulação ilustrativa	illustrative simulation	simulación ilustrativa
+nature.demonstrativo	valor demonstrativo	demo value	valor demostrativo
+nature.empirico	critério empírico	empirical criterion	criterio empírico
+nature.definicao	definição	definition	definición
+hea.triage.title	Triagem empírica	Empirical screening	Triaje empírico
+hea.triage.state.favoravel	favorável aos critérios	meets the criteria	favorable a los criterios
+hea.triage.state.desfavoravel	desfavorável aos critérios	fails the criteria	desfavorable a los criterios
+hea.triage.state.inconclusiva	inconclusiva	inconclusive	no concluyente
+hea.triage.state.desconhecido	não classificada pelo motor	not classified by the engine	no clasificada por el motor
+hea.triage.note	Resultado de critérios empíricos de composição. Não é prova de estabilidade termodinâmica nem de fase única.	Result of empirical composition criteria. It is not proof of thermodynamic stability or of a single phase.	Resultado de criterios empíricos de composición. No es prueba de estabilidad termodinámica ni de fase única.
+hea.warnings.title	Limites desta análise	Limits of this analysis	Límites de este análisis
+hea.vecNotApplicable	VEC fora do domínio do critério: a estrutura não é sugerida.	VEC outside the criterion domain: no structure is suggested.	VEC fuera del dominio del criterio: no se sugiere estructura.
+hea.meanRadius	Raio atômico médio	Mean atomic radius	Radio atómico medio
+hea.entropyClass.baixa	entropia baixa (ΔS < 1R)	low entropy (ΔS < 1R)	entropía baja (ΔS < 1R)
+hea.entropyClass.media	entropia média (1R ≤ ΔS < 1,5R)	medium entropy (1R ≤ ΔS < 1.5R)	entropía media (1R ≤ ΔS < 1,5R)
+hea.entropyClass.alta	entropia alta (ΔS ≥ 1,5R)	high entropy (ΔS ≥ 1.5R)	entropía alta (ΔS ≥ 1,5R)
+hea.comp.title	Composição nas duas bases	Composition in both bases	Composición en ambas bases
+hea.comp.basis.atomica	informada em base atômica	entered in atomic basis	introducida en base atómica
+hea.comp.basis.massica	informada em base mássica	entered in mass basis	introducida en base másica
+hea.comp.element	Elemento	Element	Elemento
+hea.comp.atPct	% atômica (at.%)	atomic % (at.%)	% atómico (at.%)
+hea.comp.massPct	% em massa	mass %	% en masa
+hea.comp.molarMass	Massa molar média	Mean molar mass	Masa molar media
+hea.comp.sumLabel	Soma das quantidades informadas	Sum of the entered amounts	Suma de las cantidades introducidas
+hea.comp.massUnavailable	% em massa indisponível: o motor não informou a conversão.	Mass % unavailable: the engine did not provide the conversion.	% en masa no disponible: el motor no informó la conversión.
+hea.missing.title	Dados que faltaram	Missing data	Datos que faltaron
+hea.missing.pairsTitle	Pares sem entalpia de mistura utilizável	Pairs without usable mixing enthalpy	Pares sin entalpía de mezcla utilizable
+hea.missing.item	{symbol}: {datum} — {situation}	{symbol}: {datum} — {situation}	{symbol}: {datum} — {situation}
+hea.missing.code.raio_atomico	raio atômico	atomic radius	radio atómico
+hea.missing.code.temperatura_fusao	temperatura de fusão	melting temperature	temperatura de fusión
+hea.missing.code.vec	VEC	VEC	VEC
+hea.missing.code.massa_atomica	massa atômica	atomic mass	masa atómica
+hea.missing.code.entalpia_mistura_par	entalpia de mistura do par	pair mixing enthalpy	entalpía de mezcla del par
+hea.missing.situation.ausente	ausente no repositório	absent from the repository	ausente en el repositorio
+hea.missing.situation.nao_validado	presente, mas sem validação	present, but not validated	presente, pero sin validación
+hea.criteria.title	Critérios empíricos avaliados	Empirical criteria evaluated	Criterios empíricos evaluados
+hea.criteria.criterion	Critério do motor	Engine criterion	Criterio del motor
+hea.criteria.value	Valor desta liga	Value for this alloy	Valor de esta aleación
+hea.criteria.status	Situação	Status	Situación
+hea.criteria.source	Fonte do limiar	Threshold source	Fuente del umbral
+hea.criteria.atende	atende	met	cumple
+hea.criteria.nao_atende	não atende	not met	no cumple
+hea.criteria.nao_avaliado	não avaliado	not evaluated	no evaluado
+hea.criteria.fora_do_dominio	fora do domínio	outside the domain	fuera del dominio
+hea.criteria.unverified	limiar não verificado na fonte	threshold not verified against the source	umbral no verificado en la fuente
+hea.criteria.near	próximo do limiar	close to the threshold	cerca del umbral
+hea.criteria.note	Limiares, unidades e fontes vêm do motor; nenhum valor científico está fixo na interface.	Thresholds, units and sources come from the engine; no scientific value is hard-coded in the interface.	Umbrales, unidades y fuentes vienen del motor; ningún valor científico está fijo en la interfaz.
+hea.criteria.empty	O motor não enviou critérios avaliados para esta liga.	The engine sent no evaluated criteria for this alloy.	El motor no envió criterios evaluados para esta aleación.
+hea.chart.natureLabel	Natureza	Nature	Naturaleza
+hea.chart.conditionsLabel	Condições	Conditions	Condiciones
+hea.chart.sourceLabel	Fonte	Source	Fuente
+hea.chart.engineSource	{motor} {version}	{motor} {version}	{motor} {version}
+hea.chart.unavailableCause	Causa: {cause}	Cause: {cause}	Causa: {cause}
+hea.chart.unverifiedNote	* limiar não verificado na fonte citada.	* threshold not verified against the cited source.	* umbral no verificado en la fuente citada.
+hea.chart.limitsCaption	Limiares desenhados, com a fonte do motor	Thresholds drawn, with the engine source	Umbrales dibujados, con la fuente del motor
+hea.chart.ga.caption	G-A · −T·ΔS_mix em função da temperatura (kJ/mol)	G-A · −T·ΔS_mix versus temperature (kJ/mol)	G-A · −T·ΔS_mix en función de la temperatura (kJ/mol)
+hea.chart.ga.desc	{name}: −T·ΔS_mix de {tmin} K a {tmax} K; em {tmax} K vale {value} kJ/mol.	{name}: −T·ΔS_mix from {tmin} K to {tmax} K; at {tmax} K it is {value} kJ/mol.	{name}: −T·ΔS_mix de {tmin} K a {tmax} K; en {tmax} K vale {value} kJ/mol.
+hea.chart.ga.yAxis	energia (kJ/mol)	energy (kJ/mol)	energía (kJ/mol)
+hea.chart.ga.seriesEntropy	−T·ΔS_mix	−T·ΔS_mix	−T·ΔS_mix
+hea.chart.ga.seriesGibbs	ΔG_mix = ΔH_mix − T·ΔS_mix	ΔG_mix = ΔH_mix − T·ΔS_mix	ΔG_mix = ΔH_mix − T·ΔS_mix
+hea.chart.ga.conditions	ΔS_mix ideal de solução aleatória, independente da temperatura; a pressão não entra no modelo.	Ideal random-solution ΔS_mix, temperature independent; pressure is not part of the model.	ΔS_mix ideal de solución aleatoria, independiente de la temperatura; la presión no entra en el modelo.
+hea.chart.ga.noCurve	o motor não enviou a curva de temperatura (curva_T).	the engine sent no temperature curve (curva_T).	el motor no envió la curva de temperatura (curva_T).
+hea.chart.ga.gibbsUnavailable	ΔG_mix não desenhado — {cause}	ΔG_mix not plotted — {cause}	ΔG_mix no dibujado — {cause}
+hea.chart.gb.caption	G-B · δ × VEC, com os limiares do motor	G-B · δ × VEC, with the engine thresholds	G-B · δ × VEC, con los umbrales del motor
+hea.chart.gb.desc	{name}: δ = {delta} % e VEC = {vec} e/átomo.	{name}: δ = {delta} % and VEC = {vec} e/atom.	{name}: δ = {delta} % y VEC = {vec} e/átomo.
+hea.chart.gb.xAxis	δ (%)	δ (%)	δ (%)
+hea.chart.gb.yAxis	VEC (e/átomo)	VEC (e/atom)	VEC (e/átomo)
+hea.chart.gb.empty	nenhuma liga analisada tem δ e VEC disponíveis.	no analysed alloy has both δ and VEC available.	ninguna aleación analizada tiene δ y VEC disponibles.
+hea.chart.gb.conditions	critérios empíricos de triagem por composição, no estado bruto de fusão.	empirical composition screening criteria, as-cast state.	criterios empíricos de triaje por composición, en estado bruto de fusión.
+alloy.legendAtoms	{n} átomos únicos	{n} unique atoms	{n} átomos únicos
+alloy.atomsUnit	únicos · {drawn} esferas desenhadas	unique · {drawn} spheres drawn	únicos · {drawn} esferas dibujadas
+alloy.comp.title	Composição: pedida × representada	Composition: requested vs represented	Composición: pedida × representada
+alloy.comp.caption	Composição solicitada e composição efetivamente representada na supercélula, nas duas bases.	Requested composition and composition actually represented in the supercell, in both bases.	Composición solicitada y composición representada en la supercelda, en ambas bases.
+alloy.comp.element	Elemento	Element	Elemento
+alloy.comp.requestedAt	at% pedida	at% requested	at% pedida
+alloy.comp.representedAt	at% representada	at% represented	at% representada
+alloy.comp.requestedMass	massa% pedida	wt% requested	masa% pedida
+alloy.comp.representedMass	massa% representada	wt% represented	masa% representada
+alloy.comp.atoms	Átomos únicos	Unique atoms	Átomos únicos
+alloy.comp.basis	Base da composição informada	Basis of the entered composition	Base de la composición introducida
+alloy.comp.counts	Contagens	Counts	Recuentos
+alloy.comp.countsValue	{unique} átomos únicos ({sites} sítios de rede + {interstitials} intersticiais) · {drawn} esferas desenhadas	{unique} unique atoms ({sites} lattice sites + {interstitials} interstitials) · {drawn} spheres drawn	{unique} átomos únicos ({sites} sitios de red + {interstitials} intersticiales) · {drawn} esferas dibujadas
+alloy.comp.resolution	Resolução da supercélula	Supercell resolution	Resolución de la supercelda
+alloy.comp.resolutionValue	{pct} % atômica por átomo · desvio máximo de {dev} % atômica	{pct} atomic % per atom · maximum deviation {dev} atomic %	{pct} % atómico por átomo · desvío máximo de {dev} % atómico
+alloy.comp.imagesNote	Imagens periódicas de fronteira são cópias só para o desenho: não entram em contagem, composição, massa nem legenda.	Periodic boundary images are copies for drawing only: they do not enter counts, composition, mass or the legend.	Las imágenes periódicas de frontera son copias solo para el dibujo: no entran en recuentos, composición, masa ni leyenda.
+alloy.realization.title	Uma realização estatística	One statistical realisation	Una realización estadística
+alloy.realization.line	{type} · semente {seed} · {algorithm} · supercélula n = {n}	{type} · seed {seed} · {algorithm} · supercell n = {n}	{type} · semilla {seed} · {algorithm} · supercelda n = {n}
+alloy.model.title	Natureza do modelo	Nature of the model	Naturaleza del modelo
+alloy.model.solutionType	Tipo de solução	Solution type	Tipo de solución
+alloy.model.ordering	Ordenação	Ordering	Ordenación
+alloy.model.phases	Fases	Phases	Fases
+alloy.model.geometry	Geometria	Geometry	Geometría
+alloy.model.latticeParam	Parâmetro de rede da liga	Alloy lattice parameter	Parámetro de red de la aleación
+alloy.model.solventParam	Parâmetro de rede do solvente	Solvent lattice parameter	Parámetro de red del solvente
+alloy.model.prototype	Protótipo {sb} ({proto}), rede ordenada {lattice}.	Prototype {sb} ({proto}), ordered lattice {lattice}.	Prototipo {sb} ({proto}), red ordenada {lattice}.
+alloy.model.value.substitucional	substitucional	substitutional	sustitucional
+alloy.model.value.intersticial	intersticial	interstitial	intersticial
+alloy.model.value.mista	mista (substitucional e intersticial)	mixed (substitutional and interstitial)	mixta (sustitucional e intersticial)
+alloy.model.value.desordenada	desordenada (ocupação aleatória)	disordered (random occupation)	desordenada (ocupación aleatoria)
+alloy.model.value.ordenada_prototipo	ordenada, pelo protótipo	ordered, from the prototype	ordenada, por el prototipo
+alloy.model.value.monofasica_imposta	fase única imposta pelo modelo	single phase imposed by the model	fase única impuesta por el modelo
+alloy.model.value.idealizada	idealizada (posições ideais de rede)	idealised (ideal lattice positions)	idealizada (posiciones ideales de red)
+alloy.model.value.estimativa_vegard_sobre_raios	estimativa (lei de Vegard sobre raios tabelados)	estimate (Vegard law over tabulated radii)	estimación (ley de Vegard sobre radios tabulados)
+alloy.model.value.derivado_de_R	derivado do raio tabelado (não medido)	derived from the tabulated radius (not measured)	derivado del radio tabulado (no medido)
+alloy.model.value.medido	parâmetro medido	measured parameter	parámetro medido
+alloy.model.value.ideal	valor ideal	ideal value	valor ideal
+alloy.model.value.tabelado	valor tabelado	tabulated value	valor tabulado
+alloy.model.value.derivado_de_a_c_medidos	derivado de a e c medidos	derived from measured a and c	derivado de a y c medidos
+alloy.model.value.informado	informado no pedido	entered in the request	introducido en la petición
+alloy.model.value.estatistica	sorteio estatístico	statistical draw	sorteo estadístico
+alloy.model.value.sem_soluto	sem soluto	no solute	sin soluto
+alloy.model.value.imposta_pelo_modelo	imposta pelo modelo	imposed by the model	impuesta por el modelo
+alloy.checks.title	O que este motor NÃO verifica	What this engine does NOT check	Lo que este motor NO verifica
+alloy.checks.solubility	Limite de solubilidade	Solubility limit	Límite de solubilidad
+alloy.checks.secondaryPhases	Fases secundárias	Secondary phases	Fases secundarias
+alloy.checks.verified	verificado	checked	verificado
+alloy.checks.notVerified	não verificado	not checked	no verificado
+alloy.checks.notPredicted	não previstas	not predicted	no previstas
+alloy.phases.title	Fases desenhadas	Phases drawn	Fases dibujadas
+alloy.phases.fraction	fração da fase: {value}	phase fraction: {value}	fracción de la fase: {value}
+alloy.phases.fractionUnavailable	fração da fase indisponível: {reason}	phase fraction unavailable: {reason}	fracción de la fase no disponible: {reason}
+alloy.sites.title	Sítios intersticiais ocupados	Interstitial sites occupied	Sitios intersticiales ocupados
+alloy.sites.line	raio livre {r} nm · NC {nc} · {perCell} sítios na célula desenhada · fator r/R {factor}	free radius {r} nm · CN {nc} · {perCell} sites in the drawn cell · r/R factor {factor}	radio libre {r} nm · NC {nc} · {perCell} sitios en la celda dibujada · factor r/R {factor}
+alloy.sites.unverified	sítio padrão ainda sem parecer	default site still without review	sitio predeterminado aún sin dictamen
+alloy.pure.title	Elementos puros (dados tabelados)	Pure elements (tabulated data)	Elementos puros (datos tabulados)
+alloy.pure.note	Propriedades do elemento PURO, como estão no repositório. Não são propriedades do átomo dentro da liga.	Properties of the PURE element, as held in the repository. They are not properties of the atom inside the alloy.	Propiedades del elemento PURO, tal como están en el repositorio. No son propiedades del átomo dentro de la aleación.
+alloy.pure.structure	Estrutura do elemento puro	Pure element structure	Estructura del elemento puro
+alloy.pure.dataState	Estado do dado e fonte	Data state and source	Estado del dato y fuente
+alloy.conventions.title	Convenções do desenho	Drawing conventions	Convenciones del dibujo
+alloy.rulesFor	{solute} ({mode})	{solute} ({mode})	{solute} ({mode})
+alloy.conclusionGlobal	Conclusão do sistema	System conclusion	Conclusión del sistema
+alloy.conclusionGlobalUnavailable	Sem conclusão única para o sistema: {reason}	No single conclusion for the system: {reason}	Sin conclusión única para el sistema: {reason}
+cells.feaModelLabel	Modelo do FEA	APF model	Modelo del FEA
+cells.feaModel.esferas_rigidas	esferas rígidas em contato (modelo geométrico, não empacotamento medido)	rigid spheres in contact (geometric model, not measured packing)	esferas rígidas en contacto (modelo geométrico, no empaquetamiento medido)
+cells.contactRadius	Raio de contato usado no FEA	Contact radius used in the APF	Radio de contacto usado en el FEA
+cells.contactRadiusValue	R_c/a = {value}	R_c/a = {value}	R_c/a = {value}
+cells.contactTypeLabel	Onde ocorre o primeiro contato	Where first contact occurs	Dónde ocurre el primer contacto
+cells.contactType.basal	no plano basal	in the basal plane	en el plano basal
+cells.contactType.entre_planos	entre planos basais vizinhos	between neighbouring basal planes	entre planos basales vecinos
+cells.contactType.ambos	nos dois ao mesmo tempo (c/a ideal)	in both at once (ideal c/a)	en ambos a la vez (c/a ideal)
+cells.caIdeal	c/a ideal	ideal c/a	c/a ideal
+cells.caNature	Origem do c/a usado	Origin of the c/a used	Origen del c/a usado
+cells.neighbours.title	Primeiros vizinhos	Nearest neighbours	Primeros vecinos
+cells.neighbours.group.basal	no plano basal	in the basal plane	en el plano basal
+cells.neighbours.group.entre_planos	entre planos	between planes	entre planos
+cells.neighbours.row	{n} vizinhos {group}: d = {drel} a{dnm}	{n} {group} neighbours: d = {drel} a{dnm}	{n} vecinos {group}: d = {drel} a{dnm}
+cells.neighbours.nm	 ({value} nm)	 ({value} nm)	 ({value} nm)
+cells.hcFeaNote	No HC o FEA é calculado com o raio de contato do modelo: com c/a abaixo do ideal os átomos tocam-se entre planos, e o FEA fica abaixo de 0,74.	In HCP the APF uses the contact radius of the model: with c/a below ideal the atoms touch between planes and the APF falls below 0.74.	En HC el FEA usa el radio de contacto del modelo: con c/a por debajo del ideal los átomos se tocan entre planos y el FEA baja de 0,74.

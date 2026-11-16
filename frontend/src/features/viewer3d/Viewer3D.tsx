@@ -7,13 +7,19 @@ import { dispatch } from '../../commands/bus.ts';
 import { alphaGammaData, loadAlphaGamma } from './alphaGamma.ts';
 import type { StructureResult } from '../../services/api/contracts.ts';
 import { useCrystalab } from '../../stores/crystalab.ts';
-import { useOverlays, atomKey, type AtomRef } from '../../stores/overlays.ts';
+import { useOverlays, atomKey } from '../../stores/overlays.ts';
 import { effectiveTheme, prefersReducedMotion, usePreferences } from '../../stores/preferences.ts';
 import { useViewer } from '../../stores/viewer.ts';
 import { registerViewer } from '../registry.ts';
+import { setCameraApi } from './cameraApi.ts';
 import { createRng } from '../../utils/rng.ts';
-import { illustrativeElements } from './geometry.ts';
-import { SceneController, type AnimationFrame, type ElementColoring } from './SceneController.ts';
+import { buildEdges, illustrativeElements } from './geometry.ts';
+import { sceneFromAlloy, sceneFromStructure, type ThermalScene } from './alloyScene.ts';
+import { useAlloy } from '../../stores/alloy.ts';
+import { useSceneFilter } from '../../stores/sceneFilter.ts';
+import { appearanceSnapshot, useAppearance } from '../../stores/appearance.ts';
+import { currentFilter } from './sceneFilterState.ts';
+import { SceneController, type AnimationFrame, type ElementColoring, type PickTarget } from './SceneController.ts';
 import { elementLegendFor } from '../../modules/crystalab/elementLegend.ts';
 import { announce } from '../../design-system/announce.ts';
 import { translate } from '../../i18n/index.ts';
@@ -29,7 +35,7 @@ export default function Viewer3D({ stage, onReady }: { stage: HTMLDivElement; on
     try {
       ctrl = new SceneController(stage, {
         onCamera: (cam) => useViewer.getState().set({ camera: cam }),
-        onPick: (ref) => handlePick(ref),
+        onPickTarget: (target) => handlePick(target),
       });
     } catch {
       useViewer.getState().set({ engine: 'unsupported' });
@@ -46,6 +52,7 @@ export default function Viewer3D({ stage, onReady }: { stage: HTMLDivElement; on
       orbit: (a, b) => ctrl.orbit(a, b),
       zoom: (f) => ctrl.zoom(f),
     });
+    setCameraApi({ orbit: (a, b) => ctrl.orbit(a, b), zoom: (f) => ctrl.zoom(f), pan: (x, y) => ctrl.pan(x, y), frame: () => ctrl.frameContent() });
     window.__alloy = {
       ...(window.__alloy ?? {}),
       viewer: {
@@ -57,11 +64,21 @@ export default function Viewer3D({ stage, onReady }: { stage: HTMLDivElement; on
         },
         atoms: () => ctrl.getAtoms().map((a) => ({ key: a.key, replica: a.replica, tipo: a.tipo })),
         touchMode: () => ctrl.touchMode,
+        hiddenKeys: () => ctrl.hiddenKeys(),
+        alloyAtoms: () => ctrl.alloyDrawnIds(),
+        appearance: () => ctrl.appearanceSummary(),
+        alloyScreenPosition: (id: string) => ctrl.alloyScreenPosition(id),
         camera: () => ctrl.getCamera(),
+        orbit: (a: number, b: number) => ctrl.orbit(a, b),
+        pan: (x: number, y: number) => ctrl.pan(x, y),
+        frame: () => ctrl.frameContent(),
+        reset: () => ctrl.resetView(),
+        size: () => ctrl.viewportSize(),
       },
     };
     return () => {
       registerViewer(null);
+      setCameraApi(null);
       if (window.__alloy) delete window.__alloy.viewer;
       ctrl.dispose();
       ctrlRef.current = null;
@@ -152,6 +169,87 @@ export default function Viewer3D({ stage, onReady }: { stage: HTMLDivElement; on
     return () => { mq.removeEventListener('change', onChange); u(); };
   }, []);
 
+  // aparência (T-22): cores, tamanho, transparência, arestas e vértices da CÉLULA do metal puro
+  // (a cena de liga é remontada no efeito da liga, que resolve a cor de cada átomo)
+  useEffect(() => {
+    const apply = () => ctrlRef.current?.setAppearance(appearanceSnapshot());
+    apply();
+    return useAppearance.subscribe(apply);
+  }, []);
+
+  // filtros/cortes de exibição (T-23) e seleção na cena de liga (T-24)
+  useEffect(() => {
+    const applyFilter = () => ctrlRef.current?.setFilter(currentFilter());
+    const applyAlloySelection = () => ctrlRef.current?.setAlloySelection(useViewer.getState().alloySelection);
+    applyFilter();
+    applyAlloySelection();
+    let f = useSceneFilter.getState();
+    let sel = useViewer.getState().selection;
+    let alloySel = useViewer.getState().alloySelection;
+    let alloyResult = useAlloy.getState().alloy;
+    // outra liga (ou volta ao metal puro) invalida a identidade do átomo selecionado
+    const checkAlloy = () => {
+      const next = useAlloy.getState().alloy;
+      if (next === alloyResult) return;
+      alloyResult = next;
+      if (useViewer.getState().alloySelection) useViewer.getState().set({ alloySelection: null });
+    };
+    const check = () => {
+      const next = useSceneFilter.getState();
+      const v = useViewer.getState();
+      const selectionChanged = v.selection !== sel || v.alloySelection !== alloySel;
+      if (v.alloySelection !== alloySel) { alloySel = v.alloySelection; applyAlloySelection(); }
+      if (v.selection !== sel) sel = v.selection;
+      // a vizinhança de exibição depende do átomo selecionado; o resto, só do filtro
+      if (next !== f || (selectionChanged && next.neighbourhoodRadius !== null)) { f = next; applyFilter(); }
+    };
+    const unsubs = [useSceneFilter.subscribe(check), useViewer.subscribe(check), useAlloy.subscribe(checkAlloy)];
+    return () => unsubs.forEach((u) => u());
+  }, []);
+
+  // liga e vibração térmica (T-13): a cena vem do motor (API); o viewer só desenha
+  useEffect(() => {
+    let key = '';
+    const apply = () => {
+      const ctrl = ctrlRef.current;
+      if (!ctrl) return;
+      const a = useAlloy.getState();
+      const structure = useCrystalab.getState().structure;
+      const supercell = useViewer.getState().supercell;
+      const reduce = prefersReducedMotion(usePreferences.getState().motion);
+      const filter = currentFilter();
+      const appearance = appearanceSnapshot();
+      const next = [a.alloy, a.thermal, a.thermalTarget, a.vibration.on, a.vibration.exaggeration, structure, supercell, reduce, JSON.stringify(filter), JSON.stringify(appearance)].map((v) => (v && typeof v === 'object' ? (cache.get(v) ?? cache.set(v, ++ids).get(v)) : String(v))).join('|');
+      if (next === key) return;
+      key = next;
+      // a amplitude só vale para os átomos a que o cálculo térmico se refere
+      const matches = a.thermal && ((a.thermalTarget === 'alloy' && a.alloy) || (a.thermalTarget === 'material' && !a.alloy));
+      const amplitude = a.vibration.on && matches && a.thermal ? a.thermal.amplitude_rel : 0;
+      let scene: ThermalScene | null = null;
+      if (a.alloy) scene = sceneFromAlloy(a.alloy, amplitude, filter, appearance);
+      else if (a.vibration.on && structure && amplitude > 0) {
+        scene = sceneFromStructure(structure, ctrl.getAtoms(), buildEdges(structure, supercell) as unknown as Array<[number, number, number]>[], amplitude, filter, appearance);
+      }
+      // a aparência vai JUNTO da cena: o mesmo instantâneo que resolveu a cor de cada átomo
+      ctrl.setThermalScene(scene, {
+        playing: a.vibration.on && !reduce,
+        exaggeration: a.vibration.exaggeration,
+        atomScale: appearance.atomScale,
+        opacity: appearance.opacity,
+        edgeColor: appearance.edgeColor,
+        vertexColor: appearance.vertexColor,
+        vertices: appearance.vertices,
+      });
+      const w = window as unknown as { __alloy?: { viewer?: Record<string, unknown> } };
+      if (w.__alloy?.viewer) w.__alloy.viewer.thermalScene = () => ctrl.thermalSummary();
+    };
+    const cache = new WeakMap<object, number>();
+    let ids = 0;
+    apply();
+    const unsubs = [useAlloy.subscribe(apply), useCrystalab.subscribe(apply), useViewer.subscribe(apply), usePreferences.subscribe(apply), useSceneFilter.subscribe(apply), useAppearance.subscribe(apply)];
+    return () => unsubs.forEach((u) => u());
+  }, []);
+
   // animações didáticas
   useEffect(() => {
     let timer = 0;
@@ -205,9 +303,17 @@ function frameFor(name: string, variant: string, step: number, current: Structur
   return null;
 }
 
-function handlePick(ref: AtomRef | null): void {
+function handlePick(target: PickTarget | null): void {
   const v = useViewer.getState();
   const tr = (k: Parameters<typeof translate>[1], vars?: Record<string, string | number>) => translate(usePreferences.getState().locale, k, vars);
+  // cena de liga (T-24): a identidade é o `id` do motor; a ferramenta de medição não a usa
+  if (target?.kind === 'alloy' || (useAlloy.getState().alloy && !target)) {
+    const id = target?.kind === 'alloy' ? target.id : null;
+    v.set({ alloySelection: id });
+    if (id) announce(tr('alloyAtom.selected', { id }));
+    return;
+  }
+  const ref = target?.kind === 'cell' ? target.ref : null;
   if (v.tool) {
     if (!ref) return;
     const picks = [...v.tool.picks, ref];

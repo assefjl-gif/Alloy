@@ -182,7 +182,9 @@ def test_hea_analise_calcula_so_o_que_tem_base(client):
     assert res["dS"] == pytest.approx(8.314462618 * 1.3862944, abs=1e-3)   # R·ln 4
     assert res["dH"] is None and res["omega"] is None and "dH" in res["indisponiveis"]
     assert res["VEC"] == pytest.approx(8.25) and res["estrutura_sugerida"] == "CFC"
-    assert res["veredito"].startswith("INCONCLUSIVO") and res["gibbs"] == []
+    # R1 (V-4): o veredito repete triagem.texto; o estado vem de triagem.estado, nunca do prefixo do texto.
+    assert res["triagem"]["estado"] == "inconclusiva" and res["veredito"] == res["triagem"]["texto"]
+    assert res["veredito"].startswith("TRIAGEM INCONCLUSIVA") and res["gibbs"] == []
     assert res["procedencia"]["classe"] == "estimativa_modelo" and res["procedencia"]["motor"] == "hea"
 
 
@@ -190,9 +192,13 @@ def test_hea_bootstrap_e_erros(client):
     boot = client.get("/api/v1/hea/bootstrap").json()["result"]
     assert "CoCrFeNi" in boot["alloys"] and boot["reference"]["delta"] == 6.6 and boot["reference"]["dH"] is None
     assert client.post("/api/v1/hea/analyses", json={"composicao": {"Fe": 1}}).status_code == 422
+    # R1 (V-1): símbolo que não é elemento deixou de ser aceito (antes: 200 com cálculo parcial).
     r = client.post("/api/v1/hea/analyses", json={"composicao": {"Fe": 1, "Xx": 1}})
-    assert r.status_code == 200 and r.json()["result"]["delta"] is None   # elemento sem dados → δ indisponível
-    assert "Xx" in r.json()["result"]["indisponiveis"]["delta"]
+    assert r.status_code == 400 and r.json()["details"][0]["type"] == "elemento_desconhecido"
+    # elemento REAL sem dados de HEA → 200 com cálculo parcial e δ indisponível, com o motivo
+    r = client.post("/api/v1/hea/analyses", json={"composicao": {"Fe": 1, "Mn": 1}})
+    assert r.status_code == 200 and r.json()["result"]["delta"] is None
+    assert "Mn" in r.json()["result"]["indisponiveis"]["delta"]
     assert client.post("/api/v1/hea/predictions", json={}).status_code == 404
 
 

@@ -28,6 +28,17 @@ const CatalogModule = lazy(() => import('../modules/catalog/CatalogModule.tsx'))
 const AboutModule = lazy(() => import('../modules/about/AboutModule.tsx'));
 const AccountModule = lazy(() => import('../modules/account/AccountModule.tsx'));
 
+/** Marca: célula cúbica de corpo centrado em projeção isométrica; o átomo central leva o azul. */
+function BrandMark() {
+  return (
+    <svg className="brand__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true" focusable="false">
+      <path d="M12 2.5 20.2 7.25v9.5L12 21.5l-8.2-4.75v-9.5z" />
+      <path d="M3.8 7.25 12 12l8.2-4.75M12 12v9.5" opacity="0.55" />
+      <circle className="brand__core" cx="12" cy="12" r="3" stroke="none" />
+    </svg>
+  );
+}
+
 function ConnectivityIndicator() {
   const { t } = useI18n();
   const online = useCapabilities((s) => s.online);
@@ -107,7 +118,7 @@ export function App() {
   return (
     <AppShell
       skipLabel={t('a11y.skip')}
-      brand={<a href="#/crystalab" className="brand" aria-label="Alloy Virtual Lab — CrystaLab"><span className="brand__mark" aria-hidden="true">◆</span><span className="brand__name">Alloy</span><span className="brand__sub">Virtual Lab</span></a>}
+      brand={<a href="#/crystalab" className="brand" aria-label="Alloy Virtual Lab — CrystaLab"><BrandMark /><span className="brand__text"><span className="brand__name">Alloy</span><span className="brand__sub">Virtual Lab</span></span></a>}
       nav={<ModuleNavigation label={t('nav.modules')} links={links} current={route.module} />}
       actions={
         <>

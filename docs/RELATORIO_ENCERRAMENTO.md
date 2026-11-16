@@ -122,7 +122,7 @@ Não houve medição de carga, porque não havia ambiente com PostgreSQL. O ADR-
 
 **Implementadas e testadas:** célula unitária (4 estruturas, 15 metais + genéricas), densidade com passos,
 FEA, Miller e Miller-Bravais com densidade planar validada, supercélulas, exportação CIF/XYZ, e
-**no motor e na API (sem tela no frontend novo):** soluções sólidas (substitucional e intersticial) e temperatura (dilatação, Lindemann, alotropia),
+soluções sólidas (substitucional e intersticial) e temperatura (dilatação, Lindemann, alotropia) com **telas no CrystaLab desde 03/11/2026 (T-13)**,
 HEA analítico (ΔS_mix, δ, T_m, VEC, fase), ponte HEA → CrystaLab, contas e sessões, histórico pessoal,
 questões parametrizadas corrigidas no servidor com progresso, viewer 3D, i18n (3 idiomas), PWA offline do que é local.
 
@@ -133,7 +133,7 @@ existem; turmas, atribuições e notas têm tabela mas não têm rota); infraest
 **Demonstrativas (rotuladas):** HEA em modo demo quando forçado; painel do professor e atividades de
 `#/aprender` (práticas locais, com semente); coloração ilustrativa por elemento.
 
-**Não implementadas (telas e recursos da v1.4 que não foram portados — ver [GUIA_APRESENTACAO.md](GUIA_APRESENTACAO.md) §5):** telas de ligas e de temperatura (com vibração real), seletor de cor por elemento, aba Tutoriais, barra lateral única, restrição do login a `@ufc.br`.
+**Não implementadas (telas e recursos da v1.4 que não foram portados — ver [GUIA_APRESENTACAO.md](GUIA_APRESENTACAO.md) §5):** seletor de cor por elemento, aba Tutoriais, barra lateral única, restrição do login a `@ufc.br`.
 
 **Também não implementadas:** ΔH_mix, Ω, veredito de estabilidade e curva de Gibbs do HEA (Q-01); diagrama de fases;
 repositório de materiais e ligas pela API; upload de tutoriais; verificação de e-mail e recuperação de senha;

@@ -8,6 +8,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  accent-color: var(--color-primary);
+  scrollbar-color: var(--color-line-strong) transparent;
 }
 
 body {
@@ -16,10 +18,15 @@ body {
   min-height: 100dvh;
   font-family: var(--font-sans);
   font-size: var(--fs-md);
+  font-weight: var(--fw-regular);
   line-height: var(--lh-normal);
   color: var(--color-ink);
   background: var(--color-bg);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
 }
 
 button,
@@ -35,15 +42,29 @@ h2,
 h3,
 h4 {
   margin: 0;
+  font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
 }
 
 p {
   margin: 0;
 }
 
+strong,
+b {
+  font-weight: var(--fw-bold);
+}
+
 a {
   color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
 }
 
 img,
@@ -60,21 +81,37 @@ samp {
 }
 
 code {
-  padding: 1px 5px;
-  border-radius: 4px;
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
   background: var(--color-surface-2);
   color: var(--color-ink);
   font-size: var(--fs-xs);
 }
 
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+/* Região em carvão dentro do tema claro (os tokens vêm de tokens.css). */
+.ds-on-dark {
+  color: var(--color-ink);
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
 /* Foco sempre visível ao navegar por teclado (2.4.7). */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-color);
   outline-offset: 2px;
 }
 
 :where(button, a, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--focus-color);
   outline-offset: 2px;
   box-shadow: var(--focus-ring);
 }
@@ -96,7 +133,7 @@ code {
   left: var(--space-3);
   top: -60px;
   z-index: calc(var(--z-toast) + 1);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-sm);
   background: var(--color-primary);
   color: var(--color-on-primary);
@@ -112,13 +149,14 @@ code {
   color: var(--color-muted);
 }
 
+/* Rótulo de campo, métrica ou grupo: discreto, em caixa normal. */
 .ds-label {
   display: block;
   color: var(--color-muted);
   font-size: var(--fs-2xs);
-  font-weight: var(--fw-bold);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: 0;
 }
 
 .ds-mono {
@@ -130,9 +168,15 @@ code {
   border: 0;
   background: none;
   color: var(--color-accent);
-  font-weight: var(--fw-semibold);
+  font-weight: var(--fw-medium);
   text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   cursor: pointer;
+}
+
+.ds-link-btn:hover {
+  text-decoration-thickness: 2px;
 }
 
 .ds-stack {

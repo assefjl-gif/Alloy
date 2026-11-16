@@ -196,7 +196,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Elementos, ligas de exemplo e limiares dos critérios */
+        /** Elementos aceitos, ligas de exemplo, critérios com fonte, definições e avisos */
         get: operations["hea_bootstrap_api_v1_hea_bootstrap_get"];
         put?: never;
         post?: never;
@@ -216,8 +216,11 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * ΔS_mix, δ, T_m e VEC de uma liga (ΔH_mix e Ω indisponíveis até Q-01)
+         * Descritores de triagem de uma liga: ΔS_mix, δ, T_m, VEC e curva −T·ΔS_mix (ΔH_mix e Ω só com a matriz de entalpias por par)
          * @description Só grandezas com base citável; o que não pode ser calculado volta como ``null`` com o motivo.
+         *
+         *     Composição em base atômica (padrão) ou mássica. Símbolo que não é elemento, repetido ou malformado → 400
+         *     com o subtipo em ``details[].type``. Elemento real sem dados → 200 com cálculo parcial.
          */
         post: operations["hea_analisar_api_v1_hea_analyses_post"];
         delete?: never;
@@ -446,6 +449,40 @@ export interface paths {
         };
         /** Meu progresso por tópico */
         get: operations["progresso_api_v1_me_progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/elements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Os 118 elementos (com filtros) */
+        get: operations["listar_elementos_api_v1_elements_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/elements/{ref}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Um elemento por símbolo (Fe) ou número atômico (26), com propriedades e fontes */
+        get: operations["obter_elemento_api_v1_elements__ref__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -683,9 +720,15 @@ export interface components {
         };
         /** AtomoLiga */
         AtomoLiga: {
-            /** Pos */
+            /**
+             * Pos
+             * @description Cartesiana, em unidades de a da liga
+             */
             pos: number[];
-            /** Frac */
+            /**
+             * Frac
+             * @description Fracionária na célula replicada (0 a n)
+             */
             frac: number[];
             /**
              * Tipo
@@ -694,8 +737,61 @@ export interface components {
             tipo: "rede" | "intersticial";
             /** Elemento */
             elemento: string;
-            /** Raio Rel */
+            /**
+             * Raio Rel
+             * @description Raio de DESENHO (raio tabelado / a), não raio do átomo em solução
+             */
             raio_rel: number;
+            /**
+             * Id
+             * @description Identificador estável: depende só de estrutura, n e sítio
+             * @default
+             */
+            id?: string;
+            /**
+             * Imagem
+             * @description true = imagem periódica de fronteira; não entra em contagem
+             * @default false
+             */
+            imagem?: boolean;
+            /**
+             * Imagem De
+             * @description id do átomo único de origem
+             */
+            imagem_de?: string | null;
+            /**
+             * Pos Nm
+             * @description pos × a_nm (herda a natureza de a_nm)
+             */
+            pos_nm?: number[];
+            /**
+             * Celula
+             * @description (i, j, k); numa imagem a coordenada transladada vale n
+             */
+            celula?: number[];
+            /**
+             * Frac Celula
+             * @description Fracionária em [0, 1)
+             */
+            frac_celula?: number[];
+            /**
+             * Ocupacao
+             * @default solvente
+             * @enum {string}
+             */
+            ocupacao?: "solvente" | "substitucional" | "intersticial";
+            sitio?: components["schemas"]["SitioAtomo"] | null;
+            /**
+             * Fase
+             * @description id da fase em 'fases'
+             * @default matriz
+             */
+            fase?: string;
+            /**
+             * Pos Ideal
+             * @description Posição de rede antes da distorção ilustrativa
+             */
+            pos_ideal?: number[] | null;
         };
         /** AtomoRede */
         AtomoRede: {
@@ -741,6 +837,187 @@ export interface components {
             hea: components["schemas"]["ServicoCapacidade"];
             ia: components["schemas"]["ServicoCapacidade"];
             autenticacao: components["schemas"]["ServicoCapacidade"];
+        };
+        /** ComponenteRepresentado */
+        ComponenteRepresentado: {
+            /** Elemento */
+            elemento: string;
+            /**
+             * Papel
+             * @enum {string}
+             */
+            papel: "solvente" | "substitucional" | "intersticial";
+            /**
+             * At Pct
+             * @description % atômica sobre todos os átomos (intersticiais incluídos)
+             */
+            at_pct: number;
+            /** Massa Pct */
+            massa_pct: number;
+            /**
+             * N Atomos
+             * @description Átomos ÚNICOS (pode ser 0)
+             */
+            n_atomos: number;
+        };
+        /** ComponenteSolicitado */
+        ComponenteSolicitado: {
+            /** Elemento */
+            elemento: string;
+            /**
+             * Papel
+             * @enum {string}
+             */
+            papel: "solvente" | "substitucional" | "intersticial";
+            /**
+             * At Pct
+             * @description % atômica sobre todos os átomos (intersticiais incluídos)
+             */
+            at_pct: number;
+            /** Massa Pct */
+            massa_pct: number;
+        };
+        /**
+         * ComposicaoLiga
+         * @description Composição SOLICITADA × REPRESENTADA na supercélula periódica (parecer R1-CRI-01 §3.2).
+         */
+        ComposicaoLiga: {
+            /**
+             * Base Entrada
+             * @default atomica
+             * @enum {string}
+             */
+            base_entrada?: "atomica" | "massica";
+            /** Solicitada */
+            solicitada?: components["schemas"]["ComponenteSolicitado"][];
+            /** Representada */
+            representada?: components["schemas"]["ComponenteRepresentado"][];
+            /**
+             * N Sitios Rede
+             * @description Z·n³
+             * @default 0
+             */
+            n_sitios_rede?: number;
+            /**
+             * N Intersticiais
+             * @default 0
+             */
+            n_intersticiais?: number;
+            /**
+             * N Atomos Unicos
+             * @default 0
+             */
+            n_atomos_unicos?: number;
+            /**
+             * N Desenhados
+             * @description Esferas em 'atomos' (únicos + imagens)
+             * @default 0
+             */
+            n_desenhados?: number;
+            /**
+             * Resolucao At Pct
+             * @description 100 / n_atomos_unicos
+             * @default 0
+             */
+            resolucao_at_pct?: number;
+            /**
+             * Desvio Maximo At Pct
+             * @default 0
+             */
+            desvio_maximo_at_pct?: number;
+        };
+        /** CriterioAvaliado */
+        CriterioAvaliado: {
+            /** Codigo */
+            codigo: string;
+            /**
+             * Grandeza
+             * @description Nome do campo da resposta: delta, omega, VEC, dS_R
+             */
+            grandeza: string;
+            /**
+             * Operador
+             * @enum {string}
+             */
+            operador: "<=" | ">=" | "<" | ">";
+            /** Limiar */
+            limiar: number;
+            /** Unidade */
+            unidade: string;
+            /**
+             * Natureza
+             * @enum {string}
+             */
+            natureza: "empirico" | "definicao";
+            /** Fonte */
+            fonte: string;
+            /**
+             * Verificada
+             * @description Fonte conferida pelo auditor bibliográfico (falso em R1)
+             */
+            verificada: boolean;
+            /** Valor */
+            valor?: number | null;
+            /**
+             * Atende
+             * @description Nulo quando o valor é nulo ou o critério não se aplica
+             */
+            atende?: boolean | null;
+            /** Aplicavel */
+            aplicavel: boolean;
+            /** Proximo Do Limiar */
+            proximo_do_limiar: boolean;
+            /** Motivo */
+            motivo?: string | null;
+        };
+        /** CriterioDef */
+        CriterioDef: {
+            /** Codigo */
+            codigo: string;
+            /**
+             * Grandeza
+             * @description Nome do campo da resposta: delta, omega, VEC, dS_R
+             */
+            grandeza: string;
+            /**
+             * Operador
+             * @enum {string}
+             */
+            operador: "<=" | ">=" | "<" | ">";
+            /** Limiar */
+            limiar: number;
+            /** Unidade */
+            unidade: string;
+            /**
+             * Natureza
+             * @enum {string}
+             */
+            natureza: "empirico" | "definicao";
+            /** Fonte */
+            fonte: string;
+            /**
+             * Verificada
+             * @description Fonte conferida pelo auditor bibliográfico (falso em R1)
+             */
+            verificada: boolean;
+        };
+        /** DadoFaltante */
+        DadoFaltante: {
+            /**
+             * Simbolo
+             * @description Elemento ("Mn") ou par ("Co-Mn")
+             */
+            simbolo: string;
+            /**
+             * Codigo
+             * @enum {string}
+             */
+            codigo: "raio_atomico" | "temperatura_fusao" | "vec" | "massa_atomica" | "entalpia_mistura_par";
+            /**
+             * Situacao
+             * @enum {string}
+             */
+            situacao: "ausente" | "nao_validado";
         };
         /** DadoUsado */
         DadoUsado: {
@@ -849,6 +1126,191 @@ export interface components {
             /** Descricao */
             descricao: string;
         };
+        /** ElementDetail */
+        ElementDetail: {
+            /** Numero Atomico */
+            numero_atomico: number;
+            /** Simbolo */
+            simbolo: string;
+            /** Nome */
+            nome: string;
+            /** Nome En */
+            nome_en: string;
+            /** Periodo */
+            periodo: number;
+            /** Grupo */
+            grupo?: number | null;
+            /**
+             * Bloco
+             * @enum {string}
+             */
+            bloco: "s" | "p" | "d" | "f";
+            /** Categoria */
+            categoria: string;
+            /** Configuracao Eletronica */
+            configuracao_eletronica?: string | null;
+            /** Estados Oxidacao */
+            estados_oxidacao?: string | null;
+            /** Estado Padrao */
+            estado_padrao: string;
+            /** Ano Descoberta */
+            ano_descoberta?: number | null;
+            /** Conhecido Antiguidade */
+            conhecido_antiguidade: boolean;
+            /** Propriedades */
+            propriedades: components["schemas"]["ElementProperty"][];
+            procedencia: components["schemas"]["ElementProvenance"];
+        };
+        /** ElementList */
+        ElementList: {
+            /** Total */
+            total: number;
+            /** Itens */
+            itens: components["schemas"]["ElementSummary"][];
+            procedencia: components["schemas"]["ElementProvenance"];
+        };
+        /** ElementMass */
+        ElementMass: {
+            /**
+             * Codigo
+             * @enum {string}
+             */
+            codigo: "peso_atomico_padrao" | "massa_isotopica_referencia";
+            /** Valor */
+            valor: number;
+            /** Unidade */
+            unidade: string;
+        };
+        /** ElementProperty */
+        ElementProperty: {
+            /** Codigo */
+            codigo: string;
+            /** Nome */
+            nome: string;
+            /** Valor */
+            valor: number;
+            /** Incerteza */
+            incerteza?: number | null;
+            /**
+             * Intervalo
+             * @description [mín, máx] da variação natural (CIAAW)
+             */
+            intervalo?: number[] | null;
+            /** Unidade */
+            unidade: string;
+            /** Fonte */
+            fonte: string;
+            /** Estado */
+            estado: string;
+            /** Nota */
+            nota?: string | null;
+        };
+        /** ElementProvenance */
+        ElementProvenance: {
+            /** Conjunto */
+            conjunto: string;
+            /** Versao Dados */
+            versao_dados: string;
+            /** Fontes */
+            fontes: {
+                [key: string]: components["schemas"]["ElementSource"];
+            };
+            /** Avisos */
+            avisos: string[];
+        };
+        /** ElementSource */
+        ElementSource: {
+            /** Tipo */
+            tipo: string;
+            /** Citacao */
+            citacao: string;
+            /** Doi */
+            doi?: string | null;
+            /** Url */
+            url?: string | null;
+            /** Licenca */
+            licenca?: string | null;
+            /** Versao Fonte */
+            versao_fonte?: string | null;
+            /** Acessado Em */
+            acessado_em?: string | null;
+        };
+        /** ElementSummary */
+        ElementSummary: {
+            /** Numero Atomico */
+            numero_atomico: number;
+            /** Simbolo */
+            simbolo: string;
+            /** Nome */
+            nome: string;
+            /** Nome En */
+            nome_en: string;
+            /** Periodo */
+            periodo: number;
+            /**
+             * Grupo
+             * @description nulo no bloco f (lantanídeos e actinídeos)
+             */
+            grupo?: number | null;
+            /**
+             * Bloco
+             * @enum {string}
+             */
+            bloco: "s" | "p" | "d" | "f";
+            /** Categoria */
+            categoria: string;
+            /** Estado Padrao */
+            estado_padrao: string;
+            massa?: components["schemas"]["ElementMass"] | null;
+        };
+        /**
+         * ElementoAceito
+         * @description Símbolo aceito na entrada e o que este ambiente consegue usar dele. Sem valores de propriedade.
+         */
+        ElementoAceito: {
+            /** Simbolo */
+            simbolo: string;
+            /** Nome */
+            nome: string;
+            /** Numero Atomico */
+            numero_atomico: number;
+            /** Categoria */
+            categoria: string;
+            /** Tem Raio */
+            tem_raio: boolean;
+            /** Tem Fusao */
+            tem_fusao: boolean;
+            /** Tem Vec */
+            tem_vec: boolean;
+            /** Tem Massa */
+            tem_massa: boolean;
+        };
+        /**
+         * ElementoPuro
+         * @description Propriedade TABELADA do elemento puro — não é propriedade do átomo na liga (parecer §3.5).
+         */
+        ElementoPuro: {
+            /** Simbolo */
+            simbolo: string;
+            /**
+             * Papel
+             * @enum {string}
+             */
+            papel: "solvente" | "substitucional" | "intersticial";
+            /** Raio Nm */
+            raio_nm?: number | null;
+            /** Massa G Mol */
+            massa_g_mol?: number | null;
+            /** Estrutura Elemento Puro */
+            estrutura_elemento_puro?: string | null;
+            /**
+             * Estado Do Dado
+             * @default
+             */
+            estado_do_dado?: string;
+            /** Fonte */
+            fonte?: string | null;
+        };
         /** ErroEnvelope */
         ErroEnvelope: {
             /**
@@ -949,6 +1411,43 @@ export interface components {
             /** Centro */
             centro: number[];
         };
+        /** FaseLiga */
+        FaseLiga: {
+            /**
+             * Id
+             * @default matriz
+             */
+            id?: string;
+            /**
+             * Nome
+             * @default
+             */
+            nome?: string;
+            /**
+             * Estrutura
+             * @default CFC
+             * @enum {string}
+             */
+            estrutura?: "CS" | "CCC" | "CFC" | "HC";
+            /**
+             * Origem
+             * @default imposta_pelo_modelo
+             * @constant
+             */
+            origem?: "imposta_pelo_modelo";
+            /** Composicao */
+            composicao?: components["schemas"]["ComponenteRepresentado"][];
+            /**
+             * Fracao
+             * @description Sempre nulo em R1: o motor não calcula equilíbrio de fases
+             */
+            fracao?: number | null;
+            /**
+             * Fracao Motivo
+             * @default
+             */
+            fracao_motivo?: string;
+        };
         /** Gabarito */
         Gabarito: {
             /** Valor */
@@ -980,6 +1479,44 @@ export interface components {
              */
             numero: number;
         };
+        /**
+         * GrupoVizinhos
+         * @description Grupo de primeiros vizinhos (contrato R1 §3). No HC fora do c/a ideal os 12 vizinhos são 6 + 6.
+         */
+        GrupoVizinhos: {
+            /**
+             * Grupo
+             * @enum {string}
+             */
+            grupo: "basal" | "entre_planos";
+            /** N */
+            n: number;
+            /**
+             * D Rel
+             * @description Distância em unidades de a
+             */
+            d_rel: number;
+            /**
+             * D Nm
+             * @description Distância em nm; nulo quando a_nm é nulo
+             */
+            d_nm?: number | null;
+        };
+        /** GuiaEntropia */
+        GuiaEntropia: {
+            /** N */
+            n: number;
+            /**
+             * Ds
+             * @description R·ln n, J/(mol·K)
+             */
+            dS: number;
+            /**
+             * Ds R
+             * @description ln n
+             */
+            dS_R: number;
+        };
         /** HeaAlloy */
         HeaAlloy: {
             /** Nome */
@@ -1001,11 +1538,52 @@ export interface components {
             alloys: {
                 [key: string]: components["schemas"]["HeaAlloy"];
             };
+            /**
+             * @deprecated
+             * @description OBSOLETO: limiares dos critérios (não é liga de referência). Use criterios.
+             */
             reference: components["schemas"]["HeaReference"];
             /** Samples */
             samples: components["schemas"]["HeaResponse"][];
             /** Versao Motor */
             versao_motor: string;
+            /** Elementos Aceitos */
+            elementos_aceitos: components["schemas"]["ElementoAceito"][];
+            /** Criterios */
+            criterios: components["schemas"]["CriterioDef"][];
+            entalpias: components["schemas"]["HeaEntalpias"];
+            /** Guias Entropia */
+            guias_entropia: components["schemas"]["GuiaEntropia"][];
+            /** Definicoes */
+            definicoes: components["schemas"]["HeaDefinicao"][];
+            /** Avisos Fixos */
+            avisos_fixos: string[];
+        };
+        /** HeaDefinicao */
+        HeaDefinicao: {
+            /** Codigo */
+            codigo: string;
+            /** Nome */
+            nome: string;
+            /** Simbolo */
+            simbolo: string;
+            /** Unidade */
+            unidade: string;
+            /** Referencia */
+            referencia: string;
+            /** Condicoes */
+            condicoes: string;
+            /** Significado */
+            significado: string;
+            /** Nao E */
+            nao_e: string;
+            /** Natureza */
+            natureza: string;
+            /**
+             * Disponivel
+             * @description O sistema calcula esta grandeza?
+             */
+            disponivel: boolean;
         };
         /** HeaElement */
         HeaElement: {
@@ -1019,6 +1597,22 @@ export interface components {
             tem_fusao: boolean;
             /** Tem Vec */
             tem_vec: boolean;
+            /**
+             * Tem Massa
+             * @description Há massa utilizável no repositório de materiais neste ambiente
+             */
+            tem_massa: boolean;
+        };
+        /** HeaEntalpias */
+        HeaEntalpias: {
+            /** Disponivel */
+            disponivel: boolean;
+            /** N Pares */
+            n_pares: number;
+            /** Fonte */
+            fonte?: string | null;
+            /** Estado */
+            estado?: string | null;
         };
         /** HeaReference */
         HeaReference: {
@@ -1043,21 +1637,34 @@ export interface components {
             nome?: string | null;
             /**
              * Composicao
-             * @description {elemento: quantidade}; normalizada para frações molares
+             * @description {símbolo: quantidade}; 1 a 12 CHAVES (inclui as de quantidade 0). Quantidades são partes proporcionais (soma livre), 0 ≤ q ≤ 1e6, conferidas no domínio. Pelo menos 2 elementos com quantidade maior que zero. Símbolo de 1 ou 2 letras, normalizado (fe → Fe) e conferido contra a tabela periódica.
              */
             composicao: {
                 [key: string]: number;
             };
+            /**
+             * Base
+             * @description Base em que as quantidades foram informadas
+             * @default atomica
+             * @enum {string}
+             */
+            base?: "atomica" | "massica";
         };
         /** HeaResponse */
         HeaResponse: {
             /** Nome */
             nome: string;
-            /** Veredito */
+            /**
+             * Veredito
+             * @description Repete triagem.texto (compatibilidade); o estado é triagem.estado
+             */
             veredito: string;
             /** Fase */
             fase: string;
-            /** Estrutura Sugerida */
+            /**
+             * Estrutura Sugerida
+             * @description Sempre presente; nulo quando não há sugestão única (motivo em indisponiveis)
+             */
             estrutura_sugerida?: ("CS" | "CCC" | "CFC" | "HC") | null;
             /** Ductilidade */
             ductilidade?: string | null;
@@ -1072,7 +1679,7 @@ export interface components {
             dS: number;
             /**
              * Dh
-             * @description ΔH_mix, kJ/mol — indisponível até Q-01
+             * @description ΔH_mix, kJ/mol — só com todos os pares na matriz de entalpias
              */
             dH?: number | null;
             /**
@@ -1089,11 +1696,17 @@ export interface components {
              * @description T_m pela regra das misturas, K
              */
             Tm?: number | null;
-            /** Comp Percent */
+            /**
+             * Comp Percent
+             * @description % ATÔMICA, 4 casas; símbolos na forma canônica
+             */
             comp_percent: {
                 [key: string]: number;
             };
-            /** Fracoes */
+            /**
+             * Fracoes
+             * @description Fração atômica, sem arredondar
+             */
             fracoes: {
                 [key: string]: number;
             };
@@ -1101,18 +1714,113 @@ export interface components {
             interpretacao: string[];
             /** Fragilidade */
             fragilidade?: string | null;
-            /** Gibbs */
+            /**
+             * Gibbs
+             * @deprecated
+             * @description OBSOLETO: [{T (K), G (J/mol)}]. Use curva_T (kJ/mol).
+             */
             gibbs: {
                 [key: string]: number;
             }[];
             /**
              * Indisponiveis
-             * @description grandeza → motivo de não ter sido calculada
+             * @description campo → motivo de não ter sido calculado
              */
             indisponiveis: {
                 [key: string]: string;
             };
             procedencia: components["schemas"]["Procedencia"];
+            /**
+             * Base Entrada
+             * @enum {string}
+             */
+            base_entrada: "atomica" | "massica";
+            /**
+             * Soma Informada
+             * @description Soma das quantidades recebidas (> 0), na unidade da entrada
+             */
+            soma_informada: number;
+            /**
+             * Fracoes Massa
+             * @description Fração mássica, sem arredondar
+             */
+            fracoes_massa?: {
+                [key: string]: number;
+            } | null;
+            /**
+             * Comp Massa Pct
+             * @description % em massa, 4 casas
+             */
+            comp_massa_pct?: {
+                [key: string]: number;
+            } | null;
+            /**
+             * Massa Molar Media
+             * @description M̄ = Σ xᵢMᵢ, g/mol
+             */
+            massa_molar_media?: number | null;
+            /**
+             * Ds R
+             * @description ΔS_mix/R, adimensional
+             */
+            dS_R: number;
+            /**
+             * Classe Entropia
+             * @enum {string}
+             */
+            classe_entropia: "baixa" | "media" | "alta";
+            /**
+             * Raio Medio Nm
+             * @description r̄ = Σ xᵢrᵢ, nm
+             */
+            raio_medio_nm?: number | null;
+            /**
+             * Pares Faltantes
+             * @description Pares "A-B" sem entalpia de mistura utilizável
+             */
+            pares_faltantes: string[];
+            /** Dados Faltantes */
+            dados_faltantes: components["schemas"]["DadoFaltante"][];
+            /**
+             * Curva T
+             * @description De 300 K a T_sup_k, passo 50 K
+             */
+            curva_T: components["schemas"]["PontoCurvaT"][];
+            /**
+             * T Sup K
+             * @description Limite superior da curva, K
+             */
+            T_sup_k: number;
+            /**
+             * Dg Tm
+             * @description ΔG_mix do modelo em T_m, kJ/mol
+             */
+            dG_Tm?: number | null;
+            /**
+             * T Cruzamento K
+             * @description T* = 1000·ΔH_mix/ΔS_mix, K; só com ΔH_mix > 0
+             */
+            T_cruzamento_k?: number | null;
+            /**
+             * Energia Formacao
+             * @description Sempre nulo: o sistema não calcula energia de formação
+             */
+            energia_formacao?: null;
+            /** Criterios */
+            criterios: components["schemas"]["CriterioAvaliado"][];
+            triagem: components["schemas"]["Triagem"];
+            /**
+             * Vec Aplicavel
+             * @description Critério de VEC dentro do domínio (regra conservadora, sem fonte)
+             */
+            vec_aplicavel: boolean;
+            /**
+             * Classes
+             * @description Natureza de cada grandeza (valores de procedencia.classe)
+             */
+            classes: {
+                [key: string]: string;
+            };
         };
         /** HealthResponse */
         HealthResponse: {
@@ -1306,6 +2014,49 @@ export interface components {
             familia?: components["schemas"]["FamiliaPlano"][] | null;
             procedencia?: components["schemas"]["Procedencia"] | null;
         };
+        /** ModeloLiga */
+        ModeloLiga: {
+            /**
+             * Tipo Solucao
+             * @default substitucional
+             * @enum {string}
+             */
+            tipo_solucao?: "substitucional" | "intersticial" | "mista";
+            /**
+             * Ordenacao
+             * @default desordenada
+             * @enum {string}
+             */
+            ordenacao?: "desordenada" | "ordenada_prototipo";
+            /**
+             * Fases
+             * @default monofasica_imposta
+             * @constant
+             */
+            fases?: "monofasica_imposta";
+            /**
+             * Geometria
+             * @default idealizada
+             * @constant
+             */
+            geometria?: "idealizada";
+            /**
+             * Parametro Rede
+             * @default estimativa_vegard_sobre_raios
+             * @constant
+             */
+            parametro_rede?: "estimativa_vegard_sobre_raios";
+            /**
+             * Parametro Rede Solvente
+             * @default derivado_de_R
+             * @enum {string}
+             */
+            parametro_rede_solvente?: "derivado_de_R" | "medido";
+            /** C A */
+            c_a?: ("ideal" | "tabelado" | "derivado_de_a_c_medidos" | "informado") | null;
+            /** Hipoteses */
+            hipoteses?: string[];
+        };
         /** NotaTermica */
         NotaTermica: {
             /**
@@ -1354,6 +2105,24 @@ export interface components {
             result: {
                 [key: string]: components["schemas"]["MetalInfo"];
             };
+        };
+        /** OkEnvelope[ElementDetail] */
+        OkEnvelope_ElementDetail_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["ElementDetail"];
+        };
+        /** OkEnvelope[ElementList] */
+        OkEnvelope_ElementList_: {
+            /**
+             * Ok
+             * @default true
+             */
+            ok?: boolean;
+            result: components["schemas"]["ElementList"];
         };
         /** OkEnvelope[ExportResponse] */
         OkEnvelope_ExportResponse_: {
@@ -1555,6 +2324,24 @@ export interface components {
             /** Fonte */
             fonte?: string | null;
         };
+        /** PontoCurvaT */
+        PontoCurvaT: {
+            /**
+             * T
+             * @description K
+             */
+            T: number;
+            /**
+             * Menos Tds
+             * @description −T·ΔS_mix (analítico), kJ/mol
+             */
+            menos_TdS: number;
+            /**
+             * Dg
+             * @description ΔH_mix − T·ΔS_mix, kJ/mol; nulo quando ΔH_mix é nulo
+             */
+            dG?: number | null;
+        };
         /**
          * Procedencia
          * @description PI-06/07: de onde veio o resultado (ARQUITETURA_FINAL §6).
@@ -1592,6 +2379,21 @@ export interface components {
             resolvidas: number;
             /** Instancias */
             instancias: number;
+        };
+        /** Prototipo */
+        Prototipo: {
+            /** Strukturbericht */
+            strukturbericht: string;
+            /** Prototipo */
+            prototipo: string;
+            /** Composicao Ideal At Pct */
+            composicao_ideal_at_pct?: {
+                [key: string]: number;
+            };
+            /** Rede Ordenada */
+            rede_ordenada: string;
+            /** Observacao */
+            observacao?: string | null;
         };
         /** QuestionCreate */
         QuestionCreate: {
@@ -1668,6 +2470,35 @@ export interface components {
             /** Semente */
             semente: number;
         };
+        /** Realizacao */
+        Realizacao: {
+            /**
+             * Tipo
+             * @default estatistica
+             * @enum {string}
+             */
+            tipo?: "estatistica" | "ordenada_prototipo" | "sem_soluto";
+            /**
+             * Semente
+             * @default 1
+             */
+            semente?: number;
+            /**
+             * Algoritmo
+             * @default mt19937-chaves-v1
+             */
+            algoritmo?: string;
+            /**
+             * N
+             * @default 1
+             */
+            n?: number;
+            /**
+             * Aviso
+             * @default
+             */
+            aviso?: string;
+        };
         /** RegisterRequest */
         RegisterRequest: {
             /** Nome */
@@ -1696,6 +2527,23 @@ export interface components {
             /** Indisponivel */
             indisponivel?: string | null;
         };
+        /** RegrasSoluto */
+        RegrasSoluto: {
+            /** Soluto */
+            soluto: string;
+            /**
+             * Modo
+             * @enum {string}
+             */
+            modo: "substitucional" | "intersticial";
+            /** Regras */
+            regras?: components["schemas"]["RegraSolubilidade"][];
+            /**
+             * Conclusao
+             * @default
+             */
+            conclusao?: string;
+        };
         /** ServicoCapacidade */
         ServicoCapacidade: {
             /** Disponivel */
@@ -1718,6 +2566,23 @@ export interface components {
             /** Expira Em */
             expira_em: string;
         };
+        /**
+         * SitioAtomo
+         * @description Sítio cristalográfico do átomo. ``wyckoff`` é nulo até a conferência bibliográfica (decisão D-e).
+         */
+        SitioAtomo: {
+            /** Nome */
+            nome: string;
+            /** Wyckoff */
+            wyckoff?: string | null;
+            /** Nc */
+            nc: number;
+            /**
+             * Nc Txt
+             * @default
+             */
+            nc_txt?: string;
+        };
         /** SitioBase */
         SitioBase: {
             /**
@@ -1732,12 +2597,63 @@ export interface components {
         SitioIntersticial: {
             /** Nome */
             nome: string;
-            /** Fator */
+            /**
+             * Fator
+             * @description r_livre/R
+             */
             fator: number;
-            /** Raio Nm */
+            /**
+             * Raio Nm
+             * @description Raio livre do sítio em nm
+             */
             raio_nm: number;
-            /** Nc */
+            /**
+             * Nc
+             * @description Total de vizinhos (inteiro)
+             */
             nc: number;
+            /**
+             * Elemento
+             * @description Intersticial que usa o sítio
+             * @default
+             */
+            elemento?: string;
+            /**
+             * Tipo
+             * @default octaedrico
+             * @enum {string}
+             */
+            tipo?: "octaedrico" | "tetraedrico" | "cubico";
+            /**
+             * Nc Txt
+             * @description Ex.: "2 + 4" no octaédrico da CCC
+             * @default
+             */
+            nc_txt?: string;
+            /**
+             * Sitios Por Celula
+             * @default 0
+             */
+            sitios_por_celula?: number;
+            /** Wyckoff */
+            wyckoff?: string | null;
+            /**
+             * Escolha
+             * @default padrao
+             * @enum {string}
+             */
+            escolha?: "padrao" | "informado";
+            /**
+             * Justificativa
+             * @default
+             */
+            justificativa?: string;
+            /**
+             * Padrao Verificado
+             * @description false enquanto o sítio padrão não tiver parecer com fonte
+             * @default false
+             */
+            padrao_verificado?: boolean;
         };
         /** SolidSolutionRequest */
         SolidSolutionRequest: {
@@ -1748,15 +2664,31 @@ export interface components {
             base: string;
             /**
              * Soluto
-             * @description Metal (substitucional) ou C, N, H (intersticial)
+             * @description Forma binária legada: metal (substitucional) ou C, N, H (intersticial). Informe exatamente um entre 'soluto' e 'solutos'
              */
-            soluto: string;
+            soluto?: string | null;
+            /**
+             * Solutos
+             * @description Lista de 1 a 6 solutos, substitucionais e/ou intersticiais; a ordem do pedido não altera o resultado
+             */
+            solutos?: components["schemas"]["SolutoPedido"][] | null;
             /**
              * X
-             * @description % atômica do soluto
-             * @default 10
+             * @description % do soluto legado (padrão 10); não use junto com 'solutos'
              */
             x?: number | null;
+            /**
+             * Base Composicao
+             * @description Base em que todos os x do pedido foram informados
+             * @default atomica
+             * @enum {string}
+             */
+            base_composicao?: "atomica" | "massica";
+            /**
+             * Estrutura Matriz
+             * @description Estrutura imposta à matriz; padrão: a do solvente no repositório
+             */
+            estrutura_matriz?: ("CS" | "CCC" | "CFC" | "HC") | null;
             /**
              * N
              * @default 3
@@ -1775,6 +2707,7 @@ export interface components {
             distorcer?: boolean;
             /**
              * Semente
+             * @description 0 é semente válida e respeitada
              * @default 1
              */
             semente?: number;
@@ -1785,7 +2718,10 @@ export interface components {
             rotulo: string;
             /** Base */
             base: string;
-            /** Soluto */
+            /**
+             * Soluto
+             * @description Com vários solutos: o primeiro da ordem canônica (campo legado)
+             */
             soluto: string;
             /** Intersticial */
             intersticial: boolean;
@@ -1817,9 +2753,15 @@ export interface components {
             densidade: number;
             /** Densidade Base */
             densidade_base: number;
-            /** N Soluto */
+            /**
+             * N Soluto
+             * @description Átomos ÚNICOS de soluto (soma de todos os solutos)
+             */
             n_soluto: number;
-            /** N Solvente */
+            /**
+             * N Solvente
+             * @description Átomos ÚNICOS de solvente
+             */
             n_solvente: number;
             /** Fase Ordenada */
             fase_ordenada?: string | null;
@@ -1837,7 +2779,61 @@ export interface components {
             atomos: components["schemas"]["AtomoLiga"][];
             /** Arestas */
             arestas: number[][][];
+            composicao?: components["schemas"]["ComposicaoLiga"];
+            realizacao?: components["schemas"]["Realizacao"];
+            modelo?: components["schemas"]["ModeloLiga"];
+            prototipo?: components["schemas"]["Prototipo"] | null;
+            /** Fases */
+            fases?: components["schemas"]["FaseLiga"][];
+            verificacoes?: components["schemas"]["Verificacoes"];
+            /** Regras Por Soluto */
+            regras_por_soluto?: components["schemas"]["RegrasSoluto"][];
+            /**
+             * Conclusao Global
+             * @description Nulo com mais de um soluto: as regras são binárias (motivo em 'indisponiveis')
+             */
+            conclusao_global?: string | null;
+            /** Sitios */
+            sitios?: components["schemas"]["SitioIntersticial"][];
+            /** Elementos */
+            elementos?: components["schemas"]["ElementoPuro"][];
+            /** Convencoes */
+            convencoes?: string[];
+            /** Indisponiveis */
+            indisponiveis?: {
+                [key: string]: string;
+            };
             procedencia: components["schemas"]["Procedencia"];
+        };
+        /**
+         * SolutoPedido
+         * @description Um soluto do pedido multicomponente (contrato R1 §2.1).
+         */
+        SolutoPedido: {
+            /**
+             * Elemento
+             * @description Símbolo, nome ou alias resolvido pelo repositório
+             */
+            elemento: string;
+            /**
+             * X
+             * @description % do soluto na base de 'base_composicao'
+             */
+            x: number | null;
+            /**
+             * Modo
+             * @description 'auto': intersticial se o símbolo é C, H ou N; senão substitucional
+             * @default auto
+             * @enum {string}
+             */
+            modo?: "auto" | "substitucional" | "intersticial";
+            /**
+             * Sitio
+             * @description Só para intersticial. 'auto': octaédrico em CCC, CFC e HC; cúbico em CS
+             * @default auto
+             * @enum {string}
+             */
+            sitio?: "auto" | "octaedrico" | "tetraedrico" | "cubico";
         };
         /** StructureInfo */
         StructureInfo: {
@@ -1913,10 +2909,48 @@ export interface components {
             n: number;
             /** Nc */
             nc: number;
+            /**
+             * Nc Txt
+             * @description "6 + 6" no HC com c/a ≠ ideal; senão o próprio nc como texto
+             * @default
+             */
+            nc_txt?: string;
             /** Fea */
             fea: number;
             /** Vazios */
             vazios: number;
+            /**
+             * Fea Modelo
+             * @description O FEA é propriedade do modelo de esferas rígidas, não empacotamento medido
+             * @default esferas_rigidas
+             * @constant
+             */
+            fea_modelo?: "esferas_rigidas";
+            /**
+             * Raio Contato Rel
+             * @description R_c/a = ½·mín(1, d_entre_planos/a); só HC (nulo nas cúbicas)
+             */
+            raio_contato_rel?: number | null;
+            /**
+             * Contato Tipo
+             * @description Onde ocorre o primeiro contato das esferas; só HC
+             */
+            contato_tipo?: ("basal" | "entre_planos" | "ambos") | null;
+            /**
+             * C A Ideal
+             * @description √(8/3); só HC
+             */
+            c_a_ideal?: number | null;
+            /**
+             * C A Natureza
+             * @description Origem do c/a usado; só HC
+             */
+            c_a_natureza?: ("ideal" | "tabelado" | "derivado_de_a_c_medidos" | "informado") | null;
+            /**
+             * Vizinhos
+             * @description Grupos de primeiros vizinhos; só HC em R1 (nulo nas cúbicas)
+             */
+            vizinhos?: components["schemas"]["GrupoVizinhos"][] | null;
             /** A Em R */
             a_em_R: number;
             /** C A */
@@ -2079,6 +3113,16 @@ export interface components {
             /** Resolvidas */
             resolvidas: number;
         };
+        /** Triagem */
+        Triagem: {
+            /**
+             * Estado
+             * @enum {string}
+             */
+            estado: "favoravel" | "desfavoravel" | "inconclusiva";
+            /** Texto */
+            texto: string;
+        };
         /** UserInfo */
         UserInfo: {
             /** Id */
@@ -2091,6 +3135,39 @@ export interface components {
             admin_geral: boolean;
             /** Email Verificado */
             email_verificado: boolean;
+        };
+        /** VerificacaoFases */
+        VerificacaoFases: {
+            /** Previstas */
+            previstas?: string[] | null;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo?: string;
+        };
+        /** VerificacaoLimite */
+        VerificacaoLimite: {
+            /**
+             * Verificado
+             * @default false
+             */
+            verificado?: boolean;
+            /** Valor */
+            valor?: number | null;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo?: string;
+        };
+        /**
+         * Verificacoes
+         * @description O que o motor NÃO verifica (parecer R1-CRI-01 §3.7).
+         */
+        Verificacoes: {
+            limite_solubilidade?: components["schemas"]["VerificacaoLimite"];
+            fases_secundarias?: components["schemas"]["VerificacaoFases"];
         };
         /** VersionInfo */
         VersionInfo: {
@@ -3708,6 +4785,90 @@ export interface operations {
             };
             /** @description Service Unavailable */
             503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    listar_elementos_api_v1_elements_get: {
+        parameters: {
+            query?: {
+                periodo?: number | null;
+                grupo?: number | null;
+                bloco?: ("s" | "p" | "d" | "f") | null;
+                categoria?: string | null;
+                estado_padrao?: ("solido" | "liquido" | "gas" | "solido_previsto" | "gas_previsto") | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_ElementList_"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+        };
+    };
+    obter_elemento_api_v1_elements__ref__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ref: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OkEnvelope_ElementDetail_"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErroEnvelope"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };

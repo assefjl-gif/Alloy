@@ -94,9 +94,14 @@ const TEXT_PAIRS: Array<[string, string]> = [
   ['--cat-result-accent', '--cat-result-bg'], ['--cat-param-accent', '--cat-param-bg'], ['--cat-reference-accent', '--cat-reference-bg'],
   ['--cat-control-accent', '--cat-control-bg'], ['--cat-feedback-accent', '--cat-feedback-bg'], ['--cat-demo-accent', '--cat-demo-bg'], ['--cat-note-accent', '--cat-note-bg'],
   ['--chart-text', '--chart-bg'], ['--color-ink-soft', '--cat-feedback-bg'], ['--color-ink-soft', '--cat-demo-bg'],
+  // identidade Carvão, Areia e Azul (11/2026): preenchimento neutro, papel elevado e areia sobre carvão
+  ['--color-on-solid', '--color-solid'], ['--color-ink', '--color-surface-raised'], ['--color-muted', '--color-surface-raised'],
+  ['--lab-accent', '--lab-surface'], ['--tag-ink', '--lab-accent'], ['--brand-sand', '--lab-bg'],
 ];
 const NON_TEXT: Array<[string, string]> = [
   ['--chart-axis', '--chart-bg'], ['--chart-series-1', '--chart-bg'], ['--chart-highlight', '--chart-bg'], ['--color-line-strong', '--color-surface'],
+  // o azul oficial só aparece como sinal sobre papel ou carvão; foco e botão primário também valem sobre a areia
+  ['--color-signal', '--color-surface'], ['--lab-signal', '--lab-bg'], ['--focus-color', '--color-bg'], ['--color-primary', '--color-bg'],
 ];
 
 test('contraste AA (texto ≥ 4,5:1; elementos gráficos ≥ 3:1) nos dois temas', () => {

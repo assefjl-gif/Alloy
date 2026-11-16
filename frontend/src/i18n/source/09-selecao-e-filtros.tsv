@@ -1,0 +1,67 @@
+# Chaves da rodada R2 (R2-FE-03): seleção e inspeção de átomo na liga (T-24) e filtros, cortes e isolamento (T-23).
+alloyAtom.title	Átomo selecionado na liga	Selected atom in the alloy	Átomo seleccionado en la aleación
+alloyAtom.selected	Átomo {id} selecionado na liga	Atom {id} selected in the alloy	Átomo {id} seleccionado en la aleación
+alloyAtom.none	Clique em um átomo da liga na cena (ou use as setas na lista abaixo) para ver os detalhes.	Click an atom of the alloy in the scene (or use the arrow keys in the list below) to see its details.	Haga clic en un átomo de la aleación en la escena (o use las flechas en la lista de abajo) para ver los detalles.
+alloyAtom.id	Identificador do motor	Engine identifier	Identificador del motor
+alloyAtom.element	Elemento	Element	Elemento
+alloyAtom.positionA	Posição cartesiana (unidades de a)	Cartesian position (units of a)	Posición cartesiana (unidades de a)
+alloyAtom.positionNm	Posição cartesiana (nm)	Cartesian position (nm)	Posición cartesiana (nm)
+alloyAtom.fractional	Coordenadas fracionárias (supercélula)	Fractional coordinates (supercell)	Coordenadas fraccionarias (supercelda)
+alloyAtom.fractionalCell	Coordenadas fracionárias (na célula)	Fractional coordinates (within the cell)	Coordenadas fraccionarias (en la celda)
+alloyAtom.cell	Célula da supercélula	Cell within the supercell	Celda de la supercelda
+alloyAtom.phase	Fase	Phase	Fase
+alloyAtom.site	Sítio cristalográfico	Crystallographic site	Sitio cristalográfico
+alloyAtom.wyckoff	Símbolo de Wyckoff	Wyckoff symbol	Símbolo de Wyckoff
+alloyAtom.wyckoffUnavailable	não disponível — o motor não confirmou o símbolo em fonte	unavailable — the engine did not confirm the symbol against a source	no disponible — el motor no confirmó el símbolo en una fuente
+alloyAtom.nc	Número de coordenação do sítio	Site coordination number	Número de coordinación del sitio
+alloyAtom.occupancy	Ocupação	Occupancy	Ocupación
+alloyAtom.occ.rede	sítio da rede	lattice site	sitio de la red
+alloyAtom.occ.substitucional	substitucional	substitutional	sustitucional
+alloyAtom.occ.intersticial	intersticial	interstitial	intersticial
+alloyAtom.idealPos	Posição ideal do sítio (unidades de a)	Ideal site position (units of a)	Posición ideal del sitio (unidades de a)
+alloyAtom.image	Imagem periódica	Periodic image	Imagen periódica
+alloyAtom.imageYes	sim — réplica de fronteira do átomo {of}	yes — boundary replica of atom {of}	sí — réplica de frontera del átomo {of}
+alloyAtom.imageNo	não	no	no
+alloyAtom.imageNote	Imagem periódica: a mesma matéria do átomo de origem, desenhada do outro lado da fronteira. Não entra em contagem, composição nem legenda.	Periodic image: the same matter as the source atom, drawn on the other side of the boundary. It does not count towards atom counts, composition or the legend.	Imagen periódica: la misma materia del átomo de origen, dibujada al otro lado de la frontera. No entra en el recuento, la composición ni la leyenda.
+alloyAtom.goToSource	Selecionar o átomo de origem	Select the source atom	Seleccionar el átomo de origen
+alloyAtom.listTitle	Átomos na cena: {unique} únicos e {images} imagens periódicas (contagem de exibição)	Atoms in the scene: {unique} unique and {images} periodic images (display count)	Átomos en la escena: {unique} únicos y {images} imágenes periódicas (recuento de visualización)
+alloyAtom.listHint	Esta é a contagem do que está DESENHADO agora. A contagem científica é a do motor, em Propriedades.	This is a count of what is DRAWN right now. The scientific count is the one from the engine, under Properties.	Este es el recuento de lo que está DIBUJADO ahora. El recuento científico es el del motor, en Propiedades.
+alloyAtom.imageTag	imagem	image	imagen
+alloyAtom.pureTitle	Propriedades do ELEMENTO PURO ({element})	PURE ELEMENT properties ({element})	Propiedades del ELEMENTO PURO ({element})
+alloyAtom.pureNote	Dados tabelados do elemento puro, do repositório do motor. NÃO são propriedades calculadas deste átomo dentro da liga.	Tabulated data for the pure element, from the repository of the engine. They are NOT computed properties of this atom inside the alloy.	Datos tabulados del elemento puro, del repositorio del motor. NO son propiedades calculadas de este átomo dentro de la aleación.
+alloyAtom.pureMissing	O motor não devolveu dados tabelados para este elemento.	The engine returned no tabulated data for this element.	El motor no devolvió datos tabulados para este elemento.
+alloyAtom.hiddenByFilter	Este átomo está escondido pelo filtro de exibição.	This atom is hidden by the display filter.	Este átomo está oculto por el filtro de visualización.
+alloyAtom.drawRadiusNote	O raio desenhado é o raio tabelado do elemento puro dividido por a; não é o raio do átomo em solução.	The drawn radius is the tabulated pure-element radius divided by a; it is not the radius of the atom in solution.	El radio dibujado es el radio tabulado del elemento puro dividido por a; no es el radio del átomo en solución.
+filter.title	Filtros e cortes (exibição)	Filters and cuts (display)	Filtros y cortes (visualización)
+filter.note	Filtrar e cortar muda só o que aparece na cena. Nenhum valor científico muda: as contagens e as propriedades continuam sendo as do motor.	Filtering and cutting change only what appears in the scene. No scientific value changes: counts and properties remain those of the engine.	Filtrar y cortar cambian solo lo que aparece en la escena. Ningún valor científico cambia: los recuentos y las propiedades siguen siendo los del motor.
+filter.elements	Elementos	Elements	Elementos
+filter.occupancy	Ocupação do sítio	Site occupancy	Ocupación del sitio
+filter.sites	Tipo de sítio cristalográfico	Crystallographic site type	Tipo de sitio cristalográfico
+filter.isolate	Isolar	Isolate	Aislar
+filter.isolateOf	Isolar {name}	Isolate {name}	Aislar {name}
+filter.hide	Ocultar {name}	Hide {name}	Ocultar {name}
+filter.show	Mostrar {name}	Show {name}	Mostrar {name}
+filter.hiddenTag	oculto	hidden	oculto
+filter.cut	Corte geométrico	Geometric cut	Corte geométrico
+filter.cutEnable	Cortar a cena	Cut the scene	Cortar la escena
+filter.cutAxis	Eixo do corte	Cut axis	Eje del corte
+filter.cutModeLabel	O que fica visível	What stays visible	Qué queda visible
+filter.cutMode.below	abaixo do plano	below the plane	por debajo del plano
+filter.cutMode.above	acima do plano	above the plane	por encima del plano
+filter.cutMode.slab	só uma fatia	a single slab	solo una capa
+filter.cutPosition	Posição do plano (unidades de a)	Plane position (units of a)	Posición del plano (unidades de a)
+filter.cutThickness	Espessura da fatia (unidades de a)	Slab thickness (units of a)	Espesor de la capa (unidades de a)
+filter.cutNote	O corte esconde os átomos de um lado do plano, em unidades de a. O átomo que continua visível continua selecionável; o escondido não é selecionável.	The cut hides the atoms on one side of the plane, in units of a. An atom that remains visible remains selectable; a hidden atom is not selectable.	El corte oculta los átomos de un lado del plano, en unidades de a. El átomo que sigue visible sigue siendo seleccionable; el oculto no lo es.
+filter.neighbourhood	Mostrar só a vizinhança do átomo selecionado	Show only the neighbourhood of the selected atom	Mostrar solo el entorno del átomo seleccionado
+filter.neighbourhoodRadius	Raio de exibição (unidades de a)	Display radius (units of a)	Radio de visualización (unidades de a)
+filter.neighbourhoodNote	Raio de EXIBIÇÃO, não medida científica: para distâncias e ângulos use a ferramenta de medição em Análise.	DISPLAY radius, not a scientific measurement: for distances and angles use the measurement tool under Analysis.	Radio de VISUALIZACIÓN, no una medida científica: para distancias y ángulos use la herramienta de medición en Análisis.
+filter.neighbourhoodNeedsSelection	Selecione um átomo para usar a vizinhança.	Select an atom to use the neighbourhood.	Seleccione un átomo para usar el entorno.
+filter.counts	{drawn} de {total} esferas visíveis ({unique} átomos únicos) — contagem de exibição	{drawn} of {total} spheres visible ({unique} unique atoms) — display count	{drawn} de {total} esferas visibles ({unique} átomos únicos) — recuento de visualización
+filter.countsEngine	Contagem científica do motor: {unique} átomos únicos, {drawn} esferas desenhadas (não muda com o filtro).	Scientific count from the engine: {unique} unique atoms, {drawn} drawn spheres (unchanged by the filter).	Recuento científico del motor: {unique} átomos únicos, {drawn} esferas dibujadas (no cambia con el filtro).
+filter.clear	Limpar filtros	Clear filters	Limpiar filtros
+filter.active	Filtro de exibição ativo	Display filter active	Filtro de visualización activo
+filter.none	Nada está escondido: a cena mostra tudo o que o motor devolveu.	Nothing is hidden: the scene shows everything the engine returned.	Nada está oculto: la escena muestra todo lo que el motor devolvió.
+filter.axis.0	x	x	x
+filter.axis.1	y	y	y
+filter.axis.2	z	z	z
+filter.pureElementOnly	O filtro por elemento vale para a liga; a célula do metal puro tem um só elemento.	The element filter applies to the alloy; the pure-metal cell has a single element.	El filtro por elemento se aplica a la aleación; la celda del metal puro tiene un solo elemento.

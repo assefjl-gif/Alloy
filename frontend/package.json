@@ -12,7 +12,7 @@
     "serve": "node scripts/serve.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.sw.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "node scripts/lint.mjs",
-    "test": "node --import tsx --test tests/unit/adapters.test.ts tests/unit/account.test.ts tests/unit/commands.test.ts tests/unit/core.test.ts tests/unit/i18n-tokens.test.ts",
+    "test": "node --import tsx --test tests/unit/adapters.test.ts tests/unit/account.test.ts tests/unit/alloy.test.ts tests/unit/commands.test.ts tests/unit/core.test.ts tests/unit/i18n-tokens.test.ts",
     "e2e": "playwright test",
     "measure": "node scripts/measure-bundle.mjs",
     "ci": "npm run typecheck && npm run lint && npm test && npm run build && npm run measure && npm run e2e",
@@ -24,24 +24,26 @@
     "types:api": "npx -y openapi-typescript@7.4.4 ../docs/openapi.json --default-non-nullable false -o src/services/api/openapi.gen.ts"
   },
   "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "docx": "9.8.1",
+    "katex": "0.16.47",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "0.160.0",
-    "zustand": "5.0.1",
-    "katex": "0.16.47",
     "zod": "3.25.76",
-    "docx": "9.8.1"
+    "zustand": "5.0.1"
   },
   "devDependencies": {
-    "typescript": "6.0.3",
-    "esbuild": "0.28.2",
-    "playwright": "1.56.0",
-    "tsx": "^4",
+    "@types/katex": "^0.16",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "0.160.0",
-    "@types/node": "^22",
-    "@types/katex": "^0.16"
+    "esbuild": "0.28.2",
+    "playwright": "1.56.0",
+    "tsx": "^4",
+    "typescript": "6.0.3"
   },
   "engines": {
     "node": ">=20"

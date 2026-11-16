@@ -4,10 +4,10 @@ Data: 03/11/2026 · Versão apresentada: **API 0.9.0** (branch `consolidacao-all
 Versão anterior de referência: **CrystaLab v1.4** (arquivo único, a que recebeu as sugestões dos professores).
 Evidências: [RELATORIO_ENCERRAMENTO.md](RELATORIO_ENCERRAMENTO.md), [TESTES_E_QA.md](TESTES_E_QA.md), [PENDENCIAS.md](PENDENCIAS.md).
 
-> **Resposta curta à pergunta "foi tudo atendido?": não.** A nova versão é muito mais sólida (motor único, banco, contas
-> reais, correção no servidor, testes, infraestrutura), mas **as telas de ligas, temperatura, cores configuráveis e tutoriais
-> da v1.4 ainda não foram portadas para o novo frontend**, e a barra lateral única e o login restrito à UFC também não.
-> Os motores e as rotas de API dessas funções existem e estão testados. Falta a interface (seções 5 e 8).
+> **Resposta curta à pergunta "foi tudo atendido?": ainda não.** A nova versão é muito mais sólida (motor único, banco, contas
+> reais, correção no servidor, testes, infraestrutura). **Atualização de 03/11/2026:** as telas de **ligas e temperatura** (T-13)
+> já foram portadas. **Continuam pendentes:** cores configuráveis por elemento, aba Tutoriais, barra lateral única e login
+> restrito à UFC (seções 5 e 8).
 
 ---
 
@@ -99,17 +99,17 @@ Legenda: ✔ atendida · ◐ parcial · ✘ não atendida.
 | Sugestão | v1.4 | Nova versão | Situação na nova versão |
 |---|---|---|---|
 | **Miná 1 / Gisele 1**: cor por elemento, configurável na 3D | ✔ seletor de cor por elemento | ◐ | Só há coloração **ilustrativa** (semente) na ponte HEA, e apenas no modo demonstrativo. Não há seletor de cor. A tabela `cores_elementos` existe no banco, sem tela. |
-| **Miná 2**: ver a formação da liga e a posição de cada átomo | ✔ | ◐ | A API de soluções sólidas devolve os átomos da supercélula com o soluto, mas **não há tela de liga**. O viewer mostra célula e supercélula. |
-| **Miná 3**: efeito da temperatura e vibração dos átomos | ✔ controle de temperatura + vibração | ◐ | Motor e API de temperatura prontos (dilatação, Lindemann, alotropia). Na tela há só uma animação de vibração **ilustrativa, sem valores** e sem controle de temperatura. |
+| **Miná 2**: ver a formação da liga e a posição de cada átomo | ✔ | ✔ | Aba **Liga**: o viewer desenha cada átomo devolvido pelo motor (solvente e soluto em cores e legenda), em substitucional ou intersticial, com supercélula até 4×4×4. A seleção de átomo individual com propriedades na liga ainda não existe (o inspetor de átomos continua sendo o da célula). |
+| **Miná 3**: efeito da temperatura e vibração dos átomos | ✔ controle de temperatura + vibração | ✔ | Aba **Temperatura**: controle de -200 a 2500 °C, dilatação, amplitude, curva de Lindemann e botão **Vibrar átomos** no viewer, com a amplitude do motor (exagero visual rotulado) e respeito a movimento reduzido. A vibração é ilustrativa (osciladores independentes). |
 | **Miná 4**: aprendizado com desenho de planos | ✔ | ✔ | Exercício "qual é o plano?" em `#/aprender`; planos, direções e famílias no viewer; questões de distância interplanar no servidor. |
 | **Miná 5**: melhorar parâmetro de rede e FEA | ✔ | ✔ | *a* medido com prioridade e fonte, N_A CODATA, Ti corrigido, passos completos, regressão testada. |
-| **Miná 6**: mostrar o impacto das ligas nos átomos | ✔ distorção ilustrativa | ◐ | O motor devolve distorção e ordenação, mas **sem tela**. |
+| **Miná 6**: mostrar o impacto das ligas nos átomos | ✔ distorção ilustrativa | ◐ | A aba Liga mostra o efeito na rede (*a*, densidade), as regras e a distorção ilustrativa descrita pelo motor. **Os átomos não são deslocados visualmente** pela distorção: ela aparece como texto. |
 | **Gisele 2**: usar pacotes abertos para funções visuais e de estudo | ◐ (CDN) | ◐ | Adota Three.js, KaTeX, Zod, Zustand, Argon2, Gemmi (opcional) e Playwright. **Não há levantamento formal documentado** dos pacotes avaliados. |
 | **Gisele 3**: uma barra lateral e 3D maior | ✔ | ✘ | O layout herdado tem painel do laboratório à esquerda **e** painel de abas à direita. Não foi reduzido. |
 | **Gisele 4**: tela inicial com login de e-mail da UFC, gravado | ✔ só `@ufc.br`, sem senha | ◐ | Conta real com senha e histórico no banco (mais seguro), mas **sem restrição ao domínio `@ufc.br`**, sem tela de início obrigatória e sem verificação de e-mail. |
 | **Aba Tutoriais** (pedida por você: .txt, .mp4, .pdf, planilhas, docs) | ✔ | ✘ | A tabela de arquivos existe no banco, mas **não há rota nem tela**. |
 
-**Resumo:** na nova versão, 2 atendidas, 6 parciais e 2 não atendidas (barra única e Tutoriais). Na v1.4, todas estavam atendidas.
+**Resumo (atualizado em 03/11/2026):** na nova versão, 4 atendidas (Miná 2, 3, 4, 5), 4 parciais (Miná 1/Gisele 1 cores, Miná 6, Gisele 2, Gisele 4) e 2 não atendidas (barra única e Tutoriais). Na v1.4, todas estavam atendidas.
 
 ## 6. Atendimento das demandas do projeto
 
@@ -130,24 +130,24 @@ Legenda: ✔ atendida · ◐ parcial · ✘ não atendida.
 
 | Domínio | ✔ | ◐ | ✘ / ○ | Observação |
 |---|---|---|---|---|
-| Cristalografia (CIE, 13) | 11 | 2 (CIE-11 ligas, CIE-12 temperatura) | — | motor e API prontos; sem tela |
+| Cristalografia (CIE, 13) | 13 | — | — | CIE-11 e CIE-12 passaram a ✔ com as abas Liga e Temperatura (T-13); em produção seguem bloqueadas até validar os dados (Q-03) |
 | API (6) | 4 | 1 (API-04: paginação só no histórico) | ○ API-06 | cálculo longo adiado: não houve necessidade medida |
 | Arquitetura (5) | 3 | 2 (ARQ-04 sem módulo de administração; ARQ-05 não auditado) | — | |
 | Banco (8) | 3 | 4 (DAD-01 PostgreSQL não executado, DAD-03, DAD-05, DAD-08 só em SQLite) | ✘ DAD-07 backup | |
 | Segurança (7) | 2 | 4 (SEG-01, 03, 04, 05) | ✘ SEG-07 LGPD | sem recuperação de senha, administração e pentest |
-| Frontend (7) | 5 | 1 (FE-04: axe e Lighthouse não rodados) | ✘ **FE-06** | FE-06 = funções da v1.4 que o frontend anterior não tinha (ligas, temperatura, cores, tutoriais) |
+| Frontend (7) | 5 | 2 (FE-04: axe e Lighthouse não rodados; **FE-06** agora parcial) | — | FE-06 = funções da v1.4: ligas e temperatura ✔; faltam cores por elemento e tutoriais |
 | HEA (6) | 1 | 3 (HEA-01, 02, 05) | ✘ HEA-03, 06 | depende de Q-01 |
 | Educacional (6) | 1 | 3 (EDU-01, 02, 03) | ✘ EDU-06 · ○ EDU-05 | IA desligada por decisão |
 | Operação (5) | 2 | 3 (OPS-01, 03, 04: escritos, não executados) | — | |
 | Qualidade (5) | 1 | 4 (QA-01, 02, 04, 05) | — | concorrência, acessibilidade automatizada e Gemmi local pendentes |
 | Documentação (3) | 3 | — | — | |
-| **Total** | **36** | **27** | **6 ✘ + 2 ○** | |
+| **Total** | **38** | **26** | **5 ✘ + 2 ○** | |
 
 ## 8. Plano para fechar as lacunas (ordem sugerida)
 
 | Prioridade | Entrega | O que já existe | O que falta |
 |---|---|---|---|
-| 1 | **Telas de Ligas e Temperatura** (Miná 2, 3, 6) | rotas `/solid-solutions` e `/thermal`, testadas | telas, controle de temperatura ligado ao motor, vibração com amplitude real |
+| 1 | ~~Telas de Ligas e Temperatura~~ **concluída** (Miná 2, 3, 6) | abas Liga e Temperatura, testadas | deslocar os átomos pela distorção (Miná 6) e selecionar átomo da liga |
 | 2 | **Cores configuráveis por elemento** (Miná 1 / Gisele 1) | `viewer.elementColoring`, tabela `cores_elementos` | seletor de cor e persistência da preferência |
 | 3 | **Aba Tutoriais** | tabela `arquivos` e extensões permitidas | rotas de upload seguro e a aba |
 | 4 | **Barra lateral única + 3D maior** (Gisele 3) | layout com painéis recolhíveis | fundir os dois painéis em um |

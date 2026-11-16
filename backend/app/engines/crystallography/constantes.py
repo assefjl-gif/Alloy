@@ -37,6 +37,8 @@ INDICE_MAXIMO: int = 9
 
 #: Maior supercélula aceita (pior caso CFC 4×4×4 = 365 átomos).
 SUPERCELULA_MAXIMA: int = 4
+#: Maior número de solutos num pedido de liga (limite operacional do contrato R1, sem base científica).
+MAX_SOLUTOS: int = 6
 #: Limite de polígonos devolvidos numa família de planos (protege a resposta e o desenho).
 FAMILIA_MAXIMA: int = 40
 

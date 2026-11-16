@@ -1,26 +1,68 @@
 /*
- * alloy-ui — tokens centralizados (tarefa 2.9).
+ * alloy-ui — tokens centralizados (tarefa 2.9; identidade "Carvão, Areia e Azul" de 11/2026).
  * Todos os componentes usam apenas estas variáveis. Nenhuma cor literal fora deste arquivo
  * (exceto dentro do viewer, que lê estes tokens via getComputedStyle).
- * Contraste conferido em tests/unit/tokens.test.ts (texto ≥ 4,5:1 nos fundos de uso).
+ * Contraste conferido em tests/unit/i18n-tokens.test.ts (texto ≥ 4,5:1 nos fundos de uso).
+ *
+ * Papel de cada cor oficial:
+ *   Carvão #1E1E1C — estrutura: cabeçalho, painel do laboratório, faixas de título, texto sobre areia.
+ *   Areia  #D8CBB3 — fundo da área de trabalho no tema claro; títulos e texto sobre carvão.
+ *   Azul   #2F6BFF — sinal: página ativa, seleção, foco, progresso, série principal dos gráficos.
+ * Branco sobre o azul oficial dá 4,499:1, abaixo do mínimo para texto. Por isso os preenchimentos
+ * que carregam texto (botão primário) usam o azul de ação #2A63F2 (4,9:1), derivado do oficial.
+ * O azul oficial sobre a areia dá 2,81:1: indicadores azuis ficam sobre papel ou carvão, nunca
+ * direto na areia; texto azul usa --blue-700 (claro) ou --blue-300 (escuro).
  */
 :root {
-  --font-sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: Consolas, "Cascadia Mono", "SFMono-Regular", Menlo, "Courier New", monospace;
-  --fs-2xs: 11px;
-  --fs-xs: 12px;
-  --fs-sm: 13px;
-  --fs-md: 14px;
-  --fs-lg: 16px;
-  --fs-xl: 20px;
-  --fs-2xl: 23px;
-  --fs-metric: 22px;
-  --fw-regular: 400;
-  --fw-semibold: 650;
-  --fw-bold: 800;
-  --lh-tight: 1.15;
-  --lh-normal: 1.45;
+  /* Cores oficiais */
+  --brand-charcoal: #1E1E1C;
+  --brand-sand: #D8CBB3;
+  --brand-blue: #2F6BFF;
 
+  /* Escalas derivadas das oficiais (nenhuma identidade cromática nova) */
+  --charcoal-950: #161615;
+  --charcoal-900: #1E1E1C;
+  --charcoal-850: #262624;
+  --charcoal-800: #2F2F2C;
+  --charcoal-700: #3B3A35;
+  --charcoal-600: #57534A;
+  --sand-50: #FAF7F1;
+  --sand-100: #F3EDE1;
+  --sand-200: #E9E0CE;
+  --sand-300: #D8CBB3;
+  --sand-400: #C4B598;
+  --sand-500: #A9A08E;
+  --sand-600: #857A64;
+  --blue-300: #9DB8FF;
+  --blue-400: #7198FF;
+  --blue-500: #2F6BFF;
+  --blue-550: #2A63F2;
+  --blue-600: #2256DB;
+  --blue-700: #1A44C2;
+
+  /* Tipografia: uma família para a interface, outra só para terminal, código e dados técnicos */
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Cascadia Mono", "SFMono-Regular", Menlo, "Courier New", monospace;
+  --fs-2xs: 12px;
+  --fs-xs: 13px;
+  --fs-sm: 14px;
+  --fs-md: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: clamp(26px, 1.1vw + 17px, 32px);
+  --fs-metric: 20px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 500;
+  --fw-bold: 600;
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-normal: 1.5;
+  --tracking-tight: -0.011em;
+  --measure: 68ch;
+
+  /* Espaçamento (múltiplos de 4 px) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -28,10 +70,15 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
 
+  /* Curvatura: contida, de instrumento. Pílula só para estado e contagem. */
+  --radius-xs: 4px;
   --radius-sm: 6px;
-  --radius: 8px;
-  --radius-lg: 12px;
+  --radius: 10px;
+  --radius-lg: 14px;
   --radius-pill: 999px;
   --border-w: 1px;
 
@@ -51,207 +98,244 @@
   --z-dialog: 60;
   --z-toast: 80;
 
-  /* WCAG 2.2 AA exige ≥ 24 px; o projeto usa 32 px para alvos primários. */
+  /* WCAG 2.2 AA exige ≥ 24 px; controles têm 36 px (40 px em telas de toque). */
   --target-min: 32px;
   --target-touch: 44px;
+  --control-h: 36px;
+  --control-h-sm: 28px;
 
   --header-h: 56px;
   --lab-w: 340px;
-  --side-w: 330px;
+  --side-w: 340px;
+  --content-max: 1200px;
+  --gutter: clamp(16px, 2.4vw, 32px);
 }
 
+@media (pointer: coarse) {
+  :root {
+    --control-h: 40px;
+    --control-h-sm: 34px;
+  }
+}
+
+/* ============ Tema claro — "Areia": papel sobre areia, moldura em carvão ============ */
 :root,
 :root[data-theme="light"] {
   color-scheme: light;
-  --color-bg: #f5f7fb;
-  --color-surface: #ffffff;
-  --color-surface-2: #eef2f7;
-  --color-surface-sunken: #e6ebf2;
-  --color-ink: #10131a;
-  --color-ink-soft: #29313f;
-  --color-muted: #5c6676;
-  --color-line: #dbe2eb;
-  --color-line-strong: #7f8a9b; /* ≥ 3:1 sobre as superfícies (bordas de controles, WCAG 1.4.11) */
-  --color-accent: #087099;
-  --color-accent-fill: #1aa7d9;
-  --color-on-accent: #071017;
-  --color-primary: #11151c;
-  --color-on-primary: #ffffff;
-  --color-success: #0f7a55;
-  --color-success-bg: #e3f5ec;
-  --color-warning: #8a5a00;
-  --color-warning-bg: #fdf3dc;
-  --color-danger: #b42c3c;
-  --color-danger-bg: #fbe7e9;
-  --color-info: #5b42c4;
-  --color-info-bg: #ece8fb;
-  --color-overlay: rgba(10, 14, 20, 0.45);
+  --color-bg: #D8CBB3;
+  --color-surface: #F3EDE1;
+  --color-surface-2: #E9E0CE;
+  --color-surface-raised: #FAF7F1;
+  --color-surface-sunken: #CFC1A7;
+  --color-ink: #1E1E1C;
+  --color-ink-soft: #3B3A35;
+  --color-muted: #57534A;
+  --color-line: #DDD2BE;
+  --color-line-strong: #857A64; /* ≥ 3:1 sobre as superfícies (bordas de controles, WCAG 1.4.11) */
+  --color-accent: #1A44C2; /* azul para texto e ícones sobre papel e areia */
+  --color-accent-fill: #2A63F2;
+  --color-on-accent: #FFFFFF;
+  --color-primary: #2A63F2; /* ação prioritária */
+  --color-on-primary: #FFFFFF;
+  --color-primary-hover: #2256DB;
+  --color-solid: #1E1E1C; /* preenchimento neutro forte: opção marcada, passo atual */
+  --color-on-solid: #F3EDE1;
+  --color-signal: #2F6BFF; /* azul oficial: indicadores, nunca texto */
+  /* Estados: escuros o bastante para valer como texto também direto sobre a areia (≥ 4,5:1). */
+  --color-success: #1A5C40;
+  --color-success-bg: #DDE8D6;
+  --color-warning: #744A00;
+  --color-warning-bg: #F1E2BD;
+  --color-danger: #962A25;
+  --color-danger-bg: #F1D9D2;
+  --color-info: #1A44C2;
+  --color-info-bg: #DDE4F7;
+  --color-overlay: rgba(30, 30, 28, 0.56);
 
-  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px #087099;
-  --state-hover-bg: rgba(16, 19, 26, 0.05);
-  --state-selected-bg: rgba(8, 112, 153, 0.1);
-  --state-selected-line: #087099;
-  --state-loading: #087099;
-  --state-error-line: #b42c3c;
-  --state-success-line: #0f7a55;
+  --focus-color: #1A44C2;
+  --focus-ring: 0 0 0 2px #F3EDE1, 0 0 0 4px #1A44C2;
+  --state-hover-bg: rgba(30, 30, 28, 0.06);
+  --state-active-bg: rgba(30, 30, 28, 0.1);
+  --state-selected-bg: rgba(47, 107, 255, 0.1);
+  --state-selected-line: #2F6BFF;
+  --state-loading: #2F6BFF;
+  --state-error-line: #962A25;
+  --state-success-line: #1A5C40;
 
-  --shadow-1: 0 1px 2px rgba(10, 14, 20, 0.08);
-  --shadow-2: 0 18px 44px rgba(10, 14, 20, 0.18);
-  --topbar-bg: rgba(255, 255, 255, 0.92);
+  --shadow-1: 0 1px 2px rgba(30, 30, 28, 0.08);
+  --shadow-2: 0 2px 6px rgba(30, 30, 28, 0.1), 0 16px 40px rgba(30, 30, 28, 0.2);
+  --topbar-bg: #1E1E1C;
 
-  /* Painel do laboratório: escuro nos dois temas, como na matriz (consistência visual). */
-  --lab-bg: #11151c;
-  --lab-bg-2: #161c24;
-  --lab-surface: #202833;
-  --lab-surface-2: #263140;
-  --lab-line: rgba(255, 255, 255, 0.12);
-  --lab-ink: #eef5f8;
-  --lab-muted: #a9b6c6;
-  --lab-accent: #44c5f2;
-  --lab-code-bg: #131922;
-  --lab-tint: rgba(255, 255, 255, 0.035);
-  --lab-shade: rgba(0, 0, 0, 0.1);
-  --lab-hover: rgba(255, 255, 255, 0.06);
-  --term-entry: #9de4ff;
-  --term-ok: #91f2c3;
-  --term-error: #ff9cab;
-  --term-step: #f2d68a;
-  --term-warn: #f2c85b;
-  --term-info: #dce6ef;
+  /* Moldura em carvão (cabeçalho, painel do laboratório, terminal): igual nos dois temas. */
+  --lab-bg: #1E1E1C;
+  --lab-bg-2: #1E1E1C;
+  --lab-surface: #282826;
+  --lab-surface-2: #32322F;
+  --lab-line: rgba(216, 203, 179, 0.16);
+  --lab-ink: #EDE5D6;
+  --lab-muted: #A9A08E;
+  --lab-accent: #D8CBB3; /* destaque sobre carvão é areia; o azul fica para o sinal */
+  --lab-signal: #2F6BFF;
+  --lab-code-bg: #161615;
+  --lab-tint: rgba(216, 203, 179, 0.04);
+  --lab-shade: rgba(0, 0, 0, 0.18);
+  --lab-hover: rgba(216, 203, 179, 0.08);
+  --term-entry: #D8CBB3;
+  --term-ok: #8FD6AF;
+  --term-error: #FF9E91;
+  --term-step: #E5C98A;
+  --term-warn: #F2BC5E;
+  --term-info: #CFC7B8;
 
-  --tag-ccc: #f2c85b;
-  --tag-cfc: #39c38d;
-  --tag-hc: #b9a6ff;
-  --tag-cs: #c9d4e2;
-  --tag-gen: #44c5f2;
-  --tag-ink: #11151c;
+  /* Etiquetas de estrutura: escala tonal de areia (a sigla já diz qual é a estrutura). */
+  --tag-ccc: #D8CBB3;
+  --tag-cfc: #EFE6D4;
+  --tag-hc: #B9AB90;
+  --tag-cs: #9D9584;
+  --tag-gen: #A9C0FF;
+  --tag-ink: #1E1E1C;
 
-  --viewer-bg: #eef2f7;
-  --viewer-glow: #ffffff;
-  --viewer-edge: #29313f;
-  --viewer-label-stroke: rgba(255, 255, 255, 0.92);
-  --viewer-selection: #10131a;
+  --viewer-bg: #FAF7F1;
+  --viewer-glow: #FAF7F1;
+  --viewer-grid: rgba(30, 30, 28, 0.055);
+  --viewer-edge: #3B3A35;
+  --viewer-label-stroke: rgba(250, 247, 241, 0.92);
+  --viewer-selection: #1E1E1C;
   --viewer-replica-opacity: 0.55;
-  --site-vertice: #1aa7d9;
-  --site-centro: #d79319;
-  --site-face: #19a56b;
-  --site-basal: #19a56b;
-  --site-interior: #7256d9;
-  --axis-x: #ce3f4f;
-  --axis-y: #19a56b;
-  --axis-z: #1aa7d9;
-  --axis-a3: #d79319;
+  --site-vertice: #2F6BFF;
+  --site-centro: #D08A1E;
+  --site-face: #1F9D74;
+  --site-basal: #1F9D74;
+  --site-interior: #B656A0;
+  --axis-x: #C8402F;
+  --axis-y: #1F9D74;
+  --axis-z: #2F6BFF;
+  --axis-a3: #D08A1E;
 
-  --chart-bg: #ffffff;
-  --chart-grid: #edf1f6;
-  --chart-axis: #526070;
-  --chart-text: #29313f;
-  --chart-zone: rgba(25, 165, 107, 0.12);
-  --chart-limit: #b42c3c;
-  --chart-series-1: #0072B2;
-  --chart-series-2: #009E73;
-  --chart-series-3: #E69F00;
-  --chart-series-4: #CC79A7;
-  --chart-highlight: #D55E00;
+  --chart-bg: #FAF7F1;
+  --chart-grid: #E9E0CE;
+  --chart-axis: #6B6557;
+  --chart-text: #3B3A35;
+  --chart-zone: rgba(31, 157, 116, 0.12);
+  --chart-limit: #962A25;
+  --chart-series-1: #2F6BFF;
+  --chart-series-2: #178A65;
+  --chart-series-3: #C27C0E;
+  --chart-series-4: #B656A0;
+  --chart-highlight: #D4541C;
 
   /* Seis categorias de informação (2.11). Cor + ícone + rótulo textual + padrão de borda. */
-  --cat-result-accent: #087099;
-  --cat-result-bg: #ffffff;
-  --cat-param-accent: #5b42c4;
-  --cat-param-bg: #f7f5ff;
-  --cat-reference-accent: #5c6676;
-  --cat-reference-bg: #f3f5f8;
-  --cat-control-accent: #29313f;
-  --cat-control-bg: #ffffff;
-  --cat-feedback-accent: #0f7a55;
-  --cat-feedback-bg: #eaf7f1;
-  --cat-demo-accent: #8a5a00;
-  --cat-demo-bg: #fff8e6;
-  --cat-demo-stripe: rgba(138, 90, 0, 0.1);
-  --cat-note-accent: #7a3e9d;
-  --cat-note-bg: #fbf4ff;
+  --cat-result-accent: #1A44C2;
+  --cat-result-bg: #F3EDE1;
+  --cat-param-accent: #3B3A35;
+  --cat-param-bg: #FAF7F1;
+  --cat-reference-accent: #57534A;
+  --cat-reference-bg: #E9E0CE;
+  --cat-control-accent: #3B3A35;
+  --cat-control-bg: #F3EDE1;
+  --cat-feedback-accent: #1A5C40;
+  --cat-feedback-bg: #E1EBDB;
+  --cat-demo-accent: #744A00;
+  --cat-demo-bg: #F4E7C6;
+  --cat-demo-stripe: rgba(116, 74, 0, 0.1);
+  --cat-note-accent: #6B4A2B;
+  --cat-note-bg: #F6EFE0;
 }
 
+/*
+ * ============ Tema escuro — "Carvão": areia sobre carvão ============
+ * .ds-on-dark aplica o mesmo conjunto a uma região (cabeçalho, faixas de título) dentro do tema
+ * claro: os componentes ali dentro leem os tokens escuros sem regras próprias.
+ */
+.ds-on-dark,
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-bg: #0f141b;
-  --color-surface: #161d27;
-  --color-surface-2: #1b2430;
-  --color-surface-sunken: #0b1016;
-  --color-ink: #eef3f8;
-  --color-ink-soft: #c6d0dc;
-  --color-muted: #a3afbf;
-  --color-line: #263241;
-  --color-line-strong: #677890;
-  --color-accent: #44c5f2;
-  --color-accent-fill: #44c5f2;
-  --color-on-accent: #071017;
-  --color-primary: #44c5f2;
-  --color-on-primary: #071017;
-  --color-success: #39c38d;
-  --color-success-bg: #10291f;
-  --color-warning: #f2c85b;
-  --color-warning-bg: #2c2410;
-  --color-danger: #ff9cab;
-  --color-danger-bg: #331820;
-  --color-info: #b9a6ff;
-  --color-info-bg: #231d3d;
-  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-bg: #1E1E1C;
+  --color-surface: #262624;
+  --color-surface-2: #2F2F2C;
+  --color-surface-raised: #2F2F2C;
+  --color-surface-sunken: #161615;
+  --color-ink: #EDE5D6;
+  --color-ink-soft: #D8CBB3;
+  --color-muted: #A9A08E;
+  --color-line: #3B3A35;
+  --color-line-strong: #7F7869;
+  --color-accent: #9DB8FF;
+  --color-accent-fill: #2A63F2;
+  --color-on-accent: #FFFFFF;
+  --color-primary: #2A63F2;
+  --color-on-primary: #FFFFFF;
+  --color-primary-hover: #2256DB;
+  --color-solid: #D8CBB3;
+  --color-on-solid: #1E1E1C;
+  --color-signal: #2F6BFF;
+  --color-success: #7FCFA3;
+  --color-success-bg: #1F2E26;
+  --color-warning: #E8BE6A;
+  --color-warning-bg: #332A17;
+  --color-danger: #F2A097;
+  --color-danger-bg: #3A211E;
+  --color-info: #9DB8FF;
+  --color-info-bg: #1F2740;
+  --color-overlay: rgba(0, 0, 0, 0.62);
 
-  --focus-ring: 0 0 0 2px #0f141b, 0 0 0 4px #44c5f2;
-  --state-hover-bg: rgba(255, 255, 255, 0.06);
-  --state-selected-bg: rgba(68, 197, 242, 0.14);
-  --state-selected-line: #44c5f2;
-  --state-loading: #44c5f2;
-  --state-error-line: #ff9cab;
-  --state-success-line: #39c38d;
+  --focus-color: #7198FF;
+  --focus-ring: 0 0 0 2px #1E1E1C, 0 0 0 4px #7198FF;
+  --state-hover-bg: rgba(216, 203, 179, 0.08);
+  --state-active-bg: rgba(216, 203, 179, 0.14);
+  --state-selected-bg: rgba(47, 107, 255, 0.2);
+  --state-selected-line: #2F6BFF;
+  --state-loading: #7198FF;
+  --state-error-line: #F2A097;
+  --state-success-line: #7FCFA3;
 
   --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-2: 0 18px 44px rgba(0, 0, 0, 0.45);
-  --topbar-bg: rgba(17, 21, 28, 0.92);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.5);
+  --topbar-bg: #1E1E1C;
 
-  --viewer-bg: #0a0e13;
-  --viewer-glow: #1a2533;
-  --viewer-edge: #a9b6c6;
-  --viewer-label-stroke: rgba(10, 14, 19, 0.9);
-  --viewer-selection: #ffffff;
-  --site-vertice: #44c5f2;
-  --site-centro: #f2b544;
-  --site-face: #39c38d;
-  --site-basal: #39c38d;
-  --site-interior: #a08cff;
-  --axis-x: #ff7d8e;
-  --axis-y: #39c38d;
-  --axis-z: #44c5f2;
-  --axis-a3: #f2b544;
+  --viewer-bg: #161615;
+  --viewer-glow: #161615;
+  --viewer-grid: rgba(216, 203, 179, 0.05);
+  --viewer-edge: #B8AE9B;
+  --viewer-label-stroke: rgba(22, 22, 21, 0.9);
+  --viewer-selection: #FFFFFF;
+  --site-vertice: #3D75FF;
+  --site-centro: #E3A53A;
+  --site-face: #3DBB8E;
+  --site-basal: #3DBB8E;
+  --site-interior: #D07FBE;
+  --axis-x: #F0705F;
+  --axis-y: #3DBB8E;
+  --axis-z: #6F97FF;
+  --axis-a3: #E3A53A;
 
-  --chart-bg: #161d27;
-  --chart-grid: #233040;
-  --chart-axis: #a3afbf;
-  --chart-text: #dce6ef;
-  --chart-zone: rgba(57, 195, 141, 0.16);
-  --chart-limit: #ff9cab;
-  --chart-series-1: #56B4E9;
-  --chart-series-2: #39c38d;
-  --chart-series-3: #F0B23E;
-  --chart-series-4: #E39AC6;
-  --chart-highlight: #FF8A3D;
+  --chart-bg: #262624;
+  --chart-grid: #34342F;
+  --chart-axis: #A9A08E;
+  --chart-text: #D8CBB3;
+  --chart-zone: rgba(61, 187, 142, 0.16);
+  --chart-limit: #F2A097;
+  --chart-series-1: #6F97FF;
+  --chart-series-2: #3DBB8E;
+  --chart-series-3: #E3A53A;
+  --chart-series-4: #D98AC8;
+  --chart-highlight: #FF8A52;
 
-  --cat-result-accent: #44c5f2;
-  --cat-result-bg: #161d27;
-  --cat-param-accent: #b9a6ff;
-  --cat-param-bg: #1d1a2e;
-  --cat-reference-accent: #a3afbf;
-  --cat-reference-bg: #182029;
-  --cat-control-accent: #c6d0dc;
-  --cat-control-bg: #161d27;
-  --cat-feedback-accent: #39c38d;
-  --cat-feedback-bg: #10261d;
-  --cat-demo-accent: #f2c85b;
-  --cat-demo-bg: #2a2310;
-  --cat-demo-stripe: rgba(242, 200, 91, 0.1);
-  --cat-note-accent: #e3a6ff;
-  --cat-note-bg: #241a2c;
+  --cat-result-accent: #9DB8FF;
+  --cat-result-bg: #262624;
+  --cat-param-accent: #D8CBB3;
+  --cat-param-bg: #2A2A27;
+  --cat-reference-accent: #A9A08E;
+  --cat-reference-bg: #2F2F2C;
+  --cat-control-accent: #D8CBB3;
+  --cat-control-bg: #262624;
+  --cat-feedback-accent: #7FCFA3;
+  --cat-feedback-bg: #1F2E26;
+  --cat-demo-accent: #E8BE6A;
+  --cat-demo-bg: #2E2717;
+  --cat-demo-stripe: rgba(232, 190, 106, 0.1);
+  --cat-note-accent: #D9B38C;
+  --cat-note-bg: #2C2620;
 }
 
 :root[data-motion="reduce"] {

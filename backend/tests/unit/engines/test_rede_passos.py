@@ -67,7 +67,13 @@ def test_passos_do_fea_terminam_no_valor_do_motor(estrutura, fea):
 
 
 def test_passos_do_fea_hc_explicam_efeito_de_c_a():
+    # V-16: o passo a passo do HC passa a derivar o FEA pelo raio de CONTATO (parecer R1-CRI-01 §1.4),
+    # em vez da fórmula "FEA_ideal × (c/a)_ideal/(c/a)", que acima do limite de empacotamento era falsa.
     r = calcular_estrutura({"nome": "Zn"})  # c/a 1,856 > ideal 1,633
     titulos = [p["titulo"] for p in r["passos_fea"]]
-    assert "Efeito da razão c/a" in titulos
+    assert titulos[:4] == ["Menor distância entre vizinhos", "Volume ocupado pelas esferas",
+                           "Volume da célula", "Fator de empacotamento"]
+    primeiro = r["passos_fea"][0]
+    assert "R_c" in primeiro["formula"] and "mín" in primeiro["formula"]
+    assert "0,7405" in r["passos_fea"][3]["detalhe"]
     assert r["fea"] < math.pi / (3 * math.sqrt(2))

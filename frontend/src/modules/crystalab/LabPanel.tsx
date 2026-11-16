@@ -1,9 +1,11 @@
+/**
+ * Escolha do material e editor de parâmetros (antes no painel esquerdo; hoje na seção
+ * Estrutura da barra lateral — ver Sidebar.tsx).
+ */
 import { useMemo, useState } from 'react';
-import { dispatch, submitLine } from '../../commands/bus.ts';
+import { dispatch } from '../../commands/bus.ts';
 import { useI18n } from '../../i18n/index.ts';
 import { useCrystalab } from '../../stores/crystalab.ts';
-import { Terminal } from '../../features/terminal/Terminal.tsx';
-import { Disclosure } from '../../design-system/primitives/Disclosure.tsx';
 import type { StructureRequest } from '../../services/api/contracts.ts';
 import { plain } from '../../utils/text.ts';
 
@@ -95,7 +97,7 @@ export function BlockBank() {
   );
 }
 
-function BlockCount() {
+export function BlockCount() {
   const { t } = useI18n();
   const count = useBlocks().length;
   return <span className="count-pill" aria-label={t('blocks.count', { count })}>{count}</span>;
@@ -139,35 +141,3 @@ export function ParameterEditor() {
     </div>
   );
 }
-
-export function LabPanel() {
-  const { t } = useI18n();
-  const shortcuts = [
-    { label: t('shortcuts.density'), command: 'calcular densidade', tone: 'cyan' },
-    { label: t('shortcuts.plane111'), command: 'plano 1 1 1', tone: 'green' },
-    { label: t('shortcuts.direction110'), command: 'direcao 1 1 0', tone: 'amber' },
-    { label: t('shortcuts.clear'), command: 'limpar', tone: 'gray' },
-  ];
-  return (
-    <div className="lab">
-      <header className="brand-row">
-        <div>
-          <p className="brand-row__title">{t('crystalab.brand')}</p>
-          <p className="brand-row__sub">{t('crystalab.brandSub')}</p>
-        </div>
-        <span className="lab-badge">M1 · v2.0</span>
-      </header>
-      <Disclosure title={t('blocks.title')} className="lab-disclosure lab-disclosure--blocks" headingLevel={2} aside={<BlockCount />}>
-        <BlockBank />
-      </Disclosure>
-      <Disclosure title={t('terminal.title')} className="lab-disclosure" headingLevel={2}>
-        <section className="terminal-panel" aria-label={t('terminal.title')}>
-          <ParameterEditor />
-          <Terminal context="crystalab" placeholderKey="terminal.placeholder" shortcuts={shortcuts} />
-        </section>
-      </Disclosure>
-    </div>
-  );
-}
-
-export { submitLine };

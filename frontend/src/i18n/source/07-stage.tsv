@@ -1,0 +1,36 @@
+# chave	pt-BR	en	es
+bar.tools	Ferramentas	Tools	Herramientas
+bar.collapse	Recolher a barra de ferramentas	Collapse the toolbar	Contraer la barra de herramientas
+bar.wide	Barra larga	Wide bar	Barra ancha
+section.structure	Estrutura	Structure	Estructura
+section.composition	Composição	Composition	Composición
+section.selection	Seleção de átomos	Atom selection	Selección de átomos
+section.properties	Propriedades	Properties	Propiedades
+section.appearance	Aparência	Appearance	Apariencia
+section.analysis	Análise	Analysis	Análisis
+sub.summary	Resultados principais	Main results	Resultados principales
+sub.alloyResults	Resultados da liga	Alloy results	Resultados de la aleación
+sub.miller	Planos e direções (Miller)	Planes and directions (Miller)	Planos y direcciones (Miller)
+cells.drawn	Células desenhadas	Cells drawn	Celdas dibujadas
+cells.size	Número de células em cada eixo	Number of cells along each axis	Número de celdas en cada eje
+cells.lattice	Parâmetros de rede	Lattice parameters	Parámetros de red
+hud.actions	Ações da cena	Scene actions	Acciones de la escena
+hud.heaScene	Resultado do HEA: {name}	HEA result: {name}	Resultado del HEA: {name}
+hud.alloyScene	Liga na cena: {label}	Alloy in the scene: {label}	Aleación en la escena: {label}
+camera.toolbar	Controles da câmera	Camera controls	Controles de la cámara
+camera.modeLabel	As setas giram ou deslocam a cena	The arrows rotate or move the scene	Las flechas giran o desplazan la escena
+camera.mode.rotate	Girar	Rotate	Girar
+camera.mode.pan	Deslocar	Move	Desplazar
+camera.rotate.left	Girar para a esquerda	Rotate left	Girar a la izquierda
+camera.rotate.right	Girar para a direita	Rotate right	Girar a la derecha
+camera.rotate.up	Girar para cima	Rotate up	Girar hacia arriba
+camera.rotate.down	Girar para baixo	Rotate down	Girar hacia abajo
+camera.pan.left	Deslocar a cena para a esquerda	Move the scene left	Desplazar la escena a la izquierda
+camera.pan.right	Deslocar a cena para a direita	Move the scene right	Desplazar la escena a la derecha
+camera.pan.up	Deslocar a cena para cima	Move the scene up	Desplazar la escena hacia arriba
+camera.pan.down	Deslocar a cena para baixo	Move the scene down	Desplazar la escena hacia abajo
+camera.zoomIn	Aproximar	Zoom in	Acercar
+camera.zoomOut	Afastar	Zoom out	Alejar
+camera.center	Centralizar o conteúdo na cena	Center the content in the scene	Centrar el contenido en la escena
+legend.title	Legenda	Legend	Leyenda
+legend.animation	Animação didática em cena: as cores e a legenda estão no painel Animações.	Didactic animation in the scene: colors and legend are in the Animations panel.	Animación didáctica en la escena: los colores y la leyenda están en el panel Animaciones.

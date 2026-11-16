@@ -34,11 +34,17 @@ export function CategoryBox({ category, children, className = '', as: Tag = 'div
   );
 }
 
-/** Selo "DEMONSTRATIVO" (2.6): sempre visível onde houver dado de serviço ausente. */
-export function DemoSeal({ text, detail }: { text: string; detail?: string }) {
+/**
+ * Selo de origem não-preditiva (2.6), em DUAS variantes de significado diferente (decisão D-R2-2):
+ *  - `demo`         → o número é FICTÍCIO, não há dado nem motor por tras dele;
+ *  - `illustrative` → representação sem pretensão preditiva FEITA SOBRE DADO REAL do motor.
+ * As duas se distinguem por texto, ícone, cor e estilo de borda — nunca só por cor.
+ * O `data-testid` continua `demo-seal` nas duas (testes do legado), e `data-seal` diz qual é.
+ */
+export function DemoSeal({ text, detail, variant = 'demo' }: { text: string; detail?: string; variant?: 'demo' | 'illustrative' }) {
   return (
-    <span className="ds-demo-seal" data-testid="demo-seal" title={detail}>
-      <Icon name="demo" size={13} />
+    <span className={`ds-demo-seal ds-demo-seal--${variant}`} data-testid="demo-seal" data-seal={variant} title={detail}>
+      <Icon name={variant === 'illustrative' ? 'eye' : 'demo'} size={13} />
       {text}
       {detail ? <span className="sr-only">{` — ${detail}`}</span> : null}
     </span>

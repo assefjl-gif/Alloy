@@ -6,7 +6,7 @@ import { useI18n } from '../../i18n/index.ts';
 import { useCrystalab } from '../../stores/crystalab.ts';
 import { useViewer } from '../../stores/viewer.ts';
 import { useHea } from '../hea/store.ts';
-import { demoPolicy } from '../../stores/capabilities.ts';
+import { demoPolicy, serverDemoAllowed } from '../../stores/capabilities.ts';
 import { deepEqual } from '../../utils/freeze.ts';
 import { CategoryBox, CategoryTag, DemoSeal } from '../../design-system/primitives/Category.tsx';
 import { Button, ToggleButton } from '../../design-system/primitives/Button.tsx';
@@ -55,7 +55,8 @@ export function ProvenancePanel() {
   }
   const r = transfer.result;
   const identical = original ? deepEqual(original, r) : null;
-  const demoAllowed = demoPolicy() === 'on' || transfer.origin === 'demo';
+  // a demonstração só é oferecida se o SERVIDOR a permitir (em produção ela é proibida)
+  const demoAllowed = (serverDemoAllowed('hea') !== false && demoPolicy() === 'on') || transfer.origin === 'demo';
   const legend = elementLegendFor(r.comp_percent);
   return (
     <div className="prov" data-testid="provenance">
@@ -107,7 +108,7 @@ export function ProvenancePanel() {
         {!demoAllowed ? <p className="ds-field__hint">{t('prov.randomOnlyDemo')}</p> : null}
         {coloring?.enabled ? (
           <>
-            <DemoSeal text={t('common.illustrative')} detail={t('bridge.coloringDetail')} />
+            <DemoSeal variant="illustrative" text={t('common.illustrative')} detail={t('bridge.coloringDetail')} />
             <p className="ds-field__hint" data-testid="coloring-seed">{t('prov.seed', { seed: coloring.seed })}</p>
             <Button size="sm" onClick={() => useViewer.getState().set({ elementColoring: { enabled: true, seed: coloring.seed + 1 } })}>{t('prov.newSeed')}</Button>
             <ul className="element-legend" aria-label={t('prov.legend')}>

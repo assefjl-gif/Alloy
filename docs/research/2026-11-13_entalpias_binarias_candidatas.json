@@ -1,0 +1,131 @@
+{
+  "arquivo": "2026-11-13_entalpias_binarias_candidatas.json",
+  "natureza": "CANDIDATO. NAO e seed, NAO e dado validado, NAO deve ser carregado pelo motor. A decisao de uso e do Supervisor.",
+  "estado": "aguardando_validacao",
+  "gerado_em": "2026-11-13",
+  "agente": "academic-research-auditor (Agente 15)",
+  "tarefa": "R1-BIB-01 Parte B (pendencia Q-01: entalpias binarias de mistura para DH_mix e Omega)",
+  "fonte_primaria": {
+    "autores": "Takeuchi, Akira; Inoue, Akihisa",
+    "afiliacao": "Institute for Materials Research, Tohoku University",
+    "titulo": "Classification of Bulk Metallic Glasses by Atomic Size Difference, Heat of Mixing and Period of Constituent Elements and Its Application to Characterization of the Main Alloying Element",
+    "periodico": "Materials Transactions",
+    "volume": 46,
+    "numero": 12,
+    "paginas": "2817-2829",
+    "ano": 2005,
+    "doi": "10.2320/matertrans.46.2817",
+    "editor": "The Japan Institute of Metals and Materials (J-STAGE)",
+    "url_consultada": "https://www.jstage.jst.go.jp/article/matertrans/46/12/46_12_2817/_article",
+    "lido_em": "2026-11-13",
+    "estado_verificacao": "metadados_confirmados_na_pagina_do_editor",
+    "divergencia_em_relacao_ao_cartao_de_tarefa": "nenhuma; titulo, volume, numero, paginas e ano coincidem",
+    "datas_editoriais": "recebido 2005-06-16; aceito 2005-08-08; disponivel no J-STAGE 2006-01-14",
+    "acesso": "JOURNAL FREE ACCESS (acesso livre declarado pelo J-STAGE); PDF de 684 KB disponivel",
+    "condicao_de_uso_declarada_pelo_editor": "Apenas a linha de copyright '(c) 2005 The Japan Institute of Metals and Materials'. A pagina NAO declara licenca Creative Commons nem termos de reuso. Leitura livre nao autoriza, por si, redistribuir a tabela; reuso de tabela deve ser confirmado com o editor.",
+    "revisao_por_pares": "sim (artigo de periodico, nao preprint)",
+    "retratacao_ou_correcao": "nenhuma indicada na pagina do editor em 2026-11-13"
+  },
+  "metodo_de_extracao": {
+    "tentativa_1": "Download do PDF oficial do J-STAGE (https://www.jstage.jst.go.jp/article/matertrans/46/12/46_12_2817/_pdf). Resultado: BLOQUEADO. O PDF nao tem camada de texto extraivel pela ferramenta disponivel; os fluxos de pagina estao comprimidos (FlateDecode) e a pagina 1 e um bitmap CCITT (digitalizacao). Exigiria OCR.",
+    "tentativa_2": "Renderizacao local das paginas do PDF. Resultado: BLOQUEADO. O ambiente nao tem poppler/pdftoppm instalado e este agente nao dispoe de ferramenta de shell para rodar OCR ou extrator de PDF.",
+    "tentativa_3": "Busca de versao HTML do artigo no J-STAGE (_html/-char/en). Resultado: HTTP 404; o artigo nao tem texto integral em HTML.",
+    "tentativa_4": "Busca de reproducoes identificaveis da tabela em artigos de acesso aberto com tabela em HTML. Resultado: PARCIAL. Uma unica reproducao legivel foi encontrada (ver fonte_secundaria_1), cobrindo somente 6 elementos.",
+    "tentativa_5": "Busca de segunda fonte independente com tabela legivel cobrindo Mn, Cu, Ti, Mo, W, Ag, Au, Pb, Mg, Zn. Resultado: NAO ENCONTRADA. As tabelas localizadas estao em imagem, em PDF sem camada de texto, ou cobrem outros elementos (C, Mo, Nb, Re, Ta, W).",
+    "regra_aplicada": "Nenhum valor foi preenchido de memoria, por estimativa ou por calculo proprio do modelo de Miedema. Somente valores efetivamente lidos em conteudo obtido foram registrados."
+  },
+  "fonte_secundaria_1": {
+    "autores": "Kim, Min Jung; Kang, Gyeol Chan; Hong, Sung Hwan; Park, Hae Jin; Mun, Sang Chul; Song, Gian; Kim, Ki Buem",
+    "titulo": "Understanding microstructure and mechanical properties of (AlTa0.76)xCoCrFeNi2.1 eutectic high entropy alloys via thermo-physical parameters",
+    "periodico": "Journal of Materials Science & Technology",
+    "volume": 57,
+    "paginas": "131-137",
+    "ano": 2020,
+    "doi": "10.1016/j.jmst.2020.03.045",
+    "url_consultada_tabela": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html",
+    "url_consultada_referencias": "https://www.jmst.org/EN/Y2020/V57/I0/131",
+    "lido_em": "2026-11-13",
+    "forma_de_leitura": "tabela HTML (Table 6) convertida em texto",
+    "origem_declarada_dos_valores": "A Table 6 atribui os dados as referencias [32] e [33] do artigo. Lidas na lista de referencias: [32] B. Chanda, J. Das, J. Alloys Compd. 798 (2019) 167-173; [33] A. Takeuchi, A. Inoue, Mater. Trans. 46 (2005) 2817-2829.",
+    "ressalva_critica": "A atribuicao e CONJUNTA a duas referencias. Nao e possivel afirmar, a partir desta tabela, que cada valor individual provem de Takeuchi & Inoue (2005) e nao de Chanda & Das (2019). Por isso a confianca de todos os valores abaixo e BAIXA.",
+    "integridade": "Somente o triangulo superior da matriz estava preenchido no texto extraido; as celulas vazias NAO foram preenchidas por simetria presumida (a matriz e simetrica por definicao fisica, mas a leitura so cobriu o triangulo superior, o que ja basta para os pares)."
+  },
+  "unidade": "kJ/mol",
+  "convencao": "DH_ij e a entalpia de mistura do par equiatomico A50B50 pelo modelo de Miedema, conforme usada em DH_mix = soma_{i<j} 4*DH_ij*xi*xj.",
+  "pares": [
+    {"a": "Al", "b": "Ta", "valor_kj_mol": -19, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "Ta nao esta entre os elementos pedidos; registrado por completude da leitura"},
+    {"a": "Al", "b": "Co", "valor_kj_mol": -19, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Al", "b": "Cr", "valor_kj_mol": -10, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Al", "b": "Fe", "valor_kj_mol": -11, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Al", "b": "Ni", "valor_kj_mol": -22, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Ta", "b": "Co", "valor_kj_mol": -24, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "fora do conjunto pedido"},
+    {"a": "Ta", "b": "Cr", "valor_kj_mol": -7, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "fora do conjunto pedido"},
+    {"a": "Ta", "b": "Fe", "valor_kj_mol": -16, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "fora do conjunto pedido"},
+    {"a": "Ta", "b": "Ni", "valor_kj_mol": -29, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "fora do conjunto pedido"},
+    {"a": "Co", "b": "Cr", "valor_kj_mol": -4, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Co", "b": "Fe", "valor_kj_mol": -1, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Co", "b": "Ni", "valor_kj_mol": 0, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "observacao": "valor zero LIDO na tabela; nao e zero presumido"},
+    {"a": "Cr", "b": "Fe", "valor_kj_mol": -1, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"},
+    {"a": "Cr", "b": "Ni", "valor_kj_mol": -5, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa", "alerta": "Varias fontes secundarias de HEA citam Cr-Ni = -7 kJ/mol. Divergencia NAO resolvida: nao foi possivel conferir no artigo primario. Este par exige confirmacao antes de qualquer uso."},
+    {"a": "Fe", "b": "Ni", "valor_kj_mol": -2, "fonte": "secundaria", "fonte_id": "fonte_secundaria_1", "url": "https://www.jmst.org/article/2020/1005-0302/1005-0302-57-0-131/T6.html", "lido_em": "2026-11-13", "forma_de_leitura": "tabela HTML", "confianca": "baixa"}
+  ],
+  "resumo_cobertura": {
+    "elementos_pedidos": ["Fe", "Cr", "Mo", "W", "Cu", "Al", "Ni", "Ag", "Au", "Pb", "Mg", "Ti", "Zn", "Co", "Mn"],
+    "n_pares_necessarios_15_elementos": 105,
+    "n_pares_lidos_da_fonte_primaria": 0,
+    "n_pares_lidos_de_fonte_secundaria_dentro_do_conjunto_pedido": 10,
+    "n_pares_lidos_fora_do_conjunto_pedido": 5,
+    "n_pares_nao_obtidos_dentro_do_conjunto_pedido": 95,
+    "cobertura_suficiente_para_calcular_DH_mix": {
+      "CoCrFeNi": true,
+      "AlCoCrFeNi": true,
+      "CoCrCuFeNi": false,
+      "CoCrFeMnNi": false,
+      "ressalva": "Mesmo onde a cobertura e completa, os valores sao de fonte secundaria com atribuicao conjunta e confianca baixa: NAO habilitam o calculo em producao. Nenhum calculo foi feito por este agente."
+    }
+  },
+  "pares_nao_obtidos": [
+    {"pares": "todos os pares envolvendo Mo, W, Cu, Ag, Au, Pb, Mg, Ti, Zn, Mn", "motivo": "ausentes nas tabelas legiveis localizadas; nao foi possivel ler a tabela do artigo primario (PDF sem camada de texto, sem OCR disponivel)", "estado": "nao_obtido", "nao_confundir_com": "ausente na fonte - NAO foi possivel verificar se constam ou nao em Takeuchi & Inoue (2005)"},
+    {"pares": "Cu-Cr, Cu-Fe, Cu-Ni, Ti-Ni e demais pares de Cu e Ti", "motivo": "mencoes qualitativas de sinal (positivo) encontradas em literatura secundaria, SEM valor numerico legivel; nada registrado", "estado": "nao_obtido"},
+    {"pares": "Fe-Mo, Fe-W, Cr-Mo, Cr-W, Mo-W e demais pares refratarios", "motivo": "nao localizados em fonte legivel", "estado": "nao_obtido"}
+  ],
+  "casos_referencia_ligas": [
+    {
+      "liga": "(AlTa0.76)xCoCrFeNi2.1 (x = 0,1 / 1,0 / 1,5)",
+      "valores_lidos": [{"x": 0.1, "dH_mix_kj_mol": -6.02}, {"x": 1.0, "dH_mix_kj_mol": -17.61}, {"x": 1.5, "dH_mix_kj_mol": -20.67}],
+      "fonte": "Kim et al., J. Mater. Sci. Technol. 57 (2020) 131-137, DOI 10.1016/j.jmst.2020.03.045, Table 5",
+      "url": "https://www.jmst.org/EN/Y2020/V57/I0/131",
+      "lido_em": "2026-11-13",
+      "forma_de_leitura": "texto/resumo de tabela obtido por busca; a propria Table 5 NAO foi aberta diretamente",
+      "confianca": "baixa",
+      "utilidade": "NAO serve como caso de teste do motor: a composicao nao e nenhuma das quatro ligas do catalogo e contem Ta, que nao esta cadastrado.",
+      "estado": "nao_utilizavel_como_caso_de_teste"
+    },
+    {
+      "liga": "CoCrFeNi, AlCoCrFeNi, CoCrCuFeNi, CoCrFeMnNi",
+      "estado": "NAO OBTIDO",
+      "motivo": "Nao foi localizado, em fonte legivel e com referencia completa, nenhum valor publicado de DH_mix para estas quatro ligas. Valores circulam amplamente na literatura de HEA, mas nenhum foi lido nesta sessao; registrar de memoria violaria a regra de integridade."
+    }
+  ],
+  "verificacao_cruzada": {
+    "realizada": false,
+    "motivo": "Nenhuma segunda fonte independente com tabela legivel foi localizada. A meta de conferir 5 a 10 pares contra fonte independente NAO foi cumprida.",
+    "divergencia_detectada_sem_resolucao": ["Cr-Ni: -5 kJ/mol (lido) vs. -7 kJ/mol (valor citado em literatura secundaria, nao lido em tabela nesta sessao)"]
+  },
+  "bloqueio": {
+    "resumo": "A tabela de entalpias binarias de Takeuchi & Inoue (2005) NAO pode ser lida nesta sessao. O artigo e de acesso livre, mas o PDF do J-STAGE e digitalizado/sem camada de texto extraivel, e este agente nao tem ferramenta de shell, OCR nem renderizador de PDF (poppler ausente).",
+    "o_que_o_usuario_precisa_fornecer": [
+      "Opcao 1 (preferida): o PDF oficial do artigo (DOI 10.2320/matertrans.46.2817) processado por OCR, ou o texto/planilha da tabela de heat of mixing transcrito a partir dele, indicando numero da tabela e pagina.",
+      "Opcao 2: instalar poppler-utils (pdftoppm/pdftotext) no ambiente e autorizar um agente com ferramenta de shell a extrair o texto do PDF ja baixado.",
+      "Opcao 3: autorizar o uso da compilacao primaria alternativa de Miedema - F. R. de Boer, R. Boom, W. C. M. Mattens, A. R. Miedema, A. K. Niessen, 'Cohesion in Metals: Transition Metal Alloys' (North-Holland, 1988) - fornecendo o capitulo/tabela em formato legivel. Esta compilacao NAO foi verificada nesta sessao.",
+      "Opcao 4: autorizar implementacao do modelo de Miedema a partir de parametros elementares publicados; isto NAO e leitura de fonte, e calculo proprio, e exigiria parecer do especialista em HEA e validacao contra valores publicados."
+    ],
+    "recomendacao": "Manter DH_mix e Omega indisponiveis no motor. Nao carregar este arquivo como seed. Nao usar os 15 valores acima em producao."
+  },
+  "limiares_investigados_item_6": {
+    "delta_6_6_pct": {"atribuicao_no_codigo": "Yang & Zhang (2012)", "achado": "Metadados de Yang & Zhang (2012) confirmados (DOI 10.1016/j.matchemphys.2011.11.021, Mater. Chem. Phys. 132(2-3) 233-238). O VALOR 6,6 % nao foi lido no artigo: sem acesso ao texto integral. Literatura secundaria atribui delta <= 6,6 % tanto a Zhang et al. (2008) quanto a Yang & Zhang (2012).", "estado": "fonte_plausivel_conteudo_nao_lido"},
+    "omega_1_1": {"atribuicao_no_codigo": "Yang & Zhang (2012)", "achado": "Atribuicao plausivel (o parametro Omega e introduzido nesse artigo, conforme titulo 'Prediction of high-entropy stabilized solid-solution in multi-component alloys'), mas o limiar 1,1 NAO foi lido na fonte.", "estado": "fonte_plausivel_conteudo_nao_lido"},
+    "vec_8_0_e_6_87": {"atribuicao_no_codigo": "Guo et al. (2011)", "achado": "Metadados confirmados (J. Appl. Phys. 109, 103505, DOI 10.1063/1.3587228). Resumo confirma que o artigo trata de VEC e estabilidade fcc/bcc, mas NAO traz numeros. Multiplas fontes secundarias atribuem a Guo et al. os limites VEC >= 8,0 (fcc), 6,87 <= VEC < 8,0 (fcc+bcc) e VEC < 6,87 (bcc), coerentes com o codigo.", "estado": "fonte_plausivel_conteudo_nao_lido_atribuicao_corroborada_por_secundarias"},
+    "zona_do_grafico_menos15_a_5_kj_mol": {"atribuicao_usual": "Zhang et al., Adv. Eng. Mater. 10(6) (2008) 534-538, DOI 10.1002/adem.200700240 (metadados confirmados; autores Y. Zhang, Y. J. Zhou, J. P. Lin, G. L. Chen, P. K. Liaw)", "achado": "DIVERGENCIA ENTRE FONTES SECUNDARIAS sobre a faixa de entalpia: foram encontradas as versoes -15 <= dH <= 5 kJ/mol, -15 <= dH <= -5 kJ/mol e -10 <= dH <= 5 kJ/mol. Nenhuma foi conferida no artigo original (Wiley retornou HTTP 403; sem resumo no Crossref/Semantic Scholar).", "dominio_de_validade": "nao verificado; a literatura secundaria descreve a regra como empirica, ajustada a ligas multicomponentes metalicas no estado bruto de fusao", "estado": "divergente_entre_fontes_nao_resolvido", "recomendacao": "Nao exibir a zona do grafico como regra com fonte enquanto a faixa nao for lida em Zhang et al. (2008). Manter marca de nao verificada."}
+  }
+}

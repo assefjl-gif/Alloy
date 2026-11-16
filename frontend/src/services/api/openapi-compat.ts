@@ -6,7 +6,7 @@
  * teste de contrato do backend com respostas reais.
  */
 import type { components } from './openapi.gen.ts';
-import type { MillerRequest, StructureRequest } from './contracts.ts';
+import type { AlloyRequest, MillerRequest, StructureRequest } from './contracts.ts';
 
 type Schemas = components['schemas'];
 type Cabe<A, B> = A extends B ? true : false;
@@ -16,4 +16,5 @@ export type ContratoRequisicoes = [
   Exige<Cabe<StructureRequest, Schemas['StructureRequest']>>,
   Exige<Cabe<StructureRequest, Schemas['ExportRequest']>>,
   Exige<Cabe<MillerRequest, Schemas['MillerRequest']>>,
+  Exige<Cabe<AlloyRequest, Schemas['SolidSolutionRequest']>>,
 ];

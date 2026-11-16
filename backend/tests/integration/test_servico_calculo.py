@@ -7,14 +7,13 @@ from datetime import datetime, timezone
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from app.core.config import Settings
 from app.engines.procedencia import DadoNaoValidado, PoliticaDados, sha256_parametros
 from app.models import ExecucaoCalculo, Usuario
 from app.repositories.materiais_sql import RepositorioSQL
 from app.repositories.seed_sql import carregar_seeds
-from app.services.calculo import ServicoCalculo
+from app.services.calculo import AVISO_HISTORICO_NAO_GRAVADO, ServicoCalculo
 
 
 @pytest.fixture
@@ -95,13 +94,20 @@ def test_configuracao_de_producao_e_estrita(monkeypatch):
     assert config.docs_ativas is False
 
 
-def test_id_de_usuario_inexistente_falha_na_chave_estrangeira(sessao):
+def test_id_de_usuario_inexistente_nao_derruba_o_calculo(sessao):
+    """Antes de R2-BE-03 a violação de FK subia como IntegrityError (HTTP 500).
+
+    Agora o histórico é efeito secundário: a gravação falha, o resultado científico é devolvido e o
+    usuário recebe o aviso. Detalhe do cenário e do log em
+    ``tests/integration/test_historico_r2_be_03.py``.
+    """
     carregar_seeds(sessao)
     repo = RepositorioSQL(sessao)
     servico = ServicoCalculo(repo, repo, PoliticaDados(True), sessao)
-    with pytest.raises(IntegrityError):
-        servico.celula({"nome": "Cu"}, uuid.uuid4())
-    sessao.rollback()
+    resultado = servico.celula({"nome": "Cu"}, uuid.uuid4())
+    assert resultado["densidade"] > 0
+    assert AVISO_HISTORICO_NAO_GRAVADO in resultado["procedencia"]["avisos"]
+    assert sessao.scalars(select(ExecucaoCalculo)).first() is None
 
 
 def test_hea_pelo_banco_igual_ao_json_e_registrado(servico_e_usuario):

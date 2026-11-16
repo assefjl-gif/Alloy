@@ -17,6 +17,7 @@ from __future__ import annotations
 from typing import Annotated, Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, field_validator, model_validator
+from pydantic_core import PydanticCustomError
 
 from app.engines.crystallography.constantes import (
     FAIXA_A_NM,
@@ -24,6 +25,7 @@ from app.engines.crystallography.constantes import (
     FAIXA_PESO,
     FAIXA_RAIO_NM,
     INDICE_MAXIMO,
+    MAX_SOLUTOS,
     SUPERCELULA_MAXIMA,
 )
 from app.engines.crystallography.miller import normalizar_tipo
@@ -46,6 +48,11 @@ def _tipo_miller(valor: Any) -> Any:
 
 
 NumeroBR = Annotated[Optional[float], BeforeValidator(_aceitar_virgula)]
+
+#: Base em que os percentuais da rota de ligas foram informados (mesmo vocabulário do HEA).
+BaseComposicaoLiga = Literal["atomica", "massica"]
+#: Papel de um componente da liga.
+PapelComponente = Literal["solvente", "substitucional", "intersticial"]
 
 T = TypeVar("T")
 
@@ -200,6 +207,15 @@ class AtomGroup(BaseModel):
     contribuicao: float
 
 
+class GrupoVizinhos(BaseModel):
+    """Grupo de primeiros vizinhos (contrato R1 §3). No HC fora do c/a ideal os 12 vizinhos são 6 + 6."""
+
+    grupo: Literal["basal", "entre_planos"]
+    n: int
+    d_rel: float = Field(..., description="Distância em unidades de a")
+    d_nm: Optional[float] = Field(None, description="Distância em nm; nulo quando a_nm é nulo")
+
+
 class StructureResponse(BaseModel):
     rotulo: str
     simbolo: Optional[str]
@@ -212,8 +228,20 @@ class StructureResponse(BaseModel):
     contato: str
     n: int
     nc: int
+    nc_txt: str = Field("", description='"6 + 6" no HC com c/a ≠ ideal; senão o próprio nc como texto')
     fea: float
     vazios: float
+    fea_modelo: Literal["esferas_rigidas"] = Field(
+        "esferas_rigidas", description="O FEA é propriedade do modelo de esferas rígidas, não empacotamento medido")
+    raio_contato_rel: Optional[float] = Field(
+        None, description="R_c/a = ½·mín(1, d_entre_planos/a); só HC (nulo nas cúbicas)")
+    contato_tipo: Optional[Literal["basal", "entre_planos", "ambos"]] = Field(
+        None, description="Onde ocorre o primeiro contato das esferas; só HC")
+    c_a_ideal: Optional[float] = Field(None, description="√(8/3); só HC")
+    c_a_natureza: Optional[Literal["ideal", "tabelado", "derivado_de_a_c_medidos", "informado"]] = Field(
+        None, description="Origem do c/a usado; só HC")
+    vizinhos: Optional[List[GrupoVizinhos]] = Field(
+        None, description="Grupos de primeiros vizinhos; só HC em R1 (nulo nas cúbicas)")
     a_em_R: float
     c_a: Optional[float]
     raio_nm: Optional[float]
@@ -326,6 +354,8 @@ class DensityResponse(BaseModel):
     a_fonte: Optional[str] = None
     passos: List[DensityStep]
     avisos: List[str] = Field(default_factory=list)
+    procedencia: Optional[Procedencia] = Field(
+        None, description="Rastreabilidade do cálculo: dados do repositório usados, estado e fonte (QA-R2-02)")
 
 
 class ExportResponse(BaseModel):
@@ -367,19 +397,61 @@ class SupercellResponse(BaseModel):
 
 
 # --------------------------------------------------------------------------- solução sólida (v1.4)
+class SolutoPedido(BaseModel):
+    """Um soluto do pedido multicomponente (contrato R1 §2.1)."""
+
+    model_config = ConfigDict(extra="forbid")
+    elemento: str = Field(..., max_length=32, description="Símbolo, nome ou alias resolvido pelo repositório")
+    x: NumeroBR = Field(..., ge=0, le=100, allow_inf_nan=False,
+                        description="% do soluto na base de 'base_composicao'")
+    modo: Literal["auto", "substitucional", "intersticial"] = Field(
+        "auto", description="'auto': intersticial se o símbolo é C, H ou N; senão substitucional")
+    sitio: Literal["auto", "octaedrico", "tetraedrico", "cubico"] = Field(
+        "auto", description="Só para intersticial. 'auto': octaédrico em CCC, CFC e HC; cúbico em CS")
+
+
 class SolidSolutionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", json_schema_extra={"examples": [
         {"base": "Cu", "soluto": "Ni", "x": 30},
         {"base": "Fe", "soluto": "C", "x": 2, "distorcer": True},
         {"base": "Cu", "soluto": "Au", "x": 25, "arranjo": "ordenado", "n": 2},
+        {"base": "Fe", "n": 3, "semente": 7,
+         "solutos": [{"elemento": "Cr", "x": 12}, {"elemento": "Ni", "x": 8},
+                     {"elemento": "C", "x": 1, "modo": "intersticial", "sitio": "octaedrico"}]},
     ]})
     base: str = Field(..., max_length=32, description="Metal solvente")
-    soluto: str = Field(..., max_length=32, description="Metal (substitucional) ou C, N, H (intersticial)")
-    x: NumeroBR = Field(10.0, ge=0, le=100, allow_inf_nan=False, description="% atômica do soluto")
+    soluto: Optional[str] = Field(
+        None, max_length=32,
+        description="Forma binária legada: metal (substitucional) ou C, N, H (intersticial). "
+                    "Informe exatamente um entre 'soluto' e 'solutos'")
+    solutos: Optional[List[SolutoPedido]] = Field(
+        None, min_length=1, max_length=MAX_SOLUTOS,
+        description="Lista de 1 a 6 solutos, substitucionais e/ou intersticiais; "
+                    "a ordem do pedido não altera o resultado")
+    x: NumeroBR = Field(None, ge=0, le=100, allow_inf_nan=False,
+                        description="% do soluto legado (padrão 10); não use junto com 'solutos'")
+    base_composicao: BaseComposicaoLiga = Field(
+        "atomica", description="Base em que todos os x do pedido foram informados")
+    estrutura_matriz: Optional[Literal["CS", "CCC", "CFC", "HC"]] = Field(
+        None, description="Estrutura imposta à matriz; padrão: a do solvente no repositório")
     n: int = Field(3, ge=1, le=SUPERCELULA_MAXIMA)
     arranjo: Literal["aleatorio", "ordenado"] = "aleatorio"
     distorcer: bool = False
-    semente: int = Field(1, ge=0, le=2**31 - 1)
+    semente: int = Field(1, ge=0, le=2**31 - 1, description="0 é semente válida e respeitada")
+
+    @field_validator("x")
+    @classmethod
+    def _x_so_na_forma_legada(cls, valor: Optional[float], info: Any) -> Optional[float]:
+        if info.data.get("solutos") is not None:
+            raise PydanticCustomError("x_com_solutos",
+                                      "Com 'solutos', informe o x de cada item, não o x do pedido.")
+        return valor
+
+    @model_validator(mode="after")
+    def _soluto_ou_solutos(self) -> SolidSolutionRequest:
+        if (self.soluto in (None, "")) == (self.solutos is None):
+            raise PydanticCustomError("soluto_ou_solutos", "Informe 'soluto' ou 'solutos', não os dois.")
+        return self
 
 
 class RegraSolubilidade(BaseModel):
@@ -390,19 +462,47 @@ class RegraSolubilidade(BaseModel):
     indisponivel: Optional[str] = None
 
 
+class SitioAtomo(BaseModel):
+    """Sítio cristalográfico do átomo. ``wyckoff`` é nulo até a conferência bibliográfica (decisão D-e)."""
+
+    nome: str
+    wyckoff: Optional[str] = None
+    nc: int
+    nc_txt: str = ""
+
+
 class AtomoLiga(BaseModel):
-    pos: List[float]
-    frac: List[float]
+    pos: List[float] = Field(..., description="Cartesiana, em unidades de a da liga")
+    frac: List[float] = Field(..., description="Fracionária na célula replicada (0 a n)")
     tipo: Literal["rede", "intersticial"]
     elemento: str
-    raio_rel: float
+    raio_rel: float = Field(..., description="Raio de DESENHO (raio tabelado / a), não raio do átomo em solução")
+    id: str = Field("", description="Identificador estável: depende só de estrutura, n e sítio")
+    imagem: bool = Field(False, description="true = imagem periódica de fronteira; não entra em contagem")
+    imagem_de: Optional[str] = Field(None, description="id do átomo único de origem")
+    pos_nm: List[float] = Field(default_factory=list, description="pos × a_nm (herda a natureza de a_nm)")
+    celula: List[int] = Field(default_factory=list,
+                              description="(i, j, k); numa imagem a coordenada transladada vale n")
+    frac_celula: List[float] = Field(default_factory=list, description="Fracionária em [0, 1)")
+    ocupacao: Literal["solvente", "substitucional", "intersticial"] = "solvente"
+    sitio: Optional[SitioAtomo] = None
+    fase: str = Field("matriz", description="id da fase em 'fases'")
+    pos_ideal: Optional[List[float]] = Field(None, description="Posição de rede antes da distorção ilustrativa")
 
 
 class SitioIntersticial(BaseModel):
     nome: str
-    fator: float
-    raio_nm: float
-    nc: int
+    fator: float = Field(..., description="r_livre/R")
+    raio_nm: float = Field(..., description="Raio livre do sítio em nm")
+    nc: int = Field(..., description="Total de vizinhos (inteiro)")
+    elemento: str = Field("", description="Intersticial que usa o sítio")
+    tipo: Literal["octaedrico", "tetraedrico", "cubico"] = "octaedrico"
+    nc_txt: str = Field("", description='Ex.: "2 + 4" no octaédrico da CCC')
+    sitios_por_celula: int = 0
+    wyckoff: Optional[str] = None
+    escolha: Literal["padrao", "informado"] = "padrao"
+    justificativa: str = ""
+    padrao_verificado: bool = Field(False, description="false enquanto o sítio padrão não tiver parecer com fonte")
 
 
 class Distorcao(BaseModel):
@@ -410,10 +510,109 @@ class Distorcao(BaseModel):
     descricao: str
 
 
+class ComponenteSolicitado(BaseModel):
+    elemento: str
+    papel: PapelComponente
+    at_pct: float = Field(..., description="% atômica sobre todos os átomos (intersticiais incluídos)")
+    massa_pct: float
+
+
+class ComponenteRepresentado(ComponenteSolicitado):
+    n_atomos: int = Field(..., description="Átomos ÚNICOS (pode ser 0)")
+
+
+class ComposicaoLiga(BaseModel):
+    """Composição SOLICITADA × REPRESENTADA na supercélula periódica (parecer R1-CRI-01 §3.2)."""
+
+    base_entrada: BaseComposicaoLiga = "atomica"
+    solicitada: List[ComponenteSolicitado] = Field(default_factory=list)
+    representada: List[ComponenteRepresentado] = Field(default_factory=list)
+    n_sitios_rede: int = Field(0, description="Z·n³")
+    n_intersticiais: int = 0
+    n_atomos_unicos: int = 0
+    n_desenhados: int = Field(0, description="Esferas em 'atomos' (únicos + imagens)")
+    resolucao_at_pct: float = Field(0.0, description="100 / n_atomos_unicos")
+    desvio_maximo_at_pct: float = 0.0
+
+
+class Realizacao(BaseModel):
+    tipo: Literal["estatistica", "ordenada_prototipo", "sem_soluto"] = "estatistica"
+    semente: int = 1
+    algoritmo: str = "mt19937-chaves-v1"
+    n: int = 1
+    aviso: str = ""
+
+
+class ModeloLiga(BaseModel):
+    tipo_solucao: Literal["substitucional", "intersticial", "mista"] = "substitucional"
+    ordenacao: Literal["desordenada", "ordenada_prototipo"] = "desordenada"
+    fases: Literal["monofasica_imposta"] = "monofasica_imposta"
+    geometria: Literal["idealizada"] = "idealizada"
+    parametro_rede: Literal["estimativa_vegard_sobre_raios"] = "estimativa_vegard_sobre_raios"
+    parametro_rede_solvente: Literal["derivado_de_R", "medido"] = "derivado_de_R"
+    c_a: Optional[Literal["ideal", "tabelado", "derivado_de_a_c_medidos", "informado"]] = None
+    hipoteses: List[str] = Field(default_factory=list)
+
+
+class Prototipo(BaseModel):
+    strukturbericht: str
+    prototipo: str
+    composicao_ideal_at_pct: Dict[str, float] = Field(default_factory=dict)
+    rede_ordenada: str
+    observacao: Optional[str] = None
+
+
+class FaseLiga(BaseModel):
+    id: str = "matriz"
+    nome: str = ""
+    estrutura: Literal["CS", "CCC", "CFC", "HC"] = "CFC"
+    origem: Literal["imposta_pelo_modelo"] = "imposta_pelo_modelo"
+    composicao: List[ComponenteRepresentado] = Field(default_factory=list)
+    fracao: Optional[float] = Field(None, description="Sempre nulo em R1: o motor não calcula equilíbrio de fases")
+    fracao_motivo: str = ""
+
+
+class VerificacaoLimite(BaseModel):
+    verificado: bool = False
+    valor: Optional[float] = None
+    motivo: str = ""
+
+
+class VerificacaoFases(BaseModel):
+    previstas: Optional[List[str]] = None
+    motivo: str = ""
+
+
+class Verificacoes(BaseModel):
+    """O que o motor NÃO verifica (parecer R1-CRI-01 §3.7)."""
+
+    limite_solubilidade: VerificacaoLimite = Field(default_factory=VerificacaoLimite)
+    fases_secundarias: VerificacaoFases = Field(default_factory=VerificacaoFases)
+
+
+class RegrasSoluto(BaseModel):
+    soluto: str
+    modo: Literal["substitucional", "intersticial"]
+    regras: List[RegraSolubilidade] = Field(default_factory=list)
+    conclusao: str = ""
+
+
+class ElementoPuro(BaseModel):
+    """Propriedade TABELADA do elemento puro — não é propriedade do átomo na liga (parecer §3.5)."""
+
+    simbolo: str
+    papel: PapelComponente
+    raio_nm: Optional[float] = None
+    massa_g_mol: Optional[float] = None
+    estrutura_elemento_puro: Optional[str] = None
+    estado_do_dado: str = ""
+    fonte: Optional[str] = None
+
+
 class SolidSolutionResponse(BaseModel):
     rotulo: str
     base: str
-    soluto: str
+    soluto: str = Field(..., description="Com vários solutos: o primeiro da ordem canônica (campo legado)")
     intersticial: bool
     estrutura: str
     estrutura_nome: str
@@ -429,8 +628,8 @@ class SolidSolutionResponse(BaseModel):
     raio_relativo: float
     densidade: float
     densidade_base: float
-    n_soluto: int
-    n_solvente: int
+    n_soluto: int = Field(..., description="Átomos ÚNICOS de soluto (soma de todos os solutos)")
+    n_solvente: int = Field(..., description="Átomos ÚNICOS de solvente")
     fase_ordenada: Optional[str] = None
     nota_arranjo: Optional[str] = None
     sitio: Optional[SitioIntersticial] = None
@@ -440,6 +639,19 @@ class SolidSolutionResponse(BaseModel):
     distorcao: Optional[Distorcao] = None
     atomos: List[AtomoLiga]
     arestas: List[List[List[float]]]
+    composicao: ComposicaoLiga = Field(default_factory=ComposicaoLiga)
+    realizacao: Realizacao = Field(default_factory=Realizacao)
+    modelo: ModeloLiga = Field(default_factory=ModeloLiga)
+    prototipo: Optional[Prototipo] = None
+    fases: List[FaseLiga] = Field(default_factory=list)
+    verificacoes: Verificacoes = Field(default_factory=Verificacoes)
+    regras_por_soluto: List[RegrasSoluto] = Field(default_factory=list)
+    conclusao_global: Optional[str] = Field(
+        None, description="Nulo com mais de um soluto: as regras são binárias (motivo em 'indisponiveis')")
+    sitios: List[SitioIntersticial] = Field(default_factory=list)
+    elementos: List[ElementoPuro] = Field(default_factory=list)
+    convencoes: List[str] = Field(default_factory=list)
+    indisponiveis: Dict[str, str] = Field(default_factory=dict)
     procedencia: Procedencia
 
 
@@ -463,6 +675,30 @@ class ThermalRequest(BaseModel):
 class NotaTermica(BaseModel):
     tipo: Literal["info", "alerta"]
     texto: str
+    fonte: Optional[str] = Field(
+        None, description="Fonte da afirmação ou o motivo de ela não ter fonte verificada (achado T-7). "
+                          "Nulo quando a nota é uma consequência direta do modelo já citado em procedência.")
+
+
+class FaixaAlotropica(BaseModel):
+    """Faixa de estabilidade cadastrada, só quando o dado passa pela política (achados T-8 e T-9)."""
+
+    simbolo: str
+    fase: str
+    estrutura: str
+    de_c: float
+    ate_c: float
+    estado: Literal["rascunho", "aguardando_validacao", "validado", "rejeitado", "arquivado"]
+    fonte: Optional[str] = None
+    pressao: Literal["nao_modelada"] = Field(
+        "nao_modelada", description="A pressão não entra no modelo; as faixas são de pressão ambiente")
+
+
+class DominioCurva(BaseModel):
+    de_c: float = Field(..., description="Limite inferior do domínio do modelo (100 K)")
+    ate_c: float = Field(..., description="Limite superior: a T_f do modelo")
+    limite_inferior: str
+    limite_superior: str
 
 
 class ThermalResponse(BaseModel):
@@ -471,54 +707,156 @@ class ThermalResponse(BaseModel):
     fusao_c: float
     homologa: float
     alfa_1e6_k: float
-    fator: float
+    fator: Optional[float] = Field(None, description="Nulo acima da T_f do modelo (achado T-1)")
     a_ref_nm: float
-    a_nm: float
-    delta_a_pct: float
+    a_nm: Optional[float] = Field(None, description="Nulo acima da T_f do modelo (achado T-1)")
+    delta_a_pct: Optional[float] = Field(None, description="Nulo acima da T_f do modelo (achado T-1)")
     densidade: Optional[float] = None
-    delta_v_pct: float
-    u_nm: float
+    delta_v_pct: Optional[float] = Field(None, description="Nulo acima da T_f do modelo (achado T-1)")
+    u_nm: float = Field(..., description="Deslocamento quadrático médio estimado (ver u_rotulo), não amplitude")
     razao_lindemann: float
     amplitude_rel: float
     lindemann: float
-    fundido: bool
-    curva: List[List[float]] = Field(..., description="[T (°C), u/d] de 0 K até T_f + 200 °C")
+    fundido: bool = Field(
+        ..., description="Estado líquido afirmado: só para elemento puro acima da T_f tabelada. Em mistura é "
+                         "sempre falso, porque a T_f da regra das misturas não é solidus nem liquidus "
+                         "(achado T-6); use acima_da_tf_nominal para a comparação numérica.")
+    curva: List[List[float]] = Field(
+        ..., description="[T (°C), u/d] no domínio do modelo: de 100 K até a T_f do modelo (achados T-1 e T-4). "
+                         "Vazia quando não há domínio válido, com o motivo em indisponiveis.curva")
     notas: List[NotaTermica]
+    acima_da_tf_nominal: bool = Field(..., description="T ≥ T_f do modelo (nominal, se houver mistura)")
+    tf_natureza: Literal["tabelada_do_elemento", "nominal_regra_das_misturas"]
+    tf_rotulo: str
+    mistura_base: Optional[Literal["atomica"]] = Field(
+        None, description="Base da regra das misturas de α e T_f; nulo quando não há mistura")
+    dilatacao_isotropica: bool = Field(..., description="Hipótese imposta pelo modelo (achado T-2)")
+    u_natureza: Literal["deslocamento_quadratico_medio_estimado"]
+    u_rotulo: str
+    lindemann_natureza: Literal["limite_inferior_da_faixa_0_10_a_0_15"]
+    curva_dominio: DominioCurva
+    alotropia: Optional[FaixaAlotropica] = Field(
+        None, description="Nulo com motivo em indisponiveis.alotropia quando o dado não passa pela política")
+    hipoteses: List[str] = Field(..., description="Hipóteses do modelo declaradas no resultado")
+    indisponiveis: Dict[str, str] = Field(
+        default_factory=dict, description="campo → motivo, para cada campo nulo por falta de dado ou de modelo")
+    extrapolacao: Dict[str, str] = Field(
+        default_factory=dict, description="campo → motivo, para valor devolvido fora do domínio do modelo")
     procedencia: Procedencia
 
 
-# --------------------------------------------------------------------------- HEA (Fase 6)
+# --------------------------------------------------------------------------- HEA (Fase 6; contrato R1)
+BaseComposicao = Literal["atomica", "massica"]
+#: Número JSON estrito: inteiro ou real. Texto ("1") e booleano (true) são recusados (contrato R1, V-2).
+QuantidadeHea = Annotated[float, Field(strict=True)]
+
+
 class HeaRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", json_schema_extra={"examples": [
         {"nome": "CoCrFeNi", "composicao": {"Co": 1, "Cr": 1, "Fe": 1, "Ni": 1}},
         {"nome": "Al0.5CoCrCuFeNi", "composicao": {"Al": 0.5, "Co": 1, "Cr": 1, "Cu": 1, "Fe": 1, "Ni": 1}},
+        {"nome": "CoCrFeNi (massa)", "composicao": {"Co": 26.1, "Cr": 23.1, "Fe": 24.8, "Ni": 26.0},
+         "base": "massica"},
     ]})
     nome: Optional[str] = Field(None, max_length=80)
-    composicao: Dict[str, float] = Field(..., min_length=2, max_length=12,
-                                          description="{elemento: quantidade}; normalizada para frações molares")
+    composicao: Dict[str, QuantidadeHea] = Field(
+        ..., max_length=12,
+        description="{símbolo: quantidade}; 1 a 12 CHAVES (inclui as de quantidade 0). Quantidades são partes "
+                    "proporcionais (soma livre), 0 ≤ q ≤ 1e6, conferidas no domínio. Pelo menos 2 elementos com "
+                    "quantidade maior que zero. Símbolo de 1 ou 2 letras, normalizado (fe → Fe) e conferido "
+                    "contra a tabela periódica.")
+    base: BaseComposicao = Field("atomica", description="Base em que as quantidades foram informadas")
+
+    @field_validator("composicao")
+    @classmethod
+    def _pelo_menos_dois(cls, valor: Dict[str, float]) -> Dict[str, float]:
+        # Conta o que não é zero: valores inválidos (negativo, NaN) seguem para o domínio, que devolve o erro próprio.
+        if sum(1 for q in valor.values() if q != 0) < 2:
+            raise PydanticCustomError("elementos_insuficientes",
+                                      "Uma liga precisa de pelo menos 2 elementos com quantidade maior que zero.")
+        return valor
+
+
+class DadoFaltante(BaseModel):
+    simbolo: str = Field(..., description='Elemento ("Mn") ou par ("Co-Mn")')
+    codigo: Literal["raio_atomico", "temperatura_fusao", "vec", "massa_atomica", "entalpia_mistura_par"]
+    situacao: Literal["ausente", "nao_validado"]
+
+
+class PontoCurvaT(BaseModel):
+    T: float = Field(..., description="K")
+    menos_TdS: float = Field(..., description="−T·ΔS_mix (analítico), kJ/mol")
+    dG: Optional[float] = Field(None, description="ΔH_mix − T·ΔS_mix, kJ/mol; nulo quando ΔH_mix é nulo")
+
+
+class CriterioDef(BaseModel):
+    codigo: str
+    grandeza: str = Field(..., description="Nome do campo da resposta: delta, omega, VEC, dS_R")
+    operador: Literal["<=", ">=", "<", ">"]
+    limiar: float
+    unidade: str
+    natureza: Literal["empirico", "definicao"]
+    fonte: str
+    verificada: bool = Field(..., description="Fonte conferida pelo auditor bibliográfico (falso em R1)")
+
+
+class CriterioAvaliado(CriterioDef):
+    valor: Optional[float] = None
+    atende: Optional[bool] = Field(None, description="Nulo quando o valor é nulo ou o critério não se aplica")
+    aplicavel: bool
+    proximo_do_limiar: bool
+    motivo: Optional[str] = None
+
+
+class Triagem(BaseModel):
+    estado: Literal["favoravel", "desfavoravel", "inconclusiva"]
+    texto: str
 
 
 class HeaResponse(BaseModel):
     nome: str
-    veredito: str
+    veredito: str = Field(..., description="Repete triagem.texto (compatibilidade); o estado é triagem.estado")
     fase: str
-    estrutura_sugerida: Optional[Literal["CS", "CCC", "CFC", "HC"]] = None
+    estrutura_sugerida: Optional[Literal["CS", "CCC", "CFC", "HC"]] = Field(
+        None, description="Sempre presente; nulo quando não há sugestão única (motivo em indisponiveis)")
     ductilidade: Optional[str] = None
     dureza: Optional[str] = None
     dureza_indice: Optional[float] = None
     dS: float = Field(..., description="ΔS_mix ideal, J/(mol·K)")
-    dH: Optional[float] = Field(None, description="ΔH_mix, kJ/mol — indisponível até Q-01")
+    dH: Optional[float] = Field(None, description="ΔH_mix, kJ/mol — só com todos os pares na matriz de entalpias")
     delta: Optional[float] = Field(None, description="δ, %")
     omega: Optional[float] = None
     VEC: Optional[float] = None
     Tm: Optional[float] = Field(None, description="T_m pela regra das misturas, K")
-    comp_percent: Dict[str, float]
-    fracoes: Dict[str, float]
+    comp_percent: Dict[str, float] = Field(..., description="% ATÔMICA, 4 casas; símbolos na forma canônica")
+    fracoes: Dict[str, float] = Field(..., description="Fração atômica, sem arredondar")
     interpretacao: List[str]
     fragilidade: Optional[str] = None
-    gibbs: List[Dict[str, float]]
-    indisponiveis: Dict[str, str] = Field(..., description="grandeza → motivo de não ter sido calculada")
+    gibbs: List[Dict[str, float]] = Field(
+        ..., description="OBSOLETO: [{T (K), G (J/mol)}]. Use curva_T (kJ/mol).",
+        json_schema_extra={"deprecated": True})
+    indisponiveis: Dict[str, str] = Field(..., description="campo → motivo de não ter sido calculado")
     procedencia: Procedencia
+    # --- contrato R1 (seção 1.2) ---
+    base_entrada: BaseComposicao
+    soma_informada: float = Field(..., description="Soma das quantidades recebidas (> 0), na unidade da entrada")
+    fracoes_massa: Optional[Dict[str, float]] = Field(None, description="Fração mássica, sem arredondar")
+    comp_massa_pct: Optional[Dict[str, float]] = Field(None, description="% em massa, 4 casas")
+    massa_molar_media: Optional[float] = Field(None, description="M̄ = Σ xᵢMᵢ, g/mol")
+    dS_R: float = Field(..., description="ΔS_mix/R, adimensional")
+    classe_entropia: Literal["baixa", "media", "alta"]
+    raio_medio_nm: Optional[float] = Field(None, description="r̄ = Σ xᵢrᵢ, nm")
+    pares_faltantes: List[str] = Field(..., description='Pares "A-B" sem entalpia de mistura utilizável')
+    dados_faltantes: List[DadoFaltante]
+    curva_T: List[PontoCurvaT] = Field(..., description="De 300 K a T_sup_k, passo 50 K")
+    T_sup_k: float = Field(..., description="Limite superior da curva, K")
+    dG_Tm: Optional[float] = Field(None, description="ΔG_mix do modelo em T_m, kJ/mol")
+    T_cruzamento_k: Optional[float] = Field(None, description="T* = 1000·ΔH_mix/ΔS_mix, K; só com ΔH_mix > 0")
+    energia_formacao: None = Field(None, description="Sempre nulo: o sistema não calcula energia de formação")
+    criterios: List[CriterioAvaliado]
+    triagem: Triagem
+    vec_aplicavel: bool = Field(..., description="Critério de VEC dentro do domínio (regra conservadora, sem fonte)")
+    classes: Dict[str, str] = Field(..., description="Natureza de cada grandeza (valores de procedencia.classe)")
 
 
 class HeaAlloy(BaseModel):
@@ -533,6 +871,46 @@ class HeaElement(BaseModel):
     raio_nm: float
     tem_fusao: bool
     tem_vec: bool
+    tem_massa: bool = Field(..., description="Há massa utilizável no repositório de materiais neste ambiente")
+
+
+class ElementoAceito(BaseModel):
+    """Símbolo aceito na entrada e o que este ambiente consegue usar dele. Sem valores de propriedade."""
+
+    simbolo: str
+    nome: str
+    numero_atomico: int
+    categoria: str
+    tem_raio: bool
+    tem_fusao: bool
+    tem_vec: bool
+    tem_massa: bool
+
+
+class HeaEntalpias(BaseModel):
+    disponivel: bool
+    n_pares: int = Field(..., ge=0)
+    fonte: Optional[str] = None
+    estado: Optional[str] = None
+
+
+class GuiaEntropia(BaseModel):
+    n: int
+    dS: float = Field(..., description="R·ln n, J/(mol·K)")
+    dS_R: float = Field(..., description="ln n")
+
+
+class HeaDefinicao(BaseModel):
+    codigo: str
+    nome: str
+    simbolo: str
+    unidade: str
+    referencia: str
+    condicoes: str
+    significado: str
+    nao_e: str
+    natureza: str
+    disponivel: bool = Field(..., description="O sistema calcula esta grandeza?")
 
 
 class HeaReference(BaseModel):
@@ -548,9 +926,18 @@ class HeaReference(BaseModel):
 class HeaBootstrap(BaseModel):
     elements: Dict[str, HeaElement]
     alloys: Dict[str, HeaAlloy]
-    reference: HeaReference
+    reference: HeaReference = Field(
+        ..., description="OBSOLETO: limiares dos critérios (não é liga de referência). Use criterios.",
+        json_schema_extra={"deprecated": True})
     samples: List[HeaResponse]
     versao_motor: str
+    # --- contrato R1 (seção 1.5) ---
+    elementos_aceitos: List[ElementoAceito]
+    criterios: List[CriterioDef]
+    entalpias: HeaEntalpias
+    guias_entropia: List[GuiaEntropia]
+    definicoes: List[HeaDefinicao]
+    avisos_fixos: List[str]
 
 
 # --------------------------------------------------------------------------- conta (Fase 8)

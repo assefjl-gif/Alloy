@@ -7,8 +7,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#11151c",
-  "theme_color": "#11151c",
+  "background_color": "#1E1E1C",
+  "theme_color": "#1E1E1C",
   "categories": ["education", "science"],
   "icons": [
     { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },

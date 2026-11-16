@@ -78,7 +78,7 @@ export default function NotebookModule() {
       lab={editor}
       center={
         <main id="main-content" tabIndex={-1} className="module-main">
-          <header className="module-head">
+          <header className="module-head ds-on-dark">
             <h1>{t('notebook.title')}</h1>
             <div className="ds-row">
               <Select hideLabel label={t('notebook.filter')} value={filter} onChange={(e) => setFilter(e.target.value as NoteKind | 'all')} options={[{ value: 'all', label: t('notebook.all') }, ...KINDS.map((k) => ({ value: k, label: labels[k] }))]} />

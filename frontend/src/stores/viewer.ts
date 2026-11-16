@@ -26,6 +26,11 @@ export interface ViewerState {
   /** incrementa quando a câmera é definida por código (URL, reset) para o viewer aplicar */
   cameraRevision: number;
   selection: AtomRef | null;
+  /**
+   * Seleção na cena de LIGA (T-24): `id` estável do átomo, como o motor o devolve. É separada de
+   * `selection` porque a liga não é a célula do motor replicada — não há `AtomRef` equivalente.
+   */
+  alloySelection: string | null;
   tool: { kind: 'distance' | 'angle'; picks: AtomRef[] } | null;
   animation: { name: AnimationName; variant: string; step: number; playing: boolean } | null;
   /** toque: cena destravada aceita arrastar com um dedo */
@@ -45,6 +50,7 @@ export const useViewer = create<ViewerState>()((set) => ({
   camera: null,
   cameraRevision: 0,
   selection: null,
+  alloySelection: null,
   tool: null,
   animation: null,
   sceneUnlocked: false,

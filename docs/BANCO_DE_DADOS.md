@@ -219,6 +219,23 @@ Propriedades do catálogo usadas: `peso_atomico_padrao` (adimensional, CIAAW), `
 
 **motores**: `codigo` (`crystallography`, `thermodynamics`, `hea`), `versao`, `descricao`, `classe_padrao`, `ativo`. PK (`codigo`, `versao`).
 
+A linha do motor é **pré-requisito** de qualquer gravação em `execucoes_calculo` (FK composta
+`fk_execucoes_calculo_motor`). Quando a versão de um motor muda, o banco já carregado não tem a linha nova; por isso
+o registro é garantido em dois lugares, pelas MESMAS funções de `backend/app/repositories/motores.py`
+(`motores_do_catalogo`, `garantir_motor`):
+
+* `python -m app.cli seed` (via `repositories/seed_sql.py`), idempotente;
+* o caminho de gravação do histórico em requisição (`repositories/execucoes.py`), com get-or-create idempotente
+  em SAVEPOINT — uma corrida entre duas requisições com a mesma versão não quebra (R2-BE-03, defeito F-1).
+
+Gravar o histórico é **efeito secundário** do cálculo: ele vai em SAVEPOINT próprio e, se falhar, o resultado
+científico ainda é devolvido (com aviso em `procedencia.avisos` e registro em log), sem derrubar a transação da
+requisição.
+
+**Chaves estrangeiras em SQLite:** o SQLite só as impõe com `PRAGMA foreign_keys=ON`, por conexão. A aplicação
+liga o PRAGMA em `services/provedor.py::criar_motor_banco` (`ativar_chaves_estrangeiras`); em PostgreSQL não é
+necessário. Sem isso, referências inválidas entravam no banco de desenvolvimento em silêncio (achado F-2).
+
 **execucoes_calculo**
 
 | Coluna | Tipo | Nulo | Regra |

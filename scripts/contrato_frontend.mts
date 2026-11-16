@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 const base = process.argv[2] ?? 'http://127.0.0.1:8130';
 const frontend = process.argv[3] ?? 'frontend';
 const contratos = await import(pathToFileURL(resolve(frontend, 'src/services/api/contracts.ts')).href);
-const { StructureResult, MillerResult, MetalTable, StructureTable, ExportFile, HeaResult, HeaBootstrap } = contratos;
+const { StructureResult, MillerResult, MetalTable, StructureTable, ExportFile, HeaResult, HeaBootstrap, AlloyResult, ThermalResult } = contratos;
 
 type Schema = { safeParse: (v: unknown) => { success: boolean; error?: { issues: unknown[] } } };
 type Caso = { nome: string; metodo: 'GET' | 'POST'; rota: string; corpo?: unknown; schema: Schema };
@@ -34,7 +34,22 @@ const pares: Array<[string, string | null, string, 'GET' | 'POST', Schema, unkno
   ['HEA análise', null, '/api/v1/hea/analyses', 'POST', HeaResult, [
     { nome: 'AlCoCrFeNi', composicao: { Al: 1, Co: 1, Cr: 1, Fe: 1, Ni: 1 } },
     { composicao: { Cr: 1, Mo: 1, W: 1 } },
-    { composicao: { Fe: 1, Xx: 1 } },
+    // R1 (V-1): 'Xx' deixou de ser aceito (400 elemento_desconhecido). Mn é elemento real sem dados de HEA:
+    // continua 200 com cálculo parcial.
+    { composicao: { Fe: 1, Mn: 1 } },
+  ]],
+  // Ligas e temperatura (T-13): só rotas canônicas.
+  ['Liga', null, '/api/v1/crystallography/solid-solutions', 'POST', AlloyResult, [
+    { base: 'Cu', soluto: 'Ni', x: 30, n: 2 },
+    { base: 'Cu', soluto: 'Au', x: 25, n: 2, arranjo: 'ordenado' },
+    { base: 'Fe', soluto: 'C', x: 2, n: 2, distorcer: true },
+    { base: 'Mg', soluto: 'Zn', x: 10, n: 2 },
+  ]],
+  ['Temperatura', null, '/api/v1/thermodynamics/thermal', 'POST', ThermalResult, [
+    { material: 'Fe', temperatura_c: 600 },
+    { material: 'Mg', temperatura_c: 20 },
+    { material: 'Fe', temperatura_c: 2500 },
+    { liga: { base: 'Cu', soluto: 'Ni', x: 30 }, temperatura_c: 500 },
   ]],
 ];
 

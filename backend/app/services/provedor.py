@@ -10,7 +10,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from typing import Iterator, Optional
 
-from sqlalchemy import Engine, create_engine, text
+from sqlalchemy import Engine, create_engine, event, text
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings
@@ -28,7 +28,27 @@ from .erros import CapacidadeIndisponivel
 def criar_motor_banco(settings: Settings) -> Optional[Engine]:
     if not settings.database_url:
         return None
-    return create_engine(settings.database_url, pool_pre_ping=True)
+    motor = create_engine(settings.database_url, pool_pre_ping=True)
+    ativar_chaves_estrangeiras(motor)
+    return motor
+
+
+def ativar_chaves_estrangeiras(motor: Engine) -> None:
+    """SQLite só impõe chaves estrangeiras com ``PRAGMA foreign_keys=ON``, e por conexão (R2-BE-03, F-2).
+
+    Sem isto, em desenvolvimento uma referência inválida entra no banco e o defeito só aparece em
+    PostgreSQL (que impõe sempre). O PRAGMA não existe nos outros dialetos, por isso o filtro.
+    """
+    if motor.dialect.name != "sqlite":
+        return
+
+    @event.listens_for(motor, "connect")
+    def _pragma(conexao_dbapi, _registro):   # pragma: no cover - callback do pool
+        cursor = conexao_dbapi.cursor()
+        try:
+            cursor.execute("PRAGMA foreign_keys=ON")
+        finally:
+            cursor.close()
 
 
 @contextmanager

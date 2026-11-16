@@ -2,7 +2,7 @@
  * Fluxo B — Plano de Miller: parâmetros e representação consistentes do início ao fim
  * (formulário ≡ terminal ≡ cena), desfazer/refazer coerente e estado compartilhável por link.
  */
-import { test, expect, openCrystalab, terminal, viewerReady } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, viewerReady, reveal } from './fixtures.ts';
 
 type Item = { kind: string; label: string; data: Record<string, unknown> };
 const overlays = (page: import('playwright/test').Page) => page.evaluate(() => {
@@ -15,6 +15,7 @@ const overlays = (page: import('playwright/test').Page) => page.evaluate(() => {
 test('B1 · formulário e terminal produzem o mesmo plano, com os dados do motor', async ({ app: page }) => {
   await openCrystalab(page);
   await viewerReady(page);
+  await reveal(page, 'analysis.miller');
   await page.locator('#millerInput').fill('1 1 0');
   await page.locator('#millerForm').getByRole('button', { name: 'Desenhar' }).click();
   await expect(page.locator('#overlayList')).toContainText('(1 1 0)');
@@ -25,7 +26,7 @@ test('B1 · formulário e terminal produzem o mesmo plano, com os dados do motor
   const log = page.getByTestId('terminal-log');
   await expect(log).toContainText('> plano 1 1 0');
   await expect(log).toContainText('via formulário');
-  await expect(page.getByTestId('overlay-manager').or(page.locator('#overlayList'))).toBeVisible();
+  await expect(page.locator('#overlayList')).toBeVisible();
 });
 
 test('B2 · desfazer/refazer percorrem a cena de forma coerente', async ({ app: page }) => {

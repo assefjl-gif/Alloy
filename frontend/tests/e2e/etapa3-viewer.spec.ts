@@ -3,7 +3,7 @@
  * mostra dados válidos; réplicas não alteram contagens; cena parada não consome GPU;
  * recursos liberados ao sair; métricas registradas (perf-metrics.spec.ts).
  */
-import { test, expect, openCrystalab, terminal, viewerReady } from './fixtures.ts';
+import { test, expect, openCrystalab, terminal, viewerReady, reveal } from './fixtures.ts';
 import type { Page } from 'playwright/test';
 
 type V = { atoms: () => Array<{ key: string; replica: boolean; tipo: string }>; stats: { renders: number }; camera: () => unknown; screenPosition: (k: string) => { x: number; y: number } | null };
@@ -16,11 +16,27 @@ for (const [nome, code] of [['Po', 'CS'], ['Fe', 'CCC'], ['Cu', 'CFC'], ['Mg', '
     await openCrystalab(page);
     await viewerReady(page);
     await terminal(page, `usar ${nome}`);
+    // os cartões vivem na seção recolhível "Propriedades": revelá-la deixa o teste independente
+    // do estado da barra (que é persistido), sem enfraquecer nenhuma asserção
+    await reveal(page, 'properties.summary');
+    await expect(page.getByTestId('metric-structure')).toBeAttached();
     await expect(page.getByTestId('metric-structure')).toContainText(code);
     await expect.poll(() => page.evaluate(() => (window as unknown as { __alloy: { viewer: V } }).__alloy.viewer.atoms().length)).toBe(r.atomos.length);
     const drawn = await page.evaluate(() => (window as unknown as { __alloy: { viewer: V } }).__alloy.viewer.atoms().map((a) => a.tipo).sort());
     expect(drawn).toEqual((r.atomos as Array<{ tipo: string }>).map((a) => a.tipo).sort());
     await expect(page.getByTestId('metric-n')).toContainText(String(r.n));
+    // R2-FE-01: campos novos do FEA. Em HC a interface diz QUAL raio de contato entrou no FEA
+    // (os valores comparados são os do próprio motor); nas cúbicas o painel não se aplica.
+    if (code === 'HC') {
+      const panel = page.getByTestId('contact-panel');
+      await expect(panel).toContainText('esferas rígidas');
+      await expect(panel).toContainText(String(r.raio_contato_rel).slice(0, 7).replace('.', ','));
+      await expect(panel).toContainText('entre planos');
+      await expect(page.getByTestId('neighbour-groups')).toContainText(`${r.vizinhos[0].n} vizinhos`);
+      await expect(page.getByTestId('metric-nc')).toContainText(r.nc_txt);
+    } else {
+      await expect(page.getByTestId('neighbour-groups')).toHaveCount(0);
+    }
   });
 }
 
@@ -31,7 +47,7 @@ test('3.7/3.8 · seleção por clique mostra posição e contribuição do motor
   const center = (fe.atomos as Array<{ tipo: string }>).findIndex((a) => a.tipo === 'centro');
   const pos = await page.evaluate((k) => (window as unknown as { __alloy: { viewer: V } }).__alloy.viewer.screenPosition(k), `${center}@0,0,0`);
   await page.mouse.click(pos!.x, pos!.y);
-  await page.getByRole('tab', { name: 'Átomo' }).click();
+  await reveal(page, 'selection');
   const card = page.getByTestId('atom-inspector');
   await expect(card).toContainText(`Átomo ${center + 1}`);
   await expect(card).toContainText('centro do corpo');
@@ -107,7 +123,7 @@ test('3.13 · medição por clique: distância com unidade, mantida na lista; me
   expect(points.length).toBeGreaterThan(1);
   for (const p of points.slice(0, 2)) { await page.mouse.click(p.x, p.y); await page.waitForTimeout(150); }
   await expect(page.getByTestId('terminal-log')).toContainText(/Distância .* nm entre os átomos/);
-  await page.getByRole('tab', { name: 'Medir' }).click();
+  await reveal(page, 'analysis.measure');
   await expect(page.getByTestId('measure-panel')).toContainText('nm');
   await terminal(page, 'medir distancia 1 1');
   await expect(page.getByTestId('terminal-log')).toContainText('Escolha átomos diferentes');

@@ -1,81 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { dispatch, describeError, tr } from '../../commands/bus.ts';
 import { useI18n } from '../../i18n/index.ts';
-import { Workbench } from '../../design-system/layout/AppShell.tsx';
-import { Button, IconButton } from '../../design-system/primitives/Button.tsx';
-import { Menu } from '../../design-system/primitives/Menu.tsx';
-import { Tabs, TabPanel } from '../../design-system/primitives/Tabs.tsx';
+import { StageLayout } from '../../design-system/layout/StageLayout.tsx';
 import { CategoryBox } from '../../design-system/primitives/Category.tsx';
 import { Spinner } from '../../design-system/primitives/misc.tsx';
 import { useCrystalab } from '../../stores/crystalab.ts';
-import { useHistory } from '../../stores/history.ts';
 import { useCapabilities, useServiceMode } from '../../stores/capabilities.ts';
 import { useOverlays } from '../../stores/overlays.ts';
 import { useViewer } from '../../stores/viewer.ts';
+import { useBarOpen, useCrystalUi, useNarrowViewport } from '../../stores/crystalUi.ts';
 import { log } from '../../stores/terminal.ts';
 import { toast } from '../../stores/toast.ts';
-import { getRoute, navigate, replaceQuery, useRoute } from '../../app/router.ts';
+import { getRoute, replaceQuery, useRoute } from '../../app/router.ts';
 import { applyStructure, loadStructure } from '../../commands/handlers.ts';
-import { captureSceneNote } from '../notebook/captureNote.ts';
 import { persistTransfer as persistTransferId, restoreTransfer } from '../hea/transferUrl.ts';
-import { exportAvailability } from '../../features/export/exporters.ts';
 import { captureSceneState, decodeScene, encodeScene } from '../../features/url/sceneUrl.ts';
 import { restoreScene } from '../../features/url/restore.ts';
-import { deleteWorkspace, exportWorkspacesJson, importWorkspacesJson, listWorkspaces, type Workspace } from '../../features/workspace/workspaces.ts';
-import { downloadText } from '../../features/export/download.ts';
-import { LabPanel } from './LabPanel.tsx';
-import { AtomCount, ComparisonTable, DensityPanel, Interpretation, MetricsGrid, StatusBand } from './Results.tsx';
-import { ViewerPanel } from './ViewerPanel.tsx';
-import { AnimationsPanel, AtomInspector, GuidedMode, MeasurementsPanel, OverlayManager } from './SidePanels.tsx';
-import { HeaTransferBanner, ProvenancePanel } from './ProvenancePanel.tsx';
-import type { ExportFormat } from '../../commands/types.ts';
-
-const EXPORT_ICONS: Record<ExportFormat, 'file' | 'camera' | 'print' | 'download'> = { cif: 'file', xyz: 'file', png: 'camera', pdf: 'print', json: 'download' };
-
-function Topbar({ onToggleSide, sideOpen }: { onToggleSide: () => void; sideOpen: boolean }) {
-  const { t, locale } = useI18n();
-  const r = useCrystalab((s) => s.structure);
-  const status = useCrystalab((s) => s.status);
-  const past = useHistory((s) => s.past.length);
-  const future = useHistory((s) => s.future.length);
-  useCapabilities((s) => s.crystalab);
-  const exports = exportAvailability();
-  return (
-    <header className="topbar">
-      <div className="topbar__title">
-        <h1 id="resultTitle">{r?.rotulo ?? t('crystalab.unitCell')}</h1>
-        <p id="resultSubtitle">{r && r.generica && r.raio_nm === null ? t('crystalab.subtitleGeneric') : t('crystalab.subtitle')}</p>
-      </div>
-      <div className="topbar-actions">
-        <IconButton icon="undo" label={t('history.undo')} disabled={!past} onClick={() => void dispatch({ type: 'history.undo' }, 'form')} data-testid="undo" />
-        <IconButton icon="redo" label={t('history.redo')} disabled={!future} onClick={() => void dispatch({ type: 'history.redo' }, 'form')} data-testid="redo" />
-        <IconButton icon="share" label={t('share.button')} disabled={!r} onClick={() => void dispatch({ type: 'share' }, 'form')} data-testid="share" />
-        <IconButton icon="notebook" label={t('notebook.captureScene')} disabled={!r} data-testid="capture-note" onClick={async () => {
-          const note = await captureSceneNote(r ? `${r.rotulo} — ${t('notebook.sceneTitle')}` : '', locale);
-          if (note) toast({ tone: 'success', title: t('notebook.captured'), action: { label: t('nav.notebook'), run: () => navigate('diario') } });
-        }} />
-        <Menu
-          label={t('export.menu')}
-          icon="download"
-          align="end"
-          buttonProps={{ size: 'md', 'aria-label': t('export.menu') } as never}
-          items={exports.map((e) => ({
-            id: e.format,
-            label: t(`export.format.${e.format}`),
-            icon: EXPORT_ICONS[e.format],
-            disabled: !e.enabled,
-            ...(e.reasonKey ? { disabledReason: t(e.reasonKey) } : {}),
-            onSelect: () => void dispatch({ type: 'export', format: e.format }, 'form'),
-          }))}
-        >
-          {t('export.menu')}
-        </Menu>
-        <Button className="side-toggle" icon="layers" aria-expanded={sideOpen} aria-controls="side-panel" onClick={onToggleSide}>{t('crystalab.panel')}</Button>
-        <Button variant="primary" data-testid="render-button" loading={status === 'loading'} onClick={() => void dispatch({ type: 'editor.apply' }, 'form')}>{t('crystalab.render')}</Button>
-      </div>
-    </header>
-  );
-}
+import { useAlloy } from '../../stores/alloy.ts';
+import { SceneStage } from './ViewerPanel.tsx';
+import { BAR_ID, SceneHud, SceneNotices } from './SceneHud.tsx';
+import { Sidebar } from './Sidebar.tsx';
 
 function EngineUnavailable() {
   const { t } = useI18n();
@@ -87,85 +31,6 @@ function EngineUnavailable() {
       {caps?.error ? <p className="ds-mono ds-field__hint">{caps.error}</p> : null}
       <p className="ds-field__hint">{t('engine.offHow')}</p>
     </CategoryBox>
-  );
-}
-
-function WorkspacesPanel() {
-  const { t } = useI18n();
-  const [items, setItems] = useState<Workspace[]>(() => listWorkspaces());
-  const fileRef = useRef<HTMLInputElement>(null);
-  const refresh = () => setItems(listWorkspaces());
-  useEffect(() => {
-    const onStorage = () => refresh();
-    window.addEventListener('storage', onStorage);
-    window.addEventListener('alloy:workspaces', onStorage);
-    return () => { window.removeEventListener('storage', onStorage); window.removeEventListener('alloy:workspaces', onStorage); };
-  }, []);
-  return (
-    <div className="ws-panel" data-testid="workspaces">
-      <CategoryBox category="demo" className="ws-note" role="note"><p>{t('workspace.localOnly')}</p></CategoryBox>
-      <div className="ds-row">
-        <Button icon="download" onClick={async () => { await dispatch({ type: 'workspace.save' }, 'form'); refresh(); }}>{t('workspace.save')}</Button>
-        <Button icon="upload" onClick={() => fileRef.current?.click()}>{t('workspace.import')}</Button>
-        <Button icon="file" disabled={!items.length} onClick={() => downloadText(exportWorkspacesJson(), 'alloy-workspaces.json', 'application/json')}>{t('workspace.export')}</Button>
-        <input ref={fileRef} type="file" accept="application/json,.json" hidden aria-hidden="true" tabIndex={-1} onChange={async (e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          try { const res = importWorkspacesJson(await file.text()); toast({ tone: 'success', title: t('workspace.imported', { n: res.added }) }); refresh(); }
-          catch (err) { toast({ tone: 'error', title: t('workspace.importFailed'), body: err instanceof Error ? err.message : String(err) }); }
-          e.target.value = '';
-        }} />
-      </div>
-      <ul className="ws-list">
-        {items.map((w) => (
-          <li key={w.id} className="ws-item">
-            <div><strong>{w.name}</strong><small>{new Date(w.savedAt).toLocaleString()} · {t('workspace.local')}</small></div>
-            <div className="ds-row">
-              <Button size="sm" onClick={async () => { const ctrl = new AbortController(); try { await restoreScene(w.scene, ctrl.signal, w.name); } catch (err) { log('error', describeError(err)); } }}>{t('workspace.open')}</Button>
-              <IconButton size="sm" icon="trash" label={t('workspace.delete', { name: w.name })} onClick={() => { deleteWorkspace(w.id); refresh(); }} />
-            </div>
-          </li>
-        ))}
-      </ul>
-      {!items.length ? <p className="ds-muted">{t('workspace.none')}</p> : null}
-    </div>
-  );
-}
-
-type SideTab = 'guided' | 'overlays' | 'atom' | 'measure' | 'anim' | 'prov' | 'ws';
-
-function SidePanel() {
-  const { t } = useI18n();
-  const [tab, setTab] = useState<SideTab>('guided');
-  const overlayCount = useOverlays((s) => s.items.length);
-  const selection = useViewer((s) => s.selection);
-  const animation = useViewer((s) => s.animation);
-  const tool = useViewer((s) => s.tool);
-  const transfer = useCrystalab((s) => s.heaTransfer);
-  useEffect(() => { if (selection) setTab('atom'); }, [selection]);
-  useEffect(() => { if (animation) setTab('anim'); }, [animation?.name]);
-  useEffect(() => { if (tool) setTab('measure'); }, [tool?.kind]);
-  useEffect(() => { if (transfer) setTab('prov'); }, [transfer]);
-  const items: Array<{ id: SideTab; label: string; badge?: number }> = [
-    { id: 'guided', label: t('side.guided') },
-    { id: 'overlays', label: t('side.overlays'), badge: overlayCount },
-    { id: 'atom', label: t('side.atom') },
-    { id: 'measure', label: t('side.measure') },
-    { id: 'anim', label: t('side.anim') },
-    { id: 'prov', label: t('side.prov') },
-    { id: 'ws', label: t('side.ws') },
-  ];
-  return (
-    <div className="side" id="side-panel">
-      <Tabs label={t('side.label')} items={items} value={tab} onChange={(v) => setTab(v as SideTab)} idPrefix="side" size="sm" />
-      <TabPanel idPrefix="side" id="guided" active={tab === 'guided'}><GuidedMode /></TabPanel>
-      <TabPanel idPrefix="side" id="overlays" active={tab === 'overlays'}><OverlayManager /></TabPanel>
-      <TabPanel idPrefix="side" id="atom" active={tab === 'atom'}><AtomInspector /></TabPanel>
-      <TabPanel idPrefix="side" id="measure" active={tab === 'measure'}><MeasurementsPanel /></TabPanel>
-      <TabPanel idPrefix="side" id="anim" active={tab === 'anim'}><AnimationsPanel /></TabPanel>
-      <TabPanel idPrefix="side" id="prov" active={tab === 'prov'}><ProvenancePanel /></TabPanel>
-      <TabPanel idPrefix="side" id="ws" active={tab === 'ws'}><WorkspacesPanel /></TabPanel>
-    </div>
   );
 }
 
@@ -234,13 +99,17 @@ function useSceneUrlSync(): void {
 
 export default function CrystaLabModule() {
   const { t } = useI18n();
+  // carregar outro metal/estrutura invalida a liga e a temperatura calculadas para o anterior
+  // (recarregar o MESMO metal, p.ex. ao restaurar a cena, não apaga a liga)
+  useEffect(() => useCrystalab.subscribe((st, prev) => {
+    const before = prev.structure;
+    if (before && st.structure && (st.structure.rotulo !== before.rotulo || st.structure.estrutura !== before.estrutura)) useAlloy.getState().reset();
+  }), []);
   const structure = useCrystalab((s) => s.structure);
   const status = useCrystalab((s) => s.status);
-  const densityVisible = useCrystalab((s) => s.densityVisible);
   const ready = useCapabilities((s) => s.ready);
   const mode = useServiceMode('crystalab');
   const route = useRoute();
-  const [sideOpen, setSideOpen] = useState(false);
   useSceneUrlSync();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -262,35 +131,28 @@ export default function CrystaLabModule() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, mode]);
 
+  const barOpen = useBarOpen();
+  const wide = useCrystalUi((u) => u.wide);
+  const narrow = useNarrowViewport();
+
   return (
-    <Workbench
-      lab={<LabPanel />}
-      sideOpen={sideOpen}
-      sideLabel={t('side.label')}
-      center={
-        <div className="output-panel">
-          <Topbar sideOpen={sideOpen} onToggleSide={() => setSideOpen((o) => !o)} />
-          <main className="result-scroll" id="main-content" data-testid="result-root" tabIndex={-1} aria-busy={status === 'loading' || undefined}>
-            {!ready ? <div className="empty-state"><Spinner size={22} label={t('engine.checking')} /></div> : null}
-            {ready && mode !== 'live' ? <EngineUnavailable /> : null}
-            <HeaTransferBanner />
-            {structure ? (
-              <>
-                <StatusBand r={structure} />
-                <MetricsGrid r={structure} />
-                <ViewerPanel />
-                {densityVisible ? <DensityPanel r={structure} /> : null}
-                <div className="lower-grid">
-                  <ComparisonTable r={structure} />
-                  <AtomCount r={structure} />
-                </div>
-                <Interpretation r={structure} />
-              </>
-            ) : ready && mode === 'live' ? <div className="empty-state"><Spinner size={22} label={t('common.loading')} /></div> : null}
-          </main>
-        </div>
-      }
-      side={<SidePanel />}
-    />
+    <StageLayout
+      className="cl-layout"
+      bar={<Sidebar />}
+      barId={BAR_ID}
+      barLabel={t('side.label')}
+      open={barOpen}
+      wide={wide}
+      {...(narrow ? { onDismiss: () => useCrystalUi.getState().setBar(false), dismissLabel: t('bar.collapse') } : {})}
+    >
+      <main className="cl-main" id="main-content" data-testid="result-root" tabIndex={-1} aria-busy={status === 'loading' || undefined}>
+        <SceneStage overlay={<SceneNotices />}>
+          <SceneHud />
+          {!ready ? <div className="cl-state"><Spinner size={22} label={t('engine.checking')} /></div> : null}
+          {ready && mode !== 'live' ? <div className="cl-state"><EngineUnavailable /></div> : null}
+          {ready && mode === 'live' && !structure ? <div className="cl-state"><Spinner size={22} label={t('common.loading')} /></div> : null}
+        </SceneStage>
+      </main>
+    </StageLayout>
   );
 }

@@ -35,7 +35,6 @@ crystalab.brandSub	Estrutura dos sólidos cristalinos	Structure of crystalline s
 crystalab.unitCell	Célula unitária	Unit cell	Celda unitaria
 crystalab.subtitle	Célula unitária calculada pelo motor CrystaLab	Unit cell computed by the CrystaLab engine	Celda unitaria calculada por el motor CrystaLab
 crystalab.subtitleGeneric	Célula genérica em unidades do raio R	Generic cell in units of the radius R	Celda genérica en unidades del radio R
-crystalab.panel	Painel	Panel	Panel
 crystalab.render	Renderizar	Render	Renderizar
 editor.title	Editor de parâmetros	Parameter editor	Editor de parámetros
 editor.label	Parâmetros da célula (formato do CrystaLab v1.0)	Cell parameters (CrystaLab v1.0 format)	Parámetros de la celda (formato de CrystaLab v1.0)
@@ -54,7 +53,7 @@ results.crystalStructure	Estrutura cristalina	Crystal structure	Estructura crist
 results.touchAlong	Átomos se tocam ao longo da	Atoms touch along the	Los átomos se tocan a lo largo de la
 results.geometry	Geometria	Geometry	Geometría
 results.atomsPerCell	átomos/célula	atoms/cell	átomos/celda
-results.caIdeal	c/a = {ca} (ideal ≈ 1,633)	c/a = {ca} (ideal ≈ 1.633)	c/a = {ca} (ideal ≈ 1,633)
+results.caIdeal	c/a = {ca} (ideal {ideal}, do motor)	c/a = {ca} (ideal {ideal}, from the engine)	c/a = {ca} (ideal {ideal}, del motor)
 results.voids	{pct} % de vazios	{pct} % voids	{pct} % de vacíos
 results.engineLanguage	Os textos vindos do motor estão em português (idioma do motor).	Texts coming from the engine are in Portuguese (the engine's language).	Los textos que vienen del motor están en portugués (idioma del motor).
 metrics.label	Métricas da célula	Cell metrics	Métricas de la celda
@@ -98,13 +97,11 @@ density.noInvention	As fórmulas são exibidas simbolicamente; todos os números
 density.insufficient	Dados insuficientes para a densidade (informe raio e massa atômica).	Not enough data for density (enter radius and atomic mass).	Datos insuficientes para la densidad (indique radio y masa atómica).
 density.show	Calcular densidade	Compute density	Calcular densidad
 density.formulaLabel	Densidade teórica: rô igual a n vezes A sobre V c vezes N A	Theoretical density: rho equals n times A over V c times N A	Densidad teórica: rho igual a n por A sobre V c por N A
-viewer.title	Célula 3D	3D cell	Celda 3D
-viewer.hint	arraste para girar · role para aproximar	drag to rotate · scroll to zoom	arrastre para girar · desplace para acercar
 viewer.loading	Carregando o visualizador 3D…	Loading the 3D viewer…	Cargando el visor 3D…
 viewer.unsupported	Este navegador não oferece WebGL. Os resultados numéricos e a descrição textual da cena continuam disponíveis.	This browser does not support WebGL. Numeric results and the text description of the scene remain available.	Este navegador no ofrece WebGL. Los resultados numéricos y la descripción textual de la escena siguen disponibles.
 viewer.roleDescription	visualizador 3D interativo	interactive 3D viewer	visor 3D interactivo
 viewer.stageLabel	Cena 3D da célula unitária	3D scene of the unit cell	Escena 3D de la celda unitaria
-viewer.keys	Setas giram a câmera, + e − aproximam, Tab percorre os átomos, Enter seleciona, Esc limpa a seleção, R volta à vista inicial.	Arrow keys rotate the camera, + and − zoom, Tab moves through atoms, Enter selects, Esc clears the selection, R resets the view.	Las flechas giran la cámara, + y − acercan, Tab recorre los átomos, Enter selecciona, Esc limpia la selección, R vuelve a la vista inicial.
+viewer.keys	Setas giram a câmera, Ctrl ou Alt com as setas deslocam a cena, + e − aproximam, F centraliza o conteúdo, R ou 0 volta à vista inicial, Esc limpa a seleção. Os átomos são percorridos pela lista da seção Seleção de átomos.	Arrow keys rotate the camera, Ctrl or Alt with the arrows move the scene, + and − zoom, F centers the content, R or 0 resets the view, Esc clears the selection. Atoms are browsed in the list of the Atom selection section.	Las flechas giran la cámara, Ctrl o Alt con las flechas desplazan la escena, + y − acercan, F centra el contenido, R o 0 vuelve a la vista inicial, Esc limpia la selección. Los átomos se recorren en la lista de la sección Selección de átomos.
 viewer.lockScene	Travar a cena (um dedo rola a página)	Lock the scene (one finger scrolls the page)	Bloquear la escena (un dedo desplaza la página)
 viewer.unlockScene	Destravar a cena para girar com um dedo	Unlock the scene to rotate with one finger	Desbloquear la escena para girar con un dedo
 viewer.description	{label}, estrutura {structure}: {atoms} átomos desenhados, supercélula {supercell}, {planes} plano(s), {dirs} direção(ões) e {meas} medição(ões) na cena.	{label}, {structure} structure: {atoms} atoms drawn, {supercell} supercell, {planes} plane(s), {dirs} direction(s) and {meas} measurement(s) in the scene.	{label}, estructura {structure}: {atoms} átomos dibujados, supercelda {supercell}, {planes} plano(s), {dirs} dirección(es) y {meas} medición(es) en la escena.
@@ -112,12 +109,9 @@ viewer.descSelection	Selecionado: átomo {n} ({site}).	Selected: atom {n} ({site
 viewer.selected	Átomo {n} selecionado ({key}).	Atom {n} selected ({key}).	Átomo {n} seleccionado ({key}).
 viewer.empty	Nenhuma estrutura carregada.	No structure loaded.	Ninguna estructura cargada.
 view.controls	Controles de visualização	View controls	Controles de visualización
-view.rigid	Esferas rígidas	Hard spheres	Esferas rígidas
-view.autoRotate	Girar	Rotate	Girar
 view.axes	Eixos	Axes	Ejes
 view.reset	Vista inicial	Reset view	Vista inicial
 view.supercell	Supercélula	Supercell	Supercelda
-view.more	Mais opções de vista	More view options	Más opciones de vista
 view.atoms	Átomos	Atoms	Átomos
 view.polyhedra	Poliedros de coordenação	Coordination polyhedra	Poliedros de coordinación
 view.polyhedraReason	O motor ainda não envia os poliedros (D-11).	The engine does not send polyhedra yet (D-11).	El motor aún no envía los poliedros (D-11).
@@ -217,7 +211,6 @@ workspace.saved	Workspace “{name}” salvo neste navegador.	Workspace “{name
 side.label	Painéis do laboratório	Lab panels	Paneles del laboratorio
 side.guided	Guiado	Guided	Guiado
 side.overlays	Camadas	Layers	Capas
-side.atom	Átomo	Atom	Átomo
 side.measure	Medir	Measure	Medir
 side.anim	Animações	Animations	Animaciones
 side.prov	Procedência	Provenance	Procedencia

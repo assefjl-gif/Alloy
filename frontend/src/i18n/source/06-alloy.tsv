@@ -1,0 +1,88 @@
+side.temp	Temperatura	Temperature	Temperatura
+alloy.lead	Forme uma solução sólida: o motor calcula a rede, a densidade e as regras de Hume-Rothery, e os átomos aparecem no viewer.	Form a solid solution: the engine computes the lattice, the density and the Hume-Rothery rules, and the atoms show up in the viewer.	Forma una solución sólida: el motor calcula la red, la densidad y las reglas de Hume-Rothery, y los átomos aparecen en el visor.
+alloy.base	Metal solvente (base)	Solvent metal (base)	Metal solvente (base)
+alloy.solute	Soluto	Solute	Soluto
+alloy.soluteMetals	Metais (substitucional)	Metals (substitutional)	Metales (sustitucional)
+alloy.soluteInterstitial	Intersticiais	Interstitial	Intersticiales
+alloy.percent	Soluto (% atômica)	Solute (atomic %)	Soluto (% atómico)
+alloy.size	Supercélula (n×n×n)	Supercell (n×n×n)	Supercelda (n×n×n)
+alloy.arrangement	Arranjo do soluto	Solute arrangement	Arreglo del soluto
+alloy.random	Aleatório	Random	Aleatorio
+alloy.ordered	Ordenado	Ordered	Ordenado
+alloy.seed	Semente do sorteio	Draw seed	Semilla del sorteo
+alloy.distort	Mostrar distorção ilustrativa	Show illustrative distortion	Mostrar distorsión ilustrativa
+alloy.form	Formar liga	Form alloy	Formar aleación
+alloy.forming	Calculando…	Computing…	Calculando…
+alloy.close	Voltar ao metal puro	Back to the pure metal	Volver al metal puro
+alloy.noCatalog	O catálogo de metais ainda não carregou.	The metal catalog has not loaded yet.	El catálogo de metales aún no se cargó.
+alloy.elements	Elementos da liga	Alloy elements	Elementos de la aleación
+alloy.role.base	solvente	solvent	solvente
+alloy.role.soluto	soluto substitucional	substitutional solute	soluto sustitucional
+alloy.role.intersticial	soluto intersticial	interstitial solute	soluto intersticial
+alloy.title	{label}	{label}	{label}
+alloy.composition	Composição	Composition	Composición
+alloy.compositionValue	{x} % at. de {solute} ({w} % em peso)	{x} at.% {solute} ({w} wt.%)	{x} % at. de {solute} ({w} % en peso)
+alloy.lattice	Parâmetro de rede da liga	Alloy lattice parameter	Parámetro de red de la aleación
+alloy.latticeValue	nm · base {base} nm	nm · base {base} nm	nm · base {base} nm
+alloy.density	Densidade da liga	Alloy density	Densidad de la aleación
+alloy.densityValue	g/cm³ · base {base}	g/cm³ · base {base}	g/cm³ · base {base}
+alloy.atoms	Átomos na supercélula	Atoms in the supercell	Átomos en la supercelda
+alloy.phase	Fase ordenada	Ordered phase	Fase ordenada
+alloy.rules	Regras de solubilidade (Hume-Rothery)	Solubility rules (Hume-Rothery)	Reglas de solubilidad (Hume-Rothery)
+alloy.rule.criterion	Critério	Criterion	Criterio
+alloy.rule.value	Valor	Value	Valor
+alloy.rule.status	Situação	Status	Situación
+alloy.rule.ok	atende	met	cumple
+alloy.rule.fail	não atende	not met	no cumple
+alloy.rule.na	indisponível	unavailable	no disponible
+alloy.conclusion	Conclusão do motor	Engine conclusion	Conclusión del motor
+alloy.distortion	Distorção ilustrativa	Illustrative distortion	Distorsión ilustrativa
+alloy.steps	Passo a passo da densidade	Density step by step	Paso a paso de la densidad
+alloy.provenance	Procedência	Provenance	Procedencia
+alloy.provLine	Classe {class} · motor {engine} {version} · dados {data}	Class {class} · engine {engine} {version} · data {data}	Clase {class} · motor {engine} {version} · datos {data}
+alloy.estimateNote	Estimativa de modelo (Vegard e Hume-Rothery): não substitui medições.	Model estimate (Vegard and Hume-Rothery): it does not replace measurements.	Estimación de modelo (Vegard y Hume-Rothery): no sustituye mediciones.
+alloy.viewerNote	No viewer: {drawn} esferas para {unique} átomos únicos de {label}.	In the viewer: {drawn} spheres for {unique} unique atoms of {label}.	En el visor: {drawn} esferas para {unique} átomos únicos de {label}.
+thermal.lead	Calcule dilatação, vibração (critério de Lindemann) e fases com a temperatura.	Compute expansion, vibration (Lindemann criterion) and phases with temperature.	Calcula dilatación, vibración (criterio de Lindemann) y fases con la temperatura.
+thermal.target	Calcular para	Compute for	Calcular para
+thermal.targetMaterial	Metal carregado ({name})	Loaded metal ({name})	Metal cargado ({name})
+thermal.targetAlloy	Liga formada	Formed alloy	Aleación formada
+thermal.noMaterial	Carregue um metal do catálogo: célula genérica não tem dados térmicos.	Load a catalog metal: a generic cell has no thermal data.	Carga un metal del catálogo: una celda genérica no tiene datos térmicos.
+thermal.temperature	Temperatura (°C)	Temperature (°C)	Temperatura (°C)
+thermal.calc	Calcular	Compute	Calcular
+thermal.vibration	Vibração dos átomos	Atom vibration	Vibración de los átomos
+thermal.vibrationToggle	Vibrar átomos	Vibrate atoms	Vibrar átomos
+thermal.exaggeration	Exagero visual (×)	Visual exaggeration (×)	Exageración visual (×)
+thermal.exaggerationHint	1× é a amplitude real do motor; valores maiores só ajudam a enxergar. O movimento é ilustrativo: cada átomo oscila de forma independente.	1× is the engine's real amplitude; larger values only help to see it. The motion is illustrative: each atom oscillates independently.	1× es la amplitud real del motor; valores mayores solo ayudan a verla. El movimiento es ilustrativo: cada átomo oscila de forma independiente.
+thermal.needsResult	Calcule a temperatura para liberar a vibração.	Compute the temperature to enable the vibration.	Calcula la temperatura para habilitar la vibración.
+thermal.reduced	Movimento reduzido ativo: a cena mostra um instante congelado da vibração.	Reduced motion is on: the scene shows a frozen instant of the vibration.	Movimiento reducido activo: la escena muestra un instante congelado de la vibración.
+thermal.title	Efeito da temperatura	Effect of temperature	Efecto de la temperatura
+thermal.homologous	Temperatura homóloga (T/T_f)	Homologous temperature (T/T_m)	Temperatura homóloga (T/T_f)
+thermal.fusion	Fusão: {t} °C	Melting: {t} °C	Fusión: {t} °C
+thermal.alpha	Coeficiente de dilatação α	Expansion coefficient α	Coeficiente de dilatación α
+thermal.alphaUnit	10⁻⁶ /K	10⁻⁶ /K	10⁻⁶ /K
+thermal.lattice	Parâmetro de rede a(T)	Lattice parameter a(T)	Parámetro de red a(T)
+thermal.deltaA	nm · variação de a: {pct} %	nm · change in a: {pct} %	nm · variación de a: {pct} %
+thermal.deltaV	Variação de volume	Volume change	Variación de volumen
+thermal.density	Densidade a T	Density at T	Densidad a T
+thermal.amplitude	Amplitude de vibração u	Vibration amplitude u	Amplitud de vibración u
+thermal.amplitudeHint	pm · {ratio} da distância entre vizinhos	pm · {ratio} of the nearest-neighbor distance	pm · {ratio} de la distancia entre vecinos
+thermal.melted	Acima da fusão: o cálculo deixa de valer, pois o material não é mais sólido.	Above melting: the calculation no longer holds because the material is no longer solid.	Por encima de la fusión: el cálculo deja de valer porque el material ya no es sólido.
+thermal.curve	Vibração × temperatura	Vibration × temperature	Vibración × temperatura
+thermal.curveDesc	Razão u/d de 0 K até a fusão: em {t} °C vale {r}; o critério de Lindemann indica fusão em {limit}.	Ratio u/d from 0 K to melting: at {t} °C it is {r}; the Lindemann criterion indicates melting at {limit}.	Razón u/d de 0 K hasta la fusión: a {t} °C vale {r}; el criterio de Lindemann indica fusión en {limit}.
+thermal.curveX	Temperatura (°C)	Temperature (°C)	Temperatura (°C)
+thermal.curveY	u/d	u/d	u/d
+thermal.lindemannLine	Lindemann ({limit})	Lindemann ({limit})	Lindemann ({limit})
+thermal.notes	Observações do motor	Engine notes	Observaciones del motor
+thermal.noteWarn	Alerta	Warning	Alerta
+thermal.noteInfo	Informação	Information	Información
+alloy.banner	O viewer mostra {label}: {unique} átomos únicos em {drawn} esferas. Os cartões acima do viewer descrevem o metal carregado ({metal}).	The viewer shows {label}: {unique} unique atoms in {drawn} spheres. The cards above the viewer describe the loaded metal ({metal}).	El visor muestra {label}: {unique} átomos únicos en {drawn} esferas. Las tarjetas sobre el visor describen el metal cargado ({metal}).
+alloy.absent.title	Nenhum átomo de {elements} nesta supercélula	No {elements} atom in this supercell	Ningún átomo de {elements} en esta supercélula
+alloy.absent.why	A liga é {label}, mas a amostragem estatística do motor não comportou nenhum átomo do soluto: a quantidade pedida corresponde a menos de meio átomo nesta supercélula {n}×{n}×{n} ({unique} átomos únicos) e o arredondamento honesto dá zero. Nenhum átomo é inventado para a cena parecer completa.	The alloy is {label}, but the engine’s statistical sampling fitted no solute atom: the requested amount corresponds to less than half an atom in this {n}×{n}×{n} supercell ({unique} unique atoms) and honest rounding gives zero. No atom is invented to make the scene look complete.	La aleación es {label}, pero el muestreo estadístico del motor no admitió ningún átomo de soluto: la cantidad pedida corresponde a menos de medio átomo en esta supercélula {n}×{n}×{n} ({unique} átomos únicos) y el redondeo honesto da cero. No se inventa ningún átomo para que la escena parezca completa.
+alloy.absent.resolution	Resolução de composição informada pelo motor para esta supercélula: {pct} at% por átomo.	Composition resolution reported by the engine for this supercell: {pct} at% per atom.	Resolución de composición informada por el motor para esta supercélula: {pct} at% por átomo.
+alloy.absent.action	O que fazer: aumentar a supercélula ou aumentar a composição do soluto.	What to do: increase the supercell or increase the solute composition.	Qué hacer: aumentar la supercélula o aumentar la composición del soluto.
+alloy.absent.asking	Perguntando ao motor qual é a menor supercélula que representa ao menos um átomo…	Asking the engine for the smallest supercell that represents at least one atom…	Consultando al motor cuál es la supercélula más pequeña que representa al menos un átomo…
+alloy.absent.suggestion	O motor responde que em {n}×{n}×{n}, na mesma composição, a amostragem já contém {atoms} átomo(s) de {elements}.	The engine answers that at {n}×{n}×{n}, with the same composition, the sampling already contains {atoms} {elements} atom(s).	El motor responde que en {n}×{n}×{n}, con la misma composición, el muestreo ya contiene {atoms} átomo(s) de {elements}.
+alloy.absent.apply	Formar de novo com {n}×{n}×{n}	Rebuild with {n}×{n}×{n}	Formar de nuevo con {n}×{n}×{n}
+alloy.absent.none	Até {n}×{n}×{n} (o maior tamanho que o motor aceita) esta composição continua sem nenhum átomo do soluto na amostragem: aumente a composição do soluto.	Up to {n}×{n}×{n} (the largest size the engine accepts) this composition still has no solute atom in the sampling: increase the solute composition.	Hasta {n}×{n}×{n} (el mayor tamaño que acepta el motor) esta composición sigue sin ningún átomo de soluto en el muestreo: aumente la composición del soluto.
+alloy.absent.probeError	Não foi possível consultar o motor para sugerir um tamanho: {error}	Could not query the engine for a size suggestion: {error}	No se pudo consultar al motor para sugerir un tamaño: {error}
+alloy.absent.banner	A cena mostra esta liga SEM {elements}: a amostragem não comportou nenhum átomo do soluto nesta supercélula.	The scene shows this alloy WITHOUT {elements}: the sampling fitted no solute atom in this supercell.	La escena muestra esta aleación SIN {elements}: el muestreo no admitió ningún átomo de soluto en esta supercélula.

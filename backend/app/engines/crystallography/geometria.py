@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-from .constantes import CASAS_SAIDA, SQRT3, Vetor
+from .constantes import CASAS_SAIDA, SQRT3, TOLERANCIA_EDICAO, Vetor
 from .estruturas import ESTRUTURAS
 
 
@@ -67,7 +67,59 @@ def volume_em_r(estrutura: str, c_a: Optional[float]) -> float:
     return a_r ** 3
 
 
+def c_a_ideal_hc() -> float:
+    return float(ESTRUTURAS["HC"]["c_a_ideal"])
+
+
+def distancia_entre_planos_hc(c_a: float) -> float:
+    """Distância (em unidades de ``a``) de um átomo aos 6 vizinhos do plano vizinho: √(1/3 + (c/a)²/4)."""
+    return math.sqrt(1.0 / 3.0 + float(c_a) ** 2 / 4.0)
+
+
+def raio_contato_rel_hc(c_a: float) -> float:
+    """R_c/a = ½·mín(1, c/a, d_entre_planos/a) — maior esfera rígida SEM sobreposição.
+
+    Três distâncias candidatas entre vizinhos, em unidades de ``a``: a aresta basal (1), a translação
+    de rede ``c`` (= c/a) e a distância aos 6 átomos do plano vizinho (√(1/3 + (c/a)²/4)).
+    A translação ``c`` só é a menor quando c/a < 2/3 (ressalva R-1 do parecer de termodinâmica,
+    2026-11-13 §7.a): sem ela o FEA voltava a crescer e ultrapassava π/(3√2) (≈1,2 em c/a = 0,2).
+    Para c/a ≥ 2/3 o valor é idêntico ao anterior, e a entrada da API é limitada a c/a ≥ 1
+    (``FAIXA_C_A``), de modo que nenhum resultado alcançável pela API muda.
+    """
+    razao = float(c_a)
+    return 0.5 * min(1.0, razao, distancia_entre_planos_hc(razao))
+
+
+def contato_tipo_hc(c_a: float) -> str:
+    """Onde ocorre o primeiro contato: ``basal`` (c/a > ideal), ``entre_planos`` (c/a < ideal) ou ``ambos``."""
+    ideal = c_a_ideal_hc()
+    if abs(float(c_a) - ideal) <= TOLERANCIA_EDICAO * ideal:
+        return "ambos"
+    return "basal" if float(c_a) > ideal else "entre_planos"
+
+
+def vizinhos_hc(c_a: float) -> List[Dict[str, Any]]:
+    """Os dois grupos de primeiros vizinhos do HC (6 no plano basal a ``a``; 6 entre planos)."""
+    return [
+        {"grupo": "basal", "n": 6, "d_rel": 1.0},
+        {"grupo": "entre_planos", "n": 6, "d_rel": distancia_entre_planos_hc(c_a)},
+    ]
+
+
 def fator_empacotamento(estrutura: str, c_a: Optional[float] = None) -> float:
+    """FEA do modelo de esferas rígidas SEM sobreposição.
+
+    Nas cúbicas (e no HC com c/a ≥ ideal) o raio de contato é a/2 e o valor é o clássico.
+    No HC com c/a < √(8/3) os planos basais se aproximam: o raio de contato passa a ser metade da
+    distância entre planos, senão as esferas de raio a/2 se interpenetram e o FEA ultrapassa o limite
+    de empacotamento π/(3√2) ≈ 0,74048 (achado E-1, parecer R1-CRI-01, seção 1.4).
+    FEA = (2π/(3√3))·(2R_c/a)³/(c/a); coincide com o valor anterior para c/a ≥ ideal.
+    Com R_c = ½·mín(a, c, d_entre_planos) (ressalva R-1, parecer de termodinâmica §7.a) o invariante
+    FEA ≤ π/(3√2) vale em TODO o domínio de c/a > 0, inclusive abaixo de 2/3.
+    """
+    if estrutura == "HC":
+        razao = float(c_a if c_a is not None else c_a_ideal_hc())
+        return (2.0 * math.pi / (3.0 * SQRT3)) * (2.0 * raio_contato_rel_hc(razao)) ** 3 / razao
     n = ESTRUTURAS[estrutura]["n"]
     return n * (4.0 / 3.0) * math.pi / volume_em_r(estrutura, c_a)
 

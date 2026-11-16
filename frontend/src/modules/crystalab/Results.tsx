@@ -31,7 +31,7 @@ export function StatusBand({ r }: { r: StructureResult }) {
       <div className="phase-box ds-cat-box ds-cat-box--result">
         <span className="ds-label">{t('results.geometry')}</span>
         <strong>{`NC = ${r.nc} · n = ${r.n} ${t('results.atomsPerCell')}`}</strong>
-        <span>{r.estrutura === 'HC' ? t('results.caIdeal', { ca: num(r.c_a, 3) }) : t('results.voids', { pct: num(r.vazios * 100, 1) })}</span>
+        <span>{r.estrutura === 'HC' ? t('results.caIdeal', { ca: num(r.c_a, 3), ideal: num(r.c_a_ideal ?? null, 3) }) : t('results.voids', { pct: num(r.vazios * 100, 1) })}</span>
       </div>
     </section>
   );
@@ -47,7 +47,8 @@ export function MetricsGrid({ r }: { r: StructureResult }) {
     <section className="metrics-grid" aria-label={t('metrics.label')} id="metricsGrid">
       <MetricCard testId="metric-structure" label={t('metrics.structure')} value={r.estrutura} unit={<EngineText>{r.estrutura_nome}</EngineText>} category="result" categoryLabel={resultLabel} />
       {lattice}
-      <MetricCard testId="metric-fea" label={t('metrics.apf')} value={num(r.fea, 3)} unit={t('metrics.voidsUnit', { pct: num(r.vazios * 100, 1) })} category="result" categoryLabel={resultLabel} />
+      <MetricCard testId="metric-fea" label={t('metrics.apf')} value={num(r.fea, 3)} unit={t('metrics.voidsUnit', { pct: num(r.vazios * 100, 1) })} category="result" categoryLabel={resultLabel}
+        hint={r.fea_modelo === 'esferas_rigidas' ? t('cells.feaModel.esferas_rigidas') : (r.fea_modelo ?? undefined)} />
       <MetricCard
         testId="metric-density"
         label={t('metrics.density')}
@@ -56,16 +57,66 @@ export function MetricsGrid({ r }: { r: StructureResult }) {
         category="result"
         categoryLabel={resultLabel}
       />
-      <MetricCard testId="metric-nc" label={t('metrics.coordination')} value={r.nc} unit={t('metrics.neighbors')} category="result" categoryLabel={resultLabel} />
+      <MetricCard testId="metric-nc" label={t('metrics.coordination')} value={r.nc_txt && r.nc_txt !== String(r.nc) ? `${r.nc} (${r.nc_txt})` : r.nc} unit={t('metrics.neighbors')} category="result" categoryLabel={resultLabel} />
       <MetricCard testId="metric-n" label={t('metrics.atomsPerCell')} value={r.n} unit={t('metrics.effective')} category="result" categoryLabel={resultLabel} />
     </section>
+  );
+}
+
+/**
+ * Geometria de contato e primeiros vizinhos (contrato R1 §3, motor de cristalografia 2.1.0).
+ * Diz QUAL raio entrou no FEA — decisivo porque, para o Ti, coexistem valores diferentes de FEA
+ * conforme o raio adotado. Campos nulos fora do HC ("não se aplica") simplesmente não aparecem.
+ */
+export function ContactPanel({ r }: { r: StructureResult }) {
+  const { t, num } = useI18n();
+  const groups = r.vizinhos ?? [];
+  const hasContact = r.raio_contato_rel != null || r.contato_tipo != null || r.c_a_ideal != null;
+  if (!hasContact && !groups.length) return null;
+  const contactType = r.contato_tipo === 'basal' || r.contato_tipo === 'entre_planos' || r.contato_tipo === 'ambos'
+    ? t(`cells.contactType.${r.contato_tipo}`)
+    : null;
+  const caNature = r.c_a_natureza ? t(`alloy.model.value.${r.c_a_natureza}` as 'alloy.model.value.tabelado') : null;
+  return (
+    <Panel title={t('cells.neighbours.title')} aside={r.estrutura} id="contact" headingLevel={2} testId="contact-panel">
+      <dl className="guided__dl">
+        <dt>{t('cells.feaModelLabel')}</dt>
+        <dd>{r.fea_modelo === 'esferas_rigidas' ? t('cells.feaModel.esferas_rigidas') : (r.fea_modelo ?? t('hea.unavailable'))}</dd>
+        {r.raio_contato_rel != null ? (
+          <>
+            <dt>{t('cells.contactRadius')}</dt>
+            <dd className="ds-mono">{t('cells.contactRadiusValue', { value: num(r.raio_contato_rel, 6) })}</dd>
+          </>
+        ) : null}
+        {contactType ? <><dt>{t('cells.contactTypeLabel')}</dt><dd>{contactType}</dd></> : null}
+        {r.c_a_ideal != null ? <><dt>{t('cells.caIdeal')}</dt><dd className="ds-mono">{num(r.c_a_ideal, 6)}</dd></> : null}
+        {caNature ? <><dt>{t('cells.caNature')}</dt><dd>{caNature}</dd></> : null}
+      </dl>
+      {groups.length ? (
+        <ul className="ds-stack" data-testid="neighbour-groups">
+          {groups.map((g) => (
+            <li key={g.grupo}>
+              {t('cells.neighbours.row', {
+                n: g.n,
+                group: g.grupo === 'basal' || g.grupo === 'entre_planos' ? t(`cells.neighbours.group.${g.grupo}`) : g.grupo,
+                drel: num(g.d_rel, 6),
+                dnm: g.d_nm === null ? '' : t('cells.neighbours.nm', { value: num(g.d_nm, 5) }),
+              })}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {r.estrutura === 'HC' ? <p className="table-note">{t('cells.hcFeaNote')}</p> : null}
+    </Panel>
   );
 }
 
 export function ComparisonTable({ r }: { r: StructureResult }) {
   const { t, num } = useI18n();
   const rows = useCrystalab((s) => s.structures) ?? [];
-  const hcNote = r.estrutura === 'HC' && r.c_a !== null && Math.abs(r.c_a - 1.633) > 0.002;
+  // "c/a diferente do ideal" usa o c/a IDEAL devolvido pelo motor (`c_a_ideal`), nunca um valor
+  // fixo aqui; sem o campo (backend anterior) a nota não é exibida, em vez de supor o ideal.
+  const hcNote = r.estrutura === 'HC' && r.c_a !== null && r.c_a_ideal != null && r.contato_tipo !== 'ambos';
   return (
     <Panel title={t('comparison.title')} aside={t('comparison.aside')} id="comparison" headingLevel={2}>
       <div className="ds-table-wrap" id="comparisonTable">

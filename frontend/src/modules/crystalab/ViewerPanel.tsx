@@ -1,16 +1,14 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from 'react';
 import { dispatch, submitLine } from '../../commands/bus.ts';
 import { useI18n } from '../../i18n/index.ts';
 import { useCrystalab } from '../../stores/crystalab.ts';
 import { useOverlays } from '../../stores/overlays.ts';
 import { useViewer } from '../../stores/viewer.ts';
 import { usePreferences } from '../../stores/preferences.ts';
-import { Button, IconButton, ToggleButton } from '../../design-system/primitives/Button.tsx';
-import { Menu } from '../../design-system/primitives/Menu.tsx';
+import { Button } from '../../design-system/primitives/Button.tsx';
 import { Segmented } from '../../design-system/primitives/Field.tsx';
-import { DemoSeal } from '../../design-system/primitives/Category.tsx';
 import { Spinner } from '../../design-system/primitives/misc.tsx';
-import { getViewer } from '../../features/registry.ts';
+import { getCameraApi } from '../../features/viewer3d/cameraApi.ts';
 import { millerDetail } from '../../commands/handlers.ts';
 import { spokenNotation } from '../../utils/text.ts';
 
@@ -18,7 +16,7 @@ const Viewer3D = lazy(() => import('../../features/viewer3d/Viewer3D.tsx'));
 
 const SITE_LABEL_KEYS = { vertice: 'site.vertice', centro: 'site.centro', face: 'site.face', basal: 'site.basal', interior: 'site.interior' } as const;
 
-function MillerForm() {
+export function MillerForm() {
   const { t } = useI18n();
   const [mode, setMode] = useState<'plano' | 'direcao'>('plano');
   const [value, setValue] = useState('1 1 1');
@@ -44,64 +42,6 @@ function MillerForm() {
       <Button type="submit" variant="accent" size="sm">{t('miller.draw')}</Button>
       <Button size="sm" onClick={() => void dispatch({ type: 'overlays.clear' }, 'form')}>{t('miller.clear')}</Button>
     </form>
-  );
-}
-
-function ViewToggles() {
-  const { t } = useI18n();
-  const display = useViewer((s) => s.display);
-  const supercell = useViewer((s) => s.supercell);
-  return (
-    <div className="toggle-row" role="group" aria-label={t('view.controls')}>
-      <ToggleButton size="sm" pressed={display.atoms === 'rigid'} onPressedChange={(v) => void dispatch({ type: 'view.toggle', key: 'rigid', value: v }, 'form')}>{t('view.rigid')}</ToggleButton>
-      <ToggleButton size="sm" pressed={display.autoRotate} onPressedChange={(v) => void dispatch({ type: 'view.toggle', key: 'autoRotate', value: v }, 'form')}>{t('view.autoRotate')}</ToggleButton>
-      <ToggleButton size="sm" pressed={display.axes} onPressedChange={(v) => void dispatch({ type: 'view.toggle', key: 'axes', value: v }, 'form')}>{t('view.axes')}</ToggleButton>
-      <Button size="sm" icon="target" onClick={() => void dispatch({ type: 'view.reset' }, 'form')}>{t('view.reset')}</Button>
-      <label className="sr-only" htmlFor="supercell-select">{t('view.supercell')}</label>
-      <select
-        id="supercell-select"
-        className="ds-input supercell-select"
-        value={supercell.join('x')}
-        onChange={(e) => { const n = e.target.value.split('x').map(Number) as [number, number, number]; void dispatch({ type: 'supercell.set', n }, 'form'); }}
-      >
-        {['1x1x1', '2x2x2', '3x3x3', '4x4x4', '2x2x1', '3x3x1', '2x1x1', '3x1x1', '4x1x1', '1x1x4'].map((v) => (
-          <option key={v} value={v}>{`${t('view.supercell')} ${v.replace(/x/g, '×')}`}</option>
-        ))}
-        {!['1x1x1', '2x2x2', '3x3x3', '4x4x4', '2x2x1', '3x3x1', '2x1x1', '3x1x1', '4x1x1', '1x1x4'].includes(supercell.join('x')) ? <option value={supercell.join('x')}>{`${t('view.supercell')} ${supercell.join('×')}`}</option> : null}
-      </select>
-      <Menu
-        label={t('view.more')}
-        icon="eye"
-        align="end"
-        buttonProps={{ size: 'sm' }}
-        items={[
-          { id: 'reduced', label: `${display.atoms === 'reduced' ? '● ' : ''}${t('view.atomMode.reduced')}`, onSelect: () => void dispatch({ type: 'view.atoms', mode: 'reduced' }, 'form') },
-          { id: 'rigid', label: `${display.atoms === 'rigid' ? '● ' : ''}${t('view.atomMode.rigid')}`, onSelect: () => void dispatch({ type: 'view.atoms', mode: 'rigid' }, 'form') },
-          { id: 'ballstick', label: `${display.atoms === 'ballstick' ? '● ' : ''}${t('view.atomMode.ballstick')}`, onSelect: () => void dispatch({ type: 'view.atoms', mode: 'ballstick' }, 'form') },
-          { id: 'points', label: `${display.atoms === 'points' ? '● ' : ''}${t('view.atomMode.points')}`, onSelect: () => void dispatch({ type: 'view.atoms', mode: 'points' }, 'form') },
-          { id: 'edges', label: `${display.edges ? '☑' : '☐'} ${t('view.toggle.edges')}`, onSelect: () => void dispatch({ type: 'view.toggle', key: 'edges' }, 'form') },
-          { id: 'lattice', label: `${display.latticePoints ? '☑' : '☐'} ${t('view.toggle.latticePoints')}`, onSelect: () => void dispatch({ type: 'view.toggle', key: 'latticePoints' }, 'form') },
-          { id: 'labels', label: `${display.labels ? '☑' : '☐'} ${t('view.toggle.labels')}`, onSelect: () => void dispatch({ type: 'view.toggle', key: 'labels' }, 'form') },
-          { id: 'poly', label: t('view.polyhedra'), disabled: true, disabledReason: t('view.polyhedraReason'), onSelect: () => undefined },
-        ]}
-      />
-    </div>
-  );
-}
-
-export function SiteLegend() {
-  const { t } = useI18n();
-  const r = useCrystalab((s) => s.structure);
-  const coloring = useViewer((s) => s.elementColoring);
-  const transfer = useCrystalab((s) => s.heaTransfer);
-  if (!r) return null;
-  if (coloring?.enabled && transfer) return null; // legenda por elemento fica no painel de procedência
-  return (
-    <div className="viewer-legend" aria-hidden="true">
-      {r.contagem.map((g) => (
-        <span key={g.tipo} className="legend-chip"><i className={`dot dot--${g.tipo}`} />{`${t(SITE_LABEL_KEYS[g.tipo])} (${g.fracao_txt})`}</span>
-      ))}
-    </div>
   );
 }
 
@@ -157,15 +97,19 @@ export function SceneDescription() {
   );
 }
 
-export function ViewerPanel() {
+/**
+ * Palco da cena 3D: ocupa todo o contêiner. Os controles flutuantes (título, ações, câmera,
+ * legenda) entram como `children`, irmãos do palco, para que o teclado da cena não os capture.
+ * `overlay` entra DENTRO do palco: são os avisos sobre o que a cena mostra (inclusive o selo
+ * "Ilustrativo"), que devem permanecer verificáveis como descendentes da área da cena.
+ */
+export function SceneStage({ children, overlay }: { children?: ReactNode; overlay?: ReactNode }) {
   const { t } = useI18n();
   const [stage, setStage] = useState<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
   const engine = useViewer((s) => s.engine);
   const structure = useCrystalab((s) => s.structure);
   const tool = useViewer((s) => s.tool);
-  const animation = useViewer((s) => s.animation);
-  const coloring = useViewer((s) => s.elementColoring);
   const unlocked = useViewer((s) => s.sceneUnlocked);
   const touchLockPref = usePreferences((s) => s.touchSceneLock);
   const ref = useCallback((el: HTMLDivElement | null) => setStage(el), []);
@@ -179,12 +123,26 @@ export function ViewerPanel() {
   }, [tool]);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const v = getViewer();
-    if (!v) return;
-    const step = e.shiftKey ? 0.2 : 0.08;
+    // só o próprio palco controla a câmera pelo teclado; teclas digitadas nos avisos sobrepostos
+    // (botões, selos) seguem o comportamento nativo do controle focado
+    if (e.target !== e.currentTarget) return;
+    const cam = getCameraApi();
+    if (!cam) return;
+    const modifier = e.ctrlKey || e.altKey || e.metaKey;
+    const arrows: Record<string, [number, number]> = { ArrowLeft: [1, 0], ArrowRight: [-1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+    const arrow = arrows[e.key];
+    if (arrow) {
+      e.preventDefault();
+      // Ctrl/Alt + seta desloca a cena no sentido da seta; seta sozinha gira (Shift = passo maior)
+      if (modifier) { const step = e.shiftKey ? 0.15 : 0.06; cam.pan(arrow[0] * step, arrow[1] * step); }
+      else { const step = e.shiftKey ? 0.2 : 0.08; cam.orbit(arrow[0] * step, arrow[1] * step); }
+      return;
+    }
+    if (modifier) return; // Ctrl + / Ctrl − / Ctrl 0 continuam sendo o zoom do navegador
+    const reset = () => void dispatch({ type: 'view.reset' }, 'shortcut');
     const map: Record<string, () => void> = {
-      ArrowLeft: () => v.orbit(step, 0), ArrowRight: () => v.orbit(-step, 0), ArrowUp: () => v.orbit(0, -step), ArrowDown: () => v.orbit(0, step),
-      '+': () => v.zoom(0.9), '=': () => v.zoom(0.9), '-': () => v.zoom(1.1), _: () => v.zoom(1.1), '0': () => void dispatch({ type: 'view.reset' }, 'shortcut'), Home: () => void dispatch({ type: 'view.reset' }, 'shortcut'),
+      '+': () => cam.zoom(0.9), '=': () => cam.zoom(0.9), '-': () => cam.zoom(1.1), _: () => cam.zoom(1.1),
+      '0': reset, Home: reset, r: reset, R: reset, f: () => cam.frame(), F: () => cam.frame(),
       Escape: () => useViewer.getState().set({ selection: null }),
     };
     const fn = map[e.key];
@@ -192,15 +150,7 @@ export function ViewerPanel() {
   };
 
   return (
-    <section className="ds-panel viewer-panel" aria-labelledby="viewer-title">
-      <header className="ds-panel__title">
-        <h2 id="viewer-title">{t('viewer.title')}</h2>
-        <span className="ds-panel__aside">{t('viewer.hint')}</span>
-      </header>
-      <div className="viewer-toolbar">
-        <MillerForm />
-        <ViewToggles />
-      </div>
+    <div className="cl-scene">
       <div
         ref={ref}
         className={`viewer-stage ${coarse && touchLockPref && !unlocked ? 'is-touch-locked' : ''}`}
@@ -218,28 +168,11 @@ export function ViewerPanel() {
             <Viewer3D stage={stage} onReady={(ok) => setFailed(!ok)} />
           </Suspense>
         ) : null}
-        {!structure ? <div className="viewer-fallback">{t('viewer.empty')}</div> : null}
         {failed || engine === 'unsupported' ? <div className="viewer-fallback" role="note">{t('viewer.unsupported')}</div> : null}
-        <SiteLegend />
-        <div className="viewer-badges">
-          {animation && animation.name !== 'alpha-gamma' ? <DemoSeal text={t('common.illustrative')} detail={t('anim.illustrativeDetail')} /> : null}
-          {coloring?.enabled ? <DemoSeal text={t('common.illustrative')} detail={t('bridge.coloringDetail')} /> : null}
-        </div>
-        {tool ? (
-          <div className="viewer-tool-banner" role="status">
-            {t(tool.kind === 'distance' ? 'measure.bannerDistance' : 'measure.bannerAngle', { picked: tool.picks.length })}
-            <button type="button" className="ds-btn ds-btn--sm" onClick={() => void dispatch({ type: 'measure.stop' }, 'form')}>{t('measure.finish')}</button>
-          </div>
-        ) : null}
-        {coarse && touchLockPref ? (
-          <div className="viewer-touch">
-            <IconButton icon={unlocked ? 'unlock' : 'lock'} size="sm" label={unlocked ? t('viewer.lockScene') : t('viewer.unlockScene')} aria-pressed={unlocked} onClick={() => useViewer.getState().set({ sceneUnlocked: !unlocked })} showTooltip={false} />
-          </div>
-        ) : null}
+        {overlay}
       </div>
+      {children}
       <p id="viewer-keys" className="sr-only">{t('viewer.keys')}</p>
-      <OverlayChips />
-      <SceneDescription />
-    </section>
+    </div>
   );
 }
